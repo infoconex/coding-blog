@@ -3,6 +3,7 @@ layout: default
 title: Writing
 description: Browse all published articles by date and topic.
 permalink: /writing/
+stylesheet: /assets/css/writing.css
 ---
 {% assign post_pages = site.pages | where_exp: "item", "item.path contains 'post/'" | sort: "date" | reverse %}
 {% assign all_tags = "" | split: "" %}
