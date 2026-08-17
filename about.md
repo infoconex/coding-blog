@@ -18,8 +18,12 @@ stylesheet: /assets/css/about.css
   <article class="about-main">
     <div class="eyebrow">The work</div>
     <h2>Engineering is more than the code that ships.</h2>
-    <p>My interests sit where software design meets real operational constraints: architecture, maintainability, databases, infrastructure, debugging, performance, and the decisions teams have to live with after the initial implementation is finished.</p>
-    <p>This site is where I keep the ideas, examples, experiments, and scars worth writing down. Some articles are focused on principles that age slowly. Others capture a specific tool, platform, or problem from a particular moment in time.</p>
+    <p>I’m a software engineer focused on building systems that are understandable, maintainable, and useful in the real world.</p>
+    <p>Over the years I’ve worked across application development, architecture, infrastructure, databases, and production operations. A lot of what I write here comes from that overlap: the point where clean design meets legacy code, operational constraints, evolving requirements, and the occasional hard-earned lesson.</p>
+    <p>I tend to be most interested in software design, system architecture, C#, data-intensive applications, Linux, automation, and the engineering tradeoffs that appear once a system has to live in production for a long time.</p>
+    <p>This site is partly a technical notebook and partly an archive. Some articles go back many years, so they also reflect how tools, practices, and my own thinking have changed over time. I’ve kept that history intact rather than rewriting everything to look current.</p>
+    <p>I value simple designs, explicit tradeoffs, strong fundamentals, and code that the next person can understand without archaeology. I’m less interested in chasing patterns for their own sake than in understanding when an idea actually makes software better.</p>
+    <p>Most of the writing here is practical: examples, architecture notes, debugging discoveries, design principles, and observations collected while building and maintaining software.</p>
 
     <div class="about-principles">
       <div><strong>Design</strong><span>Make intent visible and change affordable.</span></div>
