@@ -12,7 +12,7 @@
   let activeIndex = -1;
   let lastFocus = null;
 
-  const searchUrl = new URL('search.json', document.baseURI).href;
+  const searchUrl = trigger.dataset.searchIndex;
 
   function normalize(value) {
     return (value || '').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
