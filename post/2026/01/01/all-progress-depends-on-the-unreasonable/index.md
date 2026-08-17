@@ -5,9 +5,7 @@ description: "All Progress Depends on the Unreasonable"
 tags: ["leadership", "change", "progress"]
 slug: "all-progress-depends-on-the-unreasonable"
 author: "Jim Scott"
-originalUrl: "https://www.linkedin.com/pulse/all-progress-depends-unreasonable-jim-scott-b0vtc"
 permalink: "/post/2026/01/01/all-progress-depends-on-the-unreasonable"
-legacyPaths: []
 ---
 > **“The reasonable man adapts himself to the world; the unreasonable one persists in trying to adapt the world to himself. Therefore all progress depends on the unreasonable man.”** George Bernard Shaw
 
