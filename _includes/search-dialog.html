@@ -1,0 +1,23 @@
+<div class="search-overlay" data-search-overlay hidden>
+  <section class="search-dialog" role="dialog" aria-modal="true" aria-labelledby="search-title">
+    <div class="search-dialog__head">
+      <div>
+        <div class="eyebrow">Search archive</div>
+        <h2 id="search-title">Find an article.</h2>
+      </div>
+      <button type="button" class="search-close" data-search-close aria-label="Close search">×</button>
+    </div>
+    <label class="search-input-wrap">
+      <span class="sr-only">Search articles</span>
+      <input type="search" data-search-input placeholder="Search titles, tags, descriptions, code…" autocomplete="off" spellcheck="false">
+      <kbd>Esc</kbd>
+    </label>
+    <div class="search-status" data-search-status aria-live="polite">Type to search the full archive.</div>
+    <div class="search-results" data-search-results role="listbox" aria-label="Search results"></div>
+    <div class="search-dialog__foot">
+      <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span>Cmd/Ctrl + K search</span>
+    </div>
+  </section>
+</div>
