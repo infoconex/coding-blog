@@ -27,6 +27,7 @@
     root.dataset.theme = theme;
     try { localStorage.setItem(key, theme); } catch (_) {}
     syncOptions();
+    window.dispatchEvent(new CustomEvent('coding:themechange', { detail: { theme } }));
   }
 
   function openPicker() {
