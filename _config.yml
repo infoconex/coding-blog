@@ -1,0 +1,35 @@
+title: Coding
+name: Coding
+subtitle: Software engineering, architecture, systems, and lessons accumulated the hard way.
+author:
+  name: Jim Scott
+url: "https://infoconex.github.io"
+baseurl: "/coding-blog"
+lang: en-US
+timezone: America/Los_Angeles
+
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# GitHub Pages-supported plugins only. More can be added in the SEO/release issue.
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+exclude:
+  - scripts/
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+# Production navigation. Search and the full theme picker are added in later issues.
+navigation:
+  - title: Writing
+    url: /writing/
+  - title: Archive
+    url: /archive/
+  - title: About
+    url: /about/
+
+default_theme: neo-industrial
