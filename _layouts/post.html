@@ -9,7 +9,8 @@ layout: default
 {% assign article_age = current_year | minus: page_year %}
 {% assign archive_age = 5 %}
 
-{% assign post_pages = site.pages | where_exp: "item", "item.path contains 'post/'" | sort: "date" %}
+{% assign all_articles = site.pages | where: "isPost", true %}
+{% assign post_pages = all_articles | sort: "date" %}
 {% assign previous_page = nil %}
 {% assign next_page = nil %}
 {% assign found_current = false %}
@@ -24,6 +25,47 @@ layout: default
     {% assign previous_page = item %}
   {% endif %}
 {% endfor %}
+
+{% assign series_pages = nil %}
+{% assign series_previous = nil %}
+{% assign series_next = nil %}
+{% assign series_position = 0 %}
+{% if page.series %}
+  {% assign series_pages = all_articles | where: "series", page.series | sort: "seriesOrder" %}
+  {% assign found_series_current = false %}
+  {% for item in series_pages %}
+    {% if found_series_current %}
+      {% assign series_next = item %}
+      {% break %}
+    {% endif %}
+    {% if item.url == page.url %}
+      {% assign found_series_current = true %}
+      {% assign series_position = forloop.index %}
+    {% else %}
+      {% assign series_previous = item %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign related_candidates = all_articles | sort: "date" | reverse %}
+{% assign related_count = 0 %}
+{% if page.tags and page.tags.size > 0 %}
+  {% for candidate in related_candidates %}
+    {% if candidate.url != page.url %}
+      {% assign shared_tag = nil %}
+      {% for tag in page.tags %}
+        {% if candidate.tags contains tag %}
+          {% assign shared_tag = tag %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      {% if shared_tag %}
+        {% assign related_count = related_count | plus: 1 %}
+        {% if related_count == 3 %}{% break %}{% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
 
 <article class="post-shell">
   <header class="post-header">
@@ -51,9 +93,62 @@ layout: default
     </aside>
   {% endif %}
 
+  {% if page.series and series_pages.size > 1 %}
+    <aside class="series-panel" aria-labelledby="series-heading">
+      <div class="series-panel__head">
+        <div>
+          <div class="eyebrow">Series</div>
+          <h2 id="series-heading">{{ page.series }}</h2>
+        </div>
+        <div class="series-panel__position">Part {{ series_position }} of {{ series_pages.size }}</div>
+      </div>
+      {% if series_previous or series_next %}
+      <nav class="series-panel__nav" aria-label="Series navigation">
+        {% if series_previous %}
+          <a href="{{ series_previous.url | relative_url }}"><span>← Previous part</span><strong>{{ series_previous.title }}</strong></a>
+        {% else %}<span></span>{% endif %}
+        {% if series_next %}
+          <a href="{{ series_next.url | relative_url }}"><span>Next part →</span><strong>{{ series_next.title }}</strong></a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </aside>
+  {% endif %}
+
   <div class="post-content" data-article-content>
     {{ content }}
   </div>
+
+  {% if related_count > 0 %}
+    <section class="related-reading" aria-labelledby="related-heading">
+      <div class="related-reading__head">
+        <div><div class="eyebrow">Related reading</div><h2 id="related-heading">Keep following the thread.</h2></div>
+        <span class="related-reading__rule"></span>
+      </div>
+      <div class="related-reading__grid">
+        {% assign rendered_related = 0 %}
+        {% for candidate in related_candidates %}
+          {% if candidate.url != page.url %}
+            {% assign shared_tag = nil %}
+            {% for tag in page.tags %}
+              {% if candidate.tags contains tag %}
+                {% assign shared_tag = tag %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+            {% if shared_tag and rendered_related < 3 %}
+              <a class="related-card" href="{{ candidate.url | relative_url }}">
+                <div class="related-card__meta">{{ shared_tag }} · {{ candidate.date | date: "%Y" }}</div>
+                <strong>{{ candidate.title }}</strong>
+                {% if candidate.description %}<p>{{ candidate.description | truncate: 105 }}</p>{% endif %}
+              </a>
+              {% assign rendered_related = rendered_related | plus: 1 %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 
   {% if previous_page or next_page %}
     <nav class="post-navigation" aria-label="Article navigation">
