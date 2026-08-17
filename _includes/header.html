@@ -7,6 +7,11 @@
           <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
         {% endfor %}
       </nav>
+      <button type="button" class="search-trigger" data-search-trigger aria-haspopup="dialog" aria-expanded="false">
+        <span aria-hidden="true">⌕</span>
+        <span class="search-trigger__label">Search</span>
+        <kbd>⌘K</kbd>
+      </button>
       {% include theme-picker.html %}
     </div>
   </div>
