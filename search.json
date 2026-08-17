@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /search.json
+---
+[
+{% assign articles = site.pages | where: "isPost", true | sort: "date" | reverse %}
+{% for post in articles %}
+  {
+    "title": {{ post.title | jsonify }},
+    "description": {{ post.description | default: "" | jsonify }},
+    "tags": {{ post.tags | default: empty | jsonify }},
+    "url": {{ post.url | relative_url | jsonify }},
+    "date": {{ post.date | date: "%Y-%m-%d" | jsonify }},
+    "body": {{ post.content | strip_html | strip_newlines | normalize_whitespace | truncate: 12000 | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+]
