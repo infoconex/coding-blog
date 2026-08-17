@@ -1,11 +1,13 @@
 <header class="site-header">
   <div class="shell site-header__inner">
     <a class="brand" href="{{ '/' | relative_url }}" aria-label="Coding home">CODING<span>.</span></a>
-    <nav class="site-nav" aria-label="Primary">
-      {% for item in site.navigation %}
-        <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
-      {% endfor %}
-      <a href="{{ '/prototypes/theme-picker/' | relative_url }}" class="theme-lab-link">Themes</a>
-    </nav>
+    <div class="site-header__actions">
+      <nav class="site-nav" aria-label="Primary">
+        {% for item in site.navigation %}
+          <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+        {% endfor %}
+      </nav>
+      {% include theme-picker.html %}
+    </div>
   </div>
 </header>
