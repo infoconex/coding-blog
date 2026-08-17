@@ -12,13 +12,14 @@ markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
-# Apply the article layout to the migrated historical archive without modifying
-# every Markdown file individually.
+# Apply the article layout and article marker to the migrated historical archive
+# without modifying every Markdown file individually.
 defaults:
   - scope:
       path: "post"
     values:
       layout: post
+      isPost: true
 
 # GitHub Pages-supported plugins only.
 plugins:
