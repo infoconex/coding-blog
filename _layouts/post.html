@@ -119,6 +119,8 @@ layout: default
     {{ content }}
   </div>
 
+  {% include comments.html %}
+
   {% if related_count > 0 %}
     <section class="related-reading" aria-labelledby="related-heading">
       <div class="related-reading__head">
