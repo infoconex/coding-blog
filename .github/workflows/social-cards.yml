@@ -35,7 +35,7 @@ jobs:
 
       - name: Commit generated cards when changed
         run: |
-          if git diff --quiet -- assets/og/; then
+          if [ -z "$(git status --porcelain -- assets/og/)" ]; then
             echo 'Social cards are already current.'
             exit 0
           fi
