@@ -84,6 +84,82 @@
       .replace(/-+/g, '-');
   }
 
+  function enhanceArticleNavigation(article) {
+    const headings = [...article.querySelectorAll('h2, h3')];
+    if (headings.length < 3) return;
+
+    const postShell = article.closest('.post-shell');
+    if (!postShell) return;
+
+    const buildLinks = (list) => {
+      headings.forEach((heading) => {
+        const item = document.createElement('li');
+        if (heading.tagName === 'H3') item.className = 'article-toc__subitem';
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent.replace(/^#\s*/, '').trim();
+        link.dataset.tocLink = heading.id;
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+    };
+
+    const rail = document.createElement('nav');
+    rail.className = 'article-toc';
+    rail.setAttribute('aria-label', 'On this page');
+    rail.innerHTML = '<div class="article-toc__label">On this page</div><ol></ol>';
+    buildLinks(rail.querySelector('ol'));
+    postShell.appendChild(rail);
+
+    const mobile = document.createElement('details');
+    mobile.className = 'article-toc-mobile';
+    mobile.innerHTML = '<summary>On this page <span aria-hidden="true">+</span></summary><nav aria-label="On this page"><ol></ol></nav>';
+    buildLinks(mobile.querySelector('ol'));
+    article.before(mobile);
+
+    const progress = document.createElement('div');
+    progress.className = 'reading-progress';
+    progress.setAttribute('aria-hidden', 'true');
+    progress.innerHTML = '<span></span>';
+    document.body.appendChild(progress);
+    const progressBar = progress.firstElementChild;
+
+    const links = [...document.querySelectorAll('[data-toc-link]')];
+    const setActive = (id) => {
+      links.forEach((link) => link.classList.toggle('is-active', link.dataset.tocLink === id));
+    };
+
+    if ('IntersectionObserver' in window) {
+      const visible = new Map();
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => visible.set(entry.target.id, entry.isIntersecting ? entry.boundingClientRect.top : Infinity));
+        const current = [...visible.entries()].filter(([, top]) => Number.isFinite(top)).sort((a, b) => Math.abs(a[1]) - Math.abs(b[1]))[0];
+        if (current) setActive(current[0]);
+      }, { rootMargin: '-18% 0px -68% 0px', threshold: [0, 1] });
+      headings.forEach((heading) => observer.observe(heading));
+    }
+
+    let ticking = false;
+    const updateProgress = () => {
+      const rect = article.getBoundingClientRect();
+      const articleTop = window.scrollY + rect.top;
+      const start = articleTop - window.innerHeight * 0.2;
+      const end = articleTop + article.offsetHeight - window.innerHeight * 0.7;
+      const span = Math.max(1, end - start);
+      const ratio = Math.min(1, Math.max(0, (window.scrollY - start) / span));
+      progressBar.style.transform = `scaleX(${ratio})`;
+      ticking = false;
+    };
+    const requestProgress = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateProgress);
+    };
+    window.addEventListener('scroll', requestProgress, { passive: true });
+    window.addEventListener('resize', requestProgress, { passive: true });
+    updateProgress();
+  }
+
   function enhanceArticle() {
     const article = document.querySelector('[data-article-content]');
     if (!article) return;
@@ -139,6 +215,8 @@
       });
       container.appendChild(button);
     });
+
+    enhanceArticleNavigation(article);
   }
 
   function enhanceWritingBrowser() {
