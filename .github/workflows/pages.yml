@@ -25,6 +25,13 @@ jobs:
         id: pages
         uses: actions/configure-pages@v6
 
+      - name: Install social-card dependencies
+        run: python3 -m pip install --user -r scripts/requirements.txt
+
+      - name: Generate social cards
+        continue-on-error: true
+        run: python3 scripts/generate_og.py
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
