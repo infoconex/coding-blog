@@ -74,5 +74,72 @@
     if (panel && !panel.hidden && picker && !picker.contains(event.target)) closePicker({ restoreFocus: false });
   });
 
+  function slugifyHeading(text) {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  function enhanceArticle() {
+    const article = document.querySelector('[data-article-content]');
+    if (!article) return;
+
+    const usedIds = new Set([...document.querySelectorAll('[id]')].map((element) => element.id));
+    article.querySelectorAll('h2, h3').forEach((heading, index) => {
+      if (!heading.id) {
+        const base = slugifyHeading(heading.textContent) || `section-${index + 1}`;
+        let candidate = base;
+        let suffix = 2;
+        while (usedIds.has(candidate)) candidate = `${base}-${suffix++}`;
+        heading.id = candidate;
+        usedIds.add(candidate);
+      }
+      if (heading.querySelector('.heading-anchor')) return;
+      const anchor = document.createElement('a');
+      anchor.className = 'heading-anchor';
+      anchor.href = `#${heading.id}`;
+      anchor.setAttribute('aria-label', `Link to ${heading.textContent.trim()}`);
+      anchor.textContent = '#';
+      heading.prepend(anchor);
+    });
+
+    article.querySelectorAll('pre').forEach((pre) => {
+      if (pre.closest('.code-block')?.querySelector('.code-copy') || pre.parentElement?.querySelector(':scope > .code-copy')) return;
+
+      let container = pre.parentElement?.classList.contains('highlight') ? pre.parentElement : null;
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'code-block';
+        pre.before(container);
+        container.appendChild(pre);
+      }
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-copy';
+      button.textContent = 'Copy';
+      button.setAttribute('aria-label', 'Copy code to clipboard');
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pre.innerText);
+          button.textContent = 'Copied';
+          window.setTimeout(() => { button.textContent = 'Copy'; }, 1400);
+        } catch (_) {
+          button.textContent = 'Select';
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(pre);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      });
+      container.appendChild(button);
+    });
+  }
+
   syncOptions();
+  enhanceArticle();
 })();
