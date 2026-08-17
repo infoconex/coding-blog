@@ -51,4 +51,15 @@ social:
   links:
     - https://github.com/infoconex
 
+# Comments are deliberately disabled until GitHub Discussions + Giscus are
+# configured. Articles must also opt in with `comments: true`.
+comments:
+  enabled: false
+  provider: giscus
+  repo: infoconex/coding-blog
+  repo_id: ""
+  category: ""
+  category_id: ""
+  mapping: pathname
+
 default_theme: neo-industrial
