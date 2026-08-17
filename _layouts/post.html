@@ -1,13 +1,39 @@
 ---
 layout: default
 ---
+{% assign word_count = content | number_of_words %}
+{% assign reading_minutes = word_count | plus: 199 | divided_by: 200 %}
+{% if reading_minutes < 1 %}{% assign reading_minutes = 1 %}{% endif %}
+{% assign current_year = site.time | date: "%Y" | plus: 0 %}
+{% assign page_year = page.date | date: "%Y" | plus: 0 %}
+{% assign article_age = current_year | minus: page_year %}
+{% assign archive_age = 5 %}
+
+{% assign post_pages = site.pages | where_exp: "item", "item.path contains 'post/'" | sort: "date" %}
+{% assign previous_page = nil %}
+{% assign next_page = nil %}
+{% assign found_current = false %}
+{% for item in post_pages %}
+  {% if found_current %}
+    {% assign next_page = item %}
+    {% break %}
+  {% endif %}
+  {% if item.url == page.url %}
+    {% assign found_current = true %}
+  {% else %}
+    {% assign previous_page = item %}
+  {% endif %}
+{% endfor %}
+
 <article class="post-shell">
   <header class="post-header">
     <p class="post-kicker">{{ page.date | date: "%B %-d, %Y" }}</p>
     <h1>{{ page.title }}</h1>
     {% if page.description %}<p class="post-description">{{ page.description }}</p>{% endif %}
-    <div class="post-meta">
-      {% if page.author %}<span>{{ page.author }}</span>{% endif %}
+    <div class="post-meta" aria-label="Article metadata">
+      {% if page.author %}<span>{{ page.author }}</span><span aria-hidden="true">·</span>{% endif %}
+      <span>{{ reading_minutes }} min read</span>
+      {% if page.updated %}<span aria-hidden="true">·</span><span>Updated {{ page.updated | date: "%B %-d, %Y" }}</span>{% endif %}
       {% if page.tags and page.tags.size > 0 %}
         <span aria-hidden="true">·</span>
         <span>{{ page.tags | join: " · " }}</span>
@@ -15,7 +41,36 @@ layout: default
     </div>
   </header>
 
-  <div class="post-content">
+  {% if article_age >= archive_age %}
+    <aside class="archive-notice" aria-label="Archived article notice">
+      <div class="archive-notice__year">{{ page_year }}</div>
+      <div>
+        <p class="archive-notice__label">From the archive</p>
+        <p>This article is preserved as part of the historical engineering record. Software, commands, dependencies, and recommended practices may have changed since it was written.</p>
+      </div>
+    </aside>
+  {% endif %}
+
+  <div class="post-content" data-article-content>
     {{ content }}
   </div>
+
+  {% if previous_page or next_page %}
+    <nav class="post-navigation" aria-label="Article navigation">
+      {% if previous_page %}
+        <a class="post-navigation__item post-navigation__item--previous" href="{{ previous_page.url | relative_url }}">
+          <span class="post-navigation__label">← Previous</span>
+          <strong>{{ previous_page.title }}</strong>
+        </a>
+      {% else %}
+        <span></span>
+      {% endif %}
+      {% if next_page %}
+        <a class="post-navigation__item post-navigation__item--next" href="{{ next_page.url | relative_url }}">
+          <span class="post-navigation__label">Next →</span>
+          <strong>{{ next_page.title }}</strong>
+        </a>
+      {% endif %}
+    </nav>
+  {% endif %}
 </article>
