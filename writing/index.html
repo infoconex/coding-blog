@@ -33,7 +33,7 @@ stylesheet: /assets/css/writing.css
 
   <div class="writing-list" data-writing-list>
     {% for post in post_pages %}
-      {% assign words = post.content | strip_html | number_of_words %}
+      {% assign words = post.content | strip_html | split: " " | size %}
       {% assign minutes = words | divided_by: 220 %}
       {% if minutes < 1 %}{% assign minutes = 1 %}{% endif %}
       <article class="writing-row" data-writing-card data-tags="{{ post.tags | join: '|' | downcase | escape }}">
