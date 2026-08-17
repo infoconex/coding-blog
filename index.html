@@ -2,122 +2,86 @@
 layout: default
 title: Home
 description: Software engineering, architecture, systems, and lessons accumulated the hard way.
+stylesheet: /assets/css/home.css
 ---
 {% assign post_pages = site.pages | where_exp: "item", "item.path contains 'post/'" | sort: "date" | reverse %}
 {% assign featured_pages = post_pages | where: "featured", true | sort: "featuredOrder" %}
 {% assign primary = featured_pages | first %}
 {% unless primary %}{% assign primary = post_pages | first %}{% endunless %}
-{% assign all_tags = "" | split: "" %}
-{% for post in post_pages %}
-  {% if post.tags %}{% assign all_tags = all_tags | concat: post.tags %}{% endif %}
-{% endfor %}
-{% assign all_tags = all_tags | uniq | sort %}
+{% assign earliest = post_pages | last %}
+{% assign current_year = site.time | date: "%Y" | plus: 0 %}
+{% assign earliest_year = earliest.date | date: "%Y" | plus: 0 %}
+{% assign archive_years = current_year | minus: earliest_year | plus: 1 %}
 
-<section class="shell home-hero">
-  <div class="home-hero__copy">
-    <div class="eyebrow">Engineering notes · since 2008</div>
-    <h1>Ideas engineered for the real world.</h1>
-    <p>Software engineering, architecture, systems, code, and production lessons — preserved as a long-running technical record.</p>
-  </div>
-  <aside class="home-telemetry" aria-label="Site summary">
-    <span>Archive span</span><strong>2008 → {{ site.time | date: "%Y" }}</strong>
-    <span>Published articles</span><strong>{{ post_pages | size }}</strong>
-    <span>Visual system</span><strong>4 themes</strong>
-  </aside>
-</section>
-
-{% if primary %}
-<section class="shell home-section home-featured" aria-labelledby="featured-heading">
-  <div class="section-heading">
-    <div><div class="eyebrow">Featured</div><h2 id="featured-heading">Start here.</h2></div>
-    <span class="section-heading__rule"></span>
-  </div>
-  <article class="featured-story">
-    <div class="featured-story__meta">
-      <span>{{ primary.date | date: "%b %-d, %Y" }}</span>
-      {% if primary.tags and primary.tags.size > 0 %}<span>{{ primary.tags | first }}</span>{% endif %}
+<main class="shell home-prototype">
+  <section class="home-editorial-hero">
+    <div class="home-editorial-hero__copy">
+      <div class="eyebrow">Engineering notes · since {{ earliest_year }}</div>
+      <h1>Software engineering, architecture &amp; lessons learned <em>the hard way.</em></h1>
+      <p>A long-running record of code, systems, architecture, operational scars, and the ideas that survived contact with production.</p>
     </div>
-    <h3><a href="{{ primary.url | relative_url }}">{{ primary.title }}</a></h3>
-    {% if primary.description %}<p>{{ primary.description }}</p>{% endif %}
-    <a class="text-link" href="{{ primary.url | relative_url }}">Read article →</a>
-  </article>
+    <aside class="home-editorial-side" aria-label="Archive summary">
+      <strong>{{ archive_years }} years</strong>
+      of articles, experiments and engineering history.
+      <span class="home-editorial-side__topics">C# · SQL Server · Linux · Architecture</span>
+    </aside>
+  </section>
 
-  <div class="featured-secondary" aria-label="More featured writing">
-    {% assign secondary_count = 0 %}
-    {% for post in featured_pages %}
-      {% if secondary_count < 2 and post.url != primary.url %}
-        <article class="story-card" data-home-featured-url="{{ post.url }}">
-          <div class="story-card__meta">{{ post.date | date: "%Y.%m.%d" }}</div>
+  {% if primary %}
+  <section class="home-prototype-featured" aria-labelledby="featured-heading">
+    <div class="home-prototype-featured__copy">
+      <div class="eyebrow">Featured article</div>
+      <h2 id="featured-heading"><a href="{{ primary.url | relative_url }}">{{ primary.title }}</a></h2>
+      {% if primary.description %}<p>{{ primary.description | truncate: 190 }}</p>{% endif %}
+      <div class="home-prototype-meta">
+        {{ primary.date | date: "%b %-d %Y" }}
+        {% if primary.tags and primary.tags.size > 0 %} · {{ primary.tags | join: " · " }}{% endif %}
+      </div>
+    </div>
+    <div class="home-code-panel" aria-label="Code motif">
+<pre><span class="code-accent">public sealed class</span> EngineeringNotes
+{
+    <span class="code-accent">public</span> Lesson Capture(Experience scar) =&gt;
+        scar
+            .Observe()
+            .Understand()
+            .WriteDown();
+}</pre>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="home-bento" aria-label="Selected writing">
+    {% assign card_count = 0 %}
+    {% for post in post_pages %}
+      {% if card_count < 5 and post.url != primary.url %}
+        <article class="home-bento-card">
+          <div class="home-bento-card__meta">
+            {% if post.tags and post.tags.size > 0 %}{{ post.tags | first }} · {% endif %}{{ post.date | date: "%Y" }}
+          </div>
           <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
           {% if post.description %}<p>{{ post.description | truncate: 150 }}</p>{% endif %}
         </article>
-        {% assign secondary_count = secondary_count | plus: 1 %}
+        {% assign card_count = card_count | plus: 1 %}
       {% endif %}
     {% endfor %}
-    {% if secondary_count < 2 %}
-      {% for post in post_pages %}
-        {% if secondary_count < 2 and post.url != primary.url and post.featured != true %}
-          <article class="story-card" data-home-featured-url="{{ post.url }}">
-            <div class="story-card__meta">{{ post.date | date: "%Y.%m.%d" }}</div>
-            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-            {% if post.description %}<p>{{ post.description | truncate: 150 }}</p>{% endif %}
-          </article>
-          {% assign secondary_count = secondary_count | plus: 1 %}
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-  </div>
-</section>
-{% endif %}
+  </section>
 
-<section class="shell home-section" aria-labelledby="latest-heading">
-  <div class="section-heading">
-    <div><div class="eyebrow">Latest writing</div><h2 id="latest-heading">Recently published.</h2></div>
-    <a class="text-link" href="{{ '/writing/' | relative_url }}">View all writing →</a>
-  </div>
-  <div class="latest-list">
-    {% assign latest_count = 0 %}
-    {% for post in post_pages %}
-      {% assign already_featured = false %}
-      {% if post.url == primary.url %}{% assign already_featured = true %}{% endif %}
-      {% if post.featured == true %}{% assign already_featured = true %}{% endif %}
-      {% if already_featured == false and latest_count < 4 %}
-        <article class="latest-row">
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
-          <div>
-            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-            {% if post.description %}<p>{{ post.description | truncate: 170 }}</p>{% endif %}
-          </div>
-          <span aria-hidden="true">↗</span>
-        </article>
-        {% assign latest_count = latest_count | plus: 1 %}
-      {% endif %}
-    {% endfor %}
-  </div>
-</section>
-
-{% if all_tags.size > 0 %}
-<section class="shell home-section" aria-labelledby="topics-heading">
-  <div class="section-heading">
-    <div><div class="eyebrow">Browse by topic</div><h2 id="topics-heading">Follow the threads.</h2></div>
-  </div>
-  <div class="topic-cloud">
-    {% for tag in all_tags limit: 14 %}<a class="topic-chip" href="{{ '/writing/' | relative_url }}?topic={{ tag | url_encode }}">{{ tag }}</a>{% endfor %}
-  </div>
-</section>
-{% endif %}
-
-<section class="shell home-section home-closing-grid">
-  <article class="home-panel">
-    <div class="eyebrow">Archive</div>
-    <h2>A technical record, not a highlight reel.</h2>
-    <p>Older articles stay available at their historical URLs, with clear archive notices when the technology or advice may have aged.</p>
-    <a class="text-link" href="{{ '/archive/' | relative_url }}">Explore the archive →</a>
-  </article>
-  <article class="home-panel">
-    <div class="eyebrow">About</div>
-    <h2>Jim Scott</h2>
-    <p>Software engineering, architecture, systems thinking, and lessons learned from building and operating real software.</p>
-    <a class="text-link" href="{{ '/about/' | relative_url }}">About this site →</a>
-  </article>
-</section>
+  <section class="home-archive-timeline" aria-labelledby="timeline-heading">
+    <div class="home-archive-timeline__intro">
+      <div class="eyebrow">Archive timeline</div>
+      <p id="timeline-heading">From early infrastructure notes in {{ earliest_year }} to modern architecture today.</p>
+      <a class="text-link" href="{{ '/archive/' | relative_url }}">Explore the archive →</a>
+    </div>
+    <div aria-hidden="true">
+      <div class="home-archive-timeline__years">
+        <span>{{ earliest_year }}</span>
+        <span>2012</span>
+        <span>2016</span>
+        <span>2020</span>
+        <span>{{ current_year }}</span>
+      </div>
+      <div class="home-archive-timeline__bars"></div>
+    </div>
+  </section>
+</main>
