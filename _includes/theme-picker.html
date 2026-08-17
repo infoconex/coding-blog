@@ -1,0 +1,34 @@
+<div class="theme-picker" data-theme-picker>
+  <button class="theme-picker__trigger" type="button" data-theme-trigger aria-haspopup="dialog" aria-expanded="false" aria-controls="theme-picker-panel">
+    <span class="theme-picker__icon" aria-hidden="true">◐</span>
+    <span class="theme-picker__label">Theme</span>
+  </button>
+  <div class="theme-picker__panel" id="theme-picker-panel" data-theme-panel role="dialog" aria-label="Choose visual theme" hidden>
+    <div class="theme-picker__heading">
+      <div>
+        <span class="theme-picker__eyebrow">Display mode</span>
+        <strong>Choose a personality</strong>
+      </div>
+      <button class="theme-picker__close" type="button" data-theme-close aria-label="Close theme picker">×</button>
+    </div>
+    <div class="theme-picker__options" role="radiogroup" aria-label="Visual theme">
+      <button type="button" class="theme-option" data-theme-option="neo-industrial" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Neo Industrial</strong><small>Precision · steel · instrumentation</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="midnight-editorial" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Midnight Editorial</strong><small>Elegant · cinematic · literary</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="warm-analog" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Warm Analog</strong><small>Tactile · timeless · notebook</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="technical-brutalism" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Technical Brutalism</strong><small>Bold · graphic · unapologetic</small></span>
+      </button>
+    </div>
+    <p class="theme-picker__hint"><kbd>T</kbd> opens themes · your choice is remembered</p>
+  </div>
+</div>
