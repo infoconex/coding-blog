@@ -11,7 +11,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 POSTS = ROOT / "post"
-REQUIRED_FIELDS = ("title", "date", "description", "tags", "slug", "author", "originalUrl", "legacyPaths", "permalink")
+REQUIRED_FIELDS = ("title", "date", "description", "tags", "slug", "author", "permalink")
+LEGACY_FIELDS = ("originalUrl", "legacyPaths")
 DATED_POST_RE = re.compile(r"^/post/\d{4}/\d{2}/\d{2}/[^/]+/?$", re.I)
 LINK_RE = re.compile(r"!?\[[^\]]*\]\((?P<url>[^)\s]+)")
 LINKED_IMAGE_RE = re.compile(r"\[!\[[^\]]*\]\([^)]+\)\]\((?P<url>[^)\s]+)", re.I)
@@ -131,16 +132,9 @@ def main() -> int:
                     warnings.append(f"{path_label}: duplicate tag after normalization: {tag!r}")
                 seen_tags.add(normalized)
 
-        original = str(data.get("originalUrl") or "")
-        parsed = urlsplit(original)
-        if (parsed.hostname or "").lower() not in LEGACY_HOSTS:
-            errors.append(f"{path_label}: unexpected originalUrl host: {original}")
-
         permalink = str(data.get("permalink") or "")
         if not DATED_POST_RE.match(permalink):
             errors.append(f"{path_label}: invalid historical permalink: {permalink}")
-        elif permalink != parsed.path:
-            errors.append(f"{path_label}: permalink must exactly match originalUrl path: {permalink} != {parsed.path}")
         else:
             key = route_key(permalink)
             if key in routes:
@@ -155,9 +149,22 @@ def main() -> int:
                     f"post/{'/'.join(expected)}/index.md"
                 )
 
-        legacy_paths = data.get("legacyPaths")
-        if not isinstance(legacy_paths, list) or not legacy_paths:
-            errors.append(f"{path_label}: legacyPaths must be a non-empty list")
+        has_legacy_metadata = any(field in data for field in LEGACY_FIELDS)
+        if has_legacy_metadata:
+            missing_legacy = [field for field in LEGACY_FIELDS if field not in data]
+            if missing_legacy:
+                errors.append(f"{path_label}: incomplete legacy metadata; missing: {', '.join(missing_legacy)}")
+
+            original = str(data.get("originalUrl") or "")
+            parsed = urlsplit(original)
+            if (parsed.hostname or "").lower() not in LEGACY_HOSTS:
+                errors.append(f"{path_label}: unexpected originalUrl host: {original}")
+            elif permalink and permalink != parsed.path:
+                errors.append(f"{path_label}: permalink must exactly match originalUrl path: {permalink} != {parsed.path}")
+
+            legacy_paths = data.get("legacyPaths")
+            if not isinstance(legacy_paths, list) or not legacy_paths:
+                errors.append(f"{path_label}: legacyPaths must be a non-empty list")
 
         if len(FENCE_RE.findall(body)) % 2:
             errors.append(f"{path_label}: malformed Markdown code fences (odd number of ``` fences)")
