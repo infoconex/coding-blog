@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-POSTS = ROOT / "posts"
+POSTS = ROOT / "post"
 REQUIRED_FIELDS = ("title", "date", "description", "tags", "slug", "author", "originalUrl", "legacyPaths", "permalink")
 DATED_POST_RE = re.compile(r"^/post/\d{4}/\d{2}/\d{2}/[^/]+/?$", re.I)
 LINK_RE = re.compile(r"!?\[[^\]]*\]\((?P<url>[^)\s]+)")
@@ -67,7 +67,7 @@ def main() -> int:
     bodies: dict[str, str] = {}
 
     if not files:
-        errors.append("no posts/YYYY/MM/DD/<historical-slug>/index.md files found")
+        errors.append("no post/YYYY/MM/DD/<historical-slug>/index.md files found")
 
     for index_md in files:
         try:
@@ -117,7 +117,7 @@ def main() -> int:
             if expected and tuple(actual) != expected:
                 errors.append(
                     f"{index_md}: source path must mirror permalink date/slug; expected "
-                    f"posts/{'/'.join(expected)}/index.md"
+                    f"post/{'/'.join(expected)}/index.md"
                 )
 
         legacy_paths = data.get("legacyPaths")
