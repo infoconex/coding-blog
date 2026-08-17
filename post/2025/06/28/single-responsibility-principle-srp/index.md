@@ -8,6 +8,8 @@ author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2025/06/28/single-responsibility-principle-srp"
 permalink: "/post/2025/06/28/single-responsibility-principle-srp"
 legacyPaths: ["/post/2025/06/28/single-responsibility-principle-srp"]
+series: "SOLID Principles"
+seriesOrder: 2
 ---
 The **Single Responsibility Principle** is the first of the five SOLID principles of object-oriented design, introduced by Robert C. Martin (Uncle Bob). It helps make software easier to understand, maintain, and extend.
 
