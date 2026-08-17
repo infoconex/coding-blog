@@ -1,0 +1,46 @@
+name: Generate social cards
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'post/**/index.md'
+      - 'scripts/generate_og.py'
+      - '_config.yml'
+      - '.github/workflows/social-cards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install generator dependencies
+        run: python -m pip install --disable-pip-version-check Pillow PyYAML
+
+      - name: Generate social cards
+        run: python scripts/generate_og.py
+
+      - name: Commit generated cards when changed
+        run: |
+          if git diff --quiet -- assets/og/; then
+            echo 'Social cards are already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/og/
+          git commit -m 'Update generated social cards'
+          git push
