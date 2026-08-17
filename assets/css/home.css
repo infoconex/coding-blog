@@ -34,9 +34,19 @@
 
 .home-archive-timeline { display:grid; grid-template-columns:235px 1fr; gap:44px; padding:42px 0 0; border-top:1px solid var(--line); }
 .home-archive-timeline__intro p { max-width:220px; color:var(--muted); line-height:1.58; }
-.home-archive-timeline__years { display:flex; justify-content:space-between; gap:14px; padding-bottom:22px; border-bottom:1px solid var(--line); color:var(--muted); font:11px/1 var(--font-mono); }
-.home-archive-timeline__bars { height:66px; margin-top:-14px; opacity:.78; background:repeating-linear-gradient(90deg,transparent 0 14px,color-mix(in srgb,var(--accent) 52%,transparent) 14px 16px); mask-image:linear-gradient(90deg,rgba(0,0,0,.4),#000 18%,#000 82%,rgba(0,0,0,.4)); }
 .home-archive-timeline .text-link { display:inline-block; margin-top:16px; }
+.home-history-graph { min-width:0; }
+.home-history-graph__plot { display:grid; grid-template-columns:repeat(19,minmax(0,1fr)); gap:clamp(4px,.7vw,10px); min-height:150px; align-items:end; padding:24px 0 0; border-bottom:1px solid var(--line); }
+.home-history-graph__year { position:relative; display:grid; grid-template-rows:112px 24px; align-items:end; min-width:0; }
+.home-history-graph__bar { position:relative; display:block; width:100%; height:max(3px,var(--bar-height)); max-height:100%; align-self:end; border:1px solid color-mix(in srgb,var(--accent) 68%,var(--line)); border-bottom:0; background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 82%,var(--surface)),color-mix(in srgb,var(--accent) 36%,var(--surface))); text-decoration:none; transition:filter .15s ease,transform .15s ease; }
+.home-history-graph__bar.is-empty { height:3px; border-style:dashed; border-bottom:0; background:transparent; opacity:.45; cursor:default; }
+.home-history-graph__bar:hover,.home-history-graph__bar:focus-visible { z-index:4; filter:brightness(1.15); transform:translateY(-2px); outline:2px solid var(--accent); outline-offset:2px; }
+.home-history-graph__bar.is-empty:hover,.home-history-graph__bar.is-empty:focus-visible { transform:none; }
+.home-history-graph__tooltip { position:absolute; left:50%; bottom:calc(100% + 9px); width:max-content; max-width:140px; transform:translateX(-50%); padding:6px 8px; border:1px solid var(--line); border-radius:4px; background:var(--surface); color:var(--text); box-shadow:var(--card-shadow); font:700 10px/1.2 var(--font-mono); opacity:0; pointer-events:none; white-space:nowrap; }
+.home-history-graph__bar:hover .home-history-graph__tooltip,.home-history-graph__bar:focus-visible .home-history-graph__tooltip { opacity:1; }
+.home-history-graph__label { display:block; align-self:end; overflow:hidden; color:var(--muted); font:10px/1 var(--font-mono); text-align:center; text-overflow:clip; }
+.home-history-graph__label.is-secondary { color:transparent; user-select:none; }
+.home-history-graph__summary { margin:14px 0 0; color:var(--muted); font:10px/1.5 var(--font-mono); }
 
 html[data-theme="midnight-editorial"] .home-editorial-hero__copy h1 em { color:#e879f9; font-style:italic; }
 html[data-theme="midnight-editorial"] .home-prototype-featured { background:linear-gradient(140deg,#111116,#0c0c10); box-shadow:0 34px 90px rgba(0,0,0,.38); }
@@ -62,6 +72,7 @@ html[data-theme="technical-brutalism"] .home-bento-card:first-child p { color:#c
 html[data-theme="technical-brutalism"] .home-code-panel { border-width:3px; border-radius:0; }
 html[data-theme="technical-brutalism"] .home-bento-card:hover { transform:none; }
 html[data-theme="technical-brutalism"] .home-archive-timeline { border-top-width:3px; }
+html[data-theme="technical-brutalism"] .home-history-graph__bar,html[data-theme="technical-brutalism"] .home-history-graph__tooltip { border-width:3px; border-radius:0; box-shadow:none; }
 
 @media (max-width:900px) {
   .home-editorial-hero,.home-prototype-featured { grid-template-columns:1fr; }
@@ -83,5 +94,8 @@ html[data-theme="technical-brutalism"] .home-archive-timeline { border-top-width
   .home-bento-card { min-height:240px; }
   .home-archive-timeline { grid-template-columns:1fr; gap:24px; }
   .home-archive-timeline__intro p { max-width:none; }
-  .home-archive-timeline__years { font-size:9px; }
+  .home-history-graph__plot { grid-template-columns:repeat(19,minmax(0,1fr)); gap:3px; min-height:128px; }
+  .home-history-graph__year { grid-template-rows:92px 20px; }
+  .home-history-graph__label { font-size:8px; }
+  .home-history-graph__label.is-secondary { display:none; }
 }
