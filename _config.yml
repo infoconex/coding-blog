@@ -12,6 +12,14 @@ markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
+# Apply the article layout to the migrated historical archive without modifying
+# every Markdown file individually.
+defaults:
+  - scope:
+      path: "post"
+    values:
+      layout: post
+
 # GitHub Pages-supported plugins only. More can be added in the SEO/release issue.
 plugins:
   - jekyll-feed
