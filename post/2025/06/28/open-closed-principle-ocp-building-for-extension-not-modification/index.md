@@ -8,6 +8,8 @@ author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2025/06/28/open-closed-principle-ocp-building-for-extension-not-modification"
 permalink: "/post/2025/06/28/open-closed-principle-ocp-building-for-extension-not-modification"
 legacyPaths: ["/post/2025/06/28/open-closed-principle-ocp-building-for-extension-not-modification"]
+series: "SOLID Principles"
+seriesOrder: 3
 ---
 The second principle in the **SOLID** family is the **Open/Closed Principle (OCP)**. It’s a simple but powerful idea:
 
