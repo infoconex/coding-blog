@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<article class="post-shell">
+  <header class="post-header">
+    <p class="post-kicker">{{ page.date | date: "%B %-d, %Y" }}</p>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<p class="post-description">{{ page.description }}</p>{% endif %}
+    <div class="post-meta">
+      {% if page.author %}<span>{{ page.author }}</span>{% endif %}
+      {% if page.tags and page.tags.size > 0 %}
+        <span aria-hidden="true">·</span>
+        <span>{{ page.tags | join: " · " }}</span>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+</article>
