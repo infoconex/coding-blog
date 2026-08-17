@@ -1,0 +1,62 @@
+---
+layout: default
+title: Writing
+description: Browse all published articles by date and topic.
+permalink: /writing/
+---
+{% assign post_pages = site.pages | where_exp: "item", "item.path contains 'post/'" | sort: "date" | reverse %}
+{% assign all_tags = "" | split: "" %}
+{% for post in post_pages %}
+  {% if post.tags %}{% assign all_tags = all_tags | concat: post.tags %}{% endif %}
+{% endfor %}
+{% assign all_tags = all_tags | uniq | sort %}
+
+<section class="shell listing-hero">
+  <div class="eyebrow">Writing</div>
+  <h1>Ideas, systems, and lessons in code.</h1>
+  <p>Every published article, newest first. Filter by topic without losing a shareable URL.</p>
+  <div class="listing-stat"><strong>{{ post_pages | size }}</strong><span>published articles</span></div>
+</section>
+
+<section class="shell writing-browser" data-writing-browser>
+  {% if all_tags.size > 0 %}
+  <div class="topic-filter" aria-label="Filter writing by topic">
+    <button type="button" class="topic-filter__button is-active" data-topic-filter="" aria-pressed="true">All</button>
+    {% for tag in all_tags %}
+      <button type="button" class="topic-filter__button" data-topic-filter="{{ tag | downcase | escape }}" aria-pressed="false">{{ tag }}</button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="writing-status" aria-live="polite" data-writing-status>Showing all {{ post_pages | size }} articles.</div>
+
+  <div class="writing-list" data-writing-list>
+    {% for post in post_pages %}
+      {% assign words = post.content | strip_html | number_of_words %}
+      {% assign minutes = words | divided_by: 220 %}
+      {% if minutes < 1 %}{% assign minutes = 1 %}{% endif %}
+      <article class="writing-row" data-writing-card data-tags="{{ post.tags | join: '|' | downcase | escape }}">
+        <div class="writing-row__date">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d" }}</time>
+          <span>{{ post.date | date: "%Y" }}</span>
+        </div>
+        <div class="writing-row__body">
+          <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+          {% if post.description %}<p>{{ post.description }}</p>{% endif %}
+          <div class="writing-row__meta">
+            <span>{{ minutes }} min read</span>
+            {% if post.tags and post.tags.size > 0 %}
+              <span aria-hidden="true">·</span>
+              <span>{{ post.tags | join: " · " }}</span>
+            {% endif %}
+          </div>
+        </div>
+        <span class="writing-row__arrow" aria-hidden="true">↗</span>
+      </article>
+    {% endfor %}
+  </div>
+
+  <div class="writing-more" hidden data-writing-more-wrap>
+    <button type="button" class="button-secondary" data-writing-more>Show more articles</button>
+  </div>
+</section>
