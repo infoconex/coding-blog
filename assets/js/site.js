@@ -140,6 +140,70 @@
     });
   }
 
+  function enhanceWritingBrowser() {
+    const browser = document.querySelector('[data-writing-browser]');
+    if (!browser) return;
+
+    const cards = [...browser.querySelectorAll('[data-writing-card]')];
+    const filters = [...browser.querySelectorAll('[data-topic-filter]')];
+    const status = browser.querySelector('[data-writing-status]');
+    const moreWrap = browser.querySelector('[data-writing-more-wrap]');
+    const moreButton = browser.querySelector('[data-writing-more]');
+    const pageSize = 18;
+    let visibleLimit = pageSize;
+    let activeTopic = new URLSearchParams(window.location.search).get('topic')?.toLowerCase().trim() || '';
+
+    function matchingCards() {
+      return cards.filter((card) => {
+        if (!activeTopic) return true;
+        return (card.dataset.tags || '').split('|').map((tag) => tag.trim()).includes(activeTopic);
+      });
+    }
+
+    function render({ updateUrl = false } = {}) {
+      const matching = matchingCards();
+      cards.forEach((card) => { card.hidden = true; });
+      matching.slice(0, visibleLimit).forEach((card) => { card.hidden = false; });
+
+      filters.forEach((button) => {
+        const selected = (button.dataset.topicFilter || '') === activeTopic;
+        button.classList.toggle('is-active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+
+      if (status) {
+        const label = activeTopic ? ` in “${activeTopic}”` : '';
+        status.textContent = `Showing ${Math.min(visibleLimit, matching.length)} of ${matching.length} articles${label}.`;
+      }
+
+      if (moreWrap) moreWrap.hidden = matching.length <= visibleLimit;
+
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        if (activeTopic) url.searchParams.set('topic', activeTopic);
+        else url.searchParams.delete('topic');
+        window.history.replaceState({}, '', url);
+      }
+    }
+
+    filters.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeTopic = button.dataset.topicFilter || '';
+        visibleLimit = pageSize;
+        render({ updateUrl: true });
+      });
+    });
+
+    moreButton?.addEventListener('click', () => {
+      visibleLimit += pageSize;
+      render();
+    });
+
+    if (!filters.some((button) => (button.dataset.topicFilter || '') === activeTopic)) activeTopic = '';
+    render();
+  }
+
   syncOptions();
   enhanceArticle();
+  enhanceWritingBrowser();
 })();
