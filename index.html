@@ -45,8 +45,8 @@ description: Software engineering, architecture, systems, and lessons accumulate
   <div class="featured-secondary" aria-label="More featured writing">
     {% assign secondary_count = 0 %}
     {% for post in featured_pages %}
-      {% if secondary_count < 3 and post.url != primary.url %}
-        <article class="story-card">
+      {% if secondary_count < 2 and post.url != primary.url %}
+        <article class="story-card" data-home-featured-url="{{ post.url }}">
           <div class="story-card__meta">{{ post.date | date: "%Y.%m.%d" }}</div>
           <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
           {% if post.description %}<p>{{ post.description | truncate: 150 }}</p>{% endif %}
@@ -54,10 +54,10 @@ description: Software engineering, architecture, systems, and lessons accumulate
         {% assign secondary_count = secondary_count | plus: 1 %}
       {% endif %}
     {% endfor %}
-    {% if secondary_count < 3 %}
+    {% if secondary_count < 2 %}
       {% for post in post_pages %}
-        {% if secondary_count < 3 and post.url != primary.url and post.featured != true %}
-          <article class="story-card">
+        {% if secondary_count < 2 and post.url != primary.url and post.featured != true %}
+          <article class="story-card" data-home-featured-url="{{ post.url }}">
             <div class="story-card__meta">{{ post.date | date: "%Y.%m.%d" }}</div>
             <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
             {% if post.description %}<p>{{ post.description | truncate: 150 }}</p>{% endif %}
@@ -76,15 +76,22 @@ description: Software engineering, architecture, systems, and lessons accumulate
     <a class="text-link" href="{{ '/writing/' | relative_url }}">View all writing →</a>
   </div>
   <div class="latest-list">
-    {% for post in post_pages limit: 5 %}
-      <article class="latest-row">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
-        <div>
-          <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-          {% if post.description %}<p>{{ post.description | truncate: 170 }}</p>{% endif %}
-        </div>
-        <span aria-hidden="true">↗</span>
-      </article>
+    {% assign latest_count = 0 %}
+    {% for post in post_pages %}
+      {% assign already_featured = false %}
+      {% if post.url == primary.url %}{% assign already_featured = true %}{% endif %}
+      {% if post.featured == true %}{% assign already_featured = true %}{% endif %}
+      {% if already_featured == false and latest_count < 4 %}
+        <article class="latest-row">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
+          <div>
+            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+            {% if post.description %}<p>{{ post.description | truncate: 170 }}</p>{% endif %}
+          </div>
+          <span aria-hidden="true">↗</span>
+        </article>
+        {% assign latest_count = latest_count | plus: 1 %}
+      {% endif %}
     {% endfor %}
   </div>
 </section>
@@ -95,7 +102,7 @@ description: Software engineering, architecture, systems, and lessons accumulate
     <div><div class="eyebrow">Browse by topic</div><h2 id="topics-heading">Follow the threads.</h2></div>
   </div>
   <div class="topic-cloud">
-    {% for tag in all_tags limit: 14 %}<span class="topic-chip">{{ tag }}</span>{% endfor %}
+    {% for tag in all_tags limit: 14 %}<a class="topic-chip" href="{{ '/writing/' | relative_url }}?topic={{ tag | url_encode }}">{{ tag }}</a>{% endfor %}
   </div>
 </section>
 {% endif %}
