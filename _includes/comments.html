@@ -1,0 +1,47 @@
+{% if site.comments.enabled and page.comments == true and site.comments.provider == 'giscus' and site.comments.repo_id != '' and site.comments.category_id != '' %}
+<section class="comments-panel" aria-labelledby="comments-heading">
+  <div class="comments-panel__head">
+    <div class="eyebrow">Discussion</div>
+    <h2 id="comments-heading">Continue the conversation.</h2>
+    <p>Comments are backed by GitHub Discussions and loaded only on articles that opt in.</p>
+  </div>
+  <div class="giscus"></div>
+  <script>
+    (function () {
+      var container = document.currentScript.previousElementSibling;
+      var root = document.documentElement;
+      var giscusOrigin = 'https://giscus.app';
+
+      function giscusTheme() {
+        return root.dataset.theme === 'technical-brutalism' ? 'light' : 'dark';
+      }
+
+      function syncTheme() {
+        var frame = container && container.querySelector('iframe.giscus-frame');
+        if (!frame || !frame.contentWindow) return;
+        frame.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme() } } }, giscusOrigin);
+      }
+
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      script.setAttribute('data-repo', {{ site.comments.repo | jsonify }});
+      script.setAttribute('data-repo-id', {{ site.comments.repo_id | jsonify }});
+      script.setAttribute('data-category', {{ site.comments.category | jsonify }});
+      script.setAttribute('data-category-id', {{ site.comments.category_id | jsonify }});
+      script.setAttribute('data-mapping', {{ site.comments.mapping | default: 'pathname' | jsonify }});
+      script.setAttribute('data-strict', '0');
+      script.setAttribute('data-reactions-enabled', '1');
+      script.setAttribute('data-emit-metadata', '0');
+      script.setAttribute('data-input-position', 'bottom');
+      script.setAttribute('data-theme', giscusTheme());
+      script.setAttribute('data-lang', 'en');
+      script.setAttribute('data-loading', 'lazy');
+      container.appendChild(script);
+
+      window.addEventListener('coding:themechange', syncTheme);
+    }());
+  </script>
+</section>
+{% endif %}
