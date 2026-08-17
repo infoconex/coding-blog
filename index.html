@@ -83,7 +83,7 @@ stylesheet: /assets/css/home.css
       <a class="text-link" href="{{ '/archive/' | relative_url }}">Explore the archive →</a>
     </div>
     <div class="home-history-graph" role="group" aria-label="Number of published articles by year">
-      <div class="home-history-graph__plot">
+      <div class="home-history-graph__plot" style="--year-columns:{{ archive_years }}">
         {% for graph_year in (earliest_year..current_year) %}
           {% assign year_count = 0 %}
           {% for post in post_pages %}
