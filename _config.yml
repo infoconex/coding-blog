@@ -62,4 +62,11 @@ comments:
   category_id: ""
   mapping: pathname
 
+# Privacy-first analytics are deliberately disabled until a site-specific
+# Plausible script URL is supplied from the Plausible dashboard.
+analytics:
+  enabled: false
+  provider: plausible
+  script_src: ""
+
 default_theme: neo-industrial
