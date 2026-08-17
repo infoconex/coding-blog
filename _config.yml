@@ -31,7 +31,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
-# Production navigation. Search and the full theme picker are added in later issues.
 navigation:
   - title: Writing
     url: /writing/
@@ -39,5 +38,10 @@ navigation:
     url: /archive/
   - title: About
     url: /about/
+
+# Editable identity links consumed by About/footer components.
+profile_links:
+  - title: GitHub
+    url: https://github.com/infoconex
 
 default_theme: neo-industrial
