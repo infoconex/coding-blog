@@ -8,6 +8,8 @@ author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2025/06/13/creat-better-software-by-applying-solid-principles"
 permalink: "/post/2025/06/13/creat-better-software-by-applying-solid-principles"
 legacyPaths: ["/post/2025/06/13/creat-better-software-by-applying-solid-principles"]
+series: "SOLID Principles"
+seriesOrder: 1
 ---
 SOLID is an acronym for five design principles that are considered fundamental to object-oriented programming. These principles, when followed correctly, can help to create more robust, flexible, and maintainable code. The SOLID principles are:
 
