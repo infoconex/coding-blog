@@ -20,10 +20,10 @@ defaults:
     values:
       layout: post
 
-# GitHub Pages-supported plugins only. More can be added in the SEO/release issue.
+# GitHub Pages-supported plugins only.
 plugins:
-  - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
 
 exclude:
   - scripts/
@@ -43,5 +43,11 @@ navigation:
 profile_links:
   - title: GitHub
     url: https://github.com/infoconex
+
+# SEO/social defaults consumed by jekyll-seo-tag.
+social:
+  name: Jim Scott
+  links:
+    - https://github.com/infoconex
 
 default_theme: neo-industrial
