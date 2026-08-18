@@ -21,7 +21,7 @@ stylesheet: /assets/css/writing.css
 
 <section class="shell writing-browser" data-writing-browser>
   {% if all_tags.size > 0 %}
-  <div class="topic-filter" aria-label="Filter writing by topic">
+  <div class="topic-filter" aria-label="Filter writing by topic" data-topic-filter-list>
     <button type="button" class="topic-filter__button is-active" data-topic-filter="" aria-pressed="true">All</button>
     {% for tag in all_tags %}
       <button type="button" class="topic-filter__button" data-topic-filter="{{ tag | downcase | escape }}" aria-pressed="false">{{ tag }}</button>
@@ -61,3 +61,27 @@ stylesheet: /assets/css/writing.css
     <button type="button" class="button-secondary" data-writing-more>Show more articles</button>
   </div>
 </section>
+
+<script>
+(() => {
+  const list = document.querySelector('[data-topic-filter-list]');
+  if (!list) return;
+
+  const allButton = list.querySelector('[data-topic-filter=""]');
+  const buttons = [...list.querySelectorAll('[data-topic-filter]')].filter((button) => button !== allButton);
+  const unique = new Map();
+
+  buttons.forEach((button) => {
+    const key = (button.dataset.topicFilter || '').trim().toLocaleLowerCase();
+    if (!key || unique.has(key)) {
+      button.remove();
+      return;
+    }
+    unique.set(key, button);
+  });
+
+  [...unique.values()]
+    .sort((a, b) => a.textContent.trim().localeCompare(b.textContent.trim(), undefined, { sensitivity: 'base' }))
+    .forEach((button) => list.appendChild(button));
+})();
+</script>
