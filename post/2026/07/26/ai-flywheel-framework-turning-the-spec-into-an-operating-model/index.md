@@ -2,7 +2,7 @@
 title: "AI Flywheel Framework – Turning the Spec into an Operating Model"
 date: "2026-07-26"
 description: "The AI Flywheel Framework turns the specification into an installable .flywheel operating model with explicit startup, state, governance, and lifecycle artifacts."
-tags: ["ai", "ai flywheel", "framework", "software engineering"]
+tags: ["AI", "AI Flywheel", "Framework", "Software Engineering"]
 slug: "ai-flywheel-framework-turning-the-spec-into-an-operating-model"
 author: "Jim Scott"
 permalink: "/post/2026/07/26/ai-flywheel-framework-turning-the-spec-into-an-operating-model"
