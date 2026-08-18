@@ -2,7 +2,7 @@
 title: "AI Flywheel Spec – From Agent Loop to Compounding System"
 date: "2026-07-15"
 description: "The AI Flywheel specification defines an evidence-driven operating model where execution improves the system used by future execution."
-tags: ["ai", "ai flywheel", "agentic ai", "software engineering"]
+tags: ["AI", "AI Flywheel", "Agentic AI", "Software Engineering"]
 slug: "ai-flywheel-spec-from-agent-loop-to-compounding-system"
 author: "Jim Scott"
 permalink: "/post/2026/07/15/ai-flywheel-spec-from-agent-loop-to-compounding-system"
