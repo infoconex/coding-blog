@@ -2,7 +2,7 @@
 title: "Create better software by applying SOLID principles"
 date: "2025-06-13"
 description: "SOLID is an acronym for five design principles that are considered fundamental to object-oriented programming. These principles, when followed correctly, can help to create more robust, flexible, and maintainable code.…"
-tags: ["C#", "SOLID Principles", "Open-Closed Principle", "Single Responsibility Principle"]
+tags: ["C#", "SOLID Principles", "Open-Closed Principle", "Single Responsibility Principle", "Liskov Substitution Principle", "Interface Segregation Principle", "Dependency Inversion Principle"]
 slug: "create-better-software-by-applying-solid-principles"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2025/06/13/creat-better-software-by-applying-solid-principles"
@@ -43,16 +43,22 @@ The Liskov Substitution Principle (LSP) states that subclasses should be substit
 
 This principle is important for maintaining the behavior and correctness of the codebase. By adhering to the LSP, it becomes easier to create and use new classes that are related to existing ones. This can lead to a more modular and reusable codebase.
 
+Read Article: [Liskov Substitution Principle (LSP) – Subtypes Should Keep Their Promises](/blog/liskov-substitution-principle-lsp)
+
 4. **Interface Segregation Principle (ISP)**
 
 The Interface Segregation Principle (ISP) states that a class should not be forced to depend on methods it does not use. In other words, interfaces should be designed to be as specific as possible to the needs of the class that uses them.
 
 This principle encourages the use of smaller, more specific interfaces rather than large, general-purpose interfaces. By adhering to the ISP, classes can be designed to depend on only the functionality they need, which can lead to a more maintainable and robust codebase.
 
+Read Article: [Interface Segregation Principle (ISP) – Keep Interfaces Focused](/blog/interface-segregation-principle-isp)
+
 5. **Dependency Inversion Principle (DIP)**
 
 The Dependency Inversion Principle (DIP) states that high-level modules should not depend on low-level modules. Instead, both should depend on abstractions. In addition, abstractions should not depend on details. Details should depend on abstractions.
 
 This principle encourages the use of abstractions to reduce coupling between different parts of the system. By designing classes in this way, it becomes easier to change the implementation of a class without affecting other parts of the system. This can lead to a more flexible and maintainable codebase.
+
+Read Article: [Dependency Inversion Principle (DIP) – Depend on Abstractions, Not Details](/blog/dependency-inversion-principle-dip)
 
 In conclusion, the SOLID principles are a set of design principles that can help to create more robust, flexible, and maintainable code. By adhering to these principles, developers can create more modular and reusable code, which can lead to a more efficient and effective development process. While these principles may take some time and effort to apply
