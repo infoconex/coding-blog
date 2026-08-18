@@ -1,7 +1,7 @@
 (() => {
   const root = document.documentElement;
   const key = 'coding-theme';
-  const allowed = new Set(['neo-industrial', 'midnight-editorial', 'warm-analog', 'technical-brutalism']);
+  const allowed = new Set(['neo-industrial', 'midnight-editorial', 'warm-analog', 'technical-brutalism', 'swiss-engineering', 'terminal-modern', 'technical-paper', 'digital-garden']);
   const picker = document.querySelector('[data-theme-picker]');
   const trigger = document.querySelector('[data-theme-trigger]');
   const panel = document.querySelector('[data-theme-panel]');
