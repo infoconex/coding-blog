@@ -2,7 +2,7 @@
 title: "Single Responsibility Principle (SRP) - Only one reason to change"
 date: "2025-06-28"
 description: "The Single Responsibility Principle is the first of the five SOLID principles of object-oriented design, introduced by Robert C. Martin (Uncle Bob). It helps make software easier to understand, maintain, and extend."
-tags: ["c#", "solid principles", "single responsibility principle"]
+tags: ["C#", "SOLID Principles", "Single Responsibility Principle"]
 slug: "single-responsibility-principle-srp-only-one-reason-to-change"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2025/06/28/single-responsibility-principle-srp"

@@ -2,7 +2,7 @@
 title: ".NET 8 Feels Like the New Normal"
 date: "2023-11-14"
 description: ".NET 8 feels less like an alternative to the old .NET Framework and more like the default starting point for new .NET development."
-tags: [".NET", ".NET 8", "software development"]
+tags: [".NET", ".NET 8", "Software Development"]
 slug: "net-8-feels-like-the-new-normal"
 author: "Jim Scott"
 permalink: "/post/2023/11/14/net-8-feels-like-the-new-normal"

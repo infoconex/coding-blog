@@ -2,7 +2,7 @@
 title: "BlueQuartz enabling SSL/TLS FTP Support"
 date: "2008-05-27"
 description: "This is my first attempt at putting online a step by step process in support of the BlueQuartz server appliance."
-tags: ["bluequartz", "secure ftp"]
+tags: ["BlueQuartz", "Secure Ftp"]
 slug: "bluequartz-enabling-ssl-tls-ftp-support"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2008/05/27/BlueQuartz-enabling-SSLTLS-Support"

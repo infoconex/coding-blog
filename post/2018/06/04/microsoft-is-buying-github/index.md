@@ -2,7 +2,7 @@
 title: "Microsoft Is Buying GitHub"
 date: "2018-06-04"
 description: "Microsoft announced today that it plans to acquire GitHub, and I am still trying to decide how I feel about it."
-tags: ["Microsoft", "GitHub", "open source"]
+tags: ["Microsoft", "GitHub", "Open Source"]
 slug: "microsoft-is-buying-github"
 author: "Jim Scott"
 permalink: "/post/2018/06/04/microsoft-is-buying-github"

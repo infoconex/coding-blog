@@ -2,7 +2,7 @@
 title: "Liskov Substitution Principle (LSP) – Subtypes Should Keep Their Promises"
 date: "2025-06-29"
 description: "The Liskov Substitution Principle is about making abstractions trustworthy: subtypes should preserve the behavioral expectations of their base types."
-tags: ["c#", "solid principles", "liskov substitution principle"]
+tags: ["C#", "SOLID Principles", "Liskov Substitution Principle"]
 slug: "liskov-substitution-principle-lsp"
 author: "Jim Scott"
 permalink: "/post/2025/06/29/liskov-substitution-principle-lsp"

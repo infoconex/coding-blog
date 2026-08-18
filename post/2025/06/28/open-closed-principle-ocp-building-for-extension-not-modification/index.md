@@ -2,7 +2,7 @@
 title: "Open/Closed Principle (OCP) – Building for Extension, Not Modification"
 date: "2025-06-28"
 description: "The second principle in the SOLID family is the Open/Closed Principle (OCP) . It’s a simple but powerful idea:"
-tags: ["c#", "solid principles", "open closed principle"]
+tags: ["C#", "SOLID Principles", "Open-Closed Principle"]
 slug: "open-closed-principle-ocp-building-for-extension-not-modification"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2025/06/28/open-closed-principle-ocp-building-for-extension-not-modification"

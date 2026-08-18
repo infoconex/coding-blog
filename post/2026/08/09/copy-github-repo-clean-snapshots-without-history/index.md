@@ -2,7 +2,7 @@
 title: "Copy GitHub Repo – Clean Snapshots Without Carrying History"
 date: "2026-08-09"
 description: "Copy GitHub Repo is a PowerShell utility for creating clean repository snapshots or preserving full history with explicit planning, verification, and recovery safeguards."
-tags: ["github", "powershell", "automation", "developer tools"]
+tags: ["GitHub", "PowerShell", "Automation", "Developer Tools"]
 slug: "copy-github-repo-clean-snapshots-without-history"
 author: "Jim Scott"
 permalink: "/post/2026/08/09/copy-github-repo-clean-snapshots-without-history"

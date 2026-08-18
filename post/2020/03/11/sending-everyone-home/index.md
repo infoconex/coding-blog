@@ -2,7 +2,7 @@
 title: "Sending Everyone Home"
 date: "2020-03-11"
 description: "I am in India while the coronavirus situation unfolds back home in Seattle, and today I made the call to send everyone home from the office."
-tags: ["COVID-19", "Leadership", "Remote Work"]
+tags: ["Covid-19", "Leadership", "Remote Work"]
 slug: "sending-everyone-home"
 author: "Jim Scott"
 permalink: "/post/2020/03/11/sending-everyone-home"

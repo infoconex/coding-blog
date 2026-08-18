@@ -2,7 +2,7 @@
 title: "Interface Segregation Principle (ISP) – Keep Interfaces Focused"
 date: "2025-06-30"
 description: "The Interface Segregation Principle keeps abstractions focused so clients depend only on the behavior they actually need."
-tags: ["c#", "solid principles", "interface segregation principle"]
+tags: ["C#", "SOLID Principles", "Interface Segregation Principle"]
 slug: "interface-segregation-principle-isp"
 author: "Jim Scott"
 permalink: "/post/2025/06/30/interface-segregation-principle-isp"

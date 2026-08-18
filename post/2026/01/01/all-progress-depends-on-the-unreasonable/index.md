@@ -2,7 +2,7 @@
 title: "All Progress Depends on the Unreasonable"
 date: "2026-01-01"
 description: "All Progress Depends on the Unreasonable"
-tags: ["leadership", "change", "progress"]
+tags: ["Leadership", "Change", "Progress"]
 slug: "all-progress-depends-on-the-unreasonable"
 author: "Jim Scott"
 permalink: "/post/2026/01/01/all-progress-depends-on-the-unreasonable"

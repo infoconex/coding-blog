@@ -2,7 +2,7 @@
 title: "Dependency Inversion Principle (DIP) – Depend on Abstractions, Not Details"
 date: "2025-07-01"
 description: "The Dependency Inversion Principle keeps high-level policy from being tightly coupled to low-level implementation details."
-tags: ["c#", "solid principles", "dependency inversion principle"]
+tags: ["C#", "SOLID Principles", "Dependency Inversion Principle"]
 slug: "dependency-inversion-principle-dip"
 author: "Jim Scott"
 permalink: "/post/2025/07/01/dependency-inversion-principle-dip"

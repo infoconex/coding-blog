@@ -2,7 +2,7 @@
 title: "Twenty Years After September 11"
 date: "2021-09-11"
 description: "Twenty years after September 11, remembering the people who were lost and the importance of passing that memory to a generation that was not there."
-tags: ["September 11", "remembrance"]
+tags: ["September 11", "Remembrance"]
 slug: "twenty-years-after-september-11"
 author: "Jim Scott"
 permalink: "/post/2021/09/11/twenty-years-after-september-11"

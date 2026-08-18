@@ -2,7 +2,7 @@
 title: "Ten Years After September 11"
 date: "2011-09-11"
 description: "Ten years after September 11, a reflection on what changed in America and why the day remains first and foremost about remembering the people who were lost."
-tags: ["September 11", "reflection"]
+tags: ["September 11", "Reflection"]
 slug: "ten-years-after-september-11"
 author: "Jim Scott"
 permalink: "/post/2011/09/11/ten-years-after-september-11"

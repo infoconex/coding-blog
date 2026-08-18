@@ -2,7 +2,7 @@
 title: "BlueQuartz installing Mono"
 date: "2008-08-23"
 description: "Mono allows you to run applications written in .NET programming language on Linux machines."
-tags: ["mono"]
+tags: ["Mono"]
 slug: "bluequartz-installing-mono"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2008/08/23/BlueQuartz-installing-Mono"

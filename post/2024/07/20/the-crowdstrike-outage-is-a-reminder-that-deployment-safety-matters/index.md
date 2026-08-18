@@ -2,7 +2,7 @@
 title: "The CrowdStrike Outage Is a Reminder That Deployment Safety Matters"
 date: "2024-07-20"
 description: "The CrowdStrike outage is a reminder that even trusted software can cause enormous damage when an update goes wrong, and that staged rollouts and recovery plans matter."
-tags: ["software engineering", "reliability", "deployments"]
+tags: ["Software Engineering", "Reliability", "Deployments"]
 slug: "the-crowdstrike-outage-is-a-reminder-that-deployment-safety-matters"
 author: "Jim Scott"
 permalink: "/post/2024/07/20/the-crowdstrike-outage-is-a-reminder-that-deployment-safety-matters"

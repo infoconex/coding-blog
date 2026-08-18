@@ -2,7 +2,7 @@
 title: "Six Months Into COVID"
 date: "2020-09-15"
 description: "Six months after sending everyone home, masks, social distancing, and remote work have become part of everyday life."
-tags: ["COVID-19", "Remote Work"]
+tags: ["Covid-19", "Remote Work"]
 slug: "six-months-into-covid"
 author: "Jim Scott"
 permalink: "/post/2020/09/15/six-months-into-covid"

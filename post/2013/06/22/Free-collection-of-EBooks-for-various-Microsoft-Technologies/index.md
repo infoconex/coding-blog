@@ -2,7 +2,7 @@
 title: "Free collection of EBooks for various Microsoft Technologies"
 date: "2013-06-22"
 description: "Found a page on the Technet site that provides a pretty good list of eBooks on various Microsoft Technologies"
-tags: ["ebook"]
+tags: ["Ebook"]
 slug: "free-collection-of-ebooks-for-various-microsoft-technologies"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2013/06/22/Free-collection-of-EBooks-for-various-Microsoft-Technologies"
