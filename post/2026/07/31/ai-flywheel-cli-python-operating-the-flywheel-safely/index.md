@@ -2,7 +2,7 @@
 title: "AI Flywheel CLI for Python – Operating the Flywheel Safely"
 date: "2026-07-31"
 description: "The Python AI Flywheel CLI provides local commands for inspection, validation, lifecycle operations, installation, and upgrade with explicit safety boundaries."
-tags: ["python", "ai", "ai flywheel", "cli"]
+tags: ["Python", "AI", "AI Flywheel", "CLI"]
 slug: "ai-flywheel-cli-python-operating-the-flywheel-safely"
 author: "Jim Scott"
 permalink: "/post/2026/07/31/ai-flywheel-cli-python-operating-the-flywheel-safely"
