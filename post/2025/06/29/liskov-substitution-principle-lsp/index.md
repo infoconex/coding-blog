@@ -6,7 +6,7 @@ tags: ["C#", "SOLID Principles", "Liskov Substitution Principle"]
 slug: "liskov-substitution-principle-lsp"
 author: "Jim Scott"
 permalink: "/post/2025/06/29/liskov-substitution-principle-lsp"
-published: false
+published: true
 series: "SOLID Principles"
 seriesOrder: 4
 ---
