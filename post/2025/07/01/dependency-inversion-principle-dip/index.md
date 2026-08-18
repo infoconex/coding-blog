@@ -8,7 +8,7 @@ author: "Jim Scott"
 permalink: "/post/2025/07/01/dependency-inversion-principle-dip"
 series: "SOLID Principles"
 seriesOrder: 6
-published: false
+published: true
 ---
 The fifth and final principle in the **SOLID** family is the **Dependency Inversion Principle (DIP)**.
 
