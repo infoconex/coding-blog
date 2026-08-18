@@ -8,7 +8,7 @@ author: "Jim Scott"
 permalink: "/post/2025/06/30/interface-segregation-principle-isp"
 series: "SOLID Principles"
 seriesOrder: 5
-published: false
+published: true
 ---
 The fourth principle in the **SOLID** family is the **Interface Segregation Principle (ISP)**.
 
