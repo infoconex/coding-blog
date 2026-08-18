@@ -2,7 +2,7 @@
 title: "Understanding What We Ask AI to Do"
 date: "2026-08-17"
 description: "As AI takes on more complex work, humans still need enough understanding of what it produces to make good decisions and remain responsible for the outcome."
-tags: ["ai", "human oversight", "leadership", "software engineering"]
+tags: ["AI", "Human Oversight", "Leadership", "Software Engineering"]
 slug: "understanding-what-we-ask-ai-to-do"
 author: "Jim Scott"
 permalink: "/post/2026/08/17/understanding-what-we-ask-ai-to-do"
