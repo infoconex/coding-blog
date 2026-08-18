@@ -2,7 +2,7 @@
 title: "Testing the AI Flywheel Framework with Durable Evidence"
 date: "2026-07-27"
 description: "The AI Flywheel testing project separates framework implementation from repeatable prompts, fixtures, runners, and durable evidence."
-tags: ["ai", "ai flywheel", "testing", "software engineering"]
+tags: ["AI", "AI Flywheel", "Testing", "Software Engineering"]
 slug: "testing-the-ai-flywheel-framework-with-durable-evidence"
 author: "Jim Scott"
 permalink: "/post/2026/07/27/testing-the-ai-flywheel-framework-with-durable-evidence"
