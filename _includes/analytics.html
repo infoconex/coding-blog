@@ -1,4 +1,14 @@
-{% if site.analytics.enabled and site.analytics.provider == 'plausible' and site.analytics.script_src != '' %}
+{% if site.analytics.enabled and site.analytics.provider == 'google' and site.analytics.measurement_id != '' %}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics.measurement_id | escape }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{ site.analytics.measurement_id | escape }}');
+</script>
+{% elsif site.analytics.enabled and site.analytics.provider == 'plausible' and site.analytics.script_src != '' %}
 <script async src="{{ site.analytics.script_src | escape }}"></script>
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
