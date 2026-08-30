@@ -37,7 +37,7 @@ BlogEngine.NET provided a home for all of it.
 
 But eventually the age of the site started to show.
 
-![The previous version of Jim Scott's Coding Blog.](/assets/images/2026/08/29/coding-blog-before.png)
+![The previous version of Jim Scott's Coding Blog.](images/coding-blog-before.png)
 
 *The previous version of the blog, captured from the Internet Archive.*
 
@@ -63,7 +63,7 @@ I had reached that point.
 
 The new site takes a very different approach.
 
-![The redesigned Coding homepage at coding.infoconex.com.](/assets/images/2026/08/29/coding-blog-after.png)
+![The redesigned Coding homepage at coding.infoconex.com.](images/coding-blog-after.png)
 
 *The redesigned Coding homepage at coding.infoconex.com.*
 
@@ -109,7 +109,8 @@ post/
     └── 08/
         └── 29/
             └── out-with-the-old-in-with-the-new-rebuilding-coding/
-                └── index.md
+                ├── index.md
+                └── images/
 ```
 
 At the top of that Markdown file is a small amount of metadata:
