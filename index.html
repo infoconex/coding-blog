@@ -69,12 +69,15 @@ stylesheet: /assets/css/home.css
             {% if post.tags and post.tags.size > 0 %}{{ post.tags | first }} · {% endif %}{{ post.date | date: "%B %-d, %Y" }}
           </div>
           <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-          {% if post.description %}
-            {% if card_count == 0 %}
-              <p>{{ post.description | truncate: 280 }}</p>
-            {% else %}
-              <p>{{ post.description | truncate: 150 }}</p>
+          {% if card_count == 0 %}
+            {% assign card_description = post.description | default: "" %}
+            {% if card_description.size < 220 and post.content %}
+              <p>{{ post.content | strip_html | normalize_whitespace | truncate: 400 }}</p>
+            {% elsif post.description %}
+              <p>{{ post.description | truncate: 400 }}</p>
             {% endif %}
+          {% elsif post.description %}
+            <p>{{ post.description | truncate: 150 }}</p>
           {% endif %}
         </article>
         {% assign card_count = card_count | plus: 1 %}
