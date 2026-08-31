@@ -148,7 +148,7 @@ CopyGitHubRepo does not begin recreating releases before confirming that the und
 
 The FullHistory workflow continues to emphasize verification before restoring additional GitHub state.
 
-![GitHub Repository Migration with Releases](/assets/images/2026/08/30/copygithubrepo-v0-2-0-release-migration-flow.png)
+![GitHub Repository Migration with Releases](./images/copygithubrepo-v0-2-0-release-migration-flow.png)
 
 The sequence is deliberate.
 
