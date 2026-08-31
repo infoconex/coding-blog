@@ -25,7 +25,7 @@
 .home-bento-card:hover { transform:translateY(-2px); border-color:color-mix(in srgb,var(--accent) 38%,var(--line)); }
 .home-bento-card:first-child { grid-row:span 2; min-height:558px; padding:32px; background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 86%,var(--accent) 14%),var(--surface-2)); }
 .home-bento-card:nth-child(4) { background:color-mix(in srgb,var(--surface) 94%,var(--accent) 6%); }
-.home-bento-card h3 { margin:auto 0 12px; font-family:var(--font-heading,var(--font-sans)); font-size:clamp(28px,2.7vw,36px); font-weight:var(--heading-weight,800); line-height:1.02; letter-spacing:-.04em; text-wrap:balance; text-transform:var(--heading-transform,none); }
+.home-bento-card h3 { margin:16px 0 12px; font-family:var(--font-heading,var(--font-sans)); font-size:clamp(28px,2.7vw,36px); font-weight:var(--heading-weight,800); line-height:1.02; letter-spacing:-.04em; text-wrap:balance; text-transform:var(--heading-transform,none); }
 .home-bento-card:first-child h3 { max-width:450px; font-size:clamp(40px,4.4vw,54px); }
 .home-bento-card h3 a { text-decoration:none; }
 .home-bento-card h3 a:hover,.home-bento-card h3 a:focus-visible { color:var(--accent); }

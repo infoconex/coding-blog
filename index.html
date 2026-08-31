@@ -43,7 +43,7 @@ stylesheet: /assets/css/home.css
       <h2 id="featured-heading"><a href="{{ primary.url | relative_url }}">{{ primary.title }}</a></h2>
       {% if primary.description %}<p>{{ primary.description | truncate: 190 }}</p>{% endif %}
       <div class="home-prototype-meta">
-        {{ primary.date | date: "%b %-d %Y" }}
+        {{ primary.date | date: "%B %-d, %Y" }}
         {% if primary.tags and primary.tags.size > 0 %} · {{ primary.tags | join: " · " }}{% endif %}
       </div>
     </div>
@@ -66,10 +66,16 @@ stylesheet: /assets/css/home.css
       {% if card_count < 5 and post.url != primary.url %}
         <article class="home-bento-card">
           <div class="home-bento-card__meta">
-            {% if post.tags and post.tags.size > 0 %}{{ post.tags | first }} · {% endif %}{{ post.date | date: "%Y" }}
+            {% if post.tags and post.tags.size > 0 %}{{ post.tags | first }} · {% endif %}{{ post.date | date: "%B %-d, %Y" }}
           </div>
           <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-          {% if post.description %}<p>{{ post.description | truncate: 150 }}</p>{% endif %}
+          {% if post.description %}
+            {% if card_count == 0 %}
+              <p>{{ post.description | truncate: 280 }}</p>
+            {% else %}
+              <p>{{ post.description | truncate: 150 }}</p>
+            {% endif %}
+          {% endif %}
         </article>
         {% assign card_count = card_count | plus: 1 %}
       {% endif %}
