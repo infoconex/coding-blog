@@ -35,7 +35,7 @@ So how does this relate to a standard project we would create. In order to demon
 
 **CustomerView Form** – Here is the form that will display and allow editing of City and State
 
-![](images/customer-form.jpg)
+![Customer lookup and edit form used in the MVP Passive View example](images/customer-form.jpg)
 
 **CustomerView.cs** - Here is the initial code with all interaction between the model and the view being directly inside the form. The problem with this particular way of developing is that the only way to test the application is to bring up an instance of the application and manually test or use some kind of test automation software that records and plays back things.
 
