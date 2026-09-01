@@ -7,6 +7,8 @@ slug: "copygithubrepo-v0-2-0-preserving-github-releases"
 author: "Jim Scott"
 published: true
 permalink: "/post/2026/08/30/copygithubrepo-v0-2-0-preserving-github-releases"
+series: "CopyGitHubRepo"
+seriesOrder: 3
 ---
 
 When I released the first version of [CopyGitHubRepo](/post/2026/08/22/copygithubrepo-v0-1-0-released-to-powershell-gallery), the goal was straightforward: make it easier to copy a GitHub repository without turning what should be a controlled operation into a collection of manual Git commands and GitHub API calls.
