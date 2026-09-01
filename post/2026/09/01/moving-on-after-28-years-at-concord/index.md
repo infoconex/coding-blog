@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Moving On After 28 Years at Concord"
-date: 2026-09-01
+date: "2026-09-01"
 slug: "moving-on-after-28-years-at-concord"
 author: "Jim Scott"
 published: true
