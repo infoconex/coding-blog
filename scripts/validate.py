@@ -67,6 +67,8 @@ def local_path_for_url(index_md: Path, url: str) -> Path | None:
     clean = url.split("#", 1)[0].split("?", 1)[0]
     if not clean:
         return None
+    while clean.startswith("./"):
+        clean = clean[2:]
     if clean.startswith("images/"):
         return (index_md.parent / clean).resolve()
     if clean.startswith("/post/"):
@@ -193,13 +195,14 @@ def main() -> int:
             clean = url.split("#", 1)[0].split("?", 1)[0]
             if not clean:
                 continue
-            if re.match(r"^[A-Za-z]:\\", clean):
+            normalized_clean = clean[2:] if clean.startswith("./") else clean
+            if re.match(r"^[A-Za-z]:\\", normalized_clean):
                 errors.append(f"{path_label}: absolute Windows path: {url}")
-            if clean.startswith("images/"):
-                target = index_md.parent / clean
+            if normalized_clean.startswith("images/"):
+                target = index_md.parent / normalized_clean
                 if not target.is_file():
-                    errors.append(f"{path_label}: missing local image: {clean}")
-            if clean.startswith("/images/posts/"):
+                    errors.append(f"{path_label}: missing local image: {normalized_clean}")
+            if normalized_clean.startswith("/images/posts/"):
                 errors.append(f"{path_label}: old generated image URL remains: {url}")
             parsed_link = urlsplit(url)
             if (parsed_link.hostname or "").lower() in LEGACY_HOSTS and parsed_link.path.lower().startswith("/post/"):
