@@ -6,6 +6,8 @@ tags: ["AI", "AI Flywheel", "Agentic AI", "Software Engineering"]
 slug: "ai-flywheel-spec-from-agent-loop-to-compounding-system"
 author: "Jim Scott"
 permalink: "/post/2026/07/15/ai-flywheel-spec-from-agent-loop-to-compounding-system"
+series: "AI Flywheel"
+seriesOrder: 1
 ---
 AI-assisted development usually starts with a simple loop: ask an AI to do something, review the result, correct it, and try again.
 
