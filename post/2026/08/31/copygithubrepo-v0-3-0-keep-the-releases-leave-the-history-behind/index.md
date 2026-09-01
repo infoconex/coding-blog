@@ -7,6 +7,8 @@ slug: "copygithubrepo-v0-3-0-keep-the-releases-leave-the-history-behind"
 author: "Jim Scott"
 published: true
 permalink: "/post/2026/08/31/copygithubrepo-v0-3-0-keep-the-releases-leave-the-history-behind"
+series: "CopyGitHubRepo"
+seriesOrder: 4
 ---
 
 When I originally built [CopyGitHubRepo](https://github.com/infoconex/copy-github-repo), one of the primary use cases was pretty simple: take the current state of a GitHub repository and publish it somewhere else without dragging years of Git history along with it.
