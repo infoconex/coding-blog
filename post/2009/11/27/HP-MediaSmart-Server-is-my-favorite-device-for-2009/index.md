@@ -9,7 +9,7 @@ originalUrl: "http://coding.infoconex.com/post/2009/11/27/HP-MediaSmart-Server-i
 permalink: "/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009"
 legacyPaths: ["/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009"]
 ---
-**Automatically Backup all your PC’s and MAC’s.** If backing up your machine is important to you but you have just not taken the step to implement a backup process, then I would highly recommend the **[HP MediaSmart Server](http://www.amazon.com/gp/product/B002N8A0A2?ie=UTF8&tag=codblo-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B002N8A0A2)![](http://www.assoc-amazon.com/e/ir?t=codblo-20&l=as2&o=1&a=B002N8A0A2)** . While it has many features the most important and coolest one in my opinion is the backup feature.
+**Automatically Backup all your PC’s and MAC’s.** If backing up your machine is important to you but you have just not taken the step to implement a backup process, then I would highly recommend the **[HP MediaSmart Server](http://www.amazon.com/gp/product/B002N8A0A2?ie=UTF8&tag=codblo-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B002N8A0A2)** . While it has many features the most important and coolest one in my opinion is the backup feature.
 
 |  |  |  |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ legacyPaths: ["/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2
 
 **So what is so cool about it?**
 
-No matter how many computers you are backing up the [HP MediaSmart Server](http://www.amazon.com/gp/product/B002N8A0A2?ie=UTF8&tag=codblo-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B002N8A0A2)![](http://www.assoc-amazon.com/e/ir?t=codblo-20&l=as2&o=1&a=B002N8A0A2) ![](http://www.assoc-amazon.com/e/ir?t=codblo-20&l=as2&o=1&a=B002N8A0A2) will only keep a single copy of a given file. That means if you have 3 machines in your network all running Windows 7 the space required to backup the OS will only be the size of one of them. Below is the description from a Microsoft Document explaining how backup works.
+No matter how many computers you are backing up the [HP MediaSmart Server](http://www.amazon.com/gp/product/B002N8A0A2?ie=UTF8&tag=codblo-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B002N8A0A2) will only keep a single copy of a given file. That means if you have 3 machines in your network all running Windows 7 the space required to backup the OS will only be the size of one of them. Below is the description from a Microsoft Document explaining how backup works.
 
 *The home computer backup solution in Windows Home Server has a single-instance store at the cluster level. Clusters are typically collections of data stored on the hard drive, 4 kilobytes (KB) in size. Every backup is a full backup, but the home server only stores each unique cluster once. This creates the restore-time convenience of full backups (you do not have to repeat history) with the backup time performance of incremental backups.*
 
@@ -72,4 +72,4 @@ Now I don't know about you but that is worth a lot of money. In fact I got to tr
 **Storage**
 You can have up to 4 drives in the HP MediaSmart Server and they are also able to be HOT Swapped. My unit came with a 750GB drive and I purchased a 1TB drive to add more capacity and provide a backup drive. The HP MediaSmart Server does not use traditional RAID configuration but rather allow you to define folders that should have the data stored on more than one drive. So in a raid configuration if you put in another drive you do not get access to it as it is only used to provide a backup drive. With the HP MediaSmart Server you get all the extra capacity minus whatever is needed to keep a backup of the folders you said should be mirrored. Maximum storage is only limited by the number of drives and USB ports. So take 4 2TB drives and put them in and 4 2TB external USB drives and you have a whopping 16TB of storage.
 
-**Many More Features**There is a lot more features that you can check out on Amazon. Here is a link to the one I purchased. [HP EX490 1TB Mediasmart Home Server (Black)](http://www.amazon.com/gp/product/B002N8A0A2?ie=UTF8&tag=codblo-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B002N8A0A2)![](http://www.assoc-amazon.com/e/ir?t=codblo-20&l=as2&o=1&a=B002N8A0A2)
+**Many More Features**There is a lot more features that you can check out on Amazon. Here is a link to the one I purchased. [HP EX490 1TB Mediasmart Home Server (Black)](http://www.amazon.com/gp/product/B002N8A0A2?ie=UTF8&tag=codblo-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B002N8A0A2)
