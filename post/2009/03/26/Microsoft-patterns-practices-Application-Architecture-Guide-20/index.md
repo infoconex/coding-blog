@@ -1,7 +1,8 @@
 ---
+
 title: "Microsoft patterns & practices Application Architecture Guide 2.0"
 date: "2009-03-26"
-description: "Was listening to a podcast the other day in which one of the authors of the Microsoft patterns & practices Application Architecture Guide was speaking about this latest version so I decide to take a look. So far I am ve…"
+description: "Was listening to a podcast the other day in which one of the authors of the Microsoft patterns & practices Application Architecture Guide was speaking about this latest version so I decide to…"
 tags: []
 slug: "microsoft-patterns-and-practices-application-architecture-guide-2-0"
 author: "Jim Scott"

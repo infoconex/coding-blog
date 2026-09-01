@@ -1,7 +1,8 @@
 ---
+
 title: "Create better software by applying SOLID principles"
 date: "2025-06-13"
-description: "SOLID is an acronym for five design principles that are considered fundamental to object-oriented programming. These principles, when followed correctly, can help to create more robust, flexible, and maintainable code.…"
+description: "SOLID is an acronym for five design principles that are considered fundamental to object-oriented programming."
 tags: ["C#", "SOLID Principles", "Open-Closed Principle", "Single Responsibility Principle", "Liskov Substitution Principle", "Interface Segregation Principle", "Dependency Inversion Principle"]
 slug: "create-better-software-by-applying-solid-principles"
 author: "Jim Scott"

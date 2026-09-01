@@ -1,7 +1,8 @@
 ---
+
 title: "Decorating the tree for Christmas"
 date: "2022-12-26"
-description: "As a software developer, I've always been fascinated by design patterns and how they can help solve common problems in software design. This holiday season, I've been thinking a lot about how some of these patterns can…"
+description: "As a software developer, I've always been fascinated by design patterns and how they can help solve common problems in software design."
 tags: ["Design Patterns", "C#"]
 slug: "decorating-the-tree-for-christmas"
 author: "Jim Scott"

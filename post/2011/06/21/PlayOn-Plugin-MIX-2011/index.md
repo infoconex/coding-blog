@@ -1,7 +1,8 @@
 ---
+
 title: "PlayOn Plugin - MIX 2011"
 date: "2011-06-21"
-description: "I have been using PlayOn software to view online content via my XBOX for about 6 months now and while it is really cool I dont find myself using it as much as I thought I would. However one thing I have enjoyed is using…"
+description: "I have been using PlayOn software to view online content via my XBOX for about 6 months now and while it is really cool I dont find myself using it as much as I thought I would."
 tags: []
 slug: "playon-plugin-mix-2011"
 author: "Jim Scott"

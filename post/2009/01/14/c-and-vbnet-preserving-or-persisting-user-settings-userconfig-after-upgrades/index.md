@@ -1,7 +1,8 @@
 ---
+
 title: "c# and vb.net preserving or persisting user settings user.config after upgrades"
 date: "2009-01-14"
-description: "If you store settings in your application using Settings.Settings and have ever upgraded your application you may have found all the user settings have vanished. It seems that the user.config file is stored in %UserProf…"
+description: "If you store settings in your application using Settings.Settings and have ever upgraded your application you may have found all the user settings have vanished."
 tags: []
 slug: "c-and-vb-net-preserving-or-persisting-user-settings-user-config-after-upgrades"
 author: "Jim Scott"

@@ -1,7 +1,8 @@
 ---
+
 title: "Installing OpenWebmail on BlueOnyx server"
 date: "2011-10-10"
-description: "I have been in the process of evaluating the BlueOnyx distribution that replaces the older BlueQuartz web hosting control panel. However one of the short comings is that BlueOnyx does not currently incorporate a webmail…"
+description: "I have been in the process of evaluating the BlueOnyx distribution that replaces the older BlueQuartz web hosting control panel."
 tags: []
 slug: "installing-openwebmail-on-blueonyx-server"
 author: "Jim Scott"

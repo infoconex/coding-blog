@@ -1,7 +1,8 @@
 ---
+
 title: "Barcamp Seattle June 13th - June 14th 2009"
 date: "2009-06-05"
-description: "BarCampSeattle is an ad-hoc gathering born from the desire for people to share and learn in an open environment. It is an intense event with discussions, demos, and interaction from attendees. It is an international net…"
+description: "BarCampSeattle is an ad-hoc gathering born from the desire for people to share and learn in an open environment. It is an intense event with discussions, demos, and interaction from attendees."
 tags: []
 slug: "barcamp-seattle-june-13th-june-14th-2009"
 author: "Jim Scott"

@@ -1,7 +1,8 @@
 ---
+
 title: "Fix error:  Failed to generate a user instance of SQL Server due to a failure in starting the process for the user instance."
 date: "2011-05-25"
-description: "For anyone using Visual Studio and trying to add a SQL Database File and getting the error: \"Failed to generate a user instance of SQL Server due to a failure in starting the process for the user instance.\" you might wa…"
+description: "For anyone using Visual Studio and trying to add a SQL Database File and getting the error: \"Failed to generate a user instance of SQL Server due to a failure in starting the process for the…"
 tags: ["SQL", "Visual Studio"]
 slug: "fix-error-failed-to-generate-a-user-instance-of-sql-server-due-to-a-failure-in-starting-the-process-for-the-user-instance"
 author: "Jim Scott"

@@ -1,7 +1,8 @@
 ---
+
 title: "PlayOn Plugin - TECH.ED 2011"
 date: "2011-06-27"
-description: "Well I really enjoyed creating the MIX 2011 PlayOn plugin that I decided to do the same for TECH.ED 2011 . I am going to do a bit more research and see if in the next release I can provide a folder for each year as they…"
+description: "Well I really enjoyed creating the MIX 2011 PlayOn plugin that I decided to do the same for TECH.ED 2011 ."
 tags: []
 slug: "playon-plugin-tech-ed-2011"
 author: "Jim Scott"

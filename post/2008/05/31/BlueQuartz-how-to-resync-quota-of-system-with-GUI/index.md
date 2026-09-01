@@ -1,7 +1,8 @@
 ---
+
 title: "BlueQuartz how to resync quota of system with GUI"
 date: "2008-05-31"
-description: "Not sure how many others have had this issue but on occasion I get a user that calls because they are getting email rejected because they are over quota. I log into the administration interface only to find that the quo…"
+description: "Not sure how many others have had this issue but on occasion I get a user that calls because they are getting email rejected because they are over quota."
 tags: ["Quota"]
 slug: "bluequartz-how-to-resync-quota-of-system-with-gui"
 author: "Jim Scott"

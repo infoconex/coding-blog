@@ -1,7 +1,8 @@
 ---
+
 title: "From Cobalt to BlueQuartz and now BlueOnyx"
 date: "2009-02-01"
-description: "It has been a bit of a journey since I first started offering web hosting services using the Cobalt Platform that was later sold to Sun Microsystems and then dropped from the product line. However thanks to Sun they rel…"
+description: "It has been a bit of a journey since I first started offering web hosting services using the Cobalt Platform that was later sold to Sun Microsystems and then dropped from the product line."
 tags: []
 slug: "from-cobalt-to-bluequartz-and-now-blueonyx"
 author: "Jim Scott"

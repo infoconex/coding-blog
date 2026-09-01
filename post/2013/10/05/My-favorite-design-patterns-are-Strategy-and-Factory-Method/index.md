@@ -1,7 +1,8 @@
 ---
+
 title: "My favorite design patterns are Strategy and Factory Method"
 date: "2013-10-05"
-description: "A number of years back I started my exploration into the world of design patterns and read an incredible book “ Design Patterns Explained ” that did a great job in getting me started on a path that would ultimately chan…"
+description: "A number of years back I started my exploration into the world of design patterns and read an incredible book “ Design Patterns Explained ” that did a great job in getting me started on a path…"
 tags: []
 slug: "my-favorite-design-patterns-are-strategy-and-factory-method"
 author: "Jim Scott"

@@ -1,7 +1,8 @@
 ---
+
 title: "Understanding .NET Reference Types and Value Types"
 date: "2009-03-20"
-description: "I have been developing in .NET now for about 4 years and while I have visited this topic many times I have not always fully understood things. Dealing with Value Types is really straight forward however when we start to…"
+description: "I have been developing in .NET now for about 4 years and while I have visited this topic many times I have not always fully understood things."
 tags: []
 slug: "understanding-net-reference-types-and-value-types"
 author: "Jim Scott"

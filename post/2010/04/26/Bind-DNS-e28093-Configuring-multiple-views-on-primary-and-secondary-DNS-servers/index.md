@@ -1,7 +1,8 @@
 ---
+
 title: "Bind DNS – Configuring multiple views on primary and secondary DNS servers"
 date: "2010-04-26"
-description: "If you have a firewall with DMZ and Internal zones and you have machines that sit behind the firewall that query DNS that resolves back to your machines inside one of those zones then it is likely that you have had to s…"
+description: "If you have a firewall with DMZ and Internal zones and you have machines that sit behind the firewall that query DNS that resolves back to your machines inside one of those zones then it is…"
 tags: []
 slug: "bind-dns-configuring-multiple-views-on-primary-and-secondary-dns-servers"
 author: "Jim Scott"

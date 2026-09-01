@@ -1,7 +1,8 @@
 ---
+
 title: "Validating your SSL certificate is properly installed for SMTP - POP3 - IMAP - HTTP"
 date: "2016-03-16"
-description: "I recently installed a new SSL certificate on one of my Linux boxes and wanted to verify that my email server was using the new certificate. For HTTP this can be easy as you simply go to the secure URL and check your br…"
+description: "I recently installed a new SSL certificate on one of my Linux boxes and wanted to verify that my email server was using the new certificate."
 tags: ["SSL", "Linux"]
 slug: "validating-your-ssl-certificate-is-properly-installed-for-smtp-pop3-imap-http"
 author: "Jim Scott"

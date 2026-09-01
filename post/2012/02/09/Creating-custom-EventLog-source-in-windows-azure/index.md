@@ -1,7 +1,8 @@
 ---
+
 title: "Creating custom EventLog source in windows azure"
 date: "2012-02-09"
-description: "If you have tried to execute the following code on windows azure then no doubt you have run into a security violation. In fact if you try and run the same example on your local machine you will also get the same error a…"
+description: "If you have tried to execute the following code on windows azure then no doubt you have run into a security violation."
 tags: ["Azure"]
 slug: "creating-custom-eventlog-source-in-windows-azure"
 author: "Jim Scott"

@@ -1,7 +1,8 @@
 ---
+
 title: "HP MediaSmart Server is my favorite device for 2009"
 date: "2009-11-27"
-description: "Automatically Backup all your PC’s and MAC’s. If backing up your machine is important to you but you have just not taken the step to implement a backup process, then I would highly recommend the HP MediaSmart Server . W…"
+description: "Automatically Backup all your PC’s and MAC’s. If backing up your machine is important to you but you have just not taken the step to implement a backup process, then I would highly recommend…"
 tags: []
 slug: "hp-mediasmart-server-is-my-favorite-device-for-2009"
 author: "Jim Scott"

@@ -1,7 +1,8 @@
 ---
+
 title: "Seattle .net dotnet user group"
 date: "2009-05-19"
-description: "Great new user group that is getting started and it is in Seattle. Was hosted at Starbucks who provided a top notch facility for the meeting. About 25 people showed up and speaker Charles Sterling gave us a great presen…"
+description: "Great new user group that is getting started and it is in Seattle. Was hosted at Starbucks who provided a top notch facility for the meeting."
 tags: []
 slug: "seattle-net-dotnet-user-group"
 author: "Jim Scott"

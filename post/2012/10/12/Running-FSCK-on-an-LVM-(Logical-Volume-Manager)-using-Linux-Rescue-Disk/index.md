@@ -1,7 +1,8 @@
 ---
+
 title: "Running FSCK on an LVM (Logical Volume Manager) using Linux Rescue Disk"
 date: "2012-10-12"
-description: "I am not a linux expert and so when I have problems from time to time I usually have to go searching for the answer. It usually takes me looking at several articles to get my answer and when I am finished I always try a…"
+description: "I am not a linux expert and so when I have problems from time to time I usually have to go searching for the answer."
 tags: []
 slug: "running-fsck-on-an-lvm-logical-volume-manager-using-linux-rescue-disk"
 author: "Jim Scott"

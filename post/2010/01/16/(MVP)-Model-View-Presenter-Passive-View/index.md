@@ -1,7 +1,8 @@
 ---
+
 title: "(MVP) Model View Presenter - Passive View"
 date: "2010-01-16"
-description: "In my journey to write better software I have been looking at various patterns available. One of them is known as the Model View Presenter or MVP pattern. In doing some reading many of the sites I have come across point…"
+description: "In my journey to write better software I have been looking at various patterns available. One of them is known as the Model View Presenter or MVP pattern."
 tags: []
 slug: "mvp-model-view-presenter-passive-view"
 author: "Jim Scott"

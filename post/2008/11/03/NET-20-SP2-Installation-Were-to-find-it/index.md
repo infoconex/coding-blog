@@ -1,7 +1,8 @@
 ---
+
 title: ".NET 2.0 SP2 Installation - Were to find it"
 date: "2008-11-03"
-description: "I have seen many people referring to .NET 2.0 SP2 to fix some of the issues I have been dealing with. I finally figured out that the SP2 for the 2.0 framework is not available as of now anyways as a individual download…"
+description: "I have seen many people referring to .NET 2.0 SP2 to fix some of the issues I have been dealing with."
 tags: [".NET"]
 slug: "net-2-0-sp2-installation-were-to-find-it"
 author: "Jim Scott"

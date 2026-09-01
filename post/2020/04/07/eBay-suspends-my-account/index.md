@@ -1,7 +1,8 @@
 ---
+
 title: "eBay suspends my account"
 date: "2020-04-07"
-description: "I had created an account with eBay back in the beginning and had not used it in a long time. I reset my password because I had forgotten it and upon login I was informed my account had been suspended. I sent them a requ…"
+description: "I had created an account with eBay back in the beginning and had not used it in a long time."
 tags: []
 slug: "ebay-suspends-my-account"
 author: "Jim Scott"

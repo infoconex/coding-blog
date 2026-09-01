@@ -1,7 +1,8 @@
 ---
+
 title: "C# Traceroute using .net framework"
 date: "2009-01-14"
-description: "If you have ever tried to create a traceroute program using one of the few available ICMP libraries freely available for C# you may have run into some issues mainly to do with the ICMP checksum not being correct. It see…"
+description: "If you have ever tried to create a traceroute program using one of the few available ICMP libraries freely available for C# you may have run into some issues mainly to do with the ICMP…"
 tags: []
 slug: "c-traceroute-using-net-framework"
 author: "Jim Scott"

@@ -1,7 +1,8 @@
 ---
+
 title: "Silverlight PivotViewer control released"
 date: "2010-07-29"
-description: "The silverlight PivotViewer control allows you to build very large collections and embed them on your website. Works really well for collections that provide a visual representation of the data you are navigating and us…"
+description: "The silverlight PivotViewer control allows you to build very large collections and embed them on your website."
 tags: []
 slug: "silverlight-pivotviewer-control-released"
 author: "Jim Scott"

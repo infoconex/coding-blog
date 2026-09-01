@@ -1,7 +1,8 @@
 ---
+
 title: "Visual Studio - CloudService app \"Build fails\" Unable to remove directory."
 date: "2010-01-16"
-description: "While working on a CloudService application for Windows Azure, I encountered an error saying \"Unable to remove directory \"C:\\HelloAzure\\HelloAzure_WebRole\\bin\\_PublishedWebsites\". The directory is not empty."
+description: "While working on a CloudService application for Windows Azure, I encountered an error saying \"Unable to remove directory \"C:\\HelloAzure\\HelloAzure_WebRole\\bin\\_PublishedWebsites\"."
 tags: []
 slug: "visual-studio-cloudservice-app-build-fails-unable-to-remove-directory"
 author: "johnscott"

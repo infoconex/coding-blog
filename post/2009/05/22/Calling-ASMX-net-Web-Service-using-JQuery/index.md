@@ -1,7 +1,8 @@
 ---
+
 title: "Calling ASMX .net Web Service using jQuery"
 date: "2009-05-22"
-description: "Just started to pick up jquery recently and was playing with calling a .net web service from my page. Was really easy once I used Firefox Firebug to do my debugging and figure out some of the variable names to use to ac…"
+description: "Just started to pick up jquery recently and was playing with calling a .net web service from my page."
 tags: []
 slug: "calling-asmx-net-web-service-using-jquery"
 author: "Jim Scott"

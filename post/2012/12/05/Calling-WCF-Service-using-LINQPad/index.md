@@ -1,7 +1,8 @@
 ---
+
 title: "Calling WCF Service using LINQPad"
 date: "2012-12-05"
-description: "First, if you are a .NET developer and you are not using LINQPad yet go and check it out at www.linqpad.net . They offer a free version that is the same as the paid version but without intellisense and the pricing to up…"
+description: "First, if you are a .NET developer and you are not using LINQPad yet go and check it out at www.linqpad.net ."
 tags: ["LINQPad", "WCF"]
 slug: "calling-wcf-service-using-linqpad"
 author: "Jim Scott"

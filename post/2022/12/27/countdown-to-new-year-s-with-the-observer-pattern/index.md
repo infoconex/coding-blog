@@ -1,7 +1,8 @@
 ---
+
 title: "Countdown to New Year's with the Observer Pattern"
 date: "2022-12-27"
-description: "One design pattern that you might find fun to relate to New Year's Eve is the Observer design pattern. The Observer design pattern is a behavioral design pattern that defines a one-to-many dependency between objects, so…"
+description: "One design pattern that you might find fun to relate to New Year's Eve is the Observer design pattern."
 tags: []
 slug: "countdown-to-new-year-s-with-the-observer-pattern"
 author: "Jim Scott"

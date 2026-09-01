@@ -1,7 +1,8 @@
 ---
+
 title: "Object Oriented Design Patterns"
 date: "2008-10-14"
-description: "While I have been programming now for about 3 years using the Object Oriented programming environment of C# I have not really spent any time looking at patterns. I am guessing in my natural progression of learning progr…"
+description: "While I have been programming now for about 3 years using the Object Oriented programming environment of C# I have not really spent any time looking at patterns."
 tags: []
 slug: "object-oriented-design-patterns"
 author: "Jim Scott"

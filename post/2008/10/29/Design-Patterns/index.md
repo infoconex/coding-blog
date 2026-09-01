@@ -1,7 +1,8 @@
 ---
+
 title: "Design Patterns - Writing better software"
 date: "2008-10-29"
-description: "Writing applications that simply work is for the most part pretty easy. However writing software that is well designed, scalable and also readable takes a bit more work. Using and understanding design patterns can help…"
+description: "Writing applications that simply work is for the most part pretty easy. However writing software that is well designed, scalable and also readable takes a bit more work."
 tags: ["Design Patterns"]
 slug: "design-patterns-writing-better-software"
 author: "Jim Scott"
