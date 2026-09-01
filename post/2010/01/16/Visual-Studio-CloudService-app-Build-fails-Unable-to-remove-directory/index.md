@@ -17,7 +17,7 @@ I've attached a sample of the error below, note the WebRole\bin\\_PublishedWebsi
 
 This looks to be as the result of the Microsoft.CloudService.targets calls for the cleanup of the \_PublishedWebsites folder after the Webrole is compiled and it added to the .cspkg file.
 
-![](images/build-failed-unable-to-remove-directory-publichedwebsites.png)
+![Visual Studio build error showing the PublishedWebsites directory could not be removed](images/build-failed-unable-to-remove-directory-publichedwebsites.png)
 
 **In the end the issue was related to MS Forefront endpoint detection (antivirus), after adding **devenv.exe** to the excluded processes list the error was immediately resolved.**
 
