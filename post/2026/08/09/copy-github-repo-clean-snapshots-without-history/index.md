@@ -6,6 +6,8 @@ tags: ["GitHub", "PowerShell", "Automation", "Developer Tools"]
 slug: "copy-github-repo-clean-snapshots-without-history"
 author: "Jim Scott"
 permalink: "/post/2026/08/09/copy-github-repo-clean-snapshots-without-history"
+series: "CopyGitHubRepo"
+seriesOrder: 1
 ---
 Sometimes you want a copy of a GitHub repository, but you do **not** want its history.
 
