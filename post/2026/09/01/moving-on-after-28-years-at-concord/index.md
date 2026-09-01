@@ -2,7 +2,10 @@
 layout: post
 title: "Moving On After 28 Years at Concord"
 date: 2026-09-01
+slug: "moving-on-after-28-years-at-concord"
+author: "Jim Scott"
 published: false
+permalink: "/post/2026/09/01/moving-on-after-28-years-at-concord"
 description: "After 28 years at Concord, I’m closing an important chapter of my career and reflecting on the people, technology, lessons, and experiences that shaped it."
 tags:
   - Leadership
