@@ -24,7 +24,7 @@ In order to create a custom event source in windows azure do the following:
 
 EventCreate /L Application /T Information /ID 900 /SO "MyCustomSource" /D "Custom source for logging my custom events"
 
-![](images/customeventsourcecmd.jpg)
+![Command script used to create the custom Windows EventLog source](images/customeventsourcecmd.jpg)
 
 Here are the options for EventCreate.exe /?
 
@@ -61,22 +61,22 @@ Parameter List:
     valid custom message ID is in the range
     of 1 - 1000.
 
-    /D    description      Specifies the description text for the new event.
+    /D   description      Specifies the description text for the new event.
 
     /?                     Displays this help message.
 ```
 
 2) In your windows azure web role  create a folder called Startup and place the CMD file created above in it
 
-![](images/customeventsourcefolder.jpg)
+![Startup folder in the Azure web role containing the custom EventLog command script](images/customeventsourcefolder.jpg)
 
 3) Right click on the cmd file in solution explorer and select properties and set the "Copy to output directory" to "Copy if newer"
 
-![](images/custom-prop.jpg)
+![Visual Studio file properties with Copy to Output Directory set to Copy if newer](images/custom-prop.jpg)
 
 4) Open the ServiceDefinition.csdef file and add the startup section as shown below.
 
-![](images/customsd.jpg)
+![Azure ServiceDefinition file showing the startup task configuration](images/customsd.jpg)
 
 Finished. Now wasnt that simple ;-)
 
