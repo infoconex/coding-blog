@@ -7,6 +7,8 @@ slug: "copygithubrepo-v0-1-0-released-to-powershell-gallery"
 author: "Jim Scott"
 published: true
 permalink: "/post/2026/08/22/copygithubrepo-v0-1-0-released-to-powershell-gallery"
+series: "CopyGitHubRepo"
+seriesOrder: 2
 ---
 
 Earlier this month, I wrote about [CopyGitHubRepo](/post/2026/08/09/copy-github-repo-clean-snapshots-without-history), a PowerShell utility I had been building to create clean copies of GitHub repositories without automatically carrying their history forward.
