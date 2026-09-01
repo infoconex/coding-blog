@@ -22,6 +22,7 @@ HTML_IMG_RE = re.compile(r"<img\b(?P<attrs>[^>]*)>", re.I)
 ALT_ATTR_RE = re.compile(r"\balt=[\"'](?P<alt>[^\"']*)[\"']", re.I)
 FENCE_RE = re.compile(r"^\s*```", re.M)
 LEGACY_HOSTS = {"coding.infoconex.com", "www.coding.infoconex.com"}
+IMAGE_SUFFIXES = {".avif", ".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"}
 
 
 def read_post(path: Path) -> tuple[dict, str]:
@@ -60,6 +61,17 @@ def expected_source_parts(permalink: str) -> tuple[str, str, str, str] | None:
 
 def normalized_tag(tag: str) -> str:
     return re.sub(r"\s+", " ", tag.strip()).casefold()
+
+
+def local_path_for_url(index_md: Path, url: str) -> Path | None:
+    clean = url.split("#", 1)[0].split("?", 1)[0]
+    if not clean:
+        return None
+    if clean.startswith("images/"):
+        return (index_md.parent / clean).resolve()
+    if clean.startswith("/post/"):
+        return (ROOT / clean.lstrip("/")).resolve()
+    return None
 
 
 def main() -> int:
@@ -113,7 +125,7 @@ def main() -> int:
             parsed_date = date.fromisoformat(raw_date)
         except ValueError:
             errors.append(f"{path_label}: invalid ISO date {raw_date!r}")
-        if parsed_date and parsed_date > date.today():
+        if parsed_date and parsed_date > date.today() and data.get("published") is not False:
             errors.append(f"{path_label}: publication date is in the future: {raw_date}")
 
         tags = data.get("tags")
@@ -195,13 +207,20 @@ def main() -> int:
 
         image_dir = index_md.parent / "images"
         if image_dir.exists():
+            image_urls = urls(body)
+            frontmatter_image = data.get("image")
+            if isinstance(frontmatter_image, str) and frontmatter_image.strip():
+                image_urls.append(frontmatter_image.strip())
+
             referenced = {
-                (index_md.parent / u.split("#", 1)[0].split("?", 1)[0]).resolve()
-                for u in urls(body)
-                if u.startswith("images/")
+                local_path
+                for u in image_urls
+                if (local_path := local_path_for_url(index_md, u)) is not None
             }
             for image in image_dir.rglob("*"):
-                if image.is_file() and image.resolve() not in referenced:
+                if not image.is_file() or image.name.startswith(".") or image.suffix.lower() not in IMAGE_SUFFIXES:
+                    continue
+                if image.resolve() not in referenced:
                     warnings.append(f"{path_label}: orphaned image: {image.relative_to(index_md.parent)}")
 
     for slug, count in Counter(slugs).items():
