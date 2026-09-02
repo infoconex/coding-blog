@@ -7,7 +7,7 @@ slug: "testing-the-ai-flywheel-framework-with-durable-evidence"
 author: "Jim Scott"
 permalink: "/post/2026/07/27/testing-the-ai-flywheel-framework-with-durable-evidence"
 series: "AI Flywheel"
-seriesOrder: 3
+seriesOrder: 4
 ---
 AI-assisted development makes it easy to produce changes quickly.
 
