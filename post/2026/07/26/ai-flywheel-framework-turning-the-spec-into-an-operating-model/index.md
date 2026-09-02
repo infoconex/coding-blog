@@ -7,7 +7,7 @@ slug: "ai-flywheel-framework-turning-the-spec-into-an-operating-model"
 author: "Jim Scott"
 permalink: "/post/2026/07/26/ai-flywheel-framework-turning-the-spec-into-an-operating-model"
 series: "AI Flywheel"
-seriesOrder: 2
+seriesOrder: 3
 ---
 A specification is useful because it defines what a system should mean and how its pieces should fit together.
 
