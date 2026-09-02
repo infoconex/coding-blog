@@ -7,7 +7,7 @@ slug: "ai-flywheel-cli-python-operating-the-flywheel-safely"
 author: "Jim Scott"
 permalink: "/post/2026/07/31/ai-flywheel-cli-python-operating-the-flywheel-safely"
 series: "AI Flywheel"
-seriesOrder: 4
+seriesOrder: 5
 ---
 Once the AI Flywheel specification and framework existed, the next practical question was obvious:
 
