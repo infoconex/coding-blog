@@ -104,9 +104,13 @@ That makes 28 years feel less like a number on a résumé and much more like a s
 
 My career inevitably asked things of my family too: interrupted evenings, after-hours calls, pager alerts, unexpected trips to the data center, and plenty of instances where “a few minutes” turned into something considerably longer.
 
-So one of the most important thank-yous in this article belongs to them.
+And through all of those years, my wife was the constant behind everything I was able to do. Careers like this do not happen in isolation. There were late nights, interrupted plans, unexpected calls, and plenty of times when work demanded more than either of us would have preferred. Her support, patience, encouragement, and willingness to carry more than her share made it possible for me to pursue the opportunities I did. I could not have accomplished what I have without her.
 
-Thank you for supporting me through all of it, for being patient when work interrupted life, and even for those memorable family nights at the data center.
+So one of the most important thank-yous in this article belongs to my wife and my family.
+
+To my wife, thank you for standing beside me through all of it. I could not have built this career, taken the risks I took, or accomplished the things I am proud of without your support.
+
+And to my family, thank you for being patient when work interrupted life, for tolerating pager alerts and after-hours calls, and even for those memorable family nights at the data center.
 
 I certainly did not build this 28-year career alone.
 
