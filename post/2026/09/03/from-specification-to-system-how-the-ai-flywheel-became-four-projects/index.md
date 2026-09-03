@@ -82,6 +82,10 @@ That led to the second project: the [AI Flywheel Framework](https://github.com/i
 
 The framework provides an installable `.flywheel` operating model inside a repository.
 
+It also arrives with a bootstrap mission. That first mission is not just about filling in configuration files. It onboards the repository, captures the repository owner's decisions and constraints, populates the operating model, and then designs and builds the repository-specific tooling that can run future Flywheel operations.
+
+That last part is important. The framework does not prescribe Python, a particular CLI, or even a command-line interface. The implementation choices remain under the repository owner's authority. But the path from AI reasoning toward deterministic tooling is present from the beginning: once repository-specific operating rules are understood, the bootstrap process is designed to turn the stable parts into reusable capabilities rather than asking the AI to rediscover them every time.
+
 This separation became important.
 
 The **specification defines what the AI Flywheel means**.
