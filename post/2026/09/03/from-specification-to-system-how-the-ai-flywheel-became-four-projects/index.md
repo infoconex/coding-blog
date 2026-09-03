@@ -8,7 +8,7 @@ author: "Jim Scott"
 permalink: "/post/2026/09/03/from-specification-to-system-how-the-ai-flywheel-became-four-projects"
 series: "AI Flywheel"
 seriesOrder: 1
-published: false
+published: true
 ---
 Since January, I have been working on an idea that started with a fairly simple question:
 
