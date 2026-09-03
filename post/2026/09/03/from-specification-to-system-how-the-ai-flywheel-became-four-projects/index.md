@@ -26,6 +26,8 @@ That separation was not something I designed from the beginning. Each project ap
 
 Looking back, that evolution may be as interesting as the individual projects themselves.
 
+![AI Flywheel — turning execution into compounding improvement](images/ai-flywheel-banner.png)
+
 ## It started with the specification
 
 The original problem was not really about building another AI agent.
