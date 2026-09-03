@@ -16,6 +16,8 @@ Since January, I have been working on an idea that started with a fairly simple 
 
 What started as an idea eventually became the [AI Flywheel Specification](https://infoconex.github.io/ai-flywheel-spec/).
 
+![AI Flywheel — turning execution into compounding improvement](images/ai-flywheel-banner.png)
+
 But defining the idea turned out to be only the beginning.
 
 As I worked through what it would take to actually use the model in software engineering, the project naturally separated into four pieces:
@@ -25,8 +27,6 @@ As I worked through what it would take to actually use the model in software eng
 That separation was not something I designed from the beginning. Each project appeared because the previous one exposed a new engineering problem that needed its own boundary.
 
 Looking back, that evolution may be as interesting as the individual projects themselves.
-
-![AI Flywheel — turning execution into compounding improvement](images/ai-flywheel-banner.png)
 
 ## It started with the specification
 
