@@ -5,7 +5,7 @@ description: "CopyGitHubRepo v0.4.0 adds opt-in GitHub Pages restoration, safer 
 tags: ["GitHub", "PowerShell", "Automation", "Developer Tools"]
 slug: "copygithubrepo-v0-4-0-migrating-github-pages-without-guessing"
 author: "Jim Scott"
-published: false
+published: true
 permalink: "/post/2026/09/03/copygithubrepo-v0-4-0-migrating-github-pages-without-guessing"
 series: "CopyGitHubRepo"
 seriesOrder: 5
