@@ -1,0 +1,29 @@
+---
+layout: default
+title: Series
+description: Browse article series in reading order.
+permalink: /series/
+stylesheet: /assets/css/series.css
+---
+<section class="shell series-hero">
+  <div class="eyebrow">Series</div>
+  <h1>Follow a topic from start to finish.</h1>
+  <p>Browse focused article series in their intended reading order, from active projects that continue to evolve to completed guides and retrospectives.</p>
+</section>
+
+<section class="shell series-directory" aria-label="Article series">
+  {% assign all_articles = site.pages | where: "isPost", true %}
+  {% for series in site.data.series %}
+    {% assign series_articles = all_articles | where: "series", series.title | sort: "seriesOrder" %}
+    <a class="series-directory__card" href="{{ '/series/' | append: series.slug | append: '/' | relative_url }}">
+      <div class="series-directory__meta">
+        <span>{{ series.status }}</span>
+        <span aria-hidden="true">·</span>
+        <span>{{ series_articles.size }} {% if series_articles.size == 1 %}article{% else %}articles{% endif %}</span>
+      </div>
+      <h2>{{ series.title }}</h2>
+      <p>{{ series.introduction }}</p>
+      <span class="series-directory__action">View series →</span>
+    </a>
+  {% endfor %}
+</section>
