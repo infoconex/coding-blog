@@ -35,6 +35,8 @@ exclude:
 navigation:
   - title: Writing
     url: /writing/
+  - title: Series
+    url: /series/
   - title: Archive
     url: /archive/
   - title: About
