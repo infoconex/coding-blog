@@ -194,6 +194,19 @@ That does **not** erase the original repository. It creates a new repository wit
 
 The source remains the source, and the published snapshot becomes a new project starting point.
 
+## Four releases later
+
+What started as a way to create a clean repository snapshot has grown across four releases, while keeping the same basic safety model.
+
+- **[v0.1.0](/post/2026/08/22/copygithubrepo-v0-1-0-released-to-powershell-gallery)** turned the project into a published PowerShell module and established the Snapshot and FullHistory workflows.
+- **[v0.2.0](/post/2026/08/30/copygithubrepo-v0-2-0-preserving-github-releases)** added GitHub Release preservation to FullHistory migrations.
+- **[v0.3.0](/post/2026/08/31/copygithubrepo-v0-3-0-keep-the-releases-leave-the-history-behind)** brought selected release preservation to Snapshot migrations by constructing a new checkpoint history without carrying forward the original detailed ancestry.
+- **[v0.4.0](/post/2026/09/03/copygithubrepo-v0-4-0-migrating-github-pages-without-guessing)** expanded the migration model beyond Git data with opt-in GitHub Pages restoration, controlled custom-domain handoff, independent verification, and recovery evidence.
+
+The feature set is broader now, but the original question has not really changed: how do you move or publish a repository while being explicit about what should be preserved, what should be left behind, and how you know the result is trustworthy?
+
+That is still the problem CopyGitHubRepo is designed to solve.
+
 ## Safety is the main feature
 
 The core Git operations are not the most interesting part of this project.
