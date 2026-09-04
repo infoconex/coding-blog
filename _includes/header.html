@@ -7,12 +7,14 @@
           <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
         {% endfor %}
       </nav>
-      <button type="button" class="search-trigger" data-search-trigger data-search-index="{{ '/search.json' | relative_url }}" aria-haspopup="dialog" aria-expanded="false">
-        <span aria-hidden="true">⌕</span>
-        <span class="search-trigger__label">Search</span>
-        <kbd>⌘K</kbd>
-      </button>
-      {% include theme-picker.html %}
+      <div class="site-header__utilities" aria-label="Site tools">
+        <button type="button" class="search-trigger" data-search-trigger data-search-index="{{ '/search.json' | relative_url }}" aria-haspopup="dialog" aria-expanded="false" aria-label="Search">
+          <span aria-hidden="true">⌕</span>
+          <span class="search-trigger__label">Search</span>
+          <kbd>⌘K</kbd>
+        </button>
+        {% include theme-picker.html %}
+      </div>
     </div>
   </div>
 </header>
