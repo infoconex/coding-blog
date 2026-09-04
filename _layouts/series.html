@@ -1,0 +1,33 @@
+---
+layout: default
+---
+{% assign all_articles = site.pages | where: "isPost", true %}
+{% assign series_meta = nil %}
+{% for item in site.data.series %}
+  {% if item.slug == page.seriesSlug %}
+    {% assign series_meta = item %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% assign series_articles = all_articles | where: "series", series_meta.title | sort: "seriesOrder" %}
+
+<section class="shell series-hero">
+  <div class="eyebrow">Series</div>
+  <h1>{{ series_meta.title }}</h1>
+  <div class="series-hero__meta">{{ series_meta.status }} · {{ series_articles.size }} {% if series_articles.size == 1 %}article{% else %}articles{% endif %}</div>
+  <p>{{ series_meta.introduction }}</p>
+</section>
+
+<section class="shell series-list" aria-label="{{ series_meta.title }} articles">
+  {% for article in series_articles %}
+    <article class="series-entry">
+      <div class="series-entry__part">Part {{ article.seriesOrder | default: forloop.index }}</div>
+      <div class="series-entry__body">
+        <h2><a href="{{ article.url | relative_url }}">{{ article.title }}</a></h2>
+        <time datetime="{{ article.date | date_to_xmlschema }}">{{ article.date | date: "%B %-d, %Y" }}</time>
+        {% if article.description %}<p>{{ article.description }}</p>{% endif %}
+      </div>
+      <span aria-hidden="true">↗</span>
+    </article>
+  {% endfor %}
+</section>
