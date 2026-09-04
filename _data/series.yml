@@ -1,0 +1,14 @@
+- title: "CopyGitHubRepo"
+  slug: "copygithubrepo"
+  status: "Complete"
+  introduction: "A practical series following the evolution of CopyGitHubRepo from clean repository snapshots through release preservation and GitHub Pages migration."
+
+- title: "AI Flywheel"
+  slug: "ai-flywheel"
+  status: "Active"
+  introduction: "A series about turning AI-assisted development from isolated prompts into a repeatable engineering system with specifications, frameworks, durable evidence, and operating discipline."
+
+- title: "SOLID Principles"
+  slug: "solid-principles"
+  status: "Complete"
+  introduction: "A practical walkthrough of the SOLID design principles and how they help create software that is easier to change, extend, test, and maintain."
