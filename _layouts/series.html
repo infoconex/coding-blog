@@ -20,14 +20,14 @@ layout: default
 
 <section class="shell series-list" aria-label="{{ series_meta.title }} articles">
   {% for article in series_articles %}
-    <article class="series-entry">
+    <a class="series-entry" href="{{ article.url | relative_url }}" aria-label="Part {{ article.seriesOrder | default: forloop.index }}: {{ article.title }}">
       <div class="series-entry__part">Part {{ article.seriesOrder | default: forloop.index }}</div>
       <div class="series-entry__body">
-        <h2><a href="{{ article.url | relative_url }}">{{ article.title }}</a></h2>
+        <h2>{{ article.title }}</h2>
         <time datetime="{{ article.date | date_to_xmlschema }}">{{ article.date | date: "%B %-d, %Y" }}</time>
         {% if article.description %}<p>{{ article.description }}</p>{% endif %}
       </div>
-      <span aria-hidden="true">↗</span>
-    </article>
+      <span class="series-entry__arrow" aria-hidden="true">↗</span>
+    </a>
   {% endfor %}
 </section>
