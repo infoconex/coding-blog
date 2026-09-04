@@ -52,17 +52,23 @@ layout: default
 {% if page.tags and page.tags.size > 0 %}
   {% for candidate in related_candidates %}
     {% if candidate.url != page.url %}
-      {% assign shared_tag = nil %}
-      {% for tag in page.tags %}
-        {% if candidate.tags contains tag %}
-          {% assign shared_tag = tag %}
-          {% break %}
-        {% endif %}
-      {% endfor %}
-      {% if shared_tag %}
-        {% assign related_count = related_count | plus: 1 %}
-        {% if related_count == 3 %}{% break %}{% endif %}
+      {% assign same_series = false %}
+      {% if page.series and candidate.series == page.series %}
+        {% assign same_series = true %}
       {% endif %}
+      {% unless same_series %}
+        {% assign shared_tag = nil %}
+        {% for tag in page.tags %}
+          {% if candidate.tags contains tag %}
+            {% assign shared_tag = tag %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        {% if shared_tag %}
+          {% assign related_count = related_count | plus: 1 %}
+          {% if related_count == 3 %}{% break %}{% endif %}
+        {% endif %}
+      {% endunless %}
     {% endif %}
   {% endfor %}
 {% endif %}
@@ -119,6 +125,28 @@ layout: default
     {{ content }}
   </div>
 
+  {% if page.series and series_pages.size > 1 %}
+    <aside class="series-panel series-panel--footer" aria-labelledby="series-footer-heading">
+      <div class="series-panel__head">
+        <div>
+          <div class="eyebrow">Continue the series</div>
+          <h2 id="series-footer-heading">{{ page.series }}</h2>
+        </div>
+        <div class="series-panel__position">Part {{ series_position }} of {{ series_pages.size }}</div>
+      </div>
+      {% if series_previous or series_next %}
+      <nav class="series-panel__nav" aria-label="Series navigation after article">
+        {% if series_previous %}
+          <a href="{{ series_previous.url | relative_url }}"><span>← Previous part</span><strong>{{ series_previous.title }}</strong></a>
+        {% else %}<span></span>{% endif %}
+        {% if series_next %}
+          <a href="{{ series_next.url | relative_url }}"><span>Next part →</span><strong>{{ series_next.title }}</strong></a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </aside>
+  {% endif %}
+
   {% include comments.html %}
 
   {% if related_count > 0 %}
@@ -131,21 +159,27 @@ layout: default
         {% assign rendered_related = 0 %}
         {% for candidate in related_candidates %}
           {% if candidate.url != page.url %}
-            {% assign shared_tag = nil %}
-            {% for tag in page.tags %}
-              {% if candidate.tags contains tag %}
-                {% assign shared_tag = tag %}
-                {% break %}
-              {% endif %}
-            {% endfor %}
-            {% if shared_tag and rendered_related < 3 %}
-              <a class="related-card" href="{{ candidate.url | relative_url }}">
-                <div class="related-card__meta">{{ shared_tag }} · {{ candidate.date | date: "%Y" }}</div>
-                <strong>{{ candidate.title }}</strong>
-                {% if candidate.description %}<p>{{ candidate.description | truncate: 105 }}</p>{% endif %}
-              </a>
-              {% assign rendered_related = rendered_related | plus: 1 %}
+            {% assign same_series = false %}
+            {% if page.series and candidate.series == page.series %}
+              {% assign same_series = true %}
             {% endif %}
+            {% unless same_series %}
+              {% assign shared_tag = nil %}
+              {% for tag in page.tags %}
+                {% if candidate.tags contains tag %}
+                  {% assign shared_tag = tag %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+              {% if shared_tag and rendered_related < 3 %}
+                <a class="related-card" href="{{ candidate.url | relative_url }}">
+                  <div class="related-card__meta">{{ shared_tag }} · {{ candidate.date | date: "%Y" }}</div>
+                  <strong>{{ candidate.title }}</strong>
+                  {% if candidate.description %}<p>{{ candidate.description | truncate: 105 }}</p>{% endif %}
+                </a>
+                {% assign rendered_related = rendered_related | plus: 1 %}
+              {% endif %}
+            {% endunless %}
           {% endif %}
         {% endfor %}
       </div>
