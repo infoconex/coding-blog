@@ -30,8 +30,17 @@ layout: default
 {% assign series_previous = nil %}
 {% assign series_next = nil %}
 {% assign series_position = 0 %}
+{% assign series_meta = nil %}
+{% assign series_url = nil %}
 {% if page.series %}
   {% assign series_pages = all_articles | where: "series", page.series | sort: "seriesOrder" %}
+  {% for item in site.data.series %}
+    {% if item.title == page.series %}
+      {% assign series_meta = item %}
+      {% capture series_url %}/series/{{ item.slug }}/{% endcapture %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
   {% assign found_series_current = false %}
   {% for item in series_pages %}
     {% if found_series_current %}
@@ -104,9 +113,12 @@ layout: default
       <div class="series-panel__head">
         <div>
           <div class="eyebrow">Series</div>
-          <h2 id="series-heading">{{ page.series }}</h2>
+          <h2 id="series-heading">{% if series_url %}<a href="{{ series_url | relative_url }}">{{ page.series }}</a>{% else %}{{ page.series }}{% endif %}</h2>
         </div>
-        <div class="series-panel__position">Part {{ series_position }} of {{ series_pages.size }}</div>
+        <div class="series-panel__position">
+          <span>Part {{ series_position }} of {{ series_pages.size }}</span>
+          {% if series_url %}<a href="{{ series_url | relative_url }}">View series</a>{% endif %}
+        </div>
       </div>
       {% if series_previous or series_next %}
       <nav class="series-panel__nav" aria-label="Series navigation">
@@ -130,20 +142,21 @@ layout: default
       <div class="series-panel__head">
         <div>
           <div class="eyebrow">Continue the series</div>
-          <h2 id="series-footer-heading">{{ page.series }}</h2>
+          <h2 id="series-footer-heading">{% if series_url %}<a href="{{ series_url | relative_url }}">{{ page.series }}</a>{% else %}{{ page.series }}{% endif %}</h2>
         </div>
-        <div class="series-panel__position">Part {{ series_position }} of {{ series_pages.size }}</div>
+        <div class="series-panel__position"><span>Part {{ series_position }} of {{ series_pages.size }}</span></div>
       </div>
-      {% if series_previous or series_next %}
-      <nav class="series-panel__nav" aria-label="Series navigation after article">
+      <nav class="series-panel__nav series-panel__nav--footer" aria-label="Series navigation after article">
         {% if series_previous %}
           <a href="{{ series_previous.url | relative_url }}"><span>← Previous part</span><strong>{{ series_previous.title }}</strong></a>
         {% else %}<span></span>{% endif %}
+        {% if series_url %}
+          <a class="series-panel__overview" href="{{ series_url | relative_url }}"><span>Series overview</span><strong>View complete series</strong></a>
+        {% endif %}
         {% if series_next %}
           <a href="{{ series_next.url | relative_url }}"><span>Next part →</span><strong>{{ series_next.title }}</strong></a>
-        {% endif %}
+        {% else %}<span></span>{% endif %}
       </nav>
-      {% endif %}
     </aside>
   {% endif %}
 
