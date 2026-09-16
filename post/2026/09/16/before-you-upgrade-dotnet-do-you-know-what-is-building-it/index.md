@@ -449,10 +449,14 @@ That is where environment readiness gets much more interesting.
 
 ## Microsoft Resources
 
-Microsoft's [`global.json` overview](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json) covers SDK selection, matching rules, and the available `rollForward` policies.
+Microsoft's [`global.json` overview](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json) covers SDK selection, matching rules, current-directory lookup behavior, and the available `rollForward` policies.
+
+Microsoft's [`dotnet` command](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet) documentation covers `dotnet --version`, `dotnet --list-sdks`, and the other top-level .NET CLI options.
+
+Microsoft's [`dotnet sdk check`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-sdk-check) documentation explains how to check installed SDK and runtime feature bands for available updates and support status.
+
+Microsoft's [`dotnet new`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-new) documentation covers the template system used by `dotnet new globaljson`.
 
 Microsoft's [Upgrade to a new .NET version](https://learn.microsoft.com/en-us/dotnet/core/install/upgrade) guidance includes its recommendation for controlling SDK selection with `global.json`.
 
 For more detail about feature bands and how SDK versions relate to MSBuild and Visual Studio, see [.NET SDK, MSBuild, and Visual Studio versioning](https://learn.microsoft.com/en-us/dotnet/core/porting/versioning-sdk-msbuild-vs).
-
-Microsoft also documents [`dotnet sdk check`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-sdk-check) and how its SDK update status is determined.
