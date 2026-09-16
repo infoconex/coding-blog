@@ -1,3 +1,8 @@
+- title: "Staying Current with .NET"
+  slug: "staying-current-with-dotnet"
+  status: "Active"
+  introduction: "A practical series about making .NET upgrades routine by first understanding, controlling, and reproducing the build environment, then continuously evaluating new releases before they become urgent."
+
 - title: "CopyGitHubRepo"
   slug: "copygithubrepo"
   status: "Active"
@@ -7,11 +12,6 @@
   slug: "ai-flywheel"
   status: "Active"
   introduction: "A series about turning AI-assisted development from isolated prompts into a repeatable engineering system with specifications, frameworks, durable evidence, and operating discipline."
-
-- title: "Staying Current with .NET"
-  slug: "staying-current-with-dotnet"
-  status: "Active"
-  introduction: "A practical series about making .NET upgrades routine by first understanding, controlling, and reproducing the build environment, then continuously evaluating new releases before they become urgent."
 
 - title: "SOLID Principles"
   slug: "solid-principles"
