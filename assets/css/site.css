@@ -101,7 +101,7 @@ a { color: inherit; }
 .post-content h2, .post-content h3, .post-content h4 { position: relative; scroll-margin-top: 110px; margin-top: 2em; line-height: 1.18; letter-spacing: -.025em; }
 .post-content h2 { font-size: 1.75em; }
 .post-content h3 { font-size: 1.35em; }
-.post-content p, .post-content ul, .post-content ol, .post-content blockquote { max-width: 1080px; }
+.post-content p, .post-content ul, .post-content ol, .post-content blockquote { max-width: 820px; }
 .post-content li + li { margin-top: .35em; }
 .post-content a { color: var(--accent); text-underline-offset: .18em; }
 .post-content img { display: block; max-width: 100%; height: auto; margin: 32px 0; border: 1px solid var(--line); border-radius: max(4px, calc(var(--radius) * .65)); }
