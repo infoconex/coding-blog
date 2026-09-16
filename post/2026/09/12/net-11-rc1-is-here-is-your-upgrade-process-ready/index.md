@@ -14,6 +14,8 @@ tags:
   - Software Engineering
   - Architecture
 image: /post/2026/09/12/net-11-rc1-is-here-is-your-upgrade-process-ready/images/net-11-rc1-upgrade-process-ready.png
+series: "Staying Current with .NET"
+seriesOrder: 1
 ---
 
 ![.NET 11 RC1 Is Here. Is Your Upgrade Process Ready?](images/net-11-rc1-upgrade-process-ready.png)
