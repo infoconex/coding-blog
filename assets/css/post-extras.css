@@ -1,3 +1,4 @@
+.series-panel,.related-reading,.comments-panel{max-width:1080px}
 .series-panel{margin:0 0 42px;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--card-shadow)}
 .series-panel__head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding-bottom:16px;border-bottom:1px solid var(--line)}
 .series-panel__head h2{margin:5px 0 0;font-family:var(--font-heading,var(--font-sans));font-size:clamp(24px,4vw,36px);font-weight:var(--heading-weight,800);line-height:1;text-transform:var(--heading-transform,none)}
