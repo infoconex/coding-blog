@@ -73,9 +73,10 @@ It also means the target framework alone does not fully describe your build envi
 
 ## Start With Three Commands
 
-From the root of the repository you want to evaluate, run:
+First switch to the repository you want to evaluate, then run:
 
 ```powershell
+cd path\to\your\repository
 dotnet --version
 dotnet --list-sdks
 dotnet sdk check
@@ -383,9 +384,10 @@ It is not the end of the problem.
 
 Before adding `global.json` everywhere, I would first understand what your repositories are doing today.
 
-From the repository root:
+Start by switching to the repository you want to audit:
 
 ```powershell
+cd path\to\your\repository
 dotnet --version
 dotnet --list-sdks
 dotnet sdk check
