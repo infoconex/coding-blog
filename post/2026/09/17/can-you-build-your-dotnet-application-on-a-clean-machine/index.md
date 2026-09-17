@@ -4,7 +4,7 @@ title: "Can You Build Your .NET Application on a Clean Machine?"
 date: "2026-09-17"
 slug: "can-you-build-your-dotnet-application-on-a-clean-machine"
 author: "Jim Scott"
-published: false
+published: true
 featured: false
 permalink: "/post/2026/09/17/can-you-build-your-dotnet-application-on-a-clean-machine"
 description: "A clean-machine test can expose the tools, package sources, services, configuration, and developer knowledge your .NET repository depends on but does not declare."
