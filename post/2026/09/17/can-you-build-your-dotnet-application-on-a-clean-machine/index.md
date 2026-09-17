@@ -60,15 +60,15 @@ My development machine has multiple .NET SDKs installed. It has development tool
 
 Some of it I probably no longer remember installing.
 
-Imagine a build process calls:
+Imagine a .NET application uses Entity Framework Core and a developer runs:
 
 ```powershell
-dotnet ef
+dotnet ef migrations list
 ```
 
-It works on every established developer's machine.
+That command works because the `dotnet-ef` tool is already installed on their machine.
 
-A new developer clones the repository and gets:
+A new developer clones the repository and runs the same command:
 
 ```text
 Could not execute because the specified command or file was not found.
@@ -76,9 +76,9 @@ Could not execute because the specified command or file was not found.
 
 Nothing recently broke.
 
-The application always depended on another tool.
+The application always depended on an additional .NET tool.
 
-The rest of the team just stopped noticing because they already had it.
+The rest of the team just stopped noticing because they already had it installed.
 
 At that point, the developers' machines have become part of the application's undocumented configuration.
 
