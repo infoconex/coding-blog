@@ -92,7 +92,7 @@ Isolated SDK
 
 The next two scripts automate this setup.
 
-The Windows example uses PowerShell and Microsoft's `dotnet-install.ps1`. The Linux and macOS example uses Bash and Microsoft's `dotnet-install.sh`.
+The Windows example uses PowerShell and Microsoft's [`dotnet-install.ps1`](https://dot.net/v1/dotnet-install.ps1). The Linux and macOS example uses Bash and Microsoft's [`dotnet-install.sh`](https://dot.net/v1/dotnet-install.sh).
 
 In both cases, the script will:
 
@@ -105,7 +105,7 @@ In both cases, the script will:
 
 ## Windows: Install with PowerShell
 
-Microsoft provides `dotnet-install.ps1` for Windows.
+Microsoft provides [`dotnet-install.ps1`](https://dot.net/v1/dotnet-install.ps1) for Windows.
 
 Here is the complete script:
 
@@ -222,7 +222,7 @@ Pressing Enter leaves things as they are. An isolated duplicate is created only 
 
 ## Linux and macOS: Install with Bash
 
-Microsoft provides `dotnet-install.sh` for Linux and macOS.
+Microsoft provides [`dotnet-install.sh`](https://dot.net/v1/dotnet-install.sh) for Linux and macOS.
 
 The Bash script follows the same rules:
 
