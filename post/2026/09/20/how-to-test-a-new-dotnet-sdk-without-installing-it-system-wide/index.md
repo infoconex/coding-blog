@@ -119,8 +119,6 @@ dotnet-install:
 
 ## Windows: Install with PowerShell
 
-Microsoft provides [`dotnet-install.ps1`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script) for Windows.
-
 Save the following as:
 
 ```text
@@ -275,8 +273,6 @@ isolated-dotnet-sdk: Install an isolated copy too? [y/N]
 Pressing Enter leaves things as they are. An isolated duplicate is created only when explicitly requested.
 
 ## Linux and macOS: Install with Bash
-
-Microsoft provides [`dotnet-install.sh`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script) for Linux and macOS.
 
 Save the following as:
 
