@@ -4,7 +4,7 @@ title: "How to Test a New .NET SDK Without Installing It System-Wide"
 date: "2026-09-20"
 slug: "how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide"
 author: "Jim Scott"
-published: false
+published: true
 featured: false
 permalink: "/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide"
 description: "Install a newer .NET SDK in isolation so you can use newer development tooling to evaluate an existing application before changing the SDK installation your normal development environment depends on."
