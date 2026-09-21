@@ -7,7 +7,7 @@ author: "Jim Scott"
 published: false
 featured: false
 permalink: "/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide"
-description: "Install and test an exact .NET SDK in isolation without changing the SDKs available through your normal system-wide dotnet installation."
+description: "Install a newer .NET SDK in isolation so you can use newer development tooling to evaluate an existing application before changing the SDK installation your normal development environment depends on."
 tags:
   - .NET
   - Software Engineering
@@ -19,39 +19,216 @@ seriesOrder: 4
 
 # How to Test a New .NET SDK Without Installing It System-Wide
 
-In the previous articles in this series, we looked at knowing which .NET SDK is building an application and making sure the application can be built on a clean machine.
+In the previous articles in this series, I looked at knowing which .NET SDK is actually building an application and making sure that application can be built on a clean machine.
 
-There is another scenario that comes up when evaluating a .NET upgrade.
+Now I want to start preparing an application for its next .NET upgrade.
 
-I want to try a newer SDK without changing the SDK installation I use for normal development.
+There is some urgency around that for applications still running on older versions. As I write this, both .NET 8 and .NET 9 reach end of support on November 10, 2026.
 
-For this experiment I used .NET 11 RC1:
+.NET 10 is the current LTS release, and .NET 11 RC1 is already available.
+
+That means there are plenty of applications where we need to start asking what an upgrade is going to involve.
+
+My first instinct is not to start changing target frameworks and package versions.
+
+I want to understand the application first.
+
+And I want the newest tooling available to help me do it.
+
+## A Newer SDK Is More Than a New Target Framework
+
+When we talk about moving an application to a new version of .NET, it is easy to focus on the target framework.
+
+For example:
+
+```xml
+<TargetFramework>net8.0</TargetFramework>
+```
+
+eventually becoming:
+
+```xml
+<TargetFramework>net10.0</TargetFramework>
+```
+
+But installing a newer SDK does not automatically make that change.
+
+The SDK is the development toolchain.
+
+It contains the tooling we use to work with things such as:
+
+- projects and solutions;
+- target frameworks;
+- NuGet packages and dependencies;
+- project references;
+- package vulnerabilities and deprecations;
+- restores and dependency resolution;
+- builds and MSBuild configuration;
+- tests and test infrastructure;
+- .NET tools;
+- workloads;
+- templates;
+- runtimes and targeting packs;
+- publishing and containers;
+- compiler and language features;
+- and automation around all of those areas.
+
+A newer SDK can improve that toolbox even while an application continues targeting its existing version of .NET.
+
+That distinction is important.
+
+I do not have to upgrade an application just because I want access to newer development tooling.
+
+## .NET 10 Is a Good Example
+
+.NET 10 added and improved SDK capabilities across several of these areas.
+
+There are improvements around package and project-reference management, NuGet restore and auditing, .NET tools, testing with Microsoft.Testing.Platform, container publishing, command-line consistency, shell integration, and machine-readable CLI information.
+
+I am intentionally not going deep into those commands here.
+
+That is where I want to go next in this series.
+
+The point for now is that if I am preparing an older application for an upgrade, there can be real value in having a newer SDK available before I change the application itself.
+
+Think about the sequence this way:
+
+```text
+Existing application
+        |
+        | still using its current configuration
+        |
+        v
+Newer .NET SDK tooling
+        |
+        | inspect
+        | query
+        | restore
+        | analyze
+        | test
+        v
+Better understanding of the application
+        |
+        v
+Decide what needs to change
+        |
+        v
+Begin the upgrade
+```
+
+That is the workflow I want.
+
+I would rather discover what makes up the application before I start changing it than discover those details one failure at a time during the upgrade.
+
+## Why Not Just Install the New SDK Normally?
+
+I could.
+
+.NET supports side-by-side SDK installations, so there is nothing inherently wrong with installing a newer SDK alongside the SDKs already on a development machine.
+
+For example, my normal Windows environment contained:
+
+```text
+8.0.425
+9.0.318
+10.0.401
+```
+
+I could simply install .NET 11 RC1 and make it another SDK available through the normal `dotnet` host.
+
+For many environments, that is the right answer.
+
+But I am still evaluating it.
+
+I do not necessarily want a preview or release candidate participating in normal SDK resolution yet.
+
+I may also want to test multiple SDK versions, compare their behavior, or remove one when I am done.
+
+So instead of this:
+
+```text
+Normal .NET installation
+
+8.0.425
+9.0.318
+10.0.401
+11.0.100-rc.1.26425.128
+```
+
+I want this:
+
+```text
+Normal .NET installation
+
+8.0.425
+9.0.318
+10.0.401
+
+
+Isolated SDKs
+
+~/dotnet-sdks/
+    11.0.100-rc.1.26425.128/
+```
+
+My normal `dotnet` command continues to represent my normal development environment.
+
+When I want the newer SDK, I explicitly choose it.
+
+## Use an Exact SDK Version
+
+I also want the experiment to be repeatable.
+
+For this test, I used:
 
 ```text
 11.0.100-rc.1.26425.128
 ```
 
-I could install it normally alongside my existing SDKs, but I do not have to.
+I do not want my setup to mean:
 
-Microsoft provides [`dotnet-install`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script) scripts that can install an SDK into a directory we choose instead of using the normal system-wide installer. Microsoft also documents this approach for [testing prerelease .NET SDKs locally](https://learn.microsoft.com/en-us/dotnet/core/tools/test-prerelease-sdk-locally).
+```text
+Install whatever the latest .NET 11 SDK happens to be today.
+```
 
-I wanted to make that workflow repeatable, so I created a small tool around those scripts:
+If RC2 appears, I want that to be another version I can evaluate separately.
 
-[infoconex/isolated-dotnet-sdk](https://github.com/infoconex/isolated-dotnet-sdk)
+That gives me the ability to keep multiple isolated toolchains:
 
-## What I Want from an Isolated SDK
+```text
+dotnet-sdks/
+    11.0.100-preview.7.26381.103/
+    11.0.100-rc.1.26425.128/
+    11.0.100-rc.2.xxxxx.xxx/
+```
 
-There are three things I care about.
+I can decide exactly which SDK I am using for a particular experiment.
 
-First, the SDK should live outside the normal .NET installation.
+## Microsoft Already Supports Installing an SDK This Way
 
-Instead of installing under a location such as:
+Microsoft's [`dotnet-install`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script) scripts allow an SDK to be installed into a directory we choose.
+
+On Windows, the installer supports:
+
+```text
+-InstallDir
+-NoPath
+```
+
+On Linux and macOS:
+
+```text
+--install-dir
+--no-path
+```
+
+Instead of installing into a normal location such as:
 
 ```text
 C:\Program Files\dotnet\
 ```
 
-I keep isolated SDKs under my home directory:
+I can keep isolated SDKs under my home directory:
 
 ```text
 Windows
@@ -64,21 +241,33 @@ macOS
 /Users/<user>/dotnet-sdks/
 ```
 
-Second, I want an exact SDK version. If another release appears tomorrow, I do not want my test environment silently changing underneath me.
+The SDK does not have to be added to `PATH`.
 
-Third, I do not want the isolated SDK added to `PATH`.
+I can invoke that copy of `dotnet` explicitly when I want it.
 
-The result is simple:
+Microsoft also documents using the install scripts for [testing prerelease .NET SDKs locally](https://learn.microsoft.com/en-us/dotnet/core/tools/test-prerelease-sdk-locally).
 
-```text
-Normal .NET installation
-    Used normally through: dotnet
+## I Ended Up Turning the Process Into a Small Tool
 
-Isolated SDK
-    Used explicitly through its path
-```
+I started by doing this directly with Microsoft's installation scripts.
 
-## Install the Tool
+That worked.
+
+Once I tested the process on Windows and Linux, though, I found myself repeating the same setup and cleanup work:
+
+- find the SDK version I want;
+- see which SDKs are already installed normally;
+- install the new SDK into its own directory;
+- keep it off `PATH`;
+- verify the installation;
+- avoid letting a repository's `global.json` interfere with SDK management;
+- and cleanly remove the SDK later.
+
+So I wrapped that workflow in a small project:
+
+[infoconex/isolated-dotnet-sdk](https://github.com/infoconex/isolated-dotnet-sdk)
+
+It still uses Microsoft's official `dotnet-install` scripts underneath. The project just handles the workflow around them.
 
 On Windows with PowerShell:
 
@@ -86,213 +275,27 @@ On Windows with PowerShell:
 irm https://raw.githubusercontent.com/infoconex/isolated-dotnet-sdk/main/isolated-dotnet-sdk.ps1 | iex
 ```
 
-On Linux or macOS with Bash:
+On Linux or macOS:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/infoconex/isolated-dotnet-sdk/main/isolated-dotnet-sdk.sh | bash
 ```
 
-The first run saves the tool under `~/dotnet-sdks` and opens an interactive menu:
+It lets me select a supported, development, or older .NET channel and then choose the exact SDK version.
 
-```text
-isolated-dotnet-sdk: What would you like to do?
+It also shows whether a version is already installed normally or already exists as an isolated SDK.
 
-  1. Install an SDK
-  2. Remove an isolated SDK
-  3. List isolated SDKs
-  4. Exit
+The full usage belongs in the repository README.
 
-Selection:
-```
+The tool is not really the point of this article.
 
-Choosing **Install an SDK** loads Microsoft's published .NET release metadata and lets me choose a supported or development channel.
+What matters is that I now have a newer development toolchain available without making it part of my normal SDK installation.
 
-For example:
+## Verify That the Normal Environment Did Not Change
 
-```text
-isolated-dotnet-sdk: Select a supported or development .NET channel:
+This was one of the behaviors I wanted to test rather than assume.
 
-  1. .NET 11.0  STS  Go Live  latest SDK 11.0.100-rc.1.26425.128
-  2. .NET 10.0  LTS  Active   latest SDK 10.0.401
-  3. .NET 9.0   STS  Maintenance  latest SDK 9.0.318
-  4. .NET 8.0   LTS  Maintenance  latest SDK 8.0.425
-
-  A. Show end-of-life channels
-  M. Enter an exact SDK version manually
-  Q. Cancel
-```
-
-After choosing a channel, the tool lists its SDK versions and marks versions already present on the machine.
-
-```text
-1. 11.0.100-rc.1.26425.128 (latest, isolated)
-```
-
-A version can be marked as:
-
-- `latest` when it is the latest SDK identified by Microsoft's release metadata;
-- `system` when it is already available through the normal `dotnet` host;
-- `isolated` when it is already installed under `~/dotnet-sdks`.
-
-If an SDK is already installed normally, the tool does not silently create another copy:
-
-```text
-isolated-dotnet-sdk: .NET SDK 10.0.401 is already installed normally.
-isolated-dotnet-sdk: Install an isolated copy too? [y/N]
-```
-
-Pressing Enter leaves the system as it is.
-
-## You Can Still Be Explicit
-
-The menu is useful when I am working interactively, but scripts and automation should be able to specify exactly what they want.
-
-PowerShell:
-
-```powershell
-& "$HOME\dotnet-sdks\isolated-dotnet-sdk.ps1" `
-    -Action Install `
-    -Version '11.0.100-rc.1.26425.128'
-```
-
-Bash:
-
-```bash
-"$HOME/dotnet-sdks/isolated-dotnet-sdk.sh" \
-    install \
-    11.0.100-rc.1.26425.128
-```
-
-Supplying the version bypasses the picker.
-
-If I intentionally want an isolated copy of an SDK that is already installed normally, PowerShell supports `-Yes` and Bash supports `--yes`.
-
-## What Gets Installed?
-
-This is a complete SDK installation, not just a runtime.
-
-It contains the development tooling behind commands such as:
-
-```text
-dotnet restore
-dotnet build
-dotnet test
-dotnet msbuild
-dotnet pack
-```
-
-along with the compiler, NuGet tooling, templates, targeting packs, and runtime components included with that SDK.
-
-The Microsoft install script itself is cached under `~/dotnet-sdks`, and each SDK gets its own version-specific directory.
-
-For example:
-
-```text
-dotnet-sdks/
-    10.0.401/
-    11.0.100-rc.1.26425.128/
-```
-
-That makes it easy to keep multiple isolated SDKs side by side.
-
-## `global.json` Still Matters
-
-This was the most interesting detail I found while testing the workflow.
-
-An isolated `dotnet` executable still performs normal SDK resolution based on the current working directory.
-
-The repository I used for testing contains this `global.json`:
-
-```json
-{
-  "sdk": {
-    "rollForward": "disable",
-    "version": "10.0.401"
-  }
-}
-```
-
-The isolated installation contained only:
-
-```text
-11.0.100-rc.1.26425.128
-```
-
-If I invoked the isolated executable from inside that repository with a command that requires SDK selection, the repository still asked for `10.0.401`.
-
-That is correct behavior, but it means simply using a different `dotnet` executable is not enough to ignore `global.json`.
-
-The tool handles its own SDK-management operations from the neutral `~/dotnet-sdks` directory so the repository I happened to launch it from does not interfere.
-
-It also verifies installations with:
-
-```text
-dotnet --list-sdks
-```
-
-rather than relying on:
-
-```text
-dotnet --version
-```
-
-`--version` requires SDK selection. `--list-sdks` tells us what is physically available under that isolated host.
-
-This distinction matters later when we intentionally connect an isolated SDK to an existing repository.
-
-## Give the SDK a Quick Test
-
-Before involving an existing application, I want to prove the isolated SDK can create, build, and run a simple project.
-
-I do this from a neutral temporary directory so an existing repository's `global.json` cannot influence the test.
-
-On Windows:
-
-```powershell
-$DotNet = "$HOME\dotnet-sdks\11.0.100-rc.1.26425.128\dotnet.exe"
-$TestProject = Join-Path $env:TEMP 'SdkExperiment'
-
-Set-Location $env:TEMP
-
-& $DotNet new console -n SdkExperiment -f net11.0
-& $DotNet build $TestProject
-& $DotNet run --project $TestProject
-```
-
-On Linux or macOS:
-
-```bash
-DOTNET="$HOME/dotnet-sdks/11.0.100-rc.1.26425.128/dotnet"
-TEST_PROJECT="/tmp/SdkExperiment"
-
-cd /tmp
-
-"$DOTNET" new console -n SdkExperiment -f net11.0
-"$DOTNET" build "$TEST_PROJECT"
-"$DOTNET" run --project "$TEST_PROJECT"
-```
-
-The expected application output is:
-
-```text
-Hello, World!
-```
-
-At that point I know the isolated SDK itself can create, restore, build, and run a .NET 11 application.
-
-One caveat is worth calling out. Isolating the SDK files does not create a hermetic sandbox. The .NET CLI can still create normal per-user state during first-time use, such as telemetry configuration or a development HTTPS certificate.
-
-The isolation here is about keeping the SDK out of the normal system-wide installation and off `PATH`.
-
-## The Normal SDK Installation Does Not Change
-
-On the Windows machine I used for testing, the normal command:
-
-```powershell
-dotnet --list-sdks
-```
-
-continued to report:
+Before installing the isolated SDK, my Windows machine reported:
 
 ```text
 8.0.425 [C:\Program Files\dotnet\sdk]
@@ -300,79 +303,281 @@ continued to report:
 10.0.401 [C:\Program Files\dotnet\sdk]
 ```
 
-The isolated .NET 11 SDK did not appear there.
-
-On the Linux devcontainer, the normal host likewise continued to report only its system-installed `10.0.401` SDK.
-
-That is exactly what I wanted. The new SDK exists, but the normal development environment has not been changed to use it.
-
-Starting with .NET 10, `global.json` supports `sdk.paths`, which can tell the .NET host to search additional SDK locations. Microsoft documents that behavior in both the [`global.json` overview](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json) and [Test prerelease .NET SDKs locally](https://learn.microsoft.com/en-us/dotnet/core/tools/test-prerelease-sdk-locally).
-
-I am leaving that configuration for the next article.
-
-## Cleanup Is Part of the Tool Too
-
-An isolated SDK should be easy to remove when the experiment is over.
-
-Run the tool without a version and it will show only the SDKs installed under `~/dotnet-sdks`.
-
-PowerShell:
+After installing and using .NET 11 RC1 in isolation:
 
 ```powershell
-& "$HOME\dotnet-sdks\isolated-dotnet-sdk.ps1" -Action Remove
+dotnet --list-sdks
 ```
 
-Bash:
+still returned:
+
+```text
+8.0.425 [C:\Program Files\dotnet\sdk]
+9.0.318 [C:\Program Files\dotnet\sdk]
+10.0.401 [C:\Program Files\dotnet\sdk]
+```
+
+The .NET 11 SDK was not added to that list.
+
+To inspect the isolated installation, I explicitly called:
+
+```powershell
+& "$HOME\dotnet-sdks\11.0.100-rc.1.26425.128\dotnet.exe" --list-sdks
+```
+
+The same basic behavior held in the Linux environment I used for testing.
+
+That is the separation I was looking for.
+
+## One `global.json` Behavior I Did Not Expect
+
+Testing this against a real repository exposed one important detail.
+
+I initially assumed that invoking an isolated `dotnet` executable meant SDK selection itself was isolated.
+
+It does not.
+
+The .NET CLI still performs normal SDK resolution, and the current working directory is part of that process.
+
+The repository I used for testing contains:
+
+```json
+{
+  "sdk": {
+    "rollForward": "disable",
+    "version": "10.0.401"
+  },
+  "test": {
+    "runner": "Microsoft.Testing.Platform"
+  }
+}
+```
+
+The isolated host contained only:
+
+```text
+11.0.100-rc.1.26425.128
+```
+
+If I invoked the isolated executable's:
+
+```text
+dotnet --version
+```
+
+while standing inside that repository, the CLI still found the repository's `global.json`.
+
+It then tried to resolve:
+
+```text
+10.0.401
+```
+
+against the SDKs available to that isolated host.
+
+That SDK was not there, so SDK resolution failed.
+
+The important distinction is:
+
+```text
+The dotnet executable can be isolated.
+
+SDK resolution still follows normal .NET rules.
+```
+
+Starting with .NET 10, `global.json` supports an `sdk.paths` array that lets us tell the .NET host where to look for SDKs outside the normal installation.
+
+For this temporary test, I want the repository to use only the isolated SDK. The temporary `global.json` can look like this:
+
+```json
+{
+  "sdk": {
+    "version": "11.0.100-rc.1.26425.128",
+    "rollForward": "disable",
+
+    // Update this path for your OS:
+    // Windows: C:\\Users\\<user>\\dotnet-sdks\\11.0.100-rc.1.26425.128
+    // Linux:   /home/<user>/dotnet-sdks/11.0.100-rc.1.26425.128
+    // macOS:   /Users/<user>/dotnet-sdks/11.0.100-rc.1.26425.128
+    "paths": [
+      "/home/<user>/dotnet-sdks/11.0.100-rc.1.26425.128"
+    ]
+  },
+  "test": {
+    "runner": "Microsoft.Testing.Platform"
+  }
+}
+```
+
+Because I am not including `$host$`, the repository does not fall back to a normally installed SDK. It must use the exact SDK from the isolated location or fail.
+
+From the repository, I can then verify the selected SDK normally:
+
+```text
+dotnet --version
+```
+
+and expect:
+
+```text
+11.0.100-rc.1.26425.128
+```
+
+For my purposes, this is a temporary repository change.
+
+I am not upgrading the application yet. I am temporarily giving the repository access to a newer SDK so I can use its tooling to understand the application.
+
+When the inventory work is finished, I can restore `global.json` to its original SDK version and remove the `paths` entry.
+
+## This Is Isolation, Not a Sandbox
+
+There is another boundary worth being clear about.
+
+This approach isolates the SDK installation.
+
+It does not provide a completely isolated execution environment.
+
+During my Windows testing, the first invocation of the new SDK ran the normal .NET first-time experience and installed an ASP.NET Core HTTPS development certificate.
+
+The CLI can also create normal per-user state.
+
+So:
+
+```text
+isolated SDK installation
+```
+
+does not mean:
+
+```text
+nothing outside this directory can change
+```
+
+If I needed that level of isolation, I would use something like a container or virtual machine.
+
+For this use case, I only need the newer SDK to remain separate from the SDK installation my normal development environment depends on.
+
+## Removing the Experiment Is Straightforward
+
+Because each SDK is installed into its own version-specific directory, it can also be removed independently.
+
+Using the helper tool on PowerShell:
+
+```powershell
+& "$HOME\dotnet-sdks\isolated-dotnet-sdk.ps1" `
+    -Action Remove `
+    -Version '11.0.100-rc.1.26425.128'
+```
+
+Or with Bash:
 
 ```bash
-"$HOME/dotnet-sdks/isolated-dotnet-sdk.sh" remove
+"$HOME/dotnet-sdks/isolated-dotnet-sdk.sh" \
+    remove \
+    11.0.100-rc.1.26425.128
 ```
 
-Before deleting the selected version, the tool runs [`dotnet build-server shutdown`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build-server) using that isolated host.
+There was one practical issue on Windows.
 
-That matters on Windows. During testing, MSBuild and the compiler server kept files inside the isolated SDK locked until those build servers were shut down.
+A build can leave MSBuild or compiler build-server processes running, and those processes can keep files inside the isolated SDK directory locked.
 
-The tool then removes only the selected version directory. Other isolated SDKs and the normal system installation are left alone.
+The tool handles that by asking the isolated SDK to run:
 
-## What I Actually Tested
+```text
+dotnet build-server shutdown
+```
 
-I tested the tool with PowerShell 7 on Windows 11 and with Bash inside a Linux devcontainer.
+before removing the directory.
 
-The tests covered:
+Other isolated SDKs and the normal system installation are left alone.
 
-- bootstrapping the tool from GitHub;
-- selecting SDKs interactively;
-- installing an exact SDK version;
-- recognizing system-installed and isolated SDKs;
-- creating an isolated duplicate only when explicitly requested;
-- keeping the repository's existing `global.json` from affecting tool-management operations;
-- listing isolated SDKs;
-- shutting down build servers before removal;
-- removing only isolated SDK directories;
-- rejecting invalid SDK version input;
-- returning a nonzero exit status for operational failures;
-- leaving the normal system SDK installation unchanged.
+## The Real Benefit Is Having Better Tools Before the Upgrade
 
-That is enough for me to treat this as a tool I can reuse rather than a one-off script embedded in an article.
+Installing another copy of a .NET SDK is not the interesting part.
 
-The implementation and usage documentation are available here:
+What I wanted was access to newer tooling without first committing the application to a newer version of .NET.
 
-[infoconex/isolated-dotnet-sdk](https://github.com/infoconex/isolated-dotnet-sdk)
+That lets me separate two decisions:
 
-## Now We Have a Tool We Can Use
+```text
+Which tools do I want available?
+```
 
-Installing a newer SDK was not the goal.
+from:
 
-The goal was having newer tooling available without changing the SDK installation the normal development environment depends on.
+```text
+Which version of .NET should this application target?
+```
 
-Now I have that.
+Those do not have to happen at the same time.
 
-In the next article, I am going to intentionally connect an existing repository to the isolated SDK and use it to understand what actually needs to change before an upgrade.
+If I am responsible for an application on .NET 8 or .NET 9 that needs attention before support ends, I can first bring a newer SDK into the process.
+
+I can take advantage of improvements Microsoft has made to the SDK and CLI since the application's current toolchain was released.
+
+Then I can use those tools to understand what I actually have.
+
+Only after that do I need to start changing the application.
+
+That gives me a much better sequence:
+
+```text
+Get the newer tooling
+        |
+        v
+Inventory the existing application
+        |
+        v
+Understand dependencies and risks
+        |
+        v
+Decide what needs to change
+        |
+        v
+Upgrade deliberately
+```
+
+The goal is not to use new tooling simply because it is new.
+
+The goal is to give myself the best available information before making changes.
+
+## Next: Inventory the Application
+
+Now I have the newer toolbox available.
+
+The next step is to use it.
+
+Before changing target frameworks, packages, project references, tools, workloads, build files, or test configuration, I want an inventory of the application as it exists today.
+
+I want to understand things such as:
+
+- the projects and solutions that make up the application;
+- the target frameworks they currently use;
+- package dependencies;
+- project-to-project references;
+- outdated, deprecated, or vulnerable packages;
+- repository and local .NET tools;
+- workloads;
+- tests;
+- build and MSBuild configuration;
+- and other dependencies that may influence the upgrade.
+
+Some of the tooling we will use has existed for several .NET releases.
+
+Some capabilities have been added or improved in newer SDKs such as .NET 10.
+
+That is exactly the point.
+
+The application does not have to be upgraded before I can start taking advantage of a newer development toolbox.
+
+In the next article, I want to use that toolbox to build a useful inventory before we change anything.
 
 ## Microsoft References
 
+- [.NET support policy](https://dotnet.microsoft.com/en-us/platform/support/policy)
 - [.NET install scripts](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script)
 - [Test prerelease .NET SDKs locally](https://learn.microsoft.com/en-us/dotnet/core/tools/test-prerelease-sdk-locally)
+- [What's new in the SDK and tooling for .NET 10](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/sdk)
 - [`dotnet build-server`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build-server)
 - [`global.json` overview](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json)
 - [.NET 11 RC1 release notes](https://github.com/dotnet/core/blob/main/release-notes/11.0/preview/rc1/11.0.0-rc.1.md)
