@@ -471,20 +471,6 @@ Or with Bash:
     11.0.100-rc.1.26425.128
 ```
 
-There was one practical issue on Windows.
-
-A build can leave MSBuild or compiler build-server processes running, and those processes can keep files inside the isolated SDK directory locked.
-
-The tool handles that by asking the isolated SDK to run:
-
-```text
-dotnet build-server shutdown
-```
-
-before removing the directory.
-
-Other isolated SDKs and the normal system installation are left alone.
-
 ## The Real Benefit Is Having Better Tools Before the Upgrade
 
 Installing another copy of a .NET SDK is not the interesting part.
@@ -572,7 +558,6 @@ In the next article, I want to use that toolbox to build a useful inventory befo
 - [.NET install scripts](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script)
 - [Test prerelease .NET SDKs locally](https://learn.microsoft.com/en-us/dotnet/core/tools/test-prerelease-sdk-locally)
 - [What's new in the SDK and tooling for .NET 10](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/sdk)
-- [`dotnet build-server`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build-server)
 - [`global.json` overview](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json)
 - [.NET 11 RC1 release notes](https://github.com/dotnet/core/blob/main/release-notes/11.0/preview/rc1/11.0.0-rc.1.md)
 - [.NET 11 downloads](https://dotnet.microsoft.com/en-us/download/dotnet/11.0)
