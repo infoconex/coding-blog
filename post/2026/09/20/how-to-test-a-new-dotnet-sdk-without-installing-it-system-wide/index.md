@@ -15,7 +15,10 @@ tags:
   - SDK
 series: "Staying Current with .NET"
 seriesOrder: 4
+image: /post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide/images/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide-banner.png
 ---
+
+![How to Test a New .NET SDK Without Installing It System-Wide](images/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide-banner.png)
 
 # How to Test a New .NET SDK Without Installing It System-Wide
 
@@ -225,14 +228,14 @@ On Linux and macOS:
 Instead of installing into a normal location such as:
 
 ```text
-C:\Program Files\dotnet\
+C:\\Program Files\\dotnet\\
 ```
 
 I can keep isolated SDKs under my home directory:
 
 ```text
 Windows
-C:\Users\<user>\dotnet-sdks\
+C:\\Users\\<user>\\dotnet-sdks\\
 
 Linux
 /home/<user>/dotnet-sdks/
@@ -298,9 +301,9 @@ This was one of the behaviors I wanted to test rather than assume.
 Before installing the isolated SDK, my Windows machine reported:
 
 ```text
-8.0.425 [C:\Program Files\dotnet\sdk]
-9.0.318 [C:\Program Files\dotnet\sdk]
-10.0.401 [C:\Program Files\dotnet\sdk]
+8.0.425 [C:\\Program Files\\dotnet\\sdk]
+9.0.318 [C:\\Program Files\\dotnet\\sdk]
+10.0.401 [C:\\Program Files\\dotnet\\sdk]
 ```
 
 After installing and using .NET 11 RC1 in isolation:
@@ -312,9 +315,9 @@ dotnet --list-sdks
 still returned:
 
 ```text
-8.0.425 [C:\Program Files\dotnet\sdk]
-9.0.318 [C:\Program Files\dotnet\sdk]
-10.0.401 [C:\Program Files\dotnet\sdk]
+8.0.425 [C:\\Program Files\\dotnet\\sdk]
+9.0.318 [C:\\Program Files\\dotnet\\sdk]
+10.0.401 [C:\\Program Files\\dotnet\\sdk]
 ```
 
 The .NET 11 SDK was not added to that list.
@@ -322,7 +325,7 @@ The .NET 11 SDK was not added to that list.
 To inspect the isolated installation, I explicitly called:
 
 ```powershell
-& "$HOME\dotnet-sdks\11.0.100-rc.1.26425.128\dotnet.exe" --list-sdks
+& "$HOME\\dotnet-sdks\\11.0.100-rc.1.26425.128\\dotnet.exe" --list-sdks
 ```
 
 The same basic behavior held in the Linux environment I used for testing.
@@ -395,7 +398,7 @@ For this temporary test, I want the repository to use only the isolated SDK. The
     "rollForward": "disable",
 
     // Update this path for your OS:
-    // Windows: C:\\Users\\<user>\\dotnet-sdks\\11.0.100-rc.1.26425.128
+    // Windows: C:\\\\Users\\\\<user>\\\\dotnet-sdks\\\\11.0.100-rc.1.26425.128
     // Linux:   /home/<user>/dotnet-sdks/11.0.100-rc.1.26425.128
     // macOS:   /Users/<user>/dotnet-sdks/11.0.100-rc.1.26425.128
     "paths": [
@@ -458,7 +461,7 @@ Because each SDK is installed into its own version-specific directory, it can al
 Using the helper tool on PowerShell:
 
 ```powershell
-& "$HOME\dotnet-sdks\isolated-dotnet-sdk.ps1" `
+& "$HOME\\dotnet-sdks\\isolated-dotnet-sdk.ps1" `
     -Action Remove `
     -Version '11.0.100-rc.1.26425.128'
 ```
@@ -466,8 +469,8 @@ Using the helper tool on PowerShell:
 Or with Bash:
 
 ```bash
-"$HOME/dotnet-sdks/isolated-dotnet-sdk.sh" \
-    remove \
+"$HOME/dotnet-sdks/isolated-dotnet-sdk.sh" \\
+    remove \\
     11.0.100-rc.1.26425.128
 ```
 
