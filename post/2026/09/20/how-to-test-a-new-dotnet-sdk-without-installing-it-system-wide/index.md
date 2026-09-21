@@ -346,9 +346,6 @@ The repository I used for testing contains:
   "sdk": {
     "rollForward": "disable",
     "version": "10.0.401"
-  },
-  "test": {
-    "runner": "Microsoft.Testing.Platform"
   }
 }
 ```
@@ -387,6 +384,8 @@ SDK resolution still follows normal .NET rules.
 
 Starting with .NET 10, `global.json` supports an `sdk.paths` array that lets us tell the .NET host where to look for SDKs outside the normal installation.
 
+Before changing `global.json`, make a copy of the original file or otherwise make sure it can be restored exactly. This is a temporary change for the inventory work, not the upgrade itself.
+
 For this temporary test, I want the repository to use only the isolated SDK. The temporary `global.json` can look like this:
 
 ```json
@@ -402,14 +401,9 @@ For this temporary test, I want the repository to use only the isolated SDK. The
     "paths": [
       "/home/<user>/dotnet-sdks/11.0.100-rc.1.26425.128"
     ]
-  },
-  "test": {
-    "runner": "Microsoft.Testing.Platform"
   }
 }
 ```
-
-Because I am not including `$host$`, the repository does not fall back to a normally installed SDK. It must use the exact SDK from the isolated location or fail.
 
 From the repository, I can then verify the selected SDK normally:
 
@@ -427,7 +421,7 @@ For my purposes, this is a temporary repository change.
 
 I am not upgrading the application yet. I am temporarily giving the repository access to a newer SDK so I can use its tooling to understand the application.
 
-When the inventory work is finished, I can restore `global.json` to its original SDK version and remove the `paths` entry.
+When the inventory work is finished, restore the original `global.json`.
 
 ## This Is Isolation, Not a Sandbox
 
