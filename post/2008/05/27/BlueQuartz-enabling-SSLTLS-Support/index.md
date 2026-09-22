@@ -71,6 +71,7 @@ Email Address []: <-- Enter your Email Address.
  nano -w /etc/proftpd.conf
 ```
 
+```text
 <IfModule mod\_tls.c>
     TLSProtocol TLSv1
 </IfModule>
@@ -106,5 +107,6 @@ Email Address []: <-- Enter your Email Address.
 </IfModule>
 
 </Global>
+```
 
 4**)** Connect to server using a secure FTP client and choose FTP over Explicit SSL/TLS. If you dont have a secure FTP client try this free one FileZilla <http://filezilla-project.org/>
