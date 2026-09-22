@@ -59,6 +59,7 @@ Congratulations you have installed mono and can now execute programs written in 
 
 **Contents of /etc/rc.d/init.d/xsp**
 
+```bash
 #!/bin/sh
 #
 # Startup script for xsp server
@@ -146,3 +147,4 @@ exit 1
 esac
 
 exit $?
+```
