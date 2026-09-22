@@ -13,8 +13,6 @@ I recently had to migrate some older BlueOnyx and BlueQuartz servers to newer ha
 
 For those interested in the steps to install on the BlueOnyx 5209 hosting control panel that runs on CentOS 7 here are the instructions.
 
-Here is a link to the same instructions but in txt format: [Roundcube Install.txt (8.21 kb)](/file.axd?file=/roundcube/Roundcube Install.txt)
-
 Create a temporary folder to download the install to and download the roundcube install.
 
 ```bash
