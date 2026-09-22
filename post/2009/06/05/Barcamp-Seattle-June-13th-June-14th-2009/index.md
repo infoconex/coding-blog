@@ -14,4 +14,4 @@ BarCampSeattle is an ad-hoc gathering born from the desire for people to share a
 
 I will be going to this on Saturday to see how this type of event works. I always enjoy going to these types of things just for the networking opportunities.
 
-To register and see more details visit: <http://barcampseattle-09.pathable.com/>
+The original BarCampSeattle 2009 registration site is no longer online.

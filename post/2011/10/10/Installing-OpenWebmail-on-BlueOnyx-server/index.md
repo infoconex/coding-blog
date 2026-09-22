@@ -16,16 +16,16 @@ So today I decided to work out what it would take to bring over Openwebmail to t
 
 Here is the installation steps:
 
-1) Grab the latest install of openwebmail from: <http://openwebmail.acatysmoof.com/>
+1) Grab the latest install of openwebmail from: <https://openwebmail.org/openwebmail/>
 
 - Note that I am installing version 2.5.3 however there are 2 versions currently available
-  - [Official Version 2.5.3](http://openwebmail.acatysmoof.com/download/release)
-  - [3.0 Beta 4](http://openwebmail.acatysmoof.com/download/current)
+  - [Official Version 2.5.3](https://openwebmail.org/openwebmail/download/release/)
+  - [Current downloads](https://openwebmail.org/openwebmail/download/current/)
 
 2) Download file to /var/www
 
 - cd /var/www
-- wget <http://openwebmail.acatysmoof.com/download/release/openwebmail-2.53.tar.gz>
+- wget <https://openwebmail.org/openwebmail/download/release/openwebmail-2.53.tar.gz>
 
 3) Extract contents
 

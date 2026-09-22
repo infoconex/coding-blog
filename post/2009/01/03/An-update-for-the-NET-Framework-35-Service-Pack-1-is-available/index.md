@@ -11,4 +11,4 @@ legacyPaths: ["/post/2009/01/03/An-update-for-the-NET-Framework-35-Service-Pack-
 ---
 Posting this for those that may not have seen the latest post update to 3.5 SP1. Might want to check out this Microsoft article if you are having problems after installing 3.5 SP1.
 
-<http://support.microsoft.com/kb/959209>
+The original KB page has moved, but the update can still be found in the [Microsoft Update Catalog by searching for KB959209](https://www.catalog.update.microsoft.com/Search.aspx?q=959209).

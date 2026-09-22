@@ -87,6 +87,4 @@ Ok, so now you no longer need code that checks if it exists as that will throw a
 EventLog.WriteEntry("MyCustomSource", "This is my event log message")
 ```
 
-I also want to give credit to Walter Mayers for pointing out the cmd script approach to creating the custom event source
-
-<http://blogs.msdn.com/b/walterm/archive/2011/08/19/scom-2007-r2-event-log-alerting-and-monitoring-for-azure-applications.aspx>
+I also want to give credit to Walter Mayers for pointing out the cmd script approach to creating the custom event source. The original MSDN blog post is no longer online.

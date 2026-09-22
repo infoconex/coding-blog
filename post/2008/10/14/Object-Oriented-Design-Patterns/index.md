@@ -18,18 +18,18 @@ Next I went and did some searches on the Design patterns that I had been reading
 
 ### Design Patterns Implementation in a Storage Explorer Application
 
-**By [Breman Sinaga](http://www.codeproject.com/script/Articles/MemberArticles.aspx?amid=1006104)**
+**By Breman Sinaga**
 
-URL: [http://www.codeproject.com/KB/architecture/sinagastorageexplorer.aspx](http://www.codeproject.com/KB/architecture/sinagastorageexplorer.aspx "http://www.codeproject.com/KB/architecture/sinagastorageexplorer.aspx")
+[Design Patterns Implementation in a Storage Explorer Application](https://www.codeproject.com/Articles/6849/Design-Patterns-Implementation-in-a-Storage-Explor)
 
 Breman does an incredible job of showing how some of the software patterns might be implemented in a real world application and really this is bringing together a much better understanding of how to apply some of these patterns. I am starting to think about how I am possibly already using some of these patterns without knowing it before and how some of the things solved in our applications might have been better structured had we implemented some of the various patterns.
 
 I read some more today and found a link to a page that gives an outline at how to study patterns and information on creating a study group. I think it might be cool to see if Seattle has a local study group related to patterns so putting this as a reminder.
 
-[http://www.industriallogic.com/papers/learning.html](http://www.industriallogic.com/papers/learning.html "http://www.industriallogic.com/papers/learning.html")
+[A Learning Guide To Design Patterns](https://www.industriallogic.com/papers/learning.html)
 
-[http://www.bennorthrop.com/Home/Blog/2006\_11\_01\_design\_patterns.php](http://www.bennorthrop.com/Home/Blog/2006_11_01_design_patterns.php "http://www.bennorthrop.com/Home/Blog/2006_11_01_design_patterns.php")
+Ben Northrop's 2006 design patterns post was also referenced here, but the original link is no longer available.
 
-[http://www.onjava.com/pub/a/onjava/2005/04/06/designpatterns.html](http://www.onjava.com/pub/a/onjava/2005/04/06/designpatterns.html "http://www.onjava.com/pub/a/onjava/2005/04/06/designpatterns.html")
+An O'Reilly ONJava design patterns article was also referenced here, but the original link is no longer available.
 
-Good reference resource Wikipedia: [http://en.wikipedia.org/wiki/Design\_Patterns](http://en.wikipedia.org/wiki/Design_Patterns "http://en.wikipedia.org/wiki/Design_Patterns")
+Good reference resource Wikipedia: [Software design pattern](https://en.wikipedia.org/wiki/Software_design_pattern)

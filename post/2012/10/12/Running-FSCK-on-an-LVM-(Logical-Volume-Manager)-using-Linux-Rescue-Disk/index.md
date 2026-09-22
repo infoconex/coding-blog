@@ -22,19 +22,19 @@ Once in I attempted to run fsck /dev/sda1 but I got an error back indicating it 
 
 Scan all disks for partiitions:
 
-- lvm [pvscan](http://linux.about.com/library/cmd/blcmdl8_pvscan.htm)
+- lvm [pvscan](https://man7.org/linux/man-pages/man8/pvscan.8.html)
 
 Scan all disks for volume groups and build /etc/lvmtab and /etc/lvmtab.d/\* which are the database for all other lvm commands:
 
-- lvm [vgscan](http://linux.about.com/library/cmd/blcmdl8_vgscan.htm)
+- lvm [vgscan](https://man7.org/linux/man-pages/man8/vgscan.8.html)
 
 Change attributes of a logical volume
 
-- lvm [lvchange](http://linux.about.com/library/cmd/blcmdl8_lvchange.htm) -ay VolGroup00
+- lvm [lvchange](https://man7.org/linux/man-pages/man8/lvchange.8.html) -ay VolGroup00
 
 Scan all disks for logical volumes
 
-- lvm [lvscan](http://linux.about.com/library/cmd/blcmdl8_lvscan.htm)
+- lvm [lvscan](https://man7.org/linux/man-pages/man8/lvscan.8.html)
 
 Then I was able to run fsck as follows
 

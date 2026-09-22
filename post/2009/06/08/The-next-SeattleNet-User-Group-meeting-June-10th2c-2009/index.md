@@ -1,7 +1,7 @@
 ---
 title: "The next Seattle.Net User Group meeting June 10th, 2009"
 date: "2009-06-08"
-description: "for more information visit website: http://seattledotnet.org/"
+description: "Seattle .NET User Group meeting from June 10, 2009 covering Windows Azure with David Lemphers."
 tags: []
 slug: "the-next-seattle-net-user-group-meeting-june-10th-2009"
 author: "Jim Scott"
@@ -9,14 +9,14 @@ originalUrl: "http://coding.infoconex.com/post/2009/06/08/The-next-SeattleNet-Us
 permalink: "/post/2009/06/08/The-next-SeattleNet-User-Group-meeting-June-10th2c-2009"
 legacyPaths: ["/post/2009/06/08/The-next-SeattleNet-User-Group-meeting-June-10th2c-2009"]
 ---
-**for more information visit website: <http://seattledotnet.org/>**
+**The original Seattle .NET User Group website is no longer online. Current Seattle-area .NET events can be found through the [Greater Seattle .NET Developers Group](https://www.meetup.com/greater-seattle-dotnet/).**
 
 **Topic:**  **Windows Azure.**
 
 **Abstract:**
-In this session, [David Lemphers](http://blogs.msdn.com/davidlem/), Senior Program Manager for Windows Azure, will provide an overview of Windows Azure, including how-to code demos on building cloud based applications using Windows Azure and Visual Studio.
+In this session, David Lemphers, Senior Program Manager for Windows Azure, will provide an overview of Windows Azure, including how-to code demos on building cloud based applications using Windows Azure and Visual Studio.
 
-**Speaker: Dave Lemphers**[David Lemphers](http://blogs.msdn.com/davidlem/) is a [Windows Azure](http://www.microsoft.com/azure/default.mspx) program manager based in Redmond. Dave spends most of his time working on features and projects for Windows Azure, but also enjoys blogging and building robots in his spare time.
+**Speaker: Dave Lemphers** David Lemphers is a [Windows Azure](https://azure.microsoft.com/) program manager based in Redmond. Dave spends most of his time working on features and projects for Windows Azure, but also enjoys blogging and building robots in his spare time.
 Originally from Australia, Dave spends his free time making vegemite sandwiches and eating meat pies and lamingtons at Cafe 41!
 
 **When:**
@@ -28,7 +28,7 @@ Wednesday, June 10th, 2009
 Starbucks Support Center
 2401 Utah Ave S.
 Seattle, WA 98134
-[See Map](http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=2401+Utah+Ave,+S.+Seattle,+WA+98134&sll=37.0625,-95.677068&sspn=50.51141,78.75&ie=UTF8&t=h&z=16&iwloc=A)
+[See Map](https://www.google.com/maps/search/?api=1&query=2401+Utah+Ave+S+Seattle+WA+98134)
 
 Our meeting is open to everyone so bring your friends and co-workers.
-If you’re planning to come, please RSVP as soon as possible via [email](mailto:info@seattledotnet.org) or at the [Facebook Group](http://www.facebook.com/group.php?gid=78132511486).
+At the time, RSVPs were accepted by email or through the group's Facebook page.

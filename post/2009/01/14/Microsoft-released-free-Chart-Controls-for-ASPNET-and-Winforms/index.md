@@ -11,14 +11,14 @@ legacyPaths: ["/post/2009/01/14/Microsoft-released-free-Chart-Controls-for-ASPNE
 ---
 I might be behind the times but I just found out that MS released free charting controls for Winform and ASP.NET. Requires you be running VS2008.
 
-Charting Component Download : <http://www.microsoft.com/downloads/details.aspx?FamilyId=130F7986-BF49-4FE5-9CA8-910AE6EA442C&displaylang=en>
+Charting Component Download: [Microsoft Chart Controls for Microsoft .NET Framework 3.5](https://www.microsoft.com/en-us/download/details.aspx?id=14422)
 
-Language Pack if you are using other languages: <http://www.microsoft.com/downloads/details.aspx?FamilyId=581FF4E3-749F-4454-A5E3-DE4C463143BD&displaylang=en>
+Language Pack if you are using other languages: [Microsoft Chart Controls for Microsoft .NET Framework 3.5 Language Pack](https://legacyupdate.net/download-center/download/22000/microsoft-chart-controls-for-microsoft-.net-framework-3.5-language-pack)
 
-Visual Studio 2008 Add-On: <http://www.microsoft.com/downloads/details.aspx?familyid=1D69CE13-E1E5-4315-825C-F14D33A303E9&displaylang=en>
+Visual Studio 2008 Add-On: [Microsoft Chart Controls Add-on for Microsoft Visual Studio 2008](https://legacyupdate.net/download-center/download/23903/microsoft-chart-controls-add-on-for-microsoft-visual-studio-2008)
 
-Documentation: <http://www.microsoft.com/downloads/details.aspx?familyid=EE8F6F35-B087-4324-9DBA-6DD5E844FD9F&displaylang=en>
+Microsoft also preserves an archived MSDN Magazine overview: [Microsoft Chart Controls, Visual Studio Automatic Code Snippets, And More](https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/april/microsoft-chart-controls-visual-studio-automatic-code-snippets).
 
-Also here is a good resouce site that provides samples in asp.net and winforms for using the controls: [http://code.msdn.microsoft.com/mschart/Release/ProjectReleases.aspx?ReleaseId=1591](http://www.microsoft.com/downloads/details.aspx?familyid=EE8F6F35-B087-4324-9DBA-6DD5E844FD9F&displaylang=en)
+The original MSDN Code Gallery samples page linked from this post is no longer available.
 
 I will be downloading later this evening and playing around with this but this is great to see MS finally release some nice looking chart controls.

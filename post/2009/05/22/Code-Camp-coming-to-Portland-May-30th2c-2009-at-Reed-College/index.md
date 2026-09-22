@@ -11,4 +11,4 @@ legacyPaths: ["/post/2009/05/22/Code-Camp-coming-to-Portland-May-30th2c-2009-at-
 ---
 I have been to this even a few years back and it was very well organized, had good speakers, facilities were excellent, and even a free lunch.
 
-Take a look at the code camp website at <http://portlandcodecamp.org/>
+The original Portland Code Camp website linked from this 2009 post is no longer online.

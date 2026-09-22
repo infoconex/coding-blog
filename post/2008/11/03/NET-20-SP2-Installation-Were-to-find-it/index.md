@@ -12,12 +12,12 @@ legacyPaths: ["/post/2008/11/03/NET-20-SP2-Installation-Were-to-find-it"]
 ---
 I have seen many people referring to .NET 2.0 SP2 to fix some of the issues I have been dealing with. I finally figured out that the SP2 for the 2.0 framework is not available as of now anyways as a individual download but rather you must download .NET 3.5 SP1 to get the installation.
 
-So I downloaded [3.5 SP1](http://www.microsoft.com/downloads/details.aspx?FamilyId=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en) and sure enough in my Add/Remove program list now show installed 2.0 SP2.
+So I downloaded [.NET Framework 3.5 SP1](https://www.microsoft.com/en-us/download/details.aspx?id=22) and sure enough in my Add/Remove program list now show installed 2.0 SP2.
 
-I also found a link for a [bootstrap](http://msdn.microsoft.com/en-us/vs2008/bb898654.aspx) that you can download and get SP2 by itself but have not tried this myself.
+The same Microsoft download page also provides the .NET Framework 3.5 SP1 bootstrapper and full-package options.
 
 **UPDATE April 23rd, 2009**
 
-Microsoft has now released .NET 2.0 SP2 as its own install.
+Microsoft later released .NET 2.0 SP2 as its own install. That download has since been removed from Microsoft.com, but a copy of the original Microsoft Download Center entry is preserved in the [Legacy Update archive](https://legacyupdate.net/download-center/download/1639/microsoft-.net-framework-2.0-sp2).
 
-<http://www.microsoft.com/downloads/details.aspx?familyid=5B2C0358-915B-4EB5-9B1D-10E506DA9D0F&displaylang=en>
+This is legacy software preserved here for historical reference, not current deployment guidance.

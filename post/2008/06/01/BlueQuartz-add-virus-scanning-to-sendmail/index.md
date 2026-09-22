@@ -11,14 +11,17 @@ legacyPaths: ["/post/2008/06/01/BlueQuartz-add-virus-scanning-to-sendmail"]
 ---
 This HowTo is designed to provide the simplest solution for virus scanning to a BlueQuartz box. However this will also work on any box running Redhat Enterprise Linux 4 or CentOS 4
 
+**Historical note:** RPMForge and the DAG repository endpoints used by this 2008 procedure have been retired. The configuration below is preserved for historical context and should not be expected to work on a current system.
+
  Note this uses a MILTER to scan for viruses and assumption is that you are not running any other MILTERS. If you are you will need to be smart enough to know how to modify the following instructions.
 
 Assuming you dont have DAG or RPMFORGE installed which a basic box does not you will want to install the RPMFORGE repository so that you can easily install CLAMAV.
 
 **Install RPMFORGE**
 
-```
-rpm -Uhv http://apt.sw.be/redhat/el4/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.i386.rpm
+```bash
+# The original RPMForge package URL is no longer available.
+# rpm -Uhv <rpmforge-release-package>
 ```
 
 **Edit rpmforge.repo**
@@ -37,11 +40,11 @@ Should look something like the following. Save the file once completed.
 
 ```text
 # Name: RPMforge RPM Repository for Red Hat Enterprise 4 - dag
-# URL: <http://rpmforge.net/>
+# Historical RPMForge repository URLs have been retired.
 [rpmforge]
 name = Red Hat Enterprise $releasever - RPMforge.net - dag
-#baseurl = <http://apt.sw.be/redhat/el4/en/$basearch/dag>
-mirrorlist = <http://apt.sw.be/redhat/el4/en/mirrors-rpmforge>
+#baseurl = <historical RPMForge base URL>
+mirrorlist = <historical RPMForge mirror list>
 #mirrorlist = <file:///etc/yum.repos.d/mirrors-rpmforge>
 enabled = 1
 protect = 0

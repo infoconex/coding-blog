@@ -11,7 +11,9 @@ legacyPaths: ["/post/2008/08/23/BlueQuartz-installing-Mono"]
 ---
 Mono allows you to run applications written in .NET programming language on Linux machines.
 
-**Step 1:** Install the YUM repository by grabbing the file [mono.repo](http://www.go-mono.com/download/fedora-3-i386/mono.repo) from the mono website and placing in /etc/yum.repos.d/ folder.
+**Historical note:** The Mono YUM repository URLs used by this 2008 procedure have been retired. The repository configuration below is preserved for historical context and should not be expected to work today.
+
+**Step 1:** Install the YUM repository by grabbing the `mono.repo` file from the Mono website and placing it in the `/etc/yum.repos.d/` folder.
 
 --- Update 7/22/2011 ---
 
@@ -19,7 +21,7 @@ The above file is no longer available. Here is the contents of the mono.repo fil
 
  [mono]
 name=Mono for rhel-4-i386 (stable)
-baseurl=http://go-mono.com/download-stable/rhel-4-i386/
+# Historical Mono repository URL has been retired.
 enabled=1
 gpgcheck=0
 
@@ -37,7 +39,7 @@ mono-nunit              i586       1.9.1-2.novell   mono              115 k
 mono-web                i586       1.9.1-2.novell   mono              3.0 M
 mono-winforms           i586       1.9.1-2.novell   mono              3.9 M
 
-Congratulations you have installed mono and can now execute programs written in .NET on your machine. However I had you install XSP as it is a small webserver that can run a website written in .NET without having to integrate into your existing web application such as apache. If you want to integrate into apache follow the instructions at this [Mono website](http://www.mono-project.com/Mod_mono).
+Congratulations you have installed mono and can now execute programs written in .NET on your machine. However I had you install XSP as it is a small webserver that can run a website written in .NET without having to integrate into your existing web application such as apache. If you want to integrate into apache follow the current [mod_mono documentation](https://www.mono-project.com/docs/web/mod_mono/).
 
 **Setting up XSP**
 

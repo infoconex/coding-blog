@@ -11,4 +11,4 @@ legacyPaths: ["/post/2009/01/12/CWESANS-TOP-25-Most-Dangerous-Programming-Errors
 ---
 Want to write software that is safe and secure. Check out this article that outlines the top 25 most dangerous programming errors and how to fix them.
 
-<http://www.sans.org/top25errors/>
+The 2009 CWE/SANS Top 25 is preserved in MITRE's [CWE Top 25 archive](https://cwe.mitre.org/top25/archive/).

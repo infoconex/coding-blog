@@ -50,8 +50,6 @@ Also the Appendix offers some great advice using a Matrix apporoach to various t
 
 **Data Technology Matrix** - Provides matrix of old and new technology options such as ADO.NET, Entity Framework, LINQ to SQL and more.
 
-[Check out the website on codeplex](http://apparchguide.codeplex.com/)
+The original CodePlex site for the guide is no longer online. Microsoft preserves a contemporary overview of the second edition in [Simplifying Patterns and Practices](https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/may/patterns-and-practices-simplifying-patterns-and-practices).
 
-Also here is a link to pocket guides based on the Application Architecture Guide but geared towards Web Architecture, Mobile Architecture, RIA Architecture, Rich Client Architecture, Service Architecture.
-
-[Check out pocket guides on codeplex](http://apparch.codeplex.com/Release/ProjectReleases.aspx?ReleaseId=19802)
+The original CodePlex pocket-guide downloads are also no longer online. Microsoft's current architecture guidance is available through [Azure Application Architecture Fundamentals](https://learn.microsoft.com/en-us/azure/architecture/guide/).

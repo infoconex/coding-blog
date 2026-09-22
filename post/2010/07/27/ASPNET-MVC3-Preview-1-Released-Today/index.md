@@ -9,7 +9,7 @@ originalUrl: "http://coding.infoconex.com/post/2010/07/27/ASPNET-MVC3-Preview-1-
 permalink: "/post/2010/07/27/ASPNET-MVC3-Preview-1-Released-Today"
 legacyPaths: ["/post/2010/07/27/ASPNET-MVC3-Preview-1-Released-Today"]
 ---
-You can download the new ASP.NET MVC3 Preview 1 [here](http://go.microsoft.com/fwlink/?LinkID=157073)
+ASP.NET MVC 3 Preview 1 was released in July 2010. Scott Guthrie's archived [Introducing ASP.NET MVC 3 (Preview 1)](https://prod-static-asp-blogs.azurewebsites.net/scottgu/introducing-asp-net-mvc-3-preview-1/) post preserves the release details.
 
 This is the next major release of the ASP.NET MVC framework and is fully backwards compatible with projects using ASP.NET MVC2.
 
@@ -31,11 +31,6 @@ So what is new?
 
 **Dependency injection** - Better support for using Dependency Injection and IOC containers. You can now use dependency injection in Controllers, Views and Action Filters with future support for Model Binders, Value Providers, Validation Providers and Model metadata Providers.
 
-Visit Brad Wilson's article on MVC3 dependency injection support.
-
-- [ASP.NET MVC 3 Service Location: Introduction (Part 1)](http://bradwilson.typepad.com/blog/2010/07/service-location-pt1-introduction.html)
-- [ASP.NET MVC 3 Service Location: Controllers (Part 2)](http://bradwilson.typepad.com/blog/2010/07/service-location-pt2-controllers.html)
-- [ASP.NET MVC 3 Service Location: Views (Part 3)](http://bradwilson.typepad.com/blog/2010/07/service-location-pt3-views.html)
-- [ASP.NET MVC 3 Service Location: Filters (Part 4)](http://bradwilson.typepad.com/blog/2010/07/service-location-pt4-filters.html)
+Brad Wilson wrote a four-part series about MVC3 dependency injection support. The original Typepad posts are no longer online, but Microsoft still preserves the [ASP.NET MVC 3 dependency resolver API documentation](https://learn.microsoft.com/en-us/previous-versions/aspnet/gg401972%28v%3Dvs.118%29), and Scott Guthrie's archived overview above provides the release context.
 
 I am excited to see the improvements and look forward to upgrading my current projects to use some of the new features.

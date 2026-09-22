@@ -12,12 +12,10 @@ legacyPaths: ["/post/2010/07/29/Silverlight-PivotViewer-control-released"]
 ---
 The silverlight PivotViewer control allows you to build very large collections and embed them on your website. Works really well for collections that provide a visual representation of the data you are navigating and uses the silverlight deep zoom feature so navigating high resolution images is very quick.
 
-To [download the control](http://www.silverlight.net/learn/pivotviewer/) go here
+The original Microsoft download is no longer available from the Download Center, but it is preserved in the [Microsoft Silverlight PivotViewer archive](https://legacyupdate.net/download-center/download/17747/microsoft-silverlight-pivotviewer).
 
-To view some demo's check out these sites using it already.
+Microsoft Learn also preserves the [PivotViewer class documentation](https://learn.microsoft.com/en-us/previous-versions/windows/silverlight/dotnet-windows-silverlight/hh390416%28v%3Dvs.95%29).
 
-[Netflix Demo](http://netflixpivot.cloudapp.net/)
+The Netflix and Hitched demonstration sites originally linked from this post are no longer online in their PivotViewer form.
 
-[Hitched wedding site](http://www.hitched.co.uk/wedding-venues/visual-search.htm) in the UK
-
-Also [Scott Guthrie](http://weblogs.asp.net/scottgu/archive/2010/06/29/silverlight-pivotviewer-now-available.aspx) provides a more in depth article.
+Scott Guthrie's archived [Silverlight PivotViewer Now Available](https://prod-static-asp-blogs.azurewebsites.net/scottgu/silverlight-pivotviewer-now-available/) article provides a more in-depth look at the release.

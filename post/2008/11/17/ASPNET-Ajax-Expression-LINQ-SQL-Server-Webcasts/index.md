@@ -12,9 +12,6 @@ legacyPaths: ["/post/2008/11/17/ASPNET-Ajax-Expression-LINQ-SQL-Server-Webcasts"
 ---
 Found some great sites that have links to all kinds of webcasts covering ASP.NET, Ajax, Expression, LINQ, SQL Server and more. If you want to learn about any of these topics the sites listed below are a great place to start.
 
-ASP.NET Website - Great website with lots of resources but found this quick link to all of the webcasts that have been done both past and present.
-<http://www.asp.net/learn/webcasts/>
+The original ASP.NET Webcasts page and DNRTv site referenced by this 2008 post are no longer available in their original form. Microsoft now publishes development video content through [Microsoft Learn Shows](https://learn.microsoft.com/en-us/shows/).
 
-DNRTv - A must use website. I love the quality of the webcasts done on this site - <http://www.dnrtv.com/>
-
-They also have a podcast [.NET Rocks](http://www.dotnetrocks.com/) I listen to every week.
+They also have a podcast [.NET Rocks](https://www.dotnetrocks.com/) I listen to every week.

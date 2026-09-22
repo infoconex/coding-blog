@@ -1,7 +1,7 @@
 ---
 title: "Seattle .NET User Group - January 2010 Meeting : SharePoint development in Visual Studio 2010"
 date: "2010-01-05"
-description: "Upcoming event for Seattle .NET User Group. For more details about location and group visit http://seattledotnet.org/ When From: January 13, 2010 05:45 PM To: January 13, 2010 08:00 PM"
+description: "Seattle .NET User Group meeting from January 13, 2010 covering SharePoint development in Visual Studio 2010."
 tags: []
 slug: "seattle-net-user-group-january-2010-meeting-sharepoint-development-in-visual-studio-2010"
 author: "Jim Scott"
@@ -9,7 +9,9 @@ originalUrl: "http://coding.infoconex.com/post/2010/01/05/Seattle-NET-User-Group
 permalink: "/post/2010/01/05/Seattle-NET-User-Group-January-2010-Meeting-SharePoint-development-in-Visual-Studio-2010"
 legacyPaths: ["/post/2010/01/05/Seattle-NET-User-Group-January-2010-Meeting-SharePoint-development-in-Visual-Studio-2010"]
 ---
-### Upcoming event for Seattle .NET User Group. For more details about location and group visit <http://seattledotnet.org/>
+### Upcoming event for Seattle .NET User Group
+
+The original Seattle .NET User Group website is no longer online. Current Seattle-area .NET events can be found through the [Greater Seattle .NET Developers Group](https://www.meetup.com/greater-seattle-dotnet/).
 
 ### When
 
