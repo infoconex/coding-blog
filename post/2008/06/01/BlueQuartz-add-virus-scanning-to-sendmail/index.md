@@ -35,6 +35,7 @@ exclude=yum\*,centos-yumconf\*,httpd\*,mod\_ssl\*,sendmail\*,procmail\*,imap\*,n
 
 Should look something like the following. Save the file once completed.
 
+```text
 # Name: RPMforge RPM Repository for Red Hat Enterprise 4 - dag
 # URL: <http://rpmforge.net/>
 [rpmforge]
@@ -47,6 +48,7 @@ protect = 0
 gpgkey = <file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag>
 gpgcheck = 1
 exclude=yum\*,centos-yumconf\*,httpd\*,mod\_ssl\*,sendmail\*,procmail\*,imap\*,nss\_db\*,pam\*,pwdb\*,webalizer\*,sysklogd\*,proftpd\*
+```
 
 **Install ClamAV, ClamAV-Devel and ClamAV-Milter**
 
