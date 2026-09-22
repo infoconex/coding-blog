@@ -20,8 +20,6 @@ image: /post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-syste
 
 ![How to Test a New .NET SDK Without Installing It System-Wide](images/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide-banner.png)
 
-# How to Test a New .NET SDK Without Installing It System-Wide
-
 In the previous articles in this series, I looked at knowing which .NET SDK is actually building an application and making sure that application can be built on a clean machine.
 
 Now I want to start preparing an application for its next .NET upgrade.
