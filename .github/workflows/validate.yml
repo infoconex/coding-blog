@@ -26,5 +26,8 @@ jobs:
       - name: Validate historical content
         run: python scripts/validate.py
 
+      - name: Check obsolete internal links
+        run: python scripts/validate_internal_links.py
+
       - name: Check custom-domain migration safety
         run: python scripts/custom_domain_preflight.py
