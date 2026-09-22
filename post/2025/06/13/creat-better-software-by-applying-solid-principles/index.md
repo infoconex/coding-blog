@@ -28,7 +28,7 @@ The Single Responsibility Principle (SRP) states that a class should have only o
 
 If a class has multiple responsibilities, it becomes harder to change the class without affecting other parts of the system. This can lead to a situation where a change in one part of the codebase leads to unintended consequences in other parts of the system. By adhering to the SRP, each class has a clear and distinct purpose, making it easier to modify and maintain.
 
-Read Article: [Single Responsibility Principle (SRP) - Only one reason to change](/blog/single-responsibility-principle-srp-only-one-reason-to-change "Single Responsibility Principle")
+Read Article: [Single Responsibility Principle (SRP) - Only one reason to change](/post/2025/06/28/single-responsibility-principle-srp "Single Responsibility Principle")
 
 2. **Open-Closed Principle (OCP)**
 
@@ -36,7 +36,7 @@ The Open-Closed Principle (OCP) states that classes should be open for extension
 
 This principle encourages the use of inheritance and interfaces to create a more flexible and extensible design. By designing classes in this way, it becomes easier to add new features to the system without having to modify existing code. This can lead to a more maintainable and scalable codebase.
 
-Read Article: [Open/Closed Principle (OCP) – Building for Extension, Not Modification](/blog/open-closed-principle-ocp-building-for-extension-not-modification)
+Read Article: [Open/Closed Principle (OCP) – Building for Extension, Not Modification](/post/2025/06/28/open-closed-principle-ocp-building-for-extension-not-modification)
 
 3. **Liskov Substitution Principle (LSP)**
 
@@ -44,7 +44,7 @@ The Liskov Substitution Principle (LSP) states that subclasses should be substit
 
 This principle is important for maintaining the behavior and correctness of the codebase. By adhering to the LSP, it becomes easier to create and use new classes that are related to existing ones. This can lead to a more modular and reusable codebase.
 
-Read Article: [Liskov Substitution Principle (LSP) – Subtypes Should Keep Their Promises](/blog/liskov-substitution-principle-lsp)
+Read Article: [Liskov Substitution Principle (LSP) – Subtypes Should Keep Their Promises](/post/2025/06/29/liskov-substitution-principle-lsp)
 
 4. **Interface Segregation Principle (ISP)**
 
@@ -52,7 +52,7 @@ The Interface Segregation Principle (ISP) states that a class should not be forc
 
 This principle encourages the use of smaller, more specific interfaces rather than large, general-purpose interfaces. By adhering to the ISP, classes can be designed to depend on only the functionality they need, which can lead to a more maintainable and robust codebase.
 
-Read Article: [Interface Segregation Principle (ISP) – Keep Interfaces Focused](/blog/interface-segregation-principle-isp)
+Read Article: [Interface Segregation Principle (ISP) – Keep Interfaces Focused](/post/2025/06/30/interface-segregation-principle-isp)
 
 5. **Dependency Inversion Principle (DIP)**
 
@@ -60,6 +60,6 @@ The Dependency Inversion Principle (DIP) states that high-level modules should n
 
 This principle encourages the use of abstractions to reduce coupling between different parts of the system. By designing classes in this way, it becomes easier to change the implementation of a class without affecting other parts of the system. This can lead to a more flexible and maintainable codebase.
 
-Read Article: [Dependency Inversion Principle (DIP) – Depend on Abstractions, Not Details](/blog/dependency-inversion-principle-dip)
+Read Article: [Dependency Inversion Principle (DIP) – Depend on Abstractions, Not Details](/post/2025/07/01/dependency-inversion-principle-dip)
 
 In conclusion, the SOLID principles are a set of design principles that can help to create more robust, flexible, and maintainable code. By adhering to these principles, developers can create more modular and reusable code, which can lead to a more efficient and effective development process. While these principles may take some time and effort to apply
