@@ -21,8 +21,6 @@ The code I was using was returning an incorrect checksum on the ICMP reply. So I
 
 So I am posting this in hopes of saving someone a bunch of time with the same issue I had. Also the code I had to put together initially was much more complex. This I think you will see is very straight forward.
 
-[Download PingUtility.cs (3.14 kb)](/file.axd?file=PingUtility.cs)
-
 Example Output:
 
 ```
