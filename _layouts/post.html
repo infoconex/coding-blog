@@ -88,7 +88,7 @@ layout: default
     <h1>{{ page.title }}</h1>
     {% if page.description %}<p class="post-description">{{ page.description }}</p>{% endif %}
     <div class="post-meta" aria-label="Article metadata">
-      {% if page.author %}<span>{{ page.author }}</span><span aria-hidden="true">·</span>{% endif %}
+      {% if page.author %}{% assign author_meta = site.data.authors[page.author] %}<span>{% if author_meta and author_meta.url %}<a href="{{ author_meta.url }}">{{ page.author }}</a>{% else %}{{ page.author }}{% endif %}</span><span aria-hidden="true">·</span>{% endif %}
       <span>{{ reading_minutes }} min read</span>
       {% if page.updated %}<span aria-hidden="true">·</span><span>Updated {{ page.updated | date: "%B %-d, %Y" }}</span>{% endif %}
       {% if page.tags and page.tags.size > 0 %}
