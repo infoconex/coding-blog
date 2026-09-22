@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -64,12 +64,41 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Resolve last successful IndexNow submission
+        id: indexnow-base
+        shell: bash
+        run: |
+          marker="refs/tags/indexnow-last-submitted"
+          git fetch origin "$marker:$marker" 2>/dev/null || true
+
+          if git rev-parse --verify --quiet "$marker" >/dev/null; then
+            base_sha="$(git rev-list -n 1 "$marker")"
+            if git merge-base --is-ancestor "$base_sha" "$GITHUB_SHA"; then
+              echo "Using last successful IndexNow commit: $base_sha"
+              echo "base_sha=$base_sha" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            echo "IndexNow marker is not an ancestor of $GITHUB_SHA; forcing sitemap backfill."
+            echo "base_sha=0000000000000000000000000000000000000000" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          fallback="${{ github.event.before }}"
+          if [ -n "$fallback" ]; then
+            echo "No IndexNow marker yet; using event base: $fallback"
+            echo "base_sha=$fallback" >> "$GITHUB_OUTPUT"
+          else
+            echo "No IndexNow marker or event base; forcing sitemap backfill."
+            echo "base_sha=0000000000000000000000000000000000000000" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Submit changed URLs to IndexNow
         env:
           INDEXNOW_SITE_URL: https://coding.infoconex.com
           INDEXNOW_KEY: eee4f749d0c04323ae181b596dd6529b
           INDEXNOW_KEY_LOCATION: https://coding.infoconex.com/eee4f749d0c04323ae181b596dd6529b.txt
-          BASE_SHA: ${{ github.event.before }}
+          BASE_SHA: ${{ steps.indexnow-base.outputs.base_sha }}
           HEAD_SHA: ${{ github.sha }}
           INDEXNOW_BACKFILL: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[indexnow-backfill]') }}
         run: |
@@ -78,3 +107,9 @@ jobs:
           else
             python3 scripts/indexnow.py
           fi
+
+      - name: Record successful IndexNow submission
+        shell: bash
+        run: |
+          git tag -f indexnow-last-submitted "$GITHUB_SHA"
+          git push --force origin refs/tags/indexnow-last-submitted
