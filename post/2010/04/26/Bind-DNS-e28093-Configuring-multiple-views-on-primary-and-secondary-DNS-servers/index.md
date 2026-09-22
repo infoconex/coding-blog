@@ -24,12 +24,6 @@ This looks like it will accomplish exactly what we want. So let me provide an ex
 
 We will be setting up 2 DNS servers. One of the servers will act as our primary (master) server and the other as a secondary (slave) server. The master is were all DNS changes will be made to our zones and those changes will then get propagated to the slave server. We want DNS servers and clients on the public internet to be able to query for our zones and get returned to them the public IP information. However the servers and machines inside our firewall should have returned to them the internal IP addresses when querying the same zone.
 
-I am attaching the two named.conf files that are referenced below.
-
-[Master Server  named.conf](/file.axd?file=2010%2f4%2fmaster.txt "Master named.conf")
-
-[Secondary named.conf](/file.axd?file=2010%2f4%2fslave.txt "Secondary named.conf")
-
 The following information is fictitious and only used to create this example.
 
 **External Network:** 74.125.127.0/24
