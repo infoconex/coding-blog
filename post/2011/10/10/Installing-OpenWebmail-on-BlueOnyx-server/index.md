@@ -46,7 +46,7 @@ Here is the installation steps:
 6) Add apache config file to set /webmail alias for openwebmail
 
 - Create file /etc/http/config.d/httpd\_openwebmail.conf
-- Place in file the contents of this file: [http\_openwebmail.conf](/file.axd?file=2011%2f10%2fhttp_openwebmail.conf)
+- The original downloadable example configuration file is no longer available.
 
 7) Edit the openwebmail configuration file so that it reflects proper defaults
 
@@ -56,9 +56,8 @@ Here is the installation steps:
   - ow\_cgiurl                         /openwebmail
   - ow\_htmldir                        /var/www/data/openwebmail
   - ow\_htmlurl                        /data/openwebmail
-- Here is a complete example file that is from my system that reflects not only the above changes but other changes I make from the default to support our current user preferences.
-- [openwebmail.conf](/file.axd?file=2011%2f10%2fopenwebmail.conf)
-  - Note if you enable spell check like my above example configuration make sure you install the aspell library
+- The original complete example configuration file linked from this article is no longer available.
+  - If you enable spell check, make sure you install the aspell library
   - yum install aspell
 - You should open /var/www/cgi-bin/openwebmail/etc/openwebmail.conf.help if you want to understand all the possible settings that can be made
 
