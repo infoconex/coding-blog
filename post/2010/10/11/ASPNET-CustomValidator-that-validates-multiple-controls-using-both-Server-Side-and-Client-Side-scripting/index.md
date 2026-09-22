@@ -171,6 +171,4 @@ I know this was a bit of extra work but when you have a big form and you have im
 
 Now much of the Javascript code written about could have been done much easier using [JQuery](http://jquery.com/) and no guarantee the javascript written is cross browse safe. I used IE8 in all my testing and would personally recommend implementing a Javascript library like JQuery that abstracts the browser differences out. However I wanted to keep it simple without adding the need to explain the JQuery syntax.
 
-Click on the download link to download a copy of the full source for this article [Download Source](http://coding.infoconex.com/file.axd?file=validation-source.zip)
-
 [![kick it on DotNetKicks.com](http://dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http://coding.infoconex.com/post/ASPNET-CustomValidator-that-validates-multiple-controls-using-both-Server-Side-and-Client-Side-scripting.aspx)](http://www.dotnetkicks.com/kick/?url=http://coding.infoconex.com/post/ASPNET-CustomValidator-that-validates-multiple-controls-using-both-Server-Side-and-Client-Side-scripting.aspx)
