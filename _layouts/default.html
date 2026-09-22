@@ -6,7 +6,6 @@
   <meta name="color-scheme" content="dark light">
   {% assign seo_title = page.seoTitle | default: site.data.seo_titles[page.permalink] | default: page.title %}
   <title>{% if page.isPost %}{{ seo_title | escape }}{% elsif page.title %}{{ page.title | escape }} · {{ site.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-  <meta name="description" content="{{ page.description | default: site.subtitle | escape }}">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | absolute_url }}">
   {% assign asset_version = site.time | date: '%s' %}
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ asset_version }}">
