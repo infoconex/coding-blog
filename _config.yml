@@ -3,6 +3,7 @@ name: Coding
 subtitle: Software engineering, architecture, systems, and lessons accumulated the hard way.
 author:
   name: Jim Scott
+  url: https://coding.infoconex.com/about/
 url: "https://coding.infoconex.com"
 baseurl: ""
 lang: en-US
