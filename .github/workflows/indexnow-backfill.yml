@@ -1,0 +1,24 @@
+name: IndexNow full-site submission
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/indexnow-backfill.yml
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Submit all published URLs to IndexNow
+        env:
+          INDEXNOW_SITE_URL: https://coding.infoconex.com
+          INDEXNOW_KEY: eee4f749d0c04323ae181b596dd6529b
+          INDEXNOW_KEY_LOCATION: https://coding.infoconex.com/eee4f749d0c04323ae181b596dd6529b.txt
+        run: python3 scripts/indexnow.py --all
