@@ -31,7 +31,7 @@ We use these terms regularly. That does not necessarily mean we are all using th
 
 ## Same Word Does Not Guarantee the Same Definition
 
-Years ago, I ran training on unit testing using Vladimir Khorikov's [*Unit Testing: Principles, Practices, and Patterns*](https://www.manning.com/books/unit-testing).
+Years ago, I ran training on unit testing using Vladimir Khorikov's [*Unit Testing: Principles, Practices, and Patterns*](https://amzn.to/4iLVsMJ).
 
 One of the things I appreciated about the book was how seriously it took a seemingly simple question:
 
@@ -145,4 +145,4 @@ Sometimes we are using the same words while starting with different definitions.
 - [Council of Economic Advisers — *2026 Economic Report of the President*](https://www.whitehouse.gov/wp-content/uploads/2026/04/2026-Economic-Report-of-the-President.pdf)
 - [I. J. Good — “Speculations Concerning the First Ultraintelligent Machine”](https://vtechworks.lib.vt.edu/items/5085379d-b24c-424e-8861-e70a47b4b2fb)
 - [Nick Bostrom — “How Long Before Superintelligence?”](https://nickbostrom.com/superintelligence)
-- [Vladimir Khorikov — *Unit Testing: Principles, Practices, and Patterns*](https://www.manning.com/books/unit-testing)
+- [Vladimir Khorikov — *Unit Testing: Principles, Practices, and Patterns*](https://amzn.to/4iLVsMJ)
