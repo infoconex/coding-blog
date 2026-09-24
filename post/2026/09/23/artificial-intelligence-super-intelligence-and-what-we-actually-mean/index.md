@@ -4,7 +4,7 @@ title: "Artificial Intelligence, Super Intelligence, and What We Actually Mean"
 date: "2026-09-23"
 slug: "artificial-intelligence-super-intelligence-and-what-we-actually-mean"
 author: "Jim Scott"
-published: false
+published: true
 featured: false
 permalink: "/post/2026/09/23/artificial-intelligence-super-intelligence-and-what-we-actually-mean"
 description: "Trump's proposed Super Intelligence label is a useful reason to revisit what AI, AGI, and superintelligence actually mean and where those definitions came from."
