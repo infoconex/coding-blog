@@ -71,4 +71,9 @@ analytics:
   provider: google
   measurement_id: "G-D18H8PZ4YH"
 
+# Microsoft Clarity site-wide behavior analytics.
+clarity:
+  enabled: true
+  project_id: "ym61apsp4m"
+
 default_theme: neo-industrial
