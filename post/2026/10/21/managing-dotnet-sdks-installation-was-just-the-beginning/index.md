@@ -15,7 +15,10 @@ tags:
   - SDK
 series: "Staying Current with .NET"
 seriesOrder: 5
+image: /post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning/images/managing-dotnet-sdks-installation-was-just-the-beginning-banner.png
 ---
+
+![Managing .NET SDKs: Installation Was Just the Beginning](images/managing-dotnet-sdks-installation-was-just-the-beginning-banner.png)
 
 In September, I wrote about [testing a new .NET SDK without installing it system-wide](/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide).
 
