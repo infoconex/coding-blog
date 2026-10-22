@@ -69,9 +69,9 @@ That distinction becomes important when we look at how NuGet implements the feat
 
 ## Configuring NuGet's Publication Cooldown
 
-In \`nuget.config\`, we can specify a minimum publication age for a package source:
+In `nuget.config`, we can specify a minimum publication age for a package source:
 
-\`\`\`xml
+```xml
 <configuration>
   <packageSources>
     <clear />
@@ -80,19 +80,19 @@ In \`nuget.config\`, we can specify a minimum publication age for a package sour
          minPublishAgeHours="72" />
   </packageSources>
 </configuration>
-\`\`\`
+```
 
-The setting, \`minPublishAgeHours\`, defines how many hours must pass before a package version becomes eligible for certain automatic selection operations. It applies to a package source, not globally to every dependency operation.
+The setting, `minPublishAgeHours`, defines how many hours must pass before a package version becomes eligible for certain automatic selection operations. It applies to a package source, not globally to every dependency operation.
 
 .NET 11 RC2 also supports configuring it from the command line. For a new source entry, for example:
 
-\`\`\`powershell
-dotnet nuget add source \`
-    https://api.nuget.org/v3/index.json \`
-    --name public \`
-    --min-publish-age-hours 72 \`
+```powershell
+dotnet nuget add source `
+    https://api.nuget.org/v3/index.json `
+    --name public `
+    --min-publish-age-hours 72 `
     --configfile nuget.config
-\`\`\`
+```
 
 But configuring a security feature and understanding what it actually protects are two different things.
 
@@ -104,13 +104,13 @@ I didn't want to change my normal .NET installation or publish disposable packag
 
 I used my [Isolated .NET SDK utility](https://github.com/infoconex/isolated-dotnet-sdk) to install the exact SDK version:
 
-\`\`\`text
+```text
 11.0.100-rc.2.26504.105
-\`\`\`
+```
 
 This let me run .NET 11 RC2 without modifying my normal system-wide SDK installation or PATH.
 
-Then I created a local NuGet feed containing two versions of a test package named \`Cooldown.Sample\`.
+Then I created a local NuGet feed containing two versions of a test package named `Cooldown.Sample`.
 
 | Package version | Simulated publication age |
 |---|---|
@@ -135,15 +135,15 @@ I began with a control test.
 
 I created a project without any cooldown configuration and asked NuGet to add my package without specifying a version:
 
-\`\`\`powershell
+```powershell
 dotnet package add Cooldown.Sample
-\`\`\`
+```
 
-NuGet selected version \`2.0.0\`, the newest available package.
+NuGet selected version `2.0.0`, the newest available package.
 
 Then I repeated the test with a 72-hour cooldown configured.
 
-This time, NuGet selected version \`1.0.0\`.
+This time, NuGet selected version `1.0.0`.
 
 | Configuration | Version selected |
 |---|---|
@@ -154,26 +154,26 @@ So far, exactly what I expected.
 
 The new version was available, but NuGet respected the cooldown when deciding which version to add.
 
-Next, I tested an existing application already referencing version \`1.0.0\`. I ran:
+Next, I tested an existing application already referencing version `1.0.0`. I ran:
 
-\`\`\`powershell
+```powershell
 dotnet package update Cooldown.Sample
-\`\`\`
+```
 
 With the cooldown enabled, NuGet reported:
 
-\`\`\`text
+```text
 Packages with newer versions that have not reached
 the configured minimum publish age: Cooldown.Sample.
 
 All packages are up to date
-\`\`\`
+```
 
-The application remained on version \`1.0.0\`.
+The application remained on version `1.0.0`.
 
-One interesting detail: the update command returned exit code \`2\`.
+One interesting detail: the update command returned exit code `2`.
 
-For \`dotnet package update\`, that means there are no packages eligible for updating. It isn't necessarily an error.
+For `dotnet package update`, that means there are no packages eligible for updating. It isn't necessarily an error.
 
 That's something worth remembering when writing automation that treats every nonzero exit code as a failure.
 
@@ -185,16 +185,16 @@ But then I changed the experiment.
 
 Instead of letting NuGet choose the version, I explicitly referenced the newer package:
 
-\`\`\`xml
+```xml
 <PackageReference Include="Cooldown.Sample"
                   Version="[2.0.0]" />
-\`\`\`
+```
 
 The brackets specify an exact version.
 
 My 72-hour cooldown was still configured.
 
-I ran \`dotnet restore\`, and NuGet restored version \`2.0.0\` successfully.
+I ran `dotnet restore`, and NuGet restored version `2.0.0` successfully.
 
 The package was still inside the cooldown period, yet it was part of my application's restored dependencies.
 
@@ -204,11 +204,11 @@ This was the most important finding of the investigation.
 
 Think about what that means for a development team.
 
-Someone configures a 72-hour cooldown in the repository's \`nuget.config\`.
+Someone configures a 72-hour cooldown in the repository's `nuget.config`.
 
 A developer manually updates a package reference to a version published an hour ago and commits the change.
 
-The CI pipeline runs \`dotnet restore\`.
+The CI pipeline runs `dotnet restore`.
 
 The cooldown doesn't reject that version.
 
@@ -222,18 +222,18 @@ That makes it useful, but narrower than the name might initially suggest.
 
 I also wanted to see what happened when a project used a floating package version:
 
-\`\`\`xml
+```xml
 <PackageReference Include="Cooldown.Sample"
                   Version="2.*" />
-\`\`\`
+```
 
 With the 72-hour cooldown enabled, restore failed:
 
-\`\`\`text
+```text
 error NU1020: The following PackageReference items
 cannot specify a floating version because package
 source cooldown is enabled: Cooldown.Sample.
-\`\`\`
+```
 
 Rather than silently picking an older package, NuGet rejected the floating reference.
 
@@ -251,7 +251,7 @@ Each test creates its own environment, performs the operation, checks the actual
 
 Here's the summary from the completed run:
 
-\`\`\`text
+```text
 SUMMARY OF FINDINGS
 ----------------------------------------------------------------------------
 #    Scenario                      Status   Finding
@@ -262,7 +262,7 @@ SUMMARY OF FINDINGS
 5    Floating-version restore      PASS     NU1020 on floating restore
 
 RESULT: 5 PASSED, 0 FAILED
-\`\`\`
+```
 
 A passing test doesn't always mean NuGet successfully installed something. The floating-version test passed precisely because restore failed with the expected error.
 
@@ -276,11 +276,11 @@ During the broader investigation, I tested additional behaviors that didn't make
 
 One was SDK compatibility.
 
-I tested the cooldown configuration with SDK versions \`10.0.303\`, \`10.0.402\`, and \`11.0.100-rc.2.26504.105\`, using compatible test packages.
+I tested the cooldown configuration with SDK versions `10.0.303`, `10.0.402`, and `11.0.100-rc.2.26504.105`, using compatible test packages.
 
 The two .NET 10 SDKs selected the newly published version. .NET 11 RC2 honored the cooldown.
 
-That means a team shouldn't assume everyone is following the same policy merely because the setting exists in \`nuget.config\`.
+That means a team shouldn't assume everyone is following the same policy merely because the setting exists in `nuget.config`.
 
 The tooling performing the update matters.
 
@@ -288,7 +288,7 @@ I also confirmed that a locked restore could retrieve the recently published pac
 
 I tested package-specific exceptions, too. They can exempt packages from cooldown-based selection, but they're persistent. I'd be careful about introducing an ongoing exception just to get past one urgent update.
 
-And when I redefined a package source in a closer \`nuget.config\` without the cooldown attribute, the inherited restriction disappeared. Configuration precedence matters.
+And when I redefined a package source in a closer `nuget.config` without the cooldown attribute, the inherited restriction disappeared. Configuration precedence matters.
 
 These observations reinforce the same point: publication cooldowns guide particular dependency-management decisions. They are not a universal security gate.
 
@@ -314,7 +314,7 @@ For teams considering cooldowns, I'd start with a few practical questions:
 
 - How are dependencies updated: manually, through NuGet commands, or by an external update service?
 - Which SDK and tooling versions perform those updates?
-- Who reviews changes to \`nuget.config\` and package references?
+- Who reviews changes to `nuget.config` and package references?
 - What is the process for approving urgent security patches?
 
 I'd pilot the feature on public package sources, check how it works with the actual update workflow, and keep existing protections in place: NuGet vulnerability auditing, Package Source Mapping, signing and trust policies, lock files, dependency scanning, and code review.
