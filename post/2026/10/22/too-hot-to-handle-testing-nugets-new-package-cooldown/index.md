@@ -4,7 +4,7 @@ title: "Too Hot to Handle? Testing NuGet's New Package Cooldown"
 date: "2026-10-22"
 slug: "too-hot-to-handle-testing-nugets-new-package-cooldown"
 author: "Jim Scott"
-published: false
+published: true
 featured: false
 permalink: "/post/2026/10/22/too-hot-to-handle-testing-nugets-new-package-cooldown"
 description: "I tested NuGet publication cooldowns in .NET 11 RC2 to see when they delay package updates, when restore bypasses them, and what developers should know."
