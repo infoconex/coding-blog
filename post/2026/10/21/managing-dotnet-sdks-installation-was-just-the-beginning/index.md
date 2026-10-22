@@ -17,7 +17,7 @@ series: "Staying Current with .NET"
 seriesOrder: 5
 ---
 
-In September, I wrote about [testing a new .NET SDK without installing it system-wide](https://coding.infoconex.com/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide).
+In September, I wrote about [testing a new .NET SDK without installing it system-wide](/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide).
 
 In that article, I introduced a small project I'd been working on called [Isolated .NET SDK](https://github.com/infoconex/isolated-dotnet-sdk).
 
