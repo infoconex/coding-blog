@@ -224,7 +224,7 @@ You can confirm the loaded module version without starting the migration wizard:
 Start-CopyGitHubRepositoryWizard -Version
 ```
 
-The [v0.3.0 release](https://github.com/infoconex/copy-github-repo/releases/tag/v0.3.0) and the complete [CopyGitHubRepo documentation](https://infoconex.github.io/copy-github-repo/) are available now.
+The [v0.3.0 release](https://github.com/infoconex/copy-github-repo/releases/tag/v0.3.0) and the complete [CopyGitHubRepo documentation](https://copy-github-repo.infoconex.com/) are available now.
 
 For me, this release fills an important gap in the original Snapshot concept.
 
