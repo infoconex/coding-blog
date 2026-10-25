@@ -2,7 +2,7 @@
 
 title: "Running FSCK on an LVM (Logical Volume Manager) using Linux Rescue Disk"
 date: "2012-10-12"
-description: "Troubleshoot a Linux server crash using a rescue disk, locate and activate LVM logical volumes, and run fsck on the correct logical volume rather than a partition."
+description: "Walk through using a Linux rescue disk to locate LVM volumes and run filesystem checks after a server failure, with commands and troubleshooting context."
 tags: []
 slug: "running-fsck-on-an-lvm-logical-volume-manager-using-linux-rescue-disk"
 author: "Jim Scott"
