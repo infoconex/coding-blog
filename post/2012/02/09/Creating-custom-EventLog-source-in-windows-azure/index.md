@@ -2,7 +2,7 @@
 
 title: "Creating custom EventLog source in windows azure"
 date: "2012-02-09"
-description: "If you have tried to execute the following code on windows azure then no doubt you have run into a security violation."
+description: "Learn why creating a custom Windows EventLog source can fail with access errors in Windows Azure and how to prepare the source with administrative rights."
 tags: ["Azure"]
 slug: "creating-custom-eventlog-source-in-windows-azure"
 author: "Jim Scott"
