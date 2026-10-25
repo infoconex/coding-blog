@@ -244,7 +244,7 @@ You can confirm the loaded module version with:
 Start-CopyGitHubRepositoryWizard -Version
 ```
 
-The [v0.4.0 release](https://github.com/infoconex/copy-github-repo/releases/tag/v0.4.0) and the complete [CopyGitHubRepo documentation](https://infoconex.github.io/copy-github-repo/) are available now.
+The [v0.4.0 release](https://github.com/infoconex/copy-github-repo/releases/tag/v0.4.0) and the complete [CopyGitHubRepo documentation](https://copy-github-repo.infoconex.com/) are available now.
 
 ## Closing the Series
 
