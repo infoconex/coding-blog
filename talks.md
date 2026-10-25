@@ -2,7 +2,7 @@
 layout: default
 title: Talks
 seoTitle: "Software Engineering Talks & Presentations | Jim Scott"
-description: Talks, presentations, and engineering sessions.
+description: "Browse Jim Scott's technical talks and software engineering presentations, including architecture, development practices, and lessons from building software."
 permalink: /talks/
 published: false
 ---
