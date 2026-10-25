@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Projects
+seoTitle: "Software Engineering Projects & Open Source | Jim Scott"
 description: Selected software and engineering projects.
 permalink: /projects/
 published: false
