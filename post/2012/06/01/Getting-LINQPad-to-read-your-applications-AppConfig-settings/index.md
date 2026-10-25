@@ -2,7 +2,7 @@
 
 title: "Getting LINQPad to read your applications App.Config settings"
 date: "2012-06-01"
-description: "Make LINQPad use your application's App.config settings, including connection strings, by locating its configuration file and copying the settings it needs."
+description: "Configure LINQPad to access an application's App.config settings, including connection strings, when testing code and assemblies outside the application."
 tags: ["LINQPad"]
 slug: "getting-linqpad-to-read-your-applications-app-config-settings"
 author: "Jim Scott"
