@@ -29,7 +29,7 @@ So let’s take this to the real world. Recently I was faced a scenario that cou
 
 Example) A series of 5 independent checkbox controls and at least one of them was required to be checked. Plus if Other is selected then you must fill in the textbox.
 
-[![image](images/image-thumb-5.png "image")](images/image-5.png)
+[![ASP.NET Web Forms checkbox validation example with an Other option and text input](images/image-thumb-5.png "Checkbox validation example")](images/image-5.png)
 
 So the behavior should be that you must select at least one checkbox and if none selected then you will get an error “You must select at least one checkbox” and if the Other checkbox is selected then they must also supply text in the texbox field.
 
