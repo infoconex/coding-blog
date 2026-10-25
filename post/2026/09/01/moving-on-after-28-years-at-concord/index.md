@@ -216,5 +216,5 @@ It is simply time to start the next chapter.
 
 A few of the projects I’m currently working on:
 
-- [Copy GitHub Repo](https://infoconex.github.io/copy-github-repo/) — a PowerShell tool for creating clean repository snapshots without carrying forward Git history.
-- [AI Flywheel Specification](https://infoconex.github.io/ai-flywheel-spec/) — an evolving specification focused on making AI-assisted software development more structured, repeatable, and effective.
+- [Copy GitHub Repo](https://copy-github-repo.infoconex.com/) — a PowerShell tool for creating clean repository snapshots without carrying forward Git history.
+- [AI Flywheel Specification](https://ai-flywheel.infoconex.com/) — an evolving specification focused on making AI-assisted software development more structured, repeatable, and effective.
