@@ -1,7 +1,7 @@
 ---
 title: "C# Ping"
 date: "2009-01-12"
-description: "I was recently tasked with putting together a ping and traceroute feature in an application and like I always do I googled to see if someone had already worked out how to do this."
+description: "Investigate a C# ping and traceroute implementation using ICMP, including troubleshooting behavior on Windows Vista with packet analysis and Wireshark."
 tags: []
 slug: "c-ping"
 author: "Jim Scott"
