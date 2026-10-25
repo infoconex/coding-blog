@@ -1,7 +1,7 @@
 ---
 title: "BlueQuartz enabling SSL/TLS FTP Support"
 date: "2008-05-27"
-description: "This is my first attempt at putting online a step by step process in support of the BlueQuartz server appliance."
+description: "Follow a historical BlueQuartz configuration guide for enabling SSL/TLS FTP support with ProFTPD, including checking for the required mod_tls module."
 tags: ["BlueQuartz", "Secure Ftp"]
 slug: "bluequartz-enabling-ssl-tls-ftp-support"
 author: "Jim Scott"
