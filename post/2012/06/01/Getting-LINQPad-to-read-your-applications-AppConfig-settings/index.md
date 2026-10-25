@@ -2,7 +2,7 @@
 
 title: "Getting LINQPad to read your applications App.Config settings"
 date: "2012-06-01"
-description: "I have been using LINQPad for a while now and I love it. This utility allows me to write and execute immediately code that I am working out before I put it into my project."
+description: "Make LINQPad use your application's App.config settings, including connection strings, by locating its configuration file and copying the settings it needs."
 tags: ["LINQPad"]
 slug: "getting-linqpad-to-read-your-applications-app-config-settings"
 author: "Jim Scott"
