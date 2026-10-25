@@ -13,7 +13,10 @@ tags:
   - Open Source
   - Software Engineering
   - Developer Tools
+image: /post/2026/10/24/my-github-projects-needed-a-home-so-i-built-one/images/my-github-projects-needed-a-home-banner.png
 ---
+
+![My GitHub Projects Needed a Home. So I Built One.](images/my-github-projects-needed-a-home-banner.png)
 
 Over the years, I've created a number of software projects. Some started because I needed to solve a problem. Others came from experimenting with a technology or wondering whether there was a better way to accomplish something.
 
