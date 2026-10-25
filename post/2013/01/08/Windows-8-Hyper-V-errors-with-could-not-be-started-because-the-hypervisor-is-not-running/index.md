@@ -2,7 +2,7 @@
 
 title: "Windows 8 Hyper-V errors with \"could not be started because the hypervisor is not running\""
 date: "2013-01-08"
-description: "Just recently setup a new machine with Windows 8 and decided to install Hyper-V so that I could run windows XP for some of my legacy applications that will not run under Windows 8 64 bit."
+description: "Troubleshoot Windows 8 Hyper-V virtual machines that cannot start because the hypervisor is not running, including host settings needed for virtualization."
 tags: ["Hyper-V", "Windows 8"]
 slug: "windows-8-hyper-v-errors-with-could-not-be-started-because-the-hypervisor-is-not-running"
 author: "Jim Scott"
