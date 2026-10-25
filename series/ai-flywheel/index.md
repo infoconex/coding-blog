@@ -1,7 +1,7 @@
 ---
 layout: series
 title: "AI Flywheel"
-description: "Follow the AI Flywheel series in reading order."
+description: "Explore the AI Flywheel series, from specification and operating model to implementation, testing, durable evidence, and safer AI-driven workflows."
 permalink: "/series/ai-flywheel/"
 seriesSlug: "ai-flywheel"
 stylesheet: "/assets/css/series.css"
