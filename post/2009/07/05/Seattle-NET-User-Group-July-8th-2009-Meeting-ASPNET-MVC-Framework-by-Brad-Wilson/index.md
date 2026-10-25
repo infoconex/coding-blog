@@ -2,7 +2,7 @@
 
 title: "Seattle .NET User Group - July 8th 2009 Meeting - ASP.NET MVC Framework by Brad Wilson"
 date: "2009-07-05"
-description: "Abstract: ASP.NET MVC is a new web development framework from the ASP.NET team at Microsoft."
+description: "An archived July 2009 Seattle .NET User Group meeting featuring Brad Wilson on ASP.NET MVC, its design goals, and differences from traditional Web Forms."
 tags: []
 slug: "seattle-net-user-group-july-8th-2009-meeting-asp-net-mvc-framework-by-brad-wilson"
 author: "Jim Scott"
