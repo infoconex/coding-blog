@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Talks
+seoTitle: "Software Engineering Talks & Presentations | Jim Scott"
 description: Talks, presentations, and engineering sessions.
 permalink: /talks/
 published: false
