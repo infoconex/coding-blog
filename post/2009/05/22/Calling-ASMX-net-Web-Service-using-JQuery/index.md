@@ -2,7 +2,7 @@
 
 title: "Calling ASMX .net Web Service using jQuery"
 date: "2009-05-22"
-description: "Just started to pick up jquery recently and was playing with calling a .net web service from my page."
+description: "Call an ASP.NET ASMX web service from jQuery using AJAX and JSON, with a JavaScript example and notes on accessing the response data in the browser."
 tags: []
 slug: "calling-asmx-net-web-service-using-jquery"
 author: "Jim Scott"
