@@ -2,7 +2,7 @@
 
 title: "c# and vb.net preserving or persisting user settings user.config after upgrades"
 date: "2009-01-14"
-description: "If you store settings in your application using Settings.Settings and have ever upgraded your application you may have found all the user settings have vanished."
+description: "Keep C# and VB.NET application user settings after upgrades by understanding versioned user.config files and migrating saved settings between releases."
 tags: []
 slug: "c-and-vb-net-preserving-or-persisting-user-settings-user-config-after-upgrades"
 author: "Jim Scott"
