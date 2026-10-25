@@ -2,7 +2,7 @@
 
 title: "Bind DNS – Configuring multiple views on primary and secondary DNS servers"
 date: "2010-04-26"
-description: "Configure BIND DNS views on primary and secondary servers to return internal or public IP addresses based on the querying client, with zone and ACL examples."
+description: "Configure BIND DNS views on primary and secondary servers so internal and external clients resolve the appropriate addresses across firewall zones."
 tags: []
 slug: "bind-dns-configuring-multiple-views-on-primary-and-secondary-dns-servers"
 author: "Jim Scott"
