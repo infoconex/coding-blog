@@ -2,7 +2,7 @@
 
 title: "Automatically attaching VHD files in Windows 7 and Windows 2008"
 date: "2009-11-26"
-description: "If you have played with the new VHD feature in windows 7 or windows 2008 then you know just how cool of a feature this is."
+description: "Automatically reattach VHD files after restarting Windows 7 or Windows Server 2008 using DiskPart scripts and a repeatable startup configuration."
 tags: []
 slug: "automatically-attaching-vhd-files-in-windows-7-and-windows-2008"
 author: "Jim Scott"
