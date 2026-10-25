@@ -1,7 +1,7 @@
 ---
 title: "Microsoft released free Chart Controls for ASP.NET and Winforms"
 date: "2009-01-14"
-description: "I might be behind the times but I just found out that MS released free charting controls for Winform and ASP.NET. Requires you be running VS2008."
+description: "A look back at Microsoft's free Chart Controls for ASP.NET and Windows Forms, including the .NET Framework 3.5 downloads and Visual Studio 2008 requirements."
 tags: []
 slug: "microsoft-released-free-chart-controls-for-asp-net-and-winforms"
 author: "Jim Scott"
