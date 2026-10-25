@@ -2,7 +2,7 @@
 
 title: "Calling WCF Service using LINQPad"
 date: "2012-12-05"
-description: "First, if you are a .NET developer and you are not using LINQPad yet go and check it out at www.linqpad.net ."
+description: "Fix a missing WCF service endpoint configuration when calling a service proxy from LINQPad by placing the required bindings and client settings in LINQPad.config."
 tags: ["LINQPad", "WCF"]
 slug: "calling-wcf-service-using-linqpad"
 author: "Jim Scott"
