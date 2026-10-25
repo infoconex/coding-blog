@@ -19,11 +19,13 @@ Mono allows you to run applications written in .NET programming language on Linu
 
 The above file is no longer available. Here is the contents of the mono.repo file that I grabbed previously when it was available. Just take the contents and create a file in /etc/yum.repos.d/ called mono.repo with the following contents.
 
- [mono]
+```ini
+[mono]
 name=Mono for rhel-4-i386 (stable)
 # Historical Mono repository URL has been retired.
 enabled=1
 gpgcheck=0
+```
 
 **Step 2:** Install Mono by executing this command. yum install xsp
 
