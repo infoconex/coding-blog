@@ -1,7 +1,7 @@
 ---
 title: "BlueQuartz add virus scanning to sendmail"
 date: "2008-06-01"
-description: "This HowTo is designed to provide the simplest solution for virus scanning to a BlueQuartz box. However this will also work on any box running Redhat Enterprise Linux 4 or CentOS 4"
+description: "A historical guide to adding Sendmail virus scanning on BlueQuartz, Red Hat Enterprise Linux 4, and CentOS 4, with notes about retired package repositories."
 tags: ["Virus Scanning"]
 slug: "bluequartz-add-virus-scanning-to-sendmail"
 author: "Jim Scott"
