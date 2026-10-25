@@ -2,7 +2,7 @@
 layout: default
 title: Projects
 seoTitle: "Software Engineering Projects & Open Source | Jim Scott"
-description: Selected software and engineering projects.
+description: "Explore Jim Scott's open-source software projects, engineering experiments, automation utilities, and developer tools, with links to their source code."
 permalink: /projects/
 published: false
 ---
