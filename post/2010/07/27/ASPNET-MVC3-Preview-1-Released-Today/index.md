@@ -1,7 +1,7 @@
 ---
 title: "ASP.NET MVC3 Preview 1 - Released Today"
 date: "2010-07-27"
-description: "You can download the new ASP.NET MVC3 Preview 1 here"
+description: "Explore the July 2010 ASP.NET MVC 3 Preview 1 release, including its new view-engine support, changes from MVC 2, and links to archived release information."
 tags: []
 slug: "asp-net-mvc3-preview-1-released-today"
 author: "Jim Scott"
