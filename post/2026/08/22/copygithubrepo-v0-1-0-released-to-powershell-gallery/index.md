@@ -149,7 +149,7 @@ CopyGitHubRepo `v0.1.0` is available now.
 
 - **PowerShell Gallery:** [CopyGitHubRepo](https://www.powershellgallery.com/packages/CopyGitHubRepo/)
 - **Project:** [infoconex/copy-github-repo](https://github.com/infoconex/copy-github-repo)
-- **Documentation:** [CopyGitHubRepo Documentation](https://infoconex.github.io/copy-github-repo/)
+- **Documentation:** [CopyGitHubRepo Documentation](https://copy-github-repo.infoconex.com/)
 - **Release v0.1.0:** [GitHub Release](https://github.com/infoconex/copy-github-repo/releases/tag/v0.1.0)
 - **Changelog:** [CHANGELOG.md](https://github.com/infoconex/copy-github-repo/blob/main/CHANGELOG.md)
 
