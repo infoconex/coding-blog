@@ -1,7 +1,7 @@
 ---
 layout: series
 title: "CopyGitHubRepo"
-description: "Follow the CopyGitHubRepo series in reading order."
+description: "Explore CopyGitHubRepo development, covering PowerShell automation, repository migration, GitHub release preservation, and repeatable verification."
 permalink: "/series/copygithubrepo/"
 seriesSlug: "copygithubrepo"
 stylesheet: "/assets/css/series.css"
