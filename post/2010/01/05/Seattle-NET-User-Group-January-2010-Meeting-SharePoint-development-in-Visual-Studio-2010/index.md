@@ -1,7 +1,7 @@
 ---
 title: "Seattle .NET User Group - January 2010 Meeting : SharePoint development in Visual Studio 2010"
 date: "2010-01-05"
-description: "Seattle .NET User Group meeting from January 13, 2010 covering SharePoint development in Visual Studio 2010."
+description: "An archived announcement for the January 2010 Seattle .NET User Group meeting on SharePoint development in Visual Studio 2010, with historical event details."
 tags: []
 slug: "seattle-net-user-group-january-2010-meeting-sharepoint-development-in-visual-studio-2010"
 author: "Jim Scott"
