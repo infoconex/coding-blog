@@ -1,6 +1,7 @@
 ---
 layout: default
 title: About
+seoTitle: "About Jim Scott | Software Engineering & Technical Writing"
 description: About Jim Scott, this engineering archive, and why the historical record stays intact.
 permalink: /about/
 stylesheet: /assets/css/about.css
