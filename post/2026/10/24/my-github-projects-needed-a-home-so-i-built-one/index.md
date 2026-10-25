@@ -30,7 +30,7 @@ I wanted a better way to bring those things together.
 
 So I built a home for my public projects:
 
-**[Explore the project site](https://infoconex.github.io/)**
+**[Explore the project site](https://projects.infoconex.com/)**
 
 ## Why Another Website?
 
@@ -46,7 +46,7 @@ I didn't want to turn my blog into a software catalog or duplicate all my README
 
 ## A Few of the Projects
 
-The [project site](https://infoconex.github.io/) includes individual pages for the tools and experiments, with links back to their GitHub repositories.
+The [project site](https://projects.infoconex.com/) includes individual pages for the tools and experiments, with links back to their GitHub repositories.
 
 A few examples show the range of work.
 
@@ -54,13 +54,13 @@ A few examples show the range of work.
 
 While evaluating prerelease versions of .NET, I wanted to install and test exact SDK versions without changing the SDKs I use every day.
 
-That became [Isolated .NET SDK](https://infoconex.github.io/isolated-dotnet-sdk/), a tool for managing SDK installations in a user-owned directory. I also wrote about how it evolved from an installation helper into a tool that can [list, verify, and audit installed SDKs](/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning).
+That became [Isolated .NET SDK](https://projects.infoconex.com/isolated-dotnet-sdk/), a tool for managing SDK installations in a user-owned directory. I also wrote about how it evolved from an installation helper into a tool that can [list, verify, and audit installed SDKs](/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning).
 
 ### Copy GitHub Repo
 
 Copying a repository sounds straightforward until you need to decide what should happen to its history and what should be included in the destination.
 
-[Copy GitHub Repo](https://infoconex.github.io/copy-github-repo/) grew out of that problem. It supports a clean snapshot or a history-preserving copy, with a way to preview the intended operation before making changes.
+[Copy GitHub Repo](https://copy-github-repo.infoconex.com/) grew out of that problem. It supports a clean snapshot or a history-preserving copy, with a way to preview the intended operation before making changes.
 
 ### AI Flywheel
 
@@ -118,6 +118,6 @@ Not every experiment needs to turn into a production-ready library. Sometimes it
 
 But when there's something useful to share, I'd like it to be easy to find.
 
-**[Browse the public projects](https://infoconex.github.io/)**
+**[Browse the public projects](https://projects.infoconex.com/)**
 
 **[Read the coding blog](https://coding.infoconex.com/)**
