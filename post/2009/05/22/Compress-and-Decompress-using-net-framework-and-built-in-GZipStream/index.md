@@ -2,7 +2,7 @@
 
 title: "Compress and Decompress using .net framework and built in GZipStream"
 date: "2009-05-22"
-description: "I recently had a project in which I wanted to compress log files I was transferring between servers."
+description: "Use the .NET Framework GZipStream class to compress and decompress files in C#, with sample methods developed for transferring log files between servers."
 tags: []
 slug: "compress-and-decompress-using-net-framework-and-built-in-gzipstream"
 author: "Jim Scott"
