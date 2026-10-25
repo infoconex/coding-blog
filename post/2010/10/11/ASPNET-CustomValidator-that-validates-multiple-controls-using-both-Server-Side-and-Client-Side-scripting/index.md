@@ -1,7 +1,7 @@
 ---
 title: "ASP.NET CustomValidator that validates multiple controls using both Server Side and Client Side scripting"
 date: "2010-10-11"
-description: "ASP.NET has some nice validation controls built in that can help make validating forms much easier. Listed below are a few of the available controls."
+description: "Use ASP.NET CustomValidator to validate multiple checkboxes and a conditional text field with server-side C# and client-side JavaScript validation."
 tags: []
 slug: "asp-net-customvalidator-that-validates-multiple-controls-using-both-server-side-and-client-side-scripting"
 author: "Jim Scott"
