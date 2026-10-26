@@ -37,220 +37,81 @@ Approximate round trip times in milli-seconds:
 	Minimum = 3ms, Maximum = 11ms
 ```
 
-```
-Code:
-```
+**Code:**
 
 ```csharp
-public
-
-static
-
-string
- Ping()
-
+public static string Ping()
 {
-
-
-using
- (Ping pingSender =
-new
- Ping())
-
+    using (Ping pingSender = new Ping())
     {
+        PingOptions pingOptions = null;
+        StringBuilder pingResults = null;
+        PingReply pingReply = null;
+        IPAddress ipAddress = null;
 
-        PingOptions pingOptions =
-null
-;
+        int numberOfPings = 4;
+        int pingTimeout = 1000;
+        int byteSize = 32;
+        byte[] buffer = new byte[byteSize];
+        int sentPings = 0;
+        int receivedPings = 0;
+        int lostPings = 0;
+        long minPingResponse = 0;
+        long maxPingResponse = 0;
+        string ipAddressString = "192.168.105.10";
 
-        StringBuilder pingResults =
-null
-;
-
-        PingReply pingReply =
-null
-;
-
-        IPAddress ipAddress =
-null
-;
-
-
-int
- numberOfPings = 4;
-
-
-int
- pingTimeout = 1000;
-
-
-int
- byteSize = 32;
-
-
-byte
-[] buffer =
-new
-
-byte
-[byteSize];
-
-
-int
- sentPings = 0;
-
-
-int
- receivedPings = 0;
-
-
-int
- lostPings = 0;
-
-
-long
- minPingResponse = 0;
-
-
-long
- maxPingResponse = 0;
-
-
-string
- ipAddressString = "
-192.168.105.10
-";
-
-        pingOptions =
-new
- PingOptions();
-
-
-//pingOptions.DontFragment = true;
-
-
-//pingOptions.Ttl = 128;
-
+        pingOptions = new PingOptions();
+        // pingOptions.DontFragment = true;
+        // pingOptions.Ttl = 128;
         ipAddress = IPAddress.Parse(ipAddressString);
-
-        pingResults =
-new
- StringBuilder();
-
-        pingResults.AppendLine(
-string
-.Format("
-Pinging {0} with {1} bytes of data:
-", ipAddress, byteSize));
-
+        pingResults = new StringBuilder();
+        pingResults.AppendLine(string.Format("Pinging {0} with {1} bytes of data:", ipAddress, byteSize));
         pingResults.AppendLine();
 
-
-for
- (
-int
- i = 0; i < numberOfPings; i++)
-
+        for (int i = 0; i < numberOfPings; i++)
         {
-
             sentPings++;
-
             pingReply = pingSender.Send(ipAddress, pingTimeout, buffer, pingOptions);
 
-
-if
- (pingReply.Status == IPStatus.Success)
-
+            if (pingReply.Status == IPStatus.Success)
             {
+                pingResults.AppendLine(string.Format(
+                    "Reply from {0}: bytes={1} time={2}ms TTL={3}",
+                    ipAddress, byteSize, pingReply.RoundtripTime, pingReply.Options.Ttl));
 
-                pingResults.AppendLine(
-string
-.Format("
-Reply from {0}: bytes={1} time={2}ms TTL={3}
-", ipAddress, byteSize, pingReply.RoundtripTime, pingReply.Options.Ttl));
-
-
-if
- (minPingResponse == 0)
-
+                if (minPingResponse == 0)
                 {
-
                     minPingResponse = pingReply.RoundtripTime;
-
                     maxPingResponse = minPingResponse;
-
                 }
-
-
-else
-
-if
- (pingReply.RoundtripTime < minPingResponse)
-
+                else if (pingReply.RoundtripTime < minPingResponse)
                 {
-
                     minPingResponse = pingReply.RoundtripTime;
-
                 }
-
-
-else
-
-if
- (pingReply.RoundtripTime > maxPingResponse)
-
+                else if (pingReply.RoundtripTime > maxPingResponse)
                 {
-
                     maxPingResponse = pingReply.RoundtripTime;
-
                 }
 
                 receivedPings++;
-
             }
-
-
-else
-
+            else
             {
-
                 pingResults.AppendLine(pingReply.Status.ToString());
-
                 lostPings++;
-
             }
-
         }
 
         pingResults.AppendLine();
-
-        pingResults.AppendLine(
-string
-.Format("
-Ping statistics for {0}:
-", ipAddress));
-
-        pingResults.AppendLine(
-string
-.Format("
-\tPackets: Sent = {0}, Received = {1}, Lost = {2}
-", sentPings, receivedPings, lostPings));
-
-        pingResults.AppendLine("
-Approximate round trip times in milli-seconds:
-");
-
-        pingResults.AppendLine(
-string
-.Format("
-\tMinimum = {0}ms, Maximum = {1}ms
-", minPingResponse, maxPingResponse));
-
-
-return
- pingResults.ToString();
-
+        pingResults.AppendLine(string.Format("Ping statistics for {0}:", ipAddress));
+        pingResults.AppendLine(string.Format(
+            "\tPackets: Sent = {0}, Received = {1}, Lost = {2}",
+            sentPings, receivedPings, lostPings));
+        pingResults.AppendLine("Approximate round trip times in milli-seconds:");
+        pingResults.AppendLine(string.Format(
+            "\tMinimum = {0}ms, Maximum = {1}ms",
+            minPingResponse, maxPingResponse));
+        return pingResults.ToString();
     }
-
 }
 ```
