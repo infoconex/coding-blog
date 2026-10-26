@@ -19,7 +19,8 @@ Here is an MSDN article that explains the settings that need to be set to allow 
 
 So setting something like this what required.
 
-configuration>
+```xml
+<configuration>
   <system.net>
     <connectionManagement>
       <add address = "http://www.contoso.com" maxconnection = "10" />
@@ -27,6 +28,7 @@ configuration>
     </connectionManagement>
   </system.net>
 </configuration>
+```
 
 While this showed a little improvement the problems were not over. It turns out that the ThreadPool by default only starts up with 4 idle threads. As you exceed that limit the ThreadPool checks every 500ms to see if more threads are needed and only spawns up one thread every 500ms. So you can see that it will take a long time to get spawned a large number of concurrent requests.
 
