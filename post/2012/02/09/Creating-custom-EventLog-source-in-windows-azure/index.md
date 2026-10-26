@@ -12,7 +12,7 @@ legacyPaths: ["/post/2012/02/09/Creating-custom-EventLog-source-in-windows-azure
 ---
 If you have tried to execute the following code on windows azure then no doubt you have run into a security violation. In fact if you try and run the same example on your local machine you will also get the same error as creating an custom event source on windows requires that it be performed by an Administrator.
 
-```
+```csharp
 if(!EventLog.SourceExists("MyCustomSource"))
 {
 	EventLog.CreateEventSource("MyCustomSource", "Application");
@@ -23,13 +23,15 @@ In order to create a custom event source in windows azure do the following:
 
 1) Create a cmd script using notepad with the following content
 
+```batch
 EventCreate /L Application /T Information /ID 900 /SO "MyCustomSource" /D "Custom source for logging my custom events"
+```
 
 ![Command script used to create the custom Windows EventLog source](images/customeventsourcecmd.jpg)
 
 Here are the options for EventCreate.exe /?
 
-```
+```text
  EVENTCREATE [/S system [/U username [/P [password]]]] /ID eventid
     [/L logname] [/SO srcname] /T type /D description
 
@@ -83,8 +85,8 @@ Finished. Now wasnt that simple ;-)
 
 Ok, so now you no longer need code that checks if it exists as that will throw a security exception. Now you just write to the EventLog as usual but now using your new custom source.
 
-```
-EventLog.WriteEntry("MyCustomSource", "This is my event log message")
+```csharp
+EventLog.WriteEntry("MyCustomSource", "This is my event log message");
 ```
 
 I also want to give credit to Walter Mayers for pointing out the cmd script approach to creating the custom event source. The original MSDN blog post is no longer online.
