@@ -34,43 +34,47 @@ The following information is fictitious and only used to create this example.
 
 So lets assume our external zone should look like the following.
 
-> $ttl 38400
-> mydomain.com.   IN      SOA     dns1.mydomain.com. postmaster.mydomain.com. (
->                         1271863698
->                         10800
->                         3600
->                         604800
->                         38400 )
-> mydomain.com.   IN      NS      dns1.mydomain.com.
-> mydomain.com.   IN      NS      dns2.mydomain.com.
->
-> dns1.mydomain.com.     IN      A       74.125.127.10
-> dns2.mydomain.com.     IN      A       74.125.127.11
->
-> mail.mydomain.com.      IN      A       74.125.127.5
-> mydomain.com.   IN      MX      10 mail.mydomain.com.
->
-> [www.mydomain.com](http://www.mydomain.com)     IN      A       74.125.127.6
+```text
+$ttl 38400
+mydomain.com.   IN      SOA     dns1.mydomain.com. postmaster.mydomain.com. (
+                        1271863698
+                        10800
+                        3600
+                        604800
+                        38400 )
+mydomain.com.   IN      NS      dns1.mydomain.com.
+mydomain.com.   IN      NS      dns2.mydomain.com.
+
+dns1.mydomain.com.     IN      A       74.125.127.10
+dns2.mydomain.com.     IN      A       74.125.127.11
+
+mail.mydomain.com.      IN      A       74.125.127.5
+mydomain.com.   IN      MX      10 mail.mydomain.com.
+
+www.mydomain.com.     IN      A       74.125.127.6
+```
 
 and our internal zone looks like this
 
-> $ttl 38400
-> mydomain.com.   IN      SOA     dns1.mydomain.com. postmaster.mydomain.com. (
->                         1271863698
->                         10800
->                         3600
->                         604800
->                         38400 )
-> mydomain.com.   IN      NS      dns1.mydomain.com.
-> mydomain.com.   IN      NS      dns2.mydomain.com.
->
-> dns1.mydomain.com.     IN      A       192.168.1.10
-> dns2.mydomain.com.     IN      A       192.168.1.11
->
-> mail.mydomain.com.      IN      A       192.168.1.5
-> mydomain.com.   IN      MX      10 mail.mydomain.com.
->
-> [www.mydomain.com](http://www.mydomain.com)     IN      A       192.168.1.6
+```text
+$ttl 38400
+mydomain.com.   IN      SOA     dns1.mydomain.com. postmaster.mydomain.com. (
+                        1271863698
+                        10800
+                        3600
+                        604800
+                        38400 )
+mydomain.com.   IN      NS      dns1.mydomain.com.
+mydomain.com.   IN      NS      dns2.mydomain.com.
+
+dns1.mydomain.com.     IN      A       192.168.1.10
+dns2.mydomain.com.     IN      A       192.168.1.11
+
+mail.mydomain.com.      IN      A       192.168.1.5
+mydomain.com.   IN      MX      10 mail.mydomain.com.
+
+www.mydomain.com.     IN      A       192.168.1.6
+```
 
 So what we want to happen is that if a client on the internet queries for [www.mydomain.com](http://www.mydomain.com) they will get 74.125.127.6 and if anything behind the firewall queries for [www.mydomain.com](http://www.mydomain.com) they will get the internal IP 192.168.1.6
 
@@ -82,37 +86,47 @@ We first create some acl entries that will make it easier to configure some of o
 
 The first ACL “dns\_slaves” will be used to hold the IP addresses we will use on our secondary servers. Notice that it has two IP addresses .11 and .12. This is because later we will be configuring our secondary server with 2 IP addresses to allow it to use a different source IP address for queries to the master server based on if we are getting external or internal zone information.
 
-acl "dns\_slaves" {
+```text
+acl "dns_slaves" {
         192.168.1.11;
         192.168.1.12;
 };
+```
 
 The ACL “internal\_slave” is the IP address that will be used by the secondary DNS server to query for internal zone information
 
-acl "internal\_slave" {
+```text
+acl "internal_slave" {
         192.168.1.11;
 };
+```
 
 The ACL “external\_slave” is the IP address that will be used by the secondary DNS server to query for external zone information
 
-acl "external\_slave" {
+```text
+acl "external_slave" {
         192.168.1.12;
 };
+```
 
 The ACL “internal\_hosts” represents the IP range of our internal network that queries will come from
 
-acl "internal\_hosts" {
+```text
+acl "internal_hosts" {
         192.168.1.0/24;
 };
+```
 
 options allows us to define global defaults for all zones and views. The two options that are important are the allow-query { any; } which allows by default any client to query the zone mydomain.com and any others we may decide to host in our DNS servers. The next important settings is recursion setting which we have defaulted to no. Recursion allows clients to query a DNS server for any domain that the server is not responsible for and get back DNS information. Since we do not want the world to use our DNS servers except when resolving our domains we have set this by default to no. Later we will override that setting for clients behind the firewall since they will be using the DNS server to also resolve other domains.
 
+```text
 options {
         directory "/etc";
         pid-file "/var/run/named/named.pid";
         allow-query { any; };
         recursion no;
 };
+```
 
 Now here is the configuration for our internal view.
 
@@ -126,17 +140,18 @@ also-notify - Set to the IP address of the secondary server. For some reason BIN
 
 zone mydomain.com - Simply defines that it is a master zone.
 
+```text
 view "internal" {
 
         match-clients {
-                !external\_slave;
-                internal\_hosts;
+                !external_slave;
+                internal_hosts;
         };
 
         recursion yes;
 
         allow-transfer {
-                internal\_slave;
+                internal_slave;
         };
 
         also-notify {
@@ -161,6 +176,7 @@ view "internal" {
         };
 
 };
+```
 
 Now we jump to our external view
 
@@ -174,18 +190,19 @@ also-notify – Set to IP of secondary to notify it of zone updates
 
 zone mydomain.com – points to file containing the internal zone information
 
+```text
 view "external" {
 
         match-clients {
-                external\_slave;
-                !internal\_hosts;
+                external_slave;
+                !internal_hosts;
                 any;
         };
 
         recursion no;
 
         allow-transfer {
-                external\_slave;
+                external_slave;
         };
 
         also-notify {
@@ -198,6 +215,7 @@ view "external" {
         };
 
 };
+```
 
 So that finishes up our primary (master) server confirmation. In summary our master has two views “Internal” and “External” which hosts different zone files based on the clients that will query it. If someone queries and matches our “External” view they will get the public IP addresses. If someone queries and matches our “Internal” view they will get the private IP addresses.
 
@@ -219,12 +237,14 @@ acl internal\_hosts {
 
 options has two entries that are important. allow-query {any;} which allows any IP to query the zones we host and recursion no to not allow by default recursive lookups.
 
+```text
 options {
         directory "/etc";
         pid-file "/var/run/named/named.pid";
         allow-query { any; };
         recursion no;
 };
+```
 
 Here is our internal view
 
@@ -234,16 +254,17 @@ recursion – Set to yes to allow internal clients recursive lookup capabilities
 
 zone mydomain.com – This is the important part. Notice that transfer-source is set to 192.168.1.11. This forces the zone transfer request to come from the IP 192.168.1.11. When the master server see’s the query coming from that IP it will match the internal view and transfer the correct zone information for mydomain.com that matches the internal zone.
 
+```text
 view "internal" {
 
         match-clients {
-                internal\_hosts;
+                internal_hosts;
                 };
 
         recursion yes;
 
         allow-notify {
-                dns\_masters;
+                dns_masters;
                 };
 
         zone "." {
@@ -267,6 +288,7 @@ view "internal" {
                 file "/var/named/slaves/mydomain.com.internal";
         };
 };
+```
 
 External View
 
@@ -278,17 +300,18 @@ allow-notify – Set to dns\_masters to allow notifications from the master serv
 
 zone mydomain.com - This is the important part. Notice that transfer-source is set to 192.168.1.12. This forces the zone transfer request to come from the IP 192.168.1.12. When the master server see’s the query coming from that IP it will match the internal view and transfer the correct zone information for mydomain.com that matches the internal zone.
 
+```text
 view "external" {
 
         match-clients {
-                !internal\_hosts;
+                !internal_hosts;
                 any;
                 };
 
         recursion no;
 
         allow-notify {
-                dns\_masters;
+                dns_masters;
                 };
 
         zone "mydomain.com" {
@@ -299,3 +322,4 @@ view "external" {
         };
 
 };
+```
