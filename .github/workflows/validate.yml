@@ -32,5 +32,8 @@ jobs:
       - name: Check custom-domain migration safety
         run: python scripts/custom_domain_preflight.py
 
+      - name: Test image link and alt text validation
+        run: python -m unittest discover -s scripts -p 'test_validate_images.py' -v
+
       - name: Test Lighthouse diagnostic and regression checks
         run: python -m unittest discover -s scripts -p 'test_performance*.py' -v

@@ -32,7 +32,7 @@ No matter how many computers you are backing up the [HP MediaSmart Server](http:
 
 **So imagine this scenario:** You bring home your new HP MediaSmart Server and set it up by plugging in power and an ethernet cable. You install the client application on one of your machines. You run your first backup of your machine which for me took 17 minutes and 21 seconds to backup a base install of Windows 7 Ultimate Edition with all the updates applied (see below image).
 
-![image](images/image-thumb.png "image")
+![HP MediaSmart Server backup showing system files excluded from backup](/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009/images/image-thumb.png)
 
 By default it ignores things like user temporary files, system page file (mine was 2.29GB) , recycle bin, Hibernation file (mine was 2GB), Shadow volume implementation folders (mine was 19.54GB). That saved a tone of space and I would never want to really backup those anyways.
 
@@ -50,11 +50,11 @@ Now I don't know about you but that is worth a lot of money. In fact I got to tr
 
 **Media Streamer:** Page accessible to stream your Music, Videos and Photos
 
-![image](images/image-thumb-1.png "image")
+![HP MediaSmart Server media streaming page for music videos and photos](/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009/images/image-thumb-1.png)
 
 **Online Photo Album:** Publish pictures that you can then provide access to.
 
-![image](images/image-thumb-2.png "image")
+![HP MediaSmart Server online photo album interface](/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009/images/image-thumb-2.png)
 
 **Small Size:** The unit is only 5.5” x 9.8” x 9.2” in size.
 
@@ -62,11 +62,11 @@ Now I don't know about you but that is worth a lot of money. In fact I got to tr
 
 **HP MediaSmart Server Home:** Default page showing what is available via a web browser.
 
-![image](images/image-thumb-3.png "image")
+![HP MediaSmart Server home page and web features](/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009/images/image-thumb-3.png)
 
 **Computer Access:** Shows the list of machines in the network that are available to be connected to remotely.
 
-![image](images/image-thumb-4.png "image")
+![HP MediaSmart Server remote computer access list](/post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009/images/image-thumb-4.png)
 
 **User Accounts**Each person in your home or small office can have a user account in which they can use to store files in a central location. Now you can share folders on the HP MediaSmart Server and give access to only those that need them.
 

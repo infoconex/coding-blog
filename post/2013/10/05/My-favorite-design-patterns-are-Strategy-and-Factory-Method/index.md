@@ -135,7 +135,7 @@ catch
 
 **Application Results –** Running the application from a command prompt to test and see pulling down the html for [www.google.com](http://www.google.com) we could find the content “Google Search” and things worked as expected..
 
-[![image](images/image-thumb-6.png "image")](images/image-6.png)
+[![Console output verifying that the website monitor found Google Search](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-thumb-6.png)](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-6.png)
 
 
 **Application Revision**
@@ -377,7 +377,7 @@ else
 
 **Application Results** - Now when you run the application manually as before you get the same output to the console. However you can also run and provide a third argument of true and the output will be written to a log file named WebsiteMonitor.log with the results. The issue with the above code is that the main method now has to be aware of how to write the message in the two different ways. You can imagine that if asked to add a third way of logging to an XML file, the main method starts to get even more complex and its responsibility of knowing about logging becomes a bit out of hand.
 
-[![image](images/image-thumb-7.png "image")](images/image-7.png)
+[![Website monitor console output after adding optional file logging](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-thumb-7.png)](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-7.png)
 
 
 **Solution**
@@ -388,7 +388,7 @@ Implement the strategy pattern to deal with the various ways the application wou
 
 When you look at any article that discusses the strategy pattern you will typically find a UML diagram that shows the various items that make up the pattern. The following UML diagram is an example of the strategy pattern that I will be implementing for logging messages in example code.
 
-[![image](images/image-thumb-9.png "image")](images/image-9.png)
+[![UML class diagram illustrating the Strategy design pattern](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-thumb-9.png)](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-9.png)
 
 
 Let me take a minute to explain what the above UML diagram says about the logging I will be implementing.

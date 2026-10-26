@@ -14,7 +14,7 @@ In my journey to write better software I have been looking at various patterns a
 
 In this blog entry I am going to focus on the Passive View as it provides complete separation from your model and allows you to completely mock out your view for testing. One additional note is that I found many people swap out the term Presenter for Controller which is a bit confusing since another pattern exists called (MVC) Model View Controller. So I will be sticking to the term Presenter.
 
-![mvp-pattern-diagram](images/mvp-pattern-diagram-1.jpg "mvp-pattern-diagram")
+![Diagram of Model View Presenter Passive View relationships](/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View/images/mvp-pattern-diagram-1.jpg)
 
 ***Disclaimer:*** I am just starting to understand this pattern so I may not explain it or design it in a way that maintains 100% true to the pattern. I am looking forward to feedback or comments that would correct anything I have misunderstood or may provide a clearer understanding of the pattern.
 
@@ -32,7 +32,7 @@ So how does this relate to a standard project we would create. In order to demon
 
 **Project Layout:** I created a folder called **Views** which will contain a sub folder for each view I am creating. I personally do this because each view has an associated Interface and Presenter class created and this provides a simple way to keep them together. I will also create a **Models** folder which will hold my Linq to SQL code and anything I do to extend the Models.
 
-![ProjectFolderView](images/projectfolderview.jpg "ProjectFolderView")
+![Visual Studio project layout with Views folders for the MVP example](/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View/images/projectfolderview.jpg)
 
 **CustomerView Form** – Here is the form that will display and allow editing of City and State
 
@@ -168,7 +168,7 @@ public class CustomerViewPresenter
 
 **Refactored Project View** – This shows the additional files created ICustomerView and CustomerViewPresenter.
 
-![ProjectFolderView-refactored](images/projectfolderview-refactored.jpg "ProjectFolderView-refactored")
+![Refactored project layout with ICustomerView and CustomerViewPresenter](/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View/images/projectfolderview-refactored.jpg)
 
 **CustomerView Refactored** - Now that I have the interface and presenter created let’s move our code from our CustomerView form into our presenter. Notice that the form now has a private instance declared CustomerViewPresenter and in the constructor of the view we instantiate a new instance of the presenter and pass in ICustomerView represented by this. Also note that the search and save button click events no longer contain any code to load or save the customer but rather calls the presenter methods to take care of the logic.
 
@@ -338,7 +338,7 @@ The other benefit you get is that you have separated the logic from your view so
 
 **Testing** – Below is the project view of my test project. It is when you get to this part you find the real advantages of your work above. Below is the view of the test project. Note the two files CustomerViewMock.cs which is a mock of our real view and CustomerViewTests.cs which contains all our test we want to perform.
 
-![testprojectview](images/testprojectview.jpg "testprojectview")
+![Visual Studio test project with the mock customer view](/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View/images/testprojectview.jpg)
 
 **CustomerViewMock** – This class in my test project represents my view. Note that the class inherits from my ICustomerView interface. You will also notice that I created public properties representing each of the components that would have been on my real form. I do this to keep my tests feeling like I am interacting with the real form.
 
