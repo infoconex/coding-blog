@@ -67,91 +67,98 @@ Congratulations you have installed mono and can now execute programs written in 
 
 **Contents of /etc/rc.d/init.d/xsp**
 
+**Historical script correction (October 2026):** The original example contained an inverted PID check and an escaped default `case` pattern. The script below fixes those issues, handles stale PID files, and checks whether `xsp2` exists. Shell syntax was checked with `bash -n` and `dash -n`; actual operation on the historical BlueQuartz environment was not tested.
+
 ```bash
 #!/bin/sh
-#
-# Startup script for xsp server
-#
+# Startup script for the historical XSP2 service
 # chkconfig: 3 84 16
-# description: xsp is a asp.net server
-#
-ARGS=`cat /etc/xsp.conf | grep -v \# `
+# description: XSP ASP.NET server
+
+PIDFILE=/var/run/xsp.pid
+XSP=/usr/bin/xsp2
 
 . /etc/init.d/functions
 
 start() {
-echo -n $"Starting xsp: "
-# Check PID/existence
-pid=""
-if [ -f /var/run/xsp.pid ] ; then
-         read pid < /var/run/xsp.pid
-         if [ -n "$pid" ]; then
-   rm /var/run/xsp.pid
-  else
-   echo -n $"xsp is already running."
-   failure
-   echo
-   return 1
-         fi
-fi
+    echo -n $"Starting xsp: "
 
-/usr/bin/xsp2 --nonstop $ARGS > /dev/null &
-RETVAL=$?
-if [ $RETVAL != 0 ]; then
-  failure
-  echo
-  return $RETVAL
-  fi
-PID=$!
-echo $PID > /var/run/xsp.pid
-success
-echo
-return 0
+    if [ -f "$PIDFILE" ]; then
+        read -r pid < "$PIDFILE"
+        if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+            echo -n $"xsp is already running."
+            failure
+            echo
+            return 1
+        fi
+        rm -f "$PIDFILE"
+    fi
+
+    if [ ! -x "$XSP" ]; then
+        echo -n $"xsp2 executable not found."
+        failure
+        echo
+        return 1
+    fi
+
+    ARGS=$(grep -v '^[[:space:]]*#' /etc/xsp.conf)
+    # Intentional word splitting: xsp.conf contains command-line arguments.
+    "$XSP" --nonstop $ARGS > /dev/null 2>&1 &
+    pid=$!
+
+    if kill -0 "$pid" 2>/dev/null; then
+        echo "$pid" > "$PIDFILE"
+        success
+        echo
+        return 0
+    fi
+
+    failure
+    echo
+    return 1
 }
 
 stop() {
-echo -n $"Shutting down xsp: "
+    echo -n $"Shutting down xsp: "
 
-if [ ! -f /var/run/xsp.pid ]; then
-  echo -n $"xsp not running"
-  failure
-  echo
-  return 1
-fi
+    if [ ! -f "$PIDFILE" ]; then
+        echo -n $"xsp is not running."
+        failure
+        echo
+        return 1
+    fi
 
-kill -15 `cat /var/run/xsp.pid`
-RETVAL=$?
+    read -r pid < "$PIDFILE"
+    if [ -z "$pid" ] || ! kill -0 "$pid" 2>/dev/null; then
+        rm -f "$PIDFILE"
+        echo -n $"xsp is not running."
+        failure
+        echo
+        return 1
+    fi
 
-if [ $RETVAL = 0 ]; then
-  rm /var/run/xsp.pid
-  success
-  echo
-  return 0
-else
-  failure
-  echo
-  return $RETVAL
-fi
+    if kill -15 "$pid"; then
+        rm -f "$PIDFILE"
+        success
+        echo
+        return 0
+    fi
+
+    failure
+    echo
+    return 1
 }
 
 restart() {
-stop
-start
+    stop || return $?
+    start
 }
 
 case "$1" in
-  start)
-   start
-;;
-  stop)
-   stop
-;;
-  restart)
-   restart
-;;
-  \*)
-echo $"Usage: $0 {start|stop|restart}"
-exit 1
+    start) start ;;
+    stop) stop ;;
+    restart) restart ;;
+    *) echo "Usage: $0 {start|stop|restart}"; exit 1 ;;
 esac
 
 exit $?
