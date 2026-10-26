@@ -7,8 +7,9 @@ on:
         description: 'Which live experiment to compare'
         required: true
         type: choice
-        default: analytics
+        default: google-timing
         options:
+          - google-timing
           - analytics
           - css
       device:

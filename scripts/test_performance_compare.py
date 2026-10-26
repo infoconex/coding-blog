@@ -41,6 +41,16 @@ class PerformanceExperimentTests(unittest.TestCase):
         self.assertIn("+500.0 ms", report)
         self.assertIn("Change relative to no tracking", report)
 
+    def test_google_timing_variants_and_summary(self):
+        variants = performance_compare.EXPERIMENTS["google-timing"]["variants"]
+        self.assertEqual(variants, ("current", "after-load"))
+        rows = [row("current", 950, 1100, score=94, tbt=300),
+                row("after-load", 920, 1050, score=98, tbt=100)]
+        report = performance_compare.render_report(rows, "mobile", "google-timing")
+        self.assertIn("Difference (after-load − current)", report)
+        self.assertIn("-200.0 ms", report)
+        self.assertIn("Short visits", report)
+
     def test_missing_variant_is_error(self):
         with self.assertRaises(ValueError):
             performance_compare.render_report([row("none", 800, 900)], "mobile", "analytics")

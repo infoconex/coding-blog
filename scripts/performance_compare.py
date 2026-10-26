@@ -29,6 +29,16 @@ EXPERIMENTS = {
             "Google Analytics and Clarity use the production project IDs; test visits will appear in analytics."
         ),
     },
+    "google-timing": {
+        "base_url": "https://coding.infoconex.com/experiments/google-timing/",
+        "variants": ("current", "after-load"),
+        "description": (
+            "Both versions run Google Analytics and Clarity. Current loads gtag.js as an async "
+            "head script, while after-load requests gtag.js after the window load event. "
+            "Both queue the same GA configuration. Short visits ending before load may not "
+            "be counted by the delayed version."
+        ),
+    },
 }
 METRICS = (
     ("Performance score", "score", "points"),
@@ -72,6 +82,18 @@ def ensure_pages_are_available(experiment: str) -> None:
                     f"Tracking scripts do not match variant {variant}: "
                     f"Google={google}, Clarity={clarity} at {url}"
                 )
+
+        if experiment == "google-timing":
+            marker = f'<meta name="experiment-google-timing" content="{variant}">'
+            static_tag = '<script async src="https://www.googletagmanager.com/gtag/js?id='
+            is_static = static_tag in html
+            is_delayed = "window.addEventListener('load', loadGoogleTag" in html
+            has_clarity = "https://www.clarity.ms/tag/" in html
+            has_config = "gtag('config'," in html
+            if (marker not in html or is_static != (variant == "current")
+                    or is_delayed != (variant == "after-load")
+                    or not has_clarity or not has_config):
+                raise RuntimeError(f"Unexpected Google timing configuration at {url}")
 
         print(f"Verified live page: {url}", flush=True)
 
@@ -145,15 +167,16 @@ def render_report(rows: list[dict], device: str, experiment: str) -> str:
         "",
     ]
     headers = ["Metric"] + [variant.capitalize() + " median" for variant in variants]
-    if experiment == "css":
-        headers += ["Difference (optimized − baseline)"]
+    pair = {"css": ("baseline", "optimized"), "google-timing": ("current", "after-load")}.get(experiment)
+    if pair:
+        headers += [f"Difference ({pair[1]} − {pair[0]})"]
     lines.append("| " + " | ".join(headers) + " |")
     lines.append("| " + " | ".join(["---"] + ["---:"] * (len(headers) - 1)) + " |")
 
     for label, metric, unit in METRICS:
         cells = [label] + [formatted(median(v, metric), metric, unit) for v in variants]
-        if experiment == "css":
-            cells += [formatted(median("optimized", metric) - median("baseline", metric),
+        if pair:
+            cells += [formatted(median(pair[1], metric) - median(pair[0], metric),
                                 metric, unit, signed=True)]
         lines.append("| " + " | ".join(cells) + " |")
 
@@ -176,6 +199,14 @@ def render_report(rows: list[dict], device: str, experiment: str) -> str:
             "",
             "The combined effect is not necessarily the sum of separate effects. "
             "Network conditions and Lighthouse run-to-run variation can dominate small differences.",
+        ]
+
+    if experiment == "google-timing":
+        lines += [
+            "",
+            "**Tracking caveat:** This measures loading performance, not GA reporting completeness. "
+            "A visit ending before the load event may never request gtag.js in the after-load version. "
+            "Validate that real pageviews are received and weigh this tradeoff before making a production change.",
         ]
 
     lines += [
