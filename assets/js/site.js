@@ -101,11 +101,11 @@
       const remainder = paragraph.textContent.slice(label.textContent.length);
       const onlyLabel = [...paragraph.childNodes].every((node) =>
         node === label || (node.nodeType === Node.TEXT_NODE && !node.textContent.trim()));
-      const prefixedDescription = !onlyLabel && /^\\s*(?:[-–—:]\\s+)/.test(remainder);
+      const prefixedDescription = !onlyLabel && /^\s*(?:[-–—:]\s+)/.test(remainder);
       if (!onlyLabel && !prefixedDescription) return;
 
       const heading = document.createElement('h2');
-      heading.textContent = title.replace(/\\s*[:–—-]\\s*$/, '');
+      heading.textContent = title.replace(/\s*[:–—-]\s*$/, '');
       paragraph.before(heading);
 
       if (onlyLabel) {
@@ -115,7 +115,7 @@
         // Remove the separator following the bold label but retain its prose.
         const firstText = paragraph.firstChild;
         if (firstText?.nodeType === Node.TEXT_NODE) {
-          firstText.textContent = firstText.textContent.replace(/^\\s*[-–—:]\\s*/, '');
+          firstText.textContent = firstText.textContent.replace(/^\s*[-–—:]\s*/, '');
         }
       }
     });
