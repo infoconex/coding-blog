@@ -91,7 +91,7 @@ a { color: inherit; }
 .post-description { max-width: 1080px; margin: 22px 0 0; color: var(--muted); font-size: clamp(18px, 2vw, 22px); line-height: 1.55; }
 .post-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; color: var(--muted); font: 12px/1.5 var(--font-mono); }
 
-.archive-notice { display: grid; grid-template-columns: 90px 1fr; gap: 22px; margin: 0 0 44px; padding: 20px 22px; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); border-radius: var(--radius); background: color-mix(in srgb, var(--surface) 90%, var(--accent) 10%); }
+.archive-notice { max-width: 1080px; display: grid; grid-template-columns: 90px 1fr; gap: 22px; margin: 0 0 44px; padding: 20px 22px; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); border-radius: var(--radius); background: color-mix(in srgb, var(--surface) 90%, var(--accent) 10%); }
 .archive-notice__year { color: var(--accent); font: 800 clamp(28px, 5vw, 44px)/1 var(--font-mono); letter-spacing: -.06em; }
 .archive-notice__label { margin: 0 0 6px; color: var(--accent); font: 700 11px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
 .archive-notice p:last-child { max-width: 720px; margin: 0; color: var(--muted); line-height: 1.55; }
