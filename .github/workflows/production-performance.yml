@@ -1,18 +1,8 @@
-name: Performance Comparison
+name: Production Performance Monitor
 
 on:
   workflow_dispatch:
     inputs:
-      experiment:
-        description: 'Which live experiment to compare'
-        required: true
-        type: choice
-        default: production-baseline
-        options:
-          - production-baseline
-          - google-timing
-          - analytics
-          - css
       device:
         description: 'Device to emulate'
         required: true
@@ -26,7 +16,7 @@ permissions:
   contents: read
 
 jobs:
-  compare:
+  monitor:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -48,21 +38,20 @@ jobs:
       - name: Install pinned Lighthouse version
         run: npm install --global lighthouse@13.5.0
 
-      - name: Verify comparison report calculations
+      - name: Verify monitoring diagnostics and guardrails
         run: python3 -m unittest discover -s scripts -p 'test_performance*.py' -v
 
-      - name: Run five alternating rounds with diagnostic and regression reporting
+      - name: Run five production Lighthouse tests
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
           DEVICE: ${{ inputs.device }}
-          EXPERIMENT: ${{ inputs.experiment }}
-        run: python3 scripts/performance_compare.py --experiment "$EXPERIMENT" --device "$DEVICE" --runs 5 --output-dir performance-reports
+        run: python3 scripts/performance_monitor.py --device "$DEVICE" --runs 5 --output-dir performance-reports
 
       - name: Upload raw Lighthouse reports and summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.experiment }}-performance-${{ inputs.device }}-${{ github.run_number }}
+          name: production-performance-${{ inputs.device }}-${{ github.run_number }}
           path: performance-reports/
           if-no-files-found: warn
           retention-days: 30

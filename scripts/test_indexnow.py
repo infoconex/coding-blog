@@ -15,14 +15,14 @@ class Response(io.BytesIO):
 
 
 class IndexNowExperimentExclusionTests(unittest.TestCase):
-    def test_experiment_paths_are_ignored_before_site_wide_detection(self):
+    def test_retired_experiment_deletions_do_not_trigger_indexnow(self):
         changes = [
-            ("A", ["experiments/css-optimization/baseline/index.html"]),
-            ("M", ["_layouts/css-experiment.html"]),
-            ("M", ["_includes/css-experiment-home.html"]),
-            ("A", ["_layouts/analytics-experiment.html"]),
-            ("A", ["_includes/analytics-experiment.html"]),
-            ("A", ["experiments/analytics-impact/google/index.html"]),
+            ("D", ["experiments/css-optimization/baseline/index.html"]),
+            ("D", ["_layouts/css-experiment.html"]),
+            ("D", ["_includes/css-experiment-home.html"]),
+            ("D", ["_layouts/analytics-experiment.html"]),
+            ("D", ["_includes/analytics-experiment.html"]),
+            ("D", ["experiments/analytics-impact/google/index.html"]),
         ]
         with patch.object(indexnow, "changed_paths", return_value=changes):
             urls, site_wide = indexnow.collect_changed_urls(

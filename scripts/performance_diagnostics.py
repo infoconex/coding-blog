@@ -89,11 +89,9 @@ def diagnostics(report):
     }
 
 
-def guardrail_checks(rows, experiment):
-    """Use median values so an isolated poor Lighthouse run does not trigger."""
-    if experiment != "production-baseline":
-        return []
-    production = [row for row in rows if row["variant"] == "production"]
+def guardrail_checks(rows):
+    """Apply warning-only checks to the median of production monitoring runs."""
+    production = [row for row in rows if row.get("variant") == "production"]
     if not production:
         return []
     checks = []

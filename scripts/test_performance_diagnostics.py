@@ -3,7 +3,7 @@
 import unittest
 
 import performance_diagnostics as diag
-import performance_compare
+import performance_monitor
 
 
 def lighthouse_fixture():
@@ -47,7 +47,7 @@ def lighthouse_fixture():
 
 def row(variant, pair, lcp, score=95, tbt=200, cls=0, observed=300, css=20):
     return {
-        "variant": variant, "pair": pair, "lcp_ms": lcp,
+        "variant": variant, "run": pair, "lcp_ms": lcp,
         "fcp_ms": lcp, "speed_index_ms": lcp, "score": score,
         "tbt_ms": tbt, "cls": cls, "observed_lcp_ms": observed,
         "home_css_duration_ms": css,
@@ -79,30 +79,27 @@ class LighthouseDiagnosticsTests(unittest.TestCase):
     def test_single_lcp_outlier_does_not_trigger_median_guardrail(self):
         rows = [row("production", i, lcp) for i, lcp in
                 enumerate((2777, 900, 905, 904, 901), 1)]
-        checks = diag.guardrail_checks(rows, "production-baseline")
+        checks = diag.guardrail_checks(rows)
         self.assertTrue(all(check["status"] == "PASS" for check in checks))
         self.assertEqual(len(diag.outlier_rows(rows)), 1)
-        report = performance_compare.render_report(
-            rows + [row("baseline", i, 905) for i in range(1, 6)],
-            "mobile", "production-baseline",
-        )
+        report = performance_monitor.render_report(rows, "mobile")
         self.assertIn("### Per-run loading diagnostics", report)
         self.assertIn("### Modeled LCP outliers", report)
-        self.assertIn("### Production regression guardrails", report)
+        self.assertIn("### Production guardrails (warning-only)", report)
         self.assertIn("298", str(diag.diagnostics(lighthouse_fixture())))
         self.assertIn("**PASS**", report)
 
     def test_sustained_regression_warns_on_median(self):
         rows = [row("production", i, lcp, score=85, tbt=700)
                 for i, lcp in enumerate((3100, 2900, 2750, 900, 920), 1)]
-        checks = diag.guardrail_checks(rows, "production-baseline")
+        checks = diag.guardrail_checks(rows)
         checks_by_label = {check["label"]: check for check in checks}
         self.assertEqual(checks_by_label["Modeled LCP"]["status"], "WARN")
         self.assertEqual(checks_by_label["Modeled LCP"]["affected"], 3)
         self.assertEqual(checks_by_label["Performance score"]["status"], "WARN")
         self.assertEqual(checks_by_label["Total Blocking Time"]["status"], "WARN")
         self.assertEqual(checks_by_label["Layout shift"]["status"], "PASS")
-        self.assertEqual(diag.guardrail_checks(rows, "analytics"), [])
+        self.assertEqual(diag.guardrail_checks([row("experiment", 1, 900)]), [])
 
     def test_raw_css_missing_end_time_does_not_invent_duration(self):
         sample = lighthouse_fixture()
