@@ -20,6 +20,7 @@ C# Directions:
 
 In your project open Settings.Settings and add a new user setting called ShouldUpgrade and set this to be a boolean value and set the value to **true**. Now click View Code icon at the top left side of the settings window. In the constructor add something like this.
 
+```csharp
 public Settings()
 {
     if(this.ShouldUpgrade)
@@ -29,6 +30,7 @@ public Settings()
         this.Save();
     }
 }
+```
 
 So the first time that the settings class is instantiated it will check the ShouldUpgrade setting of the new user.config file which will be set to true. The this.Upgrade() then copies any user settings from the most recent version prior to this upgrade. Then set ShouldUpgrade to false and save the settings.
 
