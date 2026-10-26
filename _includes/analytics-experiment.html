@@ -10,6 +10,7 @@
   gtag('config', '{{ site.analytics.measurement_id | escape }}');
 </script>
 {% endif %}
+{% endif %}
 {% if page.analytics_variant == 'clarity' or page.analytics_variant == 'both' %}
 {% if site.clarity.enabled and site.clarity.project_id != '' %}
 <!-- Microsoft Clarity -->
