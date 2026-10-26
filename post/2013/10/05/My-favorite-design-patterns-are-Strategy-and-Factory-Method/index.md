@@ -40,7 +40,7 @@ private static void Main(string[] args)
 
 // More validation would be necessary but the article is not
 
-// about validation of input ;-)
+// about validation of input;-)
 
 if (args.Length != 2)
             {
@@ -129,29 +129,27 @@ namespace Design_Patterns
 internal class Program
     {
 
-private static StreamWriter fileWriter = null ;
+private static StreamWriter fileWriter = null;
 
-private static bool useFileWriter = false ;
+private static bool useFileWriter = false;
 
-private const string loggingFileName = "WebsiteMonitor.log"
-;
+private const string loggingFileName = "WebsiteMonitor.log";
 
-private static void Main(
-string [] args)
+private static void Main(string [] args)
         {
 
 try {
 
 // More validation would be necessary but the article is not
 
-// about validation of input ;-)
+// about validation of input;-)
 
 if (args.Length < 2)
                 {
                     WriteMessage(
 "You must supply the URL and Content to check for."
 );
-return ;
+return;
                 }
 
 // If third argument supplied then it is used to determine
@@ -170,15 +168,13 @@ if (useFileWriter)
 
 string websiteUrl = args[0];
 
-                WriteMessage(
-string .Format(
+                WriteMessage(string .Format(
 "URL supplied to be validated: {0}"
 , websiteUrl));
 
 string contentToVerify = args[1];
 
-                WriteMessage(
-string .Format(
+                WriteMessage(string .Format(
 "Content to be verified: {0}"
 , contentToVerify));
 
@@ -211,14 +207,12 @@ else {
 
 catch (Exception ex)
                 {
-                    WriteMessage(
-string .Format(
+                    WriteMessage(string .Format(
 "ERROR: Exception occurred while downloading content: {0}"
 , ex.Message));
                 }
 
-                WriteMessage(
-string .Format(
+                WriteMessage(string .Format(
 "Test completed at: {0}"
 , DateTime.Now));
 
@@ -246,8 +240,7 @@ if (fileWriter != null ) fileWriter.Dispose();
 
 /// <param name="message"></param>
 
-private static void WriteMessage(
-string message)
+private static void WriteMessage(string message)
         {
 
 if (!useFileWriter)
@@ -296,8 +289,7 @@ namespace Design_Patterns
 public interface ILogWriter
     {
 
-void Write(
-string message);
+void Write(string message);
     }
 }
 ```
@@ -315,8 +307,7 @@ namespace Design_Patterns
 public class ConsoleWriter : ILogWriter
     {
 
-public void Write(
-string message)
+public void Write(string message)
         {
             Console.WriteLine(message);
         }
@@ -337,19 +328,17 @@ namespace Design_Patterns
 public class FileWriter : ILogWriter, IDisposable
     {
 
-private const string logFileName = "WebsiteMonitor.log"
-;
+private const string logFileName = "WebsiteMonitor.log";
 
-private StreamWriter fileWriter = null ;
+private StreamWriter fileWriter = null;
 
 public FileWriter()
         {
             fileWriter = File.CreateText(logFileName);
-            fileWriter.AutoFlush = true ;
+            fileWriter.AutoFlush = true;
         }
 
-public void Write(
-string message)
+public void Write(string message)
         {
             fileWriter.WriteLine(message);
         }
@@ -411,17 +400,17 @@ switch (loggerType)
 case LoggerType.Console:
                     logger = new ConsoleWriter();
 
-break ;
+break;
 
 case LoggerType.File:
                     logger = new FileWriter();
 
-break ;
+break;
 
 case LoggerType.Xml:
                     logger = new XmlWriter();
 
-break ;
+break;
 
 default
 :
@@ -454,8 +443,7 @@ this .logger = logger;
 
 /// <param name="message"></param>
 
-public void Write(
-string message)
+public void Write(string message)
         {
             logger.Write(message);
         }
@@ -493,12 +481,11 @@ namespace Design_Patterns
 internal class Program
     {
 
-private static bool useFileWriter = false ;
+private static bool useFileWriter = false;
 
-private static void Main(
-string [] args)
+private static void Main(string [] args)
         {
-            Logger logger = null ;
+            Logger logger = null;
 
 try {
 
@@ -523,7 +510,7 @@ if (logger == null )
 
 // More validation would be necessary but the article is not
 
-// about validation of input ;-)
+// about validation of input;-)
 
 if (args.Length < 2)
                 {
@@ -531,20 +518,18 @@ if (args.Length < 2)
 "You must supply the URL and Content to check for."
 );
 
-return ;
+return;
                 }
 
 string websiteUrl = args[0];
 
-                logger.Write(
-string .Format(
+                logger.Write(string .Format(
 "URL supplied to be validated: {0}"
 , websiteUrl));
 
 string contentToVerify = args[1];
 
-                logger.Write(
-string .Format(
+                logger.Write(string .Format(
 "Content to be verified: {0}"
 , contentToVerify));
 
@@ -577,14 +562,12 @@ else {
 
 catch (Exception ex)
                 {
-                    logger.Write(
-string .Format(
+                    logger.Write(string .Format(
 "ERROR: Exception occurred while downloading content: {0}"
 , ex.Message));
                 }
 
-                logger.Write(
-string .Format(
+                logger.Write(string .Format(
 "Test completed at: {0}"
 , DateTime.Now));
 
