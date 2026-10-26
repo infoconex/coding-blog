@@ -51,7 +51,9 @@ Below you will find some examples that will help see how value types and refernc
 **STRING TEST - Reference Type - Immutable**
 Creating two strings. Setting the first to the value "one-before" and then initializing the second variable by pointing it to the first. Writing out the initial values so that we can see that each is now set to "one-before". So at this point what we have in effect is to variables declared on the stack one and two that both point to the same memory location which holds "one-before". Then we come along and we set one = "one-after" and since strings are immutable a new memory locations is allocated and one is now pointed to the new memory location. However two still remains pointed to the previous memory location so the result is that they now have different values.
 
-**//Begin Test**string one = "one-before";
+```csharp
+// Begin Test
+string one = "one-before";
 string two = one;
 
 Console.WriteLine(one); //Output = one-before
@@ -61,12 +63,14 @@ one = "one-after";
 
 Console.WriteLine(one); //Output = one-after
 Console.WriteLine(two); //Output = one-before
-**// End Test**
+// End Test
+```
 
 **INTEGER TEST - Value Type**
 Creating two integers. Setting the first to the value 1 and then initializing the second variable by pointing it to the first. Writing out the initial values we see that both variables have the same value of 1. The next thing we do is change the value or i = 2. Then we write out the values of the variables and see that i = 2 but j = 1. The reason for this is that value types when assigned a value contain the actual data. So when we created j = i we got a copy of the actual data that i contained and j now has its own data. So when we come along later and make a change to i we are only changing its information and j will still reflect the information it holds.
 
-**// Begin Test**
+```csharp
+// Begin Test
 int i = 1;
 int j = i;
 
@@ -77,6 +81,7 @@ i = 2;
 
 Console.WriteLine(i); // Output = 2
 Console.WriteLine(j); // Output = 1
-**// End Test**
+// End Test
+```
 
 **To be continued.** Will be adding tests for passing into methods Structure (ValueType) and Class (ReferenceType)
