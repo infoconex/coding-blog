@@ -32,9 +32,26 @@ SITE_WIDE_FILES = {"_config.yml"}
 IGNORED_PREFIXES = (
     ".github/",
     "assets/",
+    "experiments/",
     "prototypes/",
     "scripts/",
 )
+# These files are only used for the isolated, non-indexable experiments.
+EXPERIMENT_SOURCE_FILES = {
+    "_includes/css-experiment-home.html",
+    "_layouts/css-experiment.html",
+}
+
+
+def is_ignored_path(repo_path: str) -> bool:
+    return repo_path.startswith(IGNORED_PREFIXES) or repo_path in EXPERIMENT_SOURCE_FILES
+
+
+def is_excluded_url(url: str) -> bool:
+    """Fail closed for experiments, regardless of sitemap or front matter."""
+    path = urlparse(url).path.lower()
+    return path == "/experiments" or path.startswith("/experiments/")
+
 
 
 def run_git(*args: str, check: bool = True) -> str:
@@ -146,7 +163,12 @@ def collect_changed_urls(site_url: str, base_sha: str, head_sha: str) -> tuple[s
     urls: set[str] = set()
     post_changed = False
 
-    for status, paths in changed_paths(base_sha, head_sha):
+    for status, raw_paths in changed_paths(base_sha, head_sha):
+        # Filter experiment files before checking for site-wide changes.
+        paths = [path for path in raw_paths if not is_ignored_path(path)]
+        if not paths:
+            continue
+
         if any(path in SITE_WIDE_FILES or path.startswith(SITE_WIDE_PREFIXES) for path in paths):
             return set(), True
 
@@ -155,9 +177,6 @@ def collect_changed_urls(site_url: str, base_sha: str, head_sha: str) -> tuple[s
             return set(), True
 
         for repo_path in paths:
-            if repo_path.startswith(IGNORED_PREFIXES):
-                continue
-
             is_post_path = repo_path.startswith("post/")
             if is_post_path:
                 post_changed = True
@@ -187,7 +206,7 @@ def collect_changed_urls(site_url: str, base_sha: str, head_sha: str) -> tuple[s
     if post_changed:
         urls.update(absolute_url(site_url, path) for path in AGGREGATE_URLS)
 
-    return urls, False
+    return {url for url in urls if not is_excluded_url(url)}, False
 
 
 def sitemap_urls(site_url: str) -> set[str]:
@@ -210,12 +229,17 @@ def sitemap_urls(site_url: str) -> set[str]:
     return {
         url
         for url in urls
-        if urlparse(url).netloc.lower() == site_host
+        if urlparse(url).netloc.lower() == site_host and not is_excluded_url(url)
     }
 
 
 def submit_urls(site_url: str, key: str, key_location: str, urls: set[str]) -> None:
-    ordered_urls = sorted(urls)
+    # Final safety gate: no caller (delta, sitemap, or backfill) can
+    # submit an experiment URL, even if an earlier filter regresses.
+    ordered_urls = sorted(url for url in urls if not is_excluded_url(url))
+    excluded_count = len(urls) - len(ordered_urls)
+    if excluded_count:
+        print(f"IndexNow: skipped {excluded_count} experimental URL(s).")
     if not ordered_urls:
         print("IndexNow: no page URLs changed; nothing to submit.")
         return
