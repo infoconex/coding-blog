@@ -84,6 +84,43 @@
       .replace(/-+/g, '-');
   }
 
+  // Migrated articles often used bold paragraphs in place of section headings.
+  // Promote only clear section labels, so the existing table of contents can
+  // work without editing every archived Markdown post.
+  function normalizeArchiveHeadings(article) {
+    if (!article.hasAttribute('data-archive-article')) return;
+
+    const paragraphs = [...article.querySelectorAll('p')];
+    paragraphs.forEach((paragraph) => {
+      const label = paragraph.firstElementChild;
+      if (!label || label.tagName !== 'STRONG' || label !== paragraph.firstChild) return;
+
+      const title = label.textContent.trim();
+      if (!title || title.length > 85 || /[.!?]$/.test(title)) return;
+
+      const remainder = paragraph.textContent.slice(label.textContent.length);
+      const onlyLabel = [...paragraph.childNodes].every((node) =>
+        node === label || (node.nodeType === Node.TEXT_NODE && !node.textContent.trim()));
+      const prefixedDescription = !onlyLabel && /^\\s*(?:[-–—:]\\s+)/.test(remainder);
+      if (!onlyLabel && !prefixedDescription) return;
+
+      const heading = document.createElement('h2');
+      heading.textContent = title.replace(/\\s*[:–—-]\\s*$/, '');
+      paragraph.before(heading);
+
+      if (onlyLabel) {
+        paragraph.remove();
+      } else {
+        label.remove();
+        // Remove the separator following the bold label but retain its prose.
+        const firstText = paragraph.firstChild;
+        if (firstText?.nodeType === Node.TEXT_NODE) {
+          firstText.textContent = firstText.textContent.replace(/^\\s*[-–—:]\\s*/, '');
+        }
+      }
+    });
+  }
+
   function enhanceArticleNavigation(article) {
     const headings = [...article.querySelectorAll('h2, h3')];
     if (headings.length < 3) return;
@@ -163,6 +200,8 @@
   function enhanceArticle() {
     const article = document.querySelector('[data-article-content]');
     if (!article) return;
+
+    normalizeArchiveHeadings(article);
 
     const usedIds = new Set([...document.querySelectorAll('[id]')].map((element) => element.id));
     article.querySelectorAll('h2, h3').forEach((heading, index) => {
