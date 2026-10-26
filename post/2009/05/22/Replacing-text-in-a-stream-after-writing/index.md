@@ -28,70 +28,31 @@ It turns out it is actually fairly simple. One we want to make sure memory utili
 Here is my answer.
 
 ```csharp
-private
-
-void
- WriteUsers()
+private void WriteUsers()
 {
+    string userCountString = null;
+    ASCIIEncoding enc = new ASCIIEncoding();
+    byte[] userCountBytes = null;
+    int userCounter = 0;
 
-string
- userCountString =
-null
-;
-    ASCIIEncoding enc =
-new
- ASCIIEncoding();
-
-byte
-[] userCountBytes =
-null
-;
-
-int
- userCounter = 0;
-
-
-using
-(StreamWriter sw = File.CreateText(
-"myfile.txt"
-))
+    using (StreamWriter sw = File.CreateText("myfile.txt"))
     {
-
-// Write a blank line and return
-
-
-// Note this line will later contain our user count.
-
+        // Write a blank line; this will later contain the user count.
         sw.WriteLine();
 
-
-// Write out the records and keep track of the count
-
-
-for
-(
-int
- i = 1; i < 100; i++)
+        // Write records and keep track of the count.
+        for (int i = 1; i < 100; i++)
         {
-            sw.WriteLine(
-"User"
- + i);
+            sw.WriteLine("User" + i);
             userCounter++;
         }
 
-
-// Get the base stream and set the position to 0
-
+        // Get the base stream and set the position to 0.
         sw.BaseStream.Position = 0;
 
-        userCountString =
-"User Count: "
- + userCounter;
-
+        userCountString = "User Count: " + userCounter;
         userCountBytes = enc.GetBytes(userCountString);
-
         sw.BaseStream.Write(userCountBytes, 0, userCountBytes.Length);
     }
-
 }
 ```
