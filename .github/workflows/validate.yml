@@ -31,3 +31,6 @@ jobs:
 
       - name: Check custom-domain migration safety
         run: python scripts/custom_domain_preflight.py
+
+      - name: Check experiment homepage consistency
+        run: python scripts/test_experiment_consistency.py

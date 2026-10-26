@@ -51,6 +51,36 @@ class PerformanceExperimentTests(unittest.TestCase):
         self.assertIn("-200.0 ms", report)
         self.assertIn("Short visits", report)
 
+    def test_production_baseline_urls_and_report(self):
+        variants = performance_compare.EXPERIMENTS["production-baseline"]["variants"]
+        self.assertEqual(variants, ("production", "baseline"))
+        self.assertEqual(
+            performance_compare.variant_url("production-baseline", "production"),
+            "https://coding.infoconex.com/",
+        )
+        self.assertEqual(
+            performance_compare.variant_url("production-baseline", "baseline"),
+            "https://coding.infoconex.com/experiments/analytics-impact/both/",
+        )
+        rows = [row("production", 900, 1100, score=89, tbt=200),
+                row("baseline", 850, 950, score=96, tbt=110)]
+        report = performance_compare.render_report(rows, "mobile", "production-baseline")
+        self.assertIn("Production median", report)
+        self.assertIn("Baseline median", report)
+        self.assertIn("Difference (baseline − production)", report)
+        self.assertIn("-150.0 ms", report)
+        self.assertIn("Production is indexable", report)
+
+    def test_production_baseline_stylesheet_normalization(self):
+        html = (
+            '<link rel="stylesheet" href="/assets/css/site.css?v=10">'
+            '<link rel="stylesheet" href="/assets/css/home.css?v=20">'
+        )
+        self.assertEqual(
+            performance_compare.stylesheet_paths(html),
+            ("/assets/css/site.css", "/assets/css/home.css"),
+        )
+
     def test_missing_variant_is_error(self):
         with self.assertRaises(ValueError):
             performance_compare.render_report([row("none", 800, 900)], "mobile", "analytics")

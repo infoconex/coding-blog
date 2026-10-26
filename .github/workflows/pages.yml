@@ -35,6 +35,9 @@ jobs:
       - name: Verify experimental URLs cannot reach IndexNow
         run: python3 -m unittest discover -s scripts -p 'test_indexnow.py' -v
 
+      - name: Verify experiment pages match production homepage
+        run: python3 -m unittest discover -s scripts -p 'test_experiment_consistency.py' -v
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:

@@ -7,12 +7,14 @@ import argparse
 import csv
 import json
 import os
+import re
 import statistics
 import subprocess
 import sys
 import time
 from pathlib import Path
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 EXPERIMENTS = {
@@ -27,6 +29,18 @@ EXPERIMENTS = {
         "description": (
             "All pages use the same homepage content and CSS; they differ only in tracking. "
             "Google Analytics and Clarity use the production project IDs; test visits will appear in analytics."
+        ),
+    },
+    "production-baseline": {
+        "variants": ("production", "baseline"),
+        "urls": {
+            "production": "https://coding.infoconex.com/",
+            "baseline": "https://coding.infoconex.com/experiments/analytics-impact/both/",
+        },
+        "description": (
+            "Compares the live production homepage with an isolated, nonindexed copy. "
+            "Both run Google Analytics, Clarity, and the same five homepage stylesheets. "
+            "Tests isolate remaining differences between production and the experiment."
         ),
     },
     "google-timing": {
@@ -57,10 +71,24 @@ AUDIT_KEYS = {
 }
 
 
+def variant_url(experiment: str, variant: str) -> str:
+    config = EXPERIMENTS[experiment]
+    if variant not in config["variants"]:
+        raise ValueError(f"Unknown {experiment} variant: {variant}")
+    return config["urls"][variant] if "urls" in config else f"{config['base_url']}{variant}/"
+
+
+def stylesheet_paths(html: str) -> tuple[str, ...]:
+    """Match actual stylesheet URLs independent of cache-busting query strings."""
+    hrefs = re.findall(r'<link rel="stylesheet" href="([^"]+)"', html)
+    return tuple(urlsplit(href).path for href in hrefs)
+
+
 def ensure_pages_are_available(experiment: str) -> None:
     configuration = EXPERIMENTS[experiment]
+    html_by_variant = {}
     for variant in configuration["variants"]:
-        url = f"{configuration['base_url']}{variant}/"
+        url = variant_url(experiment, variant)
         request = Request(url, headers={"User-Agent": "coding-blog-performance-comparison/1.0"})
         try:
             with urlopen(request, timeout=30) as response:
@@ -69,8 +97,13 @@ def ensure_pages_are_available(experiment: str) -> None:
         except (HTTPError, URLError) as exc:
             raise RuntimeError(f"Experiment page unavailable: {url}: {exc}") from exc
 
-        if status != 200 or '<meta name="robots" content="noindex">' not in html:
-            raise RuntimeError(f"Unexpected experimental page response: {url} (HTTP {status})")
+        is_production = experiment == "production-baseline" and variant == "production"
+        noindex = '<meta name="robots" content="noindex">' in html
+        if status != 200 or noindex == is_production:
+            raise RuntimeError(
+                f"Unexpected page status or indexing directive: {url} (HTTP {status}, noindex={noindex})"
+            )
+        html_by_variant[variant] = html
 
         if experiment == "analytics":
             google = "www.googletagmanager.com/gtag/js?id=" in html
@@ -96,6 +129,24 @@ def ensure_pages_are_available(experiment: str) -> None:
                 raise RuntimeError(f"Unexpected Google timing configuration at {url}")
 
         print(f"Verified live page: {url}", flush=True)
+
+    if experiment == "production-baseline":
+        reference = stylesheet_paths(html_by_variant["production"])
+        comparison = stylesheet_paths(html_by_variant["baseline"])
+        expected_stylesheets = (
+            "/assets/css/site.css", "/assets/css/themes.css", "/assets/css/search.css",
+            "/assets/css/mobile-header.css", "/assets/css/home.css",
+        )
+        if reference != expected_stylesheets or comparison != expected_stylesheets:
+            raise RuntimeError(
+                "Production and baseline do not load identical expected CSS files. "
+                f"Production: {reference}; baseline: {comparison}"
+            )
+        for variant, html in html_by_variant.items():
+            has_google = '<script async src="https://www.googletagmanager.com/gtag/js?id=' in html
+            has_clarity = 'https://www.clarity.ms/tag/' in html
+            if not has_google or not has_clarity:
+                raise RuntimeError(f"Both production and baseline must load analytics: {variant}")
 
 
 def extract_metrics(report: Path) -> dict[str, float]:
@@ -162,12 +213,18 @@ def render_report(rows: list[dict], device: str, experiment: str) -> str:
         f"{len(measurements[variants[0]])} runs for each of {len(variants)} variants, "
         "alternating test order on the same GitHub-hosted runner.",
         configuration["description"],
-        "All experiment pages are noindex and excluded from IndexNow.",
+        ("Production is indexable; the baseline is noindex and excluded from IndexNow."
+         if experiment == "production-baseline" else
+         "All experiment pages are noindex and excluded from IndexNow."),
         "Lower is better for timing and layout shift; higher is better for Performance score.",
         "",
     ]
     headers = ["Metric"] + [variant.capitalize() + " median" for variant in variants]
-    pair = {"css": ("baseline", "optimized"), "google-timing": ("current", "after-load")}.get(experiment)
+    pair = {
+        "css": ("baseline", "optimized"),
+        "google-timing": ("current", "after-load"),
+        "production-baseline": ("production", "baseline"),
+    }.get(experiment)
     if pair:
         headers += [f"Difference ({pair[1]} − {pair[0]})"]
     lines.append("| " + " | ".join(headers) + " |")
@@ -215,7 +272,7 @@ def render_report(rows: list[dict], device: str, experiment: str) -> str:
         "Do not change production on small or inconsistent differences alone.",
         "",
         "### Tested URLs",
-        *[f"- {variant.capitalize()}: {configuration['base_url']}{variant}/" for variant in variants],
+        *[f"- {variant.capitalize()}: {variant_url(experiment, variant)}" for variant in variants],
         "",
         "Downloadable artifact: individual Lighthouse JSON results, measurements.csv, and summary.md.",
         "",
@@ -243,7 +300,7 @@ def main() -> int:
         # Reverse order every other round to reduce systematic order effects.
         order = variants if pair % 2 else tuple(reversed(variants))
         for variant in order:
-            url = f"{config['base_url']}{variant}/"
+            url = variant_url(args.experiment, variant)
             filename = f"{args.experiment}-{args.device}-pair-{pair:02d}-{variant}.json"
             print(f"Pair {pair}/{args.runs}: testing {variant} ({args.device})", flush=True)
             run_lighthouse(url, args.output_dir / filename, args.device)
