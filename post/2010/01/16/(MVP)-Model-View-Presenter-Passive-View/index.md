@@ -40,131 +40,137 @@ So how does this relate to a standard project we would create. In order to demon
 
 **CustomerView.cs** - Here is the initial code with all interaction between the model and the view being directly inside the form. The problem with this particular way of developing is that the only way to test the application is to bring up an instance of the application and manually test or use some kind of test automation software that records and plays back things.
 
+```csharp
 public partial class CustomerView : Form
- {
-     public CustomerView()
-     {
-         InitializeComponent();
-     }
+{
+    public CustomerView()
+    {
+        InitializeComponent();
+    }
 
-     private void buttonSearch\_Click(object sender, EventArgs e)
-     {
-         string customerIdString = this.textBoxCustomerId.Text.Trim();
-         int customerId;
-         Customer customer = null;
+    private void buttonSearch_Click(object sender, EventArgs e)
+    {
+        string customerIdString = this.textBoxCustomerId.Text.Trim();
+        int customerId;
+        Customer customer = null;
 
-         if (customerIdString == "")
-         {
-             MessageBox.Show("CustomerId cannot be empty");
-             return;
-         }
+        if (customerIdString == "")
+        {
+            MessageBox.Show("CustomerId cannot be empty");
+            return;
+        }
 
-         try
-         {
-             customerId = Int32.Parse(customerIdString);
-         }
-         catch
-         {
-             MessageBox.Show("CustomerId must be an integer value");
-             return;
-         }
+        try
+        {
+            customerId = Int32.Parse(customerIdString);
+        }
+        catch
+        {
+            MessageBox.Show("CustomerId must be an integer value");
+            return;
+        }
 
-         try
-         {
-             customer = Customer.GetCustomerById(customerId);
-         }
-         catch (Exception ex)
-         {
-             MessageBox.Show(ex.Message);
-             return;
-         }
+        try
+        {
+            customer = Customer.GetCustomerById(customerId);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+            return;
+        }
 
-         this.textBoxCustomerIdReadOnly.Text = customer.CustomerId.ToString();
-         this.textBoxFirstName.Text = customer.FirstName;
-         this.textBoxLastName.Text = customer.LastName;
-         this.textBoxCity.Text = customer.City;
-         this.textBoxState.Text = customer.State;
+        this.textBoxCustomerIdReadOnly.Text = customer.CustomerId.ToString();
+        this.textBoxFirstName.Text = customer.FirstName;
+        this.textBoxLastName.Text = customer.LastName;
+        this.textBoxCity.Text = customer.City;
+        this.textBoxState.Text = customer.State;
 
-     }
+    }
 
-     private void buttonSave\_Click(object sender, EventArgs e)
-     {
-         string city = this.textBoxCity.Text.Trim();
-         string state = this.textBoxState.Text.Trim();
+    private void buttonSave_Click(object sender, EventArgs e)
+    {
+        string city = this.textBoxCity.Text.Trim();
+        string state = this.textBoxState.Text.Trim();
 
-         if (this.textBoxCustomerIdReadOnly.Text == "")
-         {
-             MessageBox.Show("No customer has been loaded");
-             return;
-         }
+        if (this.textBoxCustomerIdReadOnly.Text == "")
+        {
+            MessageBox.Show("No customer has been loaded");
+            return;
+        }
 
-         if (city == "")
-         {
-             MessageBox.Show("City cannot be empty");
-             return;
-         }
+        if (city == "")
+        {
+            MessageBox.Show("City cannot be empty");
+            return;
+        }
 
-         if (state == "")
-         {
-             MessageBox.Show("State cannot be empty");
-             return;
-         }
+        if (state == "")
+        {
+            MessageBox.Show("State cannot be empty");
+            return;
+        }
 
-         Customer customer = new Customer();
-         customer.CustomerId = Convert.ToInt32(this.textBoxCustomerIdReadOnly.Text);
-         customer.FirstName = this.textBoxFirstName.Text;
-         customer.LastName = this.textBoxLastName.Text;
-         customer.City = this.textBoxCity.Text;
-         customer.State = this.textBoxState.Text;
+        Customer customer = new Customer();
+        customer.CustomerId = Convert.ToInt32(this.textBoxCustomerIdReadOnly.Text);
+        customer.FirstName = this.textBoxFirstName.Text;
+        customer.LastName = this.textBoxLastName.Text;
+        customer.City = this.textBoxCity.Text;
+        customer.State = this.textBoxState.Text;
 
-         try
-         {
-             Customer.SaveCustomer(customer);
+        try
+        {
+            Customer.SaveCustomer(customer);
 
-             MessageBox.Show("Customer Saved");
-         }
-         catch (Exception ex)
-         {
-             MessageBox.Show(ex.Message);
-         }
-     }
- }
+            MessageBox.Show("Customer Saved");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+}
+```
 
 **Refactoring to use MVP:** Now I will refactor the above code to use the MVP Passive View pattern. This will create an Interface that represents the view and place a presenter in between the Model and the View to do all the interaction between layers.
 
 **ICustomerView** – I created an interface ICustomerView that will represent the data on the form as shown below. This view will get injected into the Presenter constructor so that it has access to writing and retrieving values from the View.
 
+```csharp
 public interface ICustomerView
- {
-     string CustomerIdInput { get; }
-     string CustomerIdReadOnly { set; get; }
-     string FirstName { get; set; }
-     string LastName { get; set; }
-     string City { get; set; }
-     string State { get; set; }
-     void ShowMessage(string message);
- }
+{
+    string CustomerIdInput { get; }
+    string CustomerIdReadOnly { set; get; }
+    string FirstName { get; set; }
+    string LastName { get; set; }
+    string City { get; set; }
+    string State { get; set; }
+    void ShowMessage(string message);
+}
+```
 
 **CustomerViewPresenter** – The CustomerView form will contain an instance of this class which will take control of the setting and getting of values from the form. It will also handle the retrieving and saving of information from the Model. Notice that the constructor takes an instance of ICustomerView
 
+```csharp
 public class CustomerViewPresenter
- {
-     private ICustomerView customerView;
+{
+    private ICustomerView customerView;
 
-     public CustomerViewPresenter(ICustomerView customerView)
-     {
-         this.customerView = customerView;
-     }
+    public CustomerViewPresenter(ICustomerView customerView)
+    {
+        this.customerView = customerView;
+    }
 
-     public void LoadCustomer()
-     {
-     }
+    public void LoadCustomer()
+    {
+    }
 
-     public void SaveCustomer()
-     {
-     }
+    public void SaveCustomer()
+    {
+    }
 
- }
+}
+```
 
 **Refactored Project View** – This shows the additional files created ICustomerView and CustomerViewPresenter.
 
@@ -172,163 +178,166 @@ public class CustomerViewPresenter
 
 **CustomerView Refactored** - Now that I have the interface and presenter created let’s move our code from our CustomerView form into our presenter. Notice that the form now has a private instance declared CustomerViewPresenter and in the constructor of the view we instantiate a new instance of the presenter and pass in ICustomerView represented by this. Also note that the search and save button click events no longer contain any code to load or save the customer but rather calls the presenter methods to take care of the logic.
 
+```csharp
 public partial class CustomerView : Form, ICustomerView
- {
-     CustomerViewPresenter customerViewPresenter;
+{
+    CustomerViewPresenter customerViewPresenter;
 
-     public CustomerView()
-     {
-         InitializeComponent();
-         customerViewPresenter = new CustomerViewPresenter(this);
-     }
+    public CustomerView()
+    {
+        InitializeComponent();
+        customerViewPresenter = new CustomerViewPresenter(this);
+    }
 
-     private void buttonSearch\_Click(object sender, EventArgs e)
-     {
-         customerViewPresenter.LoadCustomer();
+    private void buttonSearch_Click(object sender, EventArgs e)
+    {
+        customerViewPresenter.LoadCustomer();
 
-     }
+    }
 
-     private void buttonSave\_Click(object sender, EventArgs e)
-     {
-         customerViewPresenter.SaveCustomer();
-     }
+    private void buttonSave_Click(object sender, EventArgs e)
+    {
+        customerViewPresenter.SaveCustomer();
+    }
 
-     #region ICustomerView Members
+    #region ICustomerView Members
 
-     public string CustomerIdInput
-     {
-         get { return this.textBoxCustomerId.Text.Trim(); }
-     }
+    public string CustomerIdInput
+    {
+        get { return this.textBoxCustomerId.Text.Trim(); }
+    }
 
-     public string CustomerIdReadOnly
-     {
-         get { return this.textBoxCustomerIdReadOnly.Text; }
-         set { this.textBoxCustomerIdReadOnly.Text = value; }
-     }
+    public string CustomerIdReadOnly
+    {
+        get { return this.textBoxCustomerIdReadOnly.Text; }
+        set { this.textBoxCustomerIdReadOnly.Text = value; }
+    }
 
-     public string FirstName
-     {
-         get { return this.textBoxFirstName.Text.Trim(); }
-         set { this.textBoxFirstName.Text = value; }
-     }
+    public string FirstName
+    {
+        get { return this.textBoxFirstName.Text.Trim(); }
+        set { this.textBoxFirstName.Text = value; }
+    }
 
-     public string LastName
-     {
-         get { return this.textBoxLastName.Text.Trim(); }
-         set { this.textBoxLastName.Text = value; }
-     }
+    public string LastName
+    {
+        get { return this.textBoxLastName.Text.Trim(); }
+        set { this.textBoxLastName.Text = value; }
+    }
 
-     public string City
-     {
-         get { return this.textBoxCity.Text.Trim(); }
-         set { this.textBoxCity.Text = value; }
-     }
+    public string City
+    {
+        get { return this.textBoxCity.Text.Trim(); }
+        set { this.textBoxCity.Text = value; }
+    }
 
-     public string State
-     {
-         get { return this.textBoxState.Text.Trim(); }
-         set { this.textBoxState.Text = value; }
-     }
+    public string State
+    {
+        get { return this.textBoxState.Text.Trim(); }
+        set { this.textBoxState.Text = value; }
+    }
 
-     public void ShowMessage(string message)
-     {
-         MessageBox.Show(message);
-     }
+    public void ShowMessage(string message)
+    {
+        MessageBox.Show(message);
+    }
 
-     #endregion
- }
-
+    #endregion
+}
+```
 
 **CustomerViewPresenter** - Below shows what is inside the presenter now. Since the presenter gets passed into it an interface representing the view it can now interact directly with the view. It is now up to the presenter to talk to the Model and get a customer and set the views information or retrieve information from the view and save it.
 
+```csharp
 public class CustomerViewPresenter
- {
-     private ICustomerView customerView;
+{
+    private ICustomerView customerView;
 
-     public CustomerViewPresenter(ICustomerView customerView)
-     {
-         this.customerView = customerView;
-     }
+    public CustomerViewPresenter(ICustomerView customerView)
+    {
+        this.customerView = customerView;
+    }
 
-     public void LoadCustomer()
-     {
-         Customer customer = null;
-         int customerId;
+    public void LoadCustomer()
+    {
+        Customer customer = null;
+        int customerId;
 
-         if (customerView.CustomerIdInput == "")
-         {
-             customerView.ShowMessage("CustomerId cannot be empty");
-             return;
-         }
+        if (customerView.CustomerIdInput == "")
+        {
+            customerView.ShowMessage("CustomerId cannot be empty");
+            return;
+        }
 
-         try
-         {
-             customerId = Int32.Parse(customerView.CustomerIdInput);
-         }
-         catch
-         {
-             customerView.ShowMessage("CustomerId must be an integer value");
-             return;
-         }
+        try
+        {
+            customerId = Int32.Parse(customerView.CustomerIdInput);
+        }
+        catch
+        {
+            customerView.ShowMessage("CustomerId must be an integer value");
+            return;
+        }
 
-         try
-         {
-             customer = Customer.GetCustomerById(customerId);
-         }
-         catch (Exception ex)
-         {
-             customerView.ShowMessage(ex.Message);
-             return;
-         }
+        try
+        {
+            customer = Customer.GetCustomerById(customerId);
+        }
+        catch (Exception ex)
+        {
+            customerView.ShowMessage(ex.Message);
+            return;
+        }
 
-         customerView.CustomerIdReadOnly = customer.CustomerId.ToString();
-         customerView.FirstName = customer.FirstName;
-         customerView.LastName = customer.LastName;
-         customerView.City = customer.City;
-         customerView.State = customer.State;
-     }
+        customerView.CustomerIdReadOnly = customer.CustomerId.ToString();
+        customerView.FirstName = customer.FirstName;
+        customerView.LastName = customer.LastName;
+        customerView.City = customer.City;
+        customerView.State = customer.State;
+    }
 
-     public void SaveCustomer()
-     {
+    public void SaveCustomer()
+    {
 
-         if (customerView.CustomerIdReadOnly == "")
-         {
-             customerView.ShowMessage("No customer has been loaded");
-             return;
-         }
+        if (customerView.CustomerIdReadOnly == "")
+        {
+            customerView.ShowMessage("No customer has been loaded");
+            return;
+        }
 
-         if (customerView.City == "")
-         {
-             customerView.ShowMessage("City cannot be empty");
-             return;
-         }
+        if (customerView.City == "")
+        {
+            customerView.ShowMessage("City cannot be empty");
+            return;
+        }
 
-         if (customerView.State == "")
-         {
-             customerView.ShowMessage("State cannot be empty");
-             return;
-         }
+        if (customerView.State == "")
+        {
+            customerView.ShowMessage("State cannot be empty");
+            return;
+        }
 
-         Customer customer = new Customer();
-         customer.CustomerId = Convert.ToInt32(customerView.CustomerIdReadOnly);
-         customer.FirstName = customerView.FirstName;
-         customer.LastName = customerView.LastName;
-         customer.City = customerView.City;
-         customer.State = customerView.State;
+        Customer customer = new Customer();
+        customer.CustomerId = Convert.ToInt32(customerView.CustomerIdReadOnly);
+        customer.FirstName = customerView.FirstName;
+        customer.LastName = customerView.LastName;
+        customer.City = customerView.City;
+        customer.State = customerView.State;
 
-         try
-         {
-             Customer.SaveCustomer(customer);
+        try
+        {
+            Customer.SaveCustomer(customer);
 
-             customerView.ShowMessage("Customer Saved");
-         }
-         catch (Exception ex)
-         {
-             customerView.ShowMessage(ex.Message);
-         }
-     }
+            customerView.ShowMessage("Customer Saved");
+        }
+        catch (Exception ex)
+        {
+            customerView.ShowMessage(ex.Message);
+        }
+    }
 
- }
+}
+```
 
 So you might be asking about now *“Why do I want to move all my logic to another class? Seems like all I did was make things more complicated and created more code!”.* The real value of doing it this way comes in the ability to now write unit tests against our code.
 
@@ -342,146 +351,150 @@ The other benefit you get is that you have separated the logic from your view so
 
 **CustomerViewMock** – This class in my test project represents my view. Note that the class inherits from my ICustomerView interface. You will also notice that I created public properties representing each of the components that would have been on my real form. I do this to keep my tests feeling like I am interacting with the real form.
 
+```csharp
 public class CustomerViewMock : ICustomerView
- {
-     public string textBoxCustomerId { private get; set; }
-     public string textBoxCustomerIdReadOnly { get; private set; }
-     public string textBoxFirstName { get; private set; }
-     public string textBoxLastName { get; private set; }
-     public string textBoxCity { get; set; }
-     public string textBoxState { get; set; }
-     public string messageBox { get; private set; }
+{
+    public string textBoxCustomerId { private get; set; }
+    public string textBoxCustomerIdReadOnly { get; private set; }
+    public string textBoxFirstName { get; private set; }
+    public string textBoxLastName { get; private set; }
+    public string textBoxCity { get; set; }
+    public string textBoxState { get; set; }
+    public string messageBox { get; private set; }
 
-     private CustomerViewPresenter customerViewPresenter;
+    private CustomerViewPresenter customerViewPresenter;
 
-     public CustomerViewMock()
-     {
-         customerViewPresenter = new CustomerViewPresenter(this);
-     }
+    public CustomerViewMock()
+    {
+        customerViewPresenter = new CustomerViewPresenter(this);
+    }
 
-     public void ButtonLoad()
-     {
-         customerViewPresenter.LoadCustomer();
-     }
+    public void ButtonLoad()
+    {
+        customerViewPresenter.LoadCustomer();
+    }
 
-     public void ButtonSave()
-     {
-         customerViewPresenter.SaveCustomer();
-     }
+    public void ButtonSave()
+    {
+        customerViewPresenter.SaveCustomer();
+    }
 
-     #region ICustomerView Members
+    #region ICustomerView Members
 
-     public string CustomerIdInput
-     {
-         get { return textBoxCustomerId; }
-     }
+    public string CustomerIdInput
+    {
+        get { return textBoxCustomerId; }
+    }
 
-     public string CustomerIdReadOnly
-     {
-         get { return textBoxCustomerIdReadOnly; }
-         set { textBoxCustomerIdReadOnly = value; }
-     }
+    public string CustomerIdReadOnly
+    {
+        get { return textBoxCustomerIdReadOnly; }
+        set { textBoxCustomerIdReadOnly = value; }
+    }
 
-     public string FirstName
-     {
-         get { return textBoxFirstName; }
-         set { textBoxFirstName = value; }
-     }
+    public string FirstName
+    {
+        get { return textBoxFirstName; }
+        set { textBoxFirstName = value; }
+    }
 
-     public string LastName
-     {
-         get { return textBoxLastName; }
-         set { textBoxLastName = value; }
-     }
+    public string LastName
+    {
+        get { return textBoxLastName; }
+        set { textBoxLastName = value; }
+    }
 
-     public string City
-     {
-         get { return textBoxCity; }
-         set { textBoxCity = value; }
-     }
+    public string City
+    {
+        get { return textBoxCity; }
+        set { textBoxCity = value; }
+    }
 
-     public string State
-     {
-         get { return textBoxState; }
-         set { textBoxState = value; }
-     }
+    public string State
+    {
+        get { return textBoxState; }
+        set { textBoxState = value; }
+    }
 
-     public void ShowMessage(string message)
-     {
-         messageBox = message;
-     }
+    public void ShowMessage(string message)
+    {
+        messageBox = message;
+    }
 
-     #endregion
- }
+    #endregion
+}
+```
 
 **CustomerViewTest** - And here is my test class with the various tests that I would have normally had to do manually. Now I can go in and make changes to the logic of my presenter and quickly run my existing tests and be sure I am not going to break any existing logic.
 
+```csharp
 [TestClass]
- public class CustomerViewTest
- {
-     public CustomerViewTest()
-     {
-     }
+public class CustomerViewTest
+{
+    public CustomerViewTest()
+    {
+    }
 
 
-     [TestMethod]
-     public void CustomerView\_LoadValidCustomerId()
-     {
-         CustomerViewMock customerView = new CustomerViewMock();
-         customerView.textBoxCustomerId = "1";
-         customerView.ButtonLoad();
+    [TestMethod]
+    public void CustomerView_LoadValidCustomerId()
+    {
+        CustomerViewMock customerView = new CustomerViewMock();
+        customerView.textBoxCustomerId = "1";
+        customerView.ButtonLoad();
 
-         Assert.AreEqual<string>("1", customerView.textBoxCustomerIdReadOnly);
+        Assert.AreEqual<string>("1", customerView.textBoxCustomerIdReadOnly);
 
-     }
+    }
 
-     [TestMethod]
-     public void CustomerView\_SaveCustomerCity()
-     {
-         CustomerViewMock customerView = new CustomerViewMock();
-         customerView.textBoxCustomerId = "1";
-         customerView.ButtonLoad();
+    [TestMethod]
+    public void CustomerView_SaveCustomerCity()
+    {
+        CustomerViewMock customerView = new CustomerViewMock();
+        customerView.textBoxCustomerId = "1";
+        customerView.ButtonLoad();
 
-         customerView.City = "Bellevue";
-         customerView.ButtonSave();
+        customerView.City = "Bellevue";
+        customerView.ButtonSave();
 
-         Assert.AreEqual<string>("Customer Saved", customerView.messageBox);
+        Assert.AreEqual<string>("Customer Saved", customerView.messageBox);
 
-     }
+    }
 
-     [TestMethod]
-     public void CustomerView\_CustomerIdTextBoxEmpty()
-     {
-         CustomerViewMock customerView = new CustomerViewMock();
-         customerView.textBoxCustomerId = "";
-         customerView.ButtonLoad();
+    [TestMethod]
+    public void CustomerView_CustomerIdTextBoxEmpty()
+    {
+        CustomerViewMock customerView = new CustomerViewMock();
+        customerView.textBoxCustomerId = "";
+        customerView.ButtonLoad();
 
-         Assert.AreEqual<string>("CustomerId cannot be empty", customerView.messageBox);
+        Assert.AreEqual<string>("CustomerId cannot be empty", customerView.messageBox);
 
-     }
+    }
 
-     [TestMethod]
-     public void CustomerView\_CustomerIdTextBoxWithSpace()
-     {
-         CustomerViewMock customerView = new CustomerViewMock();
-         customerView.textBoxCustomerId = "";
-         customerView.ButtonLoad();
+    [TestMethod]
+    public void CustomerView_CustomerIdTextBoxWithSpace()
+    {
+        CustomerViewMock customerView = new CustomerViewMock();
+        customerView.textBoxCustomerId = "";
+        customerView.ButtonLoad();
 
-         Assert.AreEqual<string>("CustomerId cannot be empty", customerView.messageBox);
+        Assert.AreEqual<string>("CustomerId cannot be empty", customerView.messageBox);
 
-     }
+    }
 
-     [TestMethod]
-     public void CustomerView\_CustomerIdTextBoxNotInteger()
-     {
-         CustomerViewMock customerView = new CustomerViewMock();
-         customerView.textBoxCustomerId = "ABC";
-         customerView.ButtonLoad();
+    [TestMethod]
+    public void CustomerView_CustomerIdTextBoxNotInteger()
+    {
+        CustomerViewMock customerView = new CustomerViewMock();
+        customerView.textBoxCustomerId = "ABC";
+        customerView.ButtonLoad();
 
-         Assert.AreEqual<string>("CustomerId must be an integer value", customerView.messageBox);
+        Assert.AreEqual<string>("CustomerId must be an integer value", customerView.messageBox);
 
-     }
- }
+    }
+}
+```
 
 That is all I have for now. Please provide feedback if you see anything wrong or have any suggestions that would further improve my approach. I am thinking about adding on to this post an example of taking the Interface and Presenter and moving them into its own project. Then creating this same interface in asp.net just to show the ability to reuse the code. For now I hope this helps someone with understanding the MVP – Passive View pattern.
 
