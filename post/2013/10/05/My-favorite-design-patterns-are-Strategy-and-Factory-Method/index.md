@@ -25,98 +25,70 @@ You will be building a simple console application that will be used to check to 
 **Application V1.0** – First version written to deal with the current requirements. (Note: do not get caught up in the lack of validation of input parameters as the sample is designed to focus on the strategy pattern not best practices for writing the application as a whole.)
 
 ```csharp
-using
- System;
+using System;
 
-using
- System.Net;
+using System.Net;
 
-namespace
- Design_Patterns
+namespace Design_Patterns
 {
 
-internal
-
-class
- Program
+internal class Program
     {
 
-f
-(
-string
-[] args)
+private static void Main(string[] args)
         {
 
 // More validation would be necessary but the article is not
 
-
 // about validation of input ;-)
 
-
-if
- (args.Length != 2)
+if (args.Length != 2)
             {
                 Console.WriteLine(
 "You must supply the URL and Content to check for."
 );
             }
 
-
-string
- websiteUrl = args[0];
+string websiteUrl = args[0];
 
             Console.WriteLine(
 "URL supplied to be validated: {0}"
 , websiteUrl);
 
-
-string
- contentToVerify = args[1];
+string contentToVerify = args[1];
 
             Console.WriteLine(
 "Content to be verified: {0}"
 , contentToVerify);
 
-            WebClient webClient =
-new
- WebClient();
+            WebClient webClient = new WebClient();
 
-
-try
-
-            {
+try {
                 Console.WriteLine(
 "Attempting to retrieve content"
 );
 
-
-string
- htmlContent = webClient.DownloadString(websiteUrl);
+string htmlContent = webClient.DownloadString(websiteUrl);
 
                 Console.WriteLine(
 "Content downloaded, checking to see if content exists."
 );
 
-
-if
- (htmlContent.Contains(contentToVerify))
+if (htmlContent.Contains(contentToVerify))
                 {
                     Console.WriteLine(
 "SUCCESS: Content supplied was found."
 );
                 }
 
-else
-
-                {
+else {
                     Console.WriteLine(
 "ERROR: Content was not found in the returned html."
 );
                 }
             }
 
-catch
- (Exception ex)
+catch (Exception ex)
             {
                 Console.WriteLine(
 "ERROR: Exception occurred while downloading content: {0}"
@@ -145,177 +117,112 @@ The application designed has meet the needs expected, however after using it for
 **Application V1.1** – Second version to add ability to run manually or automatically and log results to a log file when automated.
 
 ```csharp
-using
- System;
+using System;
 
-using
- System.IO;
+using System.IO;
 
-using
- System.Net;
+using System.Net;
 
-namespace
- Design_Patterns
+namespace Design_Patterns
 {
 
-internal
-
-class
- Program
+internal class Program
     {
 
-private
+private static StreamWriter fileWriter = null ;
 
-static
- StreamWriter fileWriter =
-null
+private static bool useFileWriter = false ;
+
+private const string loggingFileName = "WebsiteMonitor.log"
 ;
 
-private
-
-static
-
-bool
- useFileWriter =
-false
-;
-
-private
-
-const
-
-string
- loggingFileName =
-"WebsiteMonitor.log"
-;
-
-
-private
-
-static
-
-void
- Main(
-string
-[] args)
+private static void Main(
+string [] args)
         {
 
-try
-
-            {
+try {
 
 // More validation would be necessary but the article is not
 
-
 // about validation of input ;-)
 
-
-if
- (args.Length < 2)
+if (args.Length < 2)
                 {
                     WriteMessage(
 "You must supply the URL and Content to check for."
 );
-return
-;
+return ;
                 }
 
 // If third argument supplied then it is used to determine
 
-
 // if the application will log to a file
 
-
-if
- (args.Length == 3)
+if (args.Length == 3)
                 {
                     useFileWriter = Convert.ToBoolean(args[2]);
 
-
-if
- (useFileWriter)
+if (useFileWriter)
                     {
                         fileWriter = File.CreateText(loggingFileName);
                     }
                 }
 
-
-string
- websiteUrl = args[0];
+string websiteUrl = args[0];
 
                 WriteMessage(
-string
-.Format(
+string .Format(
 "URL supplied to be validated: {0}"
 , websiteUrl));
 
-
-string
- contentToVerify = args[1];
+string contentToVerify = args[1];
 
                 WriteMessage(
-string
-.Format(
+string .Format(
 "Content to be verified: {0}"
 , contentToVerify));
 
-                WebClient webClient =
-new
- WebClient();
+                WebClient webClient = new WebClient();
 
-
-try
-
-                {
+try {
                     WriteMessage(
 "Attempting to retrieve content"
 );
 
-
-string
- htmlContent = webClient.DownloadString(websiteUrl);
+string htmlContent = webClient.DownloadString(websiteUrl);
 
                     WriteMessage(
 "Content downloaded, checking to see if content exists."
 );
 
-
-if
- (htmlContent.Contains(contentToVerify))
+if (htmlContent.Contains(contentToVerify))
                     {
                         WriteMessage(
 "SUCCESS: Content supplied was found."
 );
                     }
 
-else
-
-                    {
+else {
                         WriteMessage(
 "ERROR: Content was not found in the returned html."
 );
                     }
                 }
 
-catch
- (Exception ex)
+catch (Exception ex)
                 {
                     WriteMessage(
-string
-.Format(
+string .Format(
 "ERROR: Exception occurred while downloading content: {0}"
 , ex.Message));
                 }
 
                 WriteMessage(
-string
-.Format(
+string .Format(
 "Test completed at: {0}"
 , DateTime.Now));
 
-
-if
- (!useFileWriter)
+if (!useFileWriter)
                 {
                     WriteMessage(
 "-- Hit enter To close application --"
@@ -325,49 +232,30 @@ if
                 }
             }
 
-finally
+finally {
 
-            {
-
-if
- (fileWriter !=
-null
-) fileWriter.Dispose();
+if (fileWriter != null ) fileWriter.Dispose();
             }
         }
 
-
 /// <summary>
-
 
 /// Writes the message to either the console or file based on configuration
 
-
 /// </summary>
-
 
 /// <param name="message"></param>
 
-
-private
-
-static
-
-void
- WriteMessage(
-string
- message)
+private static void WriteMessage(
+string message)
         {
 
-if
- (!useFileWriter)
+if (!useFileWriter)
             {
                 Console.WriteLine(message);
             }
 
-else
-
-            {
+else {
                 fileWriter.WriteLine(message);
             }
         }
@@ -402,20 +290,14 @@ Let me take a minute to explain what the above UML diagram says about the loggin
 **Create strategy** – ILogWriter interface that specific logging algorithms will use.
 
 ```csharp
-namespace
- Design_Patterns
+namespace Design_Patterns
 {
 
-public
-
-interface
- ILogWriter
+public interface ILogWriter
     {
 
-void
- Write(
-string
- message);
+void Write(
+string message);
     }
 }
 ```
@@ -425,25 +307,16 @@ Create the new concrete classes that will do the logging for Console and File lo
 **Console Writer** – Class that will be responsible for logging messages to the console
 
 ```csharp
-using
- System;
+using System;
 
-namespace
- Design_Patterns
+namespace Design_Patterns
 {
 
-public
-
-class
- ConsoleWriter : ILogWriter
+public class ConsoleWriter : ILogWriter
     {
 
-public
-
-void
- Write(
-string
- message)
+public void Write(
+string message)
         {
             Console.WriteLine(message);
         }
@@ -454,77 +327,43 @@ string
 **File Writer** – Class that will be responsible for logging messages to a file
 
 ```csharp
-using
- System;
+using System;
 
-using
- System.IO;
+using System.IO;
 
-namespace
- Design_Patterns
+namespace Design_Patterns
 {
 
-public
-
-class
- FileWriter : ILogWriter, IDisposable
+public class FileWriter : ILogWriter, IDisposable
     {
 
-private
-
-const
-
-string
- logFileName =
-"WebsiteMonitor.log"
+private const string logFileName = "WebsiteMonitor.log"
 ;
 
-private
- StreamWriter fileWriter =
-null
-;
+private StreamWriter fileWriter = null ;
 
-
-public
- FileWriter()
+public FileWriter()
         {
             fileWriter = File.CreateText(logFileName);
-            fileWriter.AutoFlush =
-true
-;
+            fileWriter.AutoFlush = true ;
         }
 
-
-public
-
-void
- Write(
-string
- message)
+public void Write(
+string message)
         {
             fileWriter.WriteLine(message);
         }
 
-
 /// <summary>
-
 
 /// Dispose method ensures that the file is closed and disposed
 
-
 /// </summary>
 
-
-public
-
-void
- Dispose()
+public void Dispose()
         {
 
-if
- (fileWriter !=
-null
-) fileWriter.Dispose();
+if (fileWriter != null ) fileWriter.Dispose();
         }
 
     }
@@ -534,166 +373,105 @@ null
 **Logger** – Client in strategy pattern that will contain an instance of the strategy to do the logging for the application. This class will be used inside the Program main method to do the logging for the application. The default  logger that will be used if not defined is the console logger, this allows us to implement the same behavior that the original application had without any extra configuration. You can also alternatively pass in the type of logger you wish to create or pass in a specific strategy required, this will be important when we implement the final refactoring as you will see in a bit.
 
 ```csharp
-using
- System;
+using System;
 
-namespace
- Design_Patterns
+namespace Design_Patterns
 {
 
-public
-
-class
- Logger : IDisposable
+public class Logger : IDisposable
     {
 
-private
- ILogWriter logger;
-
+private ILogWriter logger;
 
 /// <summary>
-
 
 /// Default constructor will implement a console writer
 
-
 /// </summary>
 
-
-public
- Logger()
+public Logger()
         {
-            logger =
-new
- ConsoleWriter();
+            logger = new ConsoleWriter();
         }
-
 
 /// <summary>
 
-
 /// Initializes a new logger based on the LoggerType provided
-
 
 /// </summary>
 
-
 /// <param name="loggerType">LoggerType to use</param>
 
-
-public
- Logger(LoggerType loggerType)
+public Logger(LoggerType loggerType)
         {
 
-switch
- (loggerType)
+switch (loggerType)
             {
 
-case
- LoggerType.Console:
-                    logger =
-new
- ConsoleWriter();
+case LoggerType.Console:
+                    logger = new ConsoleWriter();
 
-break
-;
+break ;
 
-case
- LoggerType.File:
-                    logger =
-new
- FileWriter();
+case LoggerType.File:
+                    logger = new FileWriter();
 
-break
-;
+break ;
 
-case
- LoggerType.Xml:
-                    logger =
-new
- XmlWriter();
+case LoggerType.Xml:
+                    logger = new XmlWriter();
 
-break
-;
+break ;
 
 default
 :
 
-throw
-
-new
- Exception(
+throw new Exception(
 "LoggerType unknown: "
  + loggerType);
             }
         }
 
-
 /// <summary>
-
 
 /// Logger type can be passed in
 
-
 /// </summary>
-
 
 /// <param name="logger">ILogWriter</param>
 
-
-public
- Logger(ILogWriter logger)
+public Logger(ILogWriter logger)
         {
 
-this
-.logger = logger;
+this .logger = logger;
         }
-
 
 /// <summary>
 
-
 /// Write message to logger
-
 
 /// </summary>
 
-
 /// <param name="message"></param>
 
-
-public
-
-void
- Write(
-string
- message)
+public void Write(
+string message)
         {
             logger.Write(message);
         }
 
-
 /// <summary>
-
 
 /// Dispose logger if IDisposable is implemented
 
-
 /// </summary>
 
-
-public
-
-void
- Dispose()
+public void Dispose()
         {
 
-if
- (logger
+if (logger
 is
- IDisposable && logger !=
-null
-)
+ IDisposable && logger != null )
             {
                 ((IDisposable)logger).Dispose();
             }
@@ -705,178 +483,112 @@ null
 **Program** – Application code that has now been refactored to use the strategy pattern. Take note that this class no longer knows anything about how to perform logging. The only thing that remains regarding logging is the code that decides what type of logger the application should use. These changes will provide an approach that will allow our application to expand and use different loggers as requirements change without having to change the logic in the main method. The program also no longer needs to know anything about how logging happens. The WriteMessage method has now been removed, the application when started looks to see if file logging is required and if so instantiates a new logger passing in that it will need to implement file logging, otherwise the default logger is initialized which will do console logging which is the same as the previous behavior.
 
 ```csharp
-using
- System;
+using System;
 
-using
- System.Net;
+using System.Net;
 
-namespace
- Design_Patterns
+namespace Design_Patterns
 {
 
-internal
-
-class
- Program
+internal class Program
     {
 
-private
+private static bool useFileWriter = false ;
 
-static
-
-bool
- useFileWriter =
-false
-;
-
-
-private
-
-static
-
-void
- Main(
-string
-[] args)
+private static void Main(
+string [] args)
         {
-            Logger logger =
-null
-;
+            Logger logger = null ;
 
-
-try
-
-            {
+try {
 
 // If third argument supplied then it is used to determine
 
-
 // if the application will log to a file
 
-
-if
- (args.Length == 3)
+if (args.Length == 3)
                 {
                     useFileWriter = Convert.ToBoolean(args[2]);
 
-
-if
- (useFileWriter)
+if (useFileWriter)
                     {
-                        logger =
-new
- Logger(LoggerType.File);
+                        logger = new Logger(LoggerType.File);
                     }
                 }
 
-
-if
- (logger ==
-null
-)
+if (logger == null )
                 {
-                    logger =
-new
- Logger();
+                    logger = new Logger();
                 }
-
 
 // More validation would be necessary but the article is not
 
-
 // about validation of input ;-)
 
-
-if
- (args.Length < 2)
+if (args.Length < 2)
                 {
                     logger.Write(
 "You must supply the URL and Content to check for."
 );
 
-
-return
-;
+return ;
                 }
 
-
-string
- websiteUrl = args[0];
+string websiteUrl = args[0];
 
                 logger.Write(
-string
-.Format(
+string .Format(
 "URL supplied to be validated: {0}"
 , websiteUrl));
 
-
-string
- contentToVerify = args[1];
+string contentToVerify = args[1];
 
                 logger.Write(
-string
-.Format(
+string .Format(
 "Content to be verified: {0}"
 , contentToVerify));
 
-                WebClient webClient =
-new
- WebClient();
+                WebClient webClient = new WebClient();
 
-
-try
-
-                {
+try {
                     logger.Write(
 "Attempting to retrieve content"
 );
 
-
-string
- htmlContent = webClient.DownloadString(websiteUrl);
+string htmlContent = webClient.DownloadString(websiteUrl);
 
                     logger.Write(
 "Content downloaded, checking to see if content exists."
 );
 
-
-if
- (htmlContent.Contains(contentToVerify))
+if (htmlContent.Contains(contentToVerify))
                     {
                         logger.Write(
 "SUCCESS: Content supplied was found."
 );
                     }
 
-else
-
-                    {
+else {
                         logger.Write(
 "ERROR: Content was not found in the returned html."
 );
                     }
                 }
 
-catch
- (Exception ex)
+catch (Exception ex)
                 {
                     logger.Write(
-string
-.Format(
+string .Format(
 "ERROR: Exception occurred while downloading content: {0}"
 , ex.Message));
                 }
 
                 logger.Write(
-string
-.Format(
+string .Format(
 "Test completed at: {0}"
 , DateTime.Now));
 
-
-if
- (!useFileWriter)
+if (!useFileWriter)
                 {
                     logger.Write(
 "-- Hit enter To close application --"
@@ -886,14 +598,9 @@ if
                 }
             }
 
-finally
+finally {
 
-            {
-
-if
- (logger !=
-null
-) logger.Dispose();
+if (logger != null ) logger.Dispose();
             }
         }
     }
