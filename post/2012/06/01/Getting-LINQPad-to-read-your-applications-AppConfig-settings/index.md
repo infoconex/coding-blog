@@ -14,7 +14,11 @@ I have been using LINQPad for a while now and I love it. This utility allows me 
 
 Each time I would run into this I would search and not come up with how to get my app.config settings to be honored by LINQPad and today I finally found how to do it so I thought I would write up something really quick to show others how to accomplish this.
 
-1) Find the path that LINQPad uses for its configuration file by excuting this: AppDomain.CurrentDomain.SetupInformation.ConfigurationFile.Dump()
+1) Find the path that LINQPad uses for its configuration file by excuting this:
+
+```csharp
+AppDomain.CurrentDomain.SetupInformation.ConfigurationFile.Dump()
+```
 
 This returned for me the following: C:\Program Files\LINQPad4\LINQPad.config
 
