@@ -31,6 +31,7 @@ gpgcheck=0
 
 The above command should also install these required components
 
+```text
 Installing:
 xsp                     noarch     1.9.1-0.novell   mono              210 k
 Installing for dependencies:
@@ -40,6 +41,7 @@ mono-data-sqlite        i586       1.9.1-2.novell   mono              169 k
 mono-nunit              i586       1.9.1-2.novell   mono              115 k
 mono-web                i586       1.9.1-2.novell   mono              3.0 M
 mono-winforms           i586       1.9.1-2.novell   mono              3.9 M
+```
 
 Congratulations you have installed mono and can now execute programs written in .NET on your machine. However I had you install XSP as it is a small webserver that can run a website written in .NET without having to integrate into your existing web application such as apache. If you want to integrate into apache follow the current [mod_mono documentation](https://www.mono-project.com/docs/web/mod_mono/).
 
@@ -59,7 +61,9 @@ Congratulations you have installed mono and can now execute programs written in 
 
 **Note:** you should change the --port definition to the port you want to use. Make sure nothing else is using the same port you define.
 
+```text
 --port 8082 --root /home/monoweb/web/
+```
 
 **Contents of /etc/rc.d/init.d/xsp**
 
