@@ -47,7 +47,8 @@ def lighthouse_fixture():
 
 def row(variant, pair, lcp, score=95, tbt=200, cls=0, observed=300, css=20):
     return {
-        "variant": variant, "pair": pair, "lcp_ms": lcp, "score": score,
+        "variant": variant, "pair": pair, "lcp_ms": lcp,
+        "fcp_ms": lcp, "speed_index_ms": lcp, "score": score,
         "tbt_ms": tbt, "cls": cls, "observed_lcp_ms": observed,
         "home_css_duration_ms": css,
         "home_css_finish_ms": css + 100,
