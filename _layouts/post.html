@@ -133,7 +133,7 @@ layout: default
     </aside>
   {% endif %}
 
-  <div class="post-content" data-article-content>
+  <div class="post-content" data-article-content{% if article_age >= archive_age %} data-archive-article{% endif %}>
     {{ content }}
   </div>
 
