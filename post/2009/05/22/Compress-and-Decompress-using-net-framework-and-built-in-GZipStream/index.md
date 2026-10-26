@@ -12,187 +12,50 @@ legacyPaths: ["/post/2009/05/22/Compress-and-Decompress-using-net-framework-and-
 ---
 I recently had a project in which I wanted to compress log files I was transferring between servers. I did not realize till I did some research that the .NET framework has a nice little library built in for creating GZIP files. While I think the maximum recommended size for using this is 4GIG I am well under that.
 
-Here is my Compress / Decompress methods
+Here is a complete C# example that compresses a log file into a GZip byte array and then decompresses it. The original sample had formatting damage from migration, and its compression method did not return a value even though the usage example expected one. The version below corrects those issues while remaining compatible with .NET Framework 3.5.
 
-```
-byte
-[] startfile = File.ReadAllBytes(
-"e:\\mylog.log"
-);
-byte
-[] comp =
-null
-;
-byte
-[] decom =
-null
-;
+```csharp
+byte[] startFile = File.ReadAllBytes(@"e:\mylog.log");
+byte[] compressed = CompressBytes(startFile);
+Console.WriteLine(compressed.Length);
 
-comp = CompressBytes(startfile);
-Console.WriteLine(comp.Length.ToString());
-decom = Decompress(comp);
-Console.WriteLine(decom.Length.ToString());
-
+byte[] decompressed = Decompress(compressed);
+Console.WriteLine(decompressed.Length);
 ```
 
 ```csharp
-private
-
-void
- Compress(
-byte
-[] fileBytes)
+private static byte[] CompressBytes(byte[] fileBytes)
 {
-
-using
-(MemoryStream ms =
-new
- MemoryStream())
+    using (MemoryStream output = new MemoryStream())
     {
-
-using
-(GZipStream gz =
-new
- GZipStream(ms,
-                                             CompressionMode.Compress,
-
-true
-))
+        using (GZipStream gzip = new GZipStream(
+            output, CompressionMode.Compress, true))
         {
-            gz.Write(fileBytes, 0, fileBytes.Length);
-            gz.Close();
+            gzip.Write(fileBytes, 0, fileBytes.Length);
         }
+
+        return output.ToArray();
     }
 }
-private
 
-byte
-[] Decompress(
-byte
-[] fileBytes)
+private static byte[] Decompress(byte[] fileBytes)
 {
-
-int
- buffer_size = 100;
-
-using
-(MemoryStream ms =
-new
- MemoryStream(fileBytes))
+    using (MemoryStream input = new MemoryStream(fileBytes))
+    using (GZipStream gzip = new GZipStream(
+        input, CompressionMode.Decompress))
+    using (MemoryStream output = new MemoryStream())
     {
+        byte[] buffer = new byte[8192];
+        int bytesRead;
 
-using
-(GZipStream gz =
-new
- GZipStream(ms,
-                                             CompressionMode.Decompress,
-
-true
-))
+        while ((bytesRead = gzip.Read(buffer, 0, buffer.Length)) > 0)
         {
-
-byte
-[] bufferFooter =
-null
-;
-
-int
- readOffset = 0;
-
-int
- totalBytes = 0;
-
-byte
-[] finalBuffer =
-null
-;
-
-int
- uncompLength = 0;
-
-int
- compressedFileLength = fileBytes.Length;
-
-// Get last 4 bytes (footer) as they contain the
-
-// original length of the compressed bytes
-
-
-// byte array to hold footer value
-            bufferFooter =
-new
-
-byte
-[4];
-
-// Set position of MemoryStream end of stream
-
-// minus the 4 bytes needed
-            ms.Position = ms.Length - 4;
-
-
-// Fill the bufferFooter with the last 4 bytes
-            ms.Read(bufferFooter, 0, 4);
-
-// Set Stream back to 0
-            ms.Position = 0;
-
-// Convert footer bytes to the length.
-            uncompLength = BitConverter.ToInt32(bufferFooter, 0);
-
-// Set a temporary buffer to hold the uncompressed
-
-// information. We also make it slightly larger to
-
-// ensure everything will fit. We will later trim
-
-// off the unused bytes.
-            finalBuffer =
-new
-
-byte
-[uncompLength + buffer_size];
-
-while
-(
-true
-)
-            {
-
-// Read from stream up to buffer size. Note that return
-
-// value is actual bytes read in case the number filled
-
-// is less than we requested.
-
-int
- bytesRead = gz.Read(finalBuffer,
-                                        readOffset,
-                                        buffer_size);
-
-// If no bytes returned we are done
-
-if
-(bytesRead == 0)
-                {
-
-break
-;
-                }
-                readOffset += bytesRead;
-                totalBytes += bytesRead;
-            }
-
-// Trim off unused bytes based
-            Array.Resize<
-byte
->(
-ref
- finalBuffer, totalBytes);
-
-return
- finalBuffer;
+            output.Write(buffer, 0, bytesRead);
         }
+
+        return output.ToArray();
     }
 }
 ```
+
+**Why this differs from my original implementation:** The original decompression code read the uncompressed length from the final four bytes of the GZip trailer. That value is stored modulo 2³², so it is not a reliable buffer allocation size for large content. Reading decompressed bytes into a growing `MemoryStream` avoids depending on the trailer length. The methods now also agree with the usage example: `CompressBytes` returns the compressed bytes, and `Decompress` returns the original bytes.
