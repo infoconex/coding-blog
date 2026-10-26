@@ -69,6 +69,3 @@ public string Traceroute(string ipAddressOrHostName)
 }
 ```
 
-```
-
-```
