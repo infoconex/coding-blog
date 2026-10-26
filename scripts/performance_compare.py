@@ -17,6 +17,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
+from performance_diagnostics import diagnostics, guardrail_checks, outlier_rows, stylesheet_requests
+
 EXPERIMENTS = {
     "css": {
         "base_url": "https://coding.infoconex.com/experiments/css-optimization/",
@@ -266,15 +268,78 @@ def render_report(rows: list[dict], device: str, experiment: str) -> str:
             "Validate that real pageviews are received and weigh this tradeoff before making a production change.",
         ]
 
+    if all("observed_lcp_ms" in row for row in rows):
+        lines += [
+            "",
+            "### Per-run loading diagnostics",
+            "",
+            "The scored LCP is Lighthouse's **modeled** mobile timing; observed LCP and "
+            "CSS request timings come from its unthrottled browser trace. "
+            "Do not compare them as if both used the same network conditions.",
+            "",
+            "| Variant | Run | Modeled LCP | Observed LCP | Home CSS duration | Home CSS finished | Slowest CSS request |",
+            "| --- | ---: | ---: | ---: | ---: | ---: | --- |",
+        ]
+
+        def fmt(value):
+            return f"{value:.0f} ms" if isinstance(value, (float, int)) else "n/a"
+
+        for row in sorted(rows, key=lambda entry: (entry["pair"], entry["variant"])):
+            slowest_path = row.get("slowest_css_path", "")
+            slowest_label = slowest_path.split("/")[-1] if slowest_path else "n/a"
+            slowest_duration = fmt(row.get("slowest_css_duration_ms"))
+            lines.append(
+                f"| {row['variant']} | {row['pair']} | {fmt(row['lcp_ms'])} | "
+                f"{fmt(row.get('observed_lcp_ms'))} | {fmt(row.get('home_css_duration_ms'))} | "
+                f"{fmt(row.get('home_css_finish_ms'))} | "
+                f"{slowest_label} ({slowest_duration}) |"
+            )
+
+        unusual = outlier_rows(rows)
+        if unusual:
+            lines += ["", "### Modeled LCP outliers", ""]
+            for row in unusual:
+                ratio = row["lcp_ms"] / row["observed_lcp_ms"] if row.get("observed_lcp_ms") else None
+                comparison = f" ({ratio:.1f}× observed)" if ratio is not None else ""
+                lines.append(
+                    f"- **{row['variant']} / run {row['pair']}**: modeled LCP "
+                    f"{fmt(row['lcp_ms'])}; observed LCP "
+                    f"{fmt(row.get('observed_lcp_ms'))}{comparison}; "
+                    f"home.css took {fmt(row.get('home_css_duration_ms'))}. "
+                    "This is a diagnostic clue, not proof of causation."
+                )
+
+    checks = guardrail_checks(rows, experiment)
+    if checks:
+        lines += [
+            "",
+            "### Production regression guardrails (manual, warning-only)",
+            "",
+            "The checks apply to the **median of production runs**, not a single outlier. "
+            "These are conservative synthetic-lab heuristics, not field Core Web Vitals. "
+            "They do not fail the workflow or trigger deployments.",
+            "",
+            "| Check | Median | Warning threshold | Status | Runs outside limit |",
+            "| --- | ---: | ---: | --- | ---: |",
+        ]
+        for check in checks:
+            suffix = f" {check['units']}" if check["units"] else ""
+            comparison = "below" if check["label"] == "Performance score" else "above"
+            lines.append(
+                f"| {check['label']} | {check['median']:.1f}{suffix} | "
+                f"{comparison} {check['limit']:g}{suffix} | **{check['status']}** | "
+                f"{check['affected']}/{check['total']} |"
+            )
+
     lines += [
         "",
-        "**Interpretation:** Compare medians and the individual runs. "
+        "**Interpretation:** Compare medians and the individual runs. 
         "Do not change production on small or inconsistent differences alone.",
         "",
         "### Tested URLs",
         *[f"- {variant.capitalize()}: {variant_url(experiment, variant)}" for variant in variants],
         "",
-        "Downloadable artifact: individual Lighthouse JSON results, measurements.csv, and summary.md.",
+        "Downloadable artifact: Lighthouse JSON, measurements.csv, stylesheet-requests.csv, and summary.md.",
         "",
     ]
     return "\n".join(lines)
@@ -296,6 +361,7 @@ def main() -> int:
     ensure_pages_are_available(args.experiment)
 
     rows = []
+    css_rows = []
     for pair in range(1, args.runs + 1):
         # Reverse order every other round to reduce systematic order effects.
         order = variants if pair % 2 else tuple(reversed(variants))
@@ -304,11 +370,18 @@ def main() -> int:
             filename = f"{args.experiment}-{args.device}-pair-{pair:02d}-{variant}.json"
             print(f"Pair {pair}/{args.runs}: testing {variant} ({args.device})", flush=True)
             run_lighthouse(url, args.output_dir / filename, args.device)
-            metrics = extract_metrics(args.output_dir / filename)
+            report = args.output_dir / filename
+            metrics = extract_metrics(report)
+            report_data = json.loads(report.read_text(encoding="utf-8"))
+            measured = diagnostics(report_data)
             rows.append({
                 "pair": pair, "variant": variant, "device": args.device,
-                "experiment": args.experiment, **metrics,
+                "experiment": args.experiment, **metrics, **measured,
             })
+            css_rows.extend({
+                "pair": pair, "variant": variant, "device": args.device,
+                "experiment": args.experiment, **css
+            } for css in stylesheet_requests(report_data))
             print(
                 f"  Performance {metrics['score']:.0f}; LCP {metrics['lcp_ms']:.0f} ms; "
                 f"Speed Index {metrics['speed_index_ms']:.0f} ms",
@@ -321,7 +394,26 @@ def main() -> int:
         writer.writeheader()
         writer.writerows(rows)
 
+    # Detailed network timings remain available as CSV even when the summary
+    # highlights only home.css and the slowest stylesheet.
+    if css_rows:
+        with (args.output_dir / "stylesheet-requests.csv").open(
+            "w", encoding="utf-8", newline=""
+        ) as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(css_rows[0]))
+            writer.writeheader()
+            writer.writerows(css_rows)
+
     summary = render_report(rows, args.device, args.experiment)
+    for check in guardrail_checks(rows, args.experiment):
+        if check["status"] == "WARN":
+            print(
+                f"::warning title=Production lab performance guardrail::"
+                f"{check['label']} median {check['median']:.1f} "
+                f"outside warning threshold {check['limit']:g} "
+                f"({check['affected']}/{check['total']} individual runs)",
+                flush=True,
+            )
     (args.output_dir / "summary.md").write_text(summary, encoding="utf-8")
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:

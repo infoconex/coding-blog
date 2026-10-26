@@ -49,9 +49,9 @@ jobs:
         run: npm install --global lighthouse@13.5.0
 
       - name: Verify comparison report calculations
-        run: python3 -m unittest discover -s scripts -p 'test_performance_compare.py' -v
+        run: python3 -m unittest discover -s scripts -p 'test_performance*.py' -v
 
-      - name: Run five alternating rounds on live experiment pages
+      - name: Run five alternating rounds with diagnostic and regression reporting
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
           DEVICE: ${{ inputs.device }}
