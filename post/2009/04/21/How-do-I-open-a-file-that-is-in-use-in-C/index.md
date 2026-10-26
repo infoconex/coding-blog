@@ -22,6 +22,7 @@ By creating a FileStream object and setting FileShare.ReadWrite I am saying that
 
 Here is an example code snipet of how I read my log file that was currently in use by the logging object log4net. Hope this helps someone else.
 
+```csharp
 private void LoadFile()
 {
     try
@@ -43,5 +44,6 @@ private void LoadFile()
         MessageBox.Show("Error loading log file: " + ex.Message);
     }
 }
+```
 
 [![kick it on DotNetKicks.com](http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fcoding.infoconex.com%2fpost%2f2009%2f04%2fHow-do-I-open-a-file-that-is-in-use-in-C.aspx)](http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fcoding.infoconex.com%2fpost%2f2009%2f04%2fHow-do-I-open-a-file-that-is-in-use-in-C.aspx)
