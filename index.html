@@ -23,7 +23,7 @@ stylesheet: /assets/css/home.css
   {% if year_count > max_year_count %}{% assign max_year_count = year_count %}{% endif %}
 {% endfor %}
 
-<main class="shell home-prototype">
+<div class="shell home-prototype">
   <section class="home-editorial-hero">
     <div class="home-editorial-hero__copy">
       <div class="eyebrow">Engineering notes · since {{ earliest_year }}</div>
@@ -122,4 +122,4 @@ stylesheet: /assets/css/home.css
       <p class="home-history-graph__summary">Bar height represents article count relative to the busiest publication year. Focus or hover a year for its exact count.</p>
     </div>
   </section>
-</main>
+</div>
