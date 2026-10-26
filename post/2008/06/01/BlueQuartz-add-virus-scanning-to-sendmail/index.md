@@ -34,7 +34,9 @@ nano -w /etc/yum.repos.d/rpmforge.repo
 
 **Add the following line to your config**
 
+```text
 exclude=yum\*,centos-yumconf\*,httpd\*,mod\_ssl\*,sendmail\*,procmail\*,imap\*,nss\_db\*,pam\*,pwdb\*,webalizer\*,sysklogd\*,proftpd\*
+```
 
 Should look something like the following. Save the file once completed.
 
@@ -91,24 +93,26 @@ define(`confINPUT_MAIL_FILTERS',`clmilter')dnl
 
 **Example sendmail.mc modification**
 
-TRUST\_AUTH\_MECH(`EXTERNAL DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl
-define(`confAUTH\_MECHANISMS', `EXTERNAL GSSAPI DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl
+```text
+TRUST_AUTH_MECH(`EXTERNAL DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl
+define(`confAUTH_MECHANISMS', `EXTERNAL GSSAPI DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl
 dnl #
 dnl # Rudimentary information on creating certificates for sendmail TLS:
 dnl #     make -C /usr/share/ssl/certs usage
 dnl #
-INPUT\_MAIL\_FILTER(`clmilter',`S=local:/var/clamav/clmilter.socket,T=S:4m;R:4m')dnl
-define(`confINPUT\_MAIL\_FILTERS',`clmilter')dnl
+INPUT_MAIL_FILTER(`clmilter',`S=local:/var/clamav/clmilter.socket,T=S:4m;R:4m')dnl
+define(`confINPUT_MAIL_FILTERS',`clmilter')dnl
 dnl #
-define(`confCACERT\_PATH',`/usr/share/ssl/certs')
+define(`confCACERT_PATH',`/usr/share/ssl/certs')
 define(`confCACERT',`/usr/share/ssl/certs/ca-bundle.crt')
-define(`confSERVER\_CERT',`/usr/share/ssl/certs/sendmail.pem')
-define(`confSERVER\_KEY',`/usr/share/ssl/certs/sendmail.pem')
+define(`confSERVER_CERT',`/usr/share/ssl/certs/sendmail.pem')
+define(`confSERVER_KEY',`/usr/share/ssl/certs/sendmail.pem')
 dnl #
 dnl # This allows sendmail to use a keyfile that is shared with OpenLDAP's
 dnl # slapd, which requires the file to be readble by group ldap
 dnl #
-dnl define(`confDONT\_BLAME\_SENDMAIL',`groupreadablekeyfile')dnl
+dnl define(`confDONT_BLAME_SENDMAIL',`groupreadablekeyfile')dnl
+```
 
 **Save changes to file and update sendmail.cf**
 
