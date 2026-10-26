@@ -14,7 +14,7 @@ Since January, I have been working on an idea that started with a fairly simple 
 
 **What would it look like if AI-assisted engineering systems could systematically learn from execution, not just within a conversation, but by improving the persistent assets future work depends on?**
 
-What started as an idea eventually became the [AI Flywheel Specification](https://ai-flywheel.infoconex.com/).
+What started as an idea eventually became the [AI Flywheel Specification](https://ai-flywheel-spec.infoconex.com/).
 
 ![AI Flywheel — turning execution into compounding improvement](images/ai-flywheel-banner.png)
 
@@ -56,7 +56,7 @@ The important part is not simply that the cycle repeats. It is that validated le
 
 I wrote about that idea in more detail in [AI Flywheel Spec – From Agent Loop to Compounding System](/post/2026/07/15/ai-flywheel-spec-from-agent-loop-to-compounding-system).
 
-The complete specification and documentation live at [AI Flywheel Specification](https://ai-flywheel.infoconex.com/).
+The complete specification and documentation live at [AI Flywheel Specification](https://ai-flywheel-spec.infoconex.com/).
 
 ## A specification wasn't enough
 
@@ -185,7 +185,7 @@ What I like about where the architecture ended up is that each project answers a
 
 The specification defines terminology, lifecycle semantics, governance, evidence requirements, adaptation rules, and conformance expectations.
 
-[AI Flywheel Specification](https://ai-flywheel.infoconex.com/)
+[AI Flywheel Specification](https://ai-flywheel-spec.infoconex.com/)
 
 ### Framework
 
