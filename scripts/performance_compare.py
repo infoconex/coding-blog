@@ -333,7 +333,7 @@ def render_report(rows: list[dict], device: str, experiment: str) -> str:
 
     lines += [
         "",
-        "**Interpretation:** Compare medians and the individual runs. 
+        "**Interpretation:** Compare medians and the individual runs. "
         "Do not change production on small or inconsistent differences alone.",
         "",
         "### Tested URLs",
