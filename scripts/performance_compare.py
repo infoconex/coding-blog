@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare two live GitHub Pages experiments using repeated Lighthouse runs."""
+"""Compare live performance experiments with repeated, alternating Lighthouse runs."""
 
 from __future__ import annotations
 
@@ -15,15 +15,28 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-BASE_URL = "https://coding.infoconex.com/experiments/css-optimization/"
-VARIANTS = ("baseline", "optimized")
+EXPERIMENTS = {
+    "css": {
+        "base_url": "https://coding.infoconex.com/experiments/css-optimization/",
+        "variants": ("baseline", "optimized"),
+        "description": "Baseline loads five CSS files; optimized loads one combined stylesheet. Both omit analytics.",
+    },
+    "analytics": {
+        "base_url": "https://coding.infoconex.com/experiments/analytics-impact/",
+        "variants": ("none", "google", "clarity", "both"),
+        "description": (
+            "All pages use the same homepage content and CSS; they differ only in tracking. "
+            "Google Analytics and Clarity use the production project IDs; test visits will appear in analytics."
+        ),
+    },
+}
 METRICS = (
-    ("Performance score", "score", "points", False),
-    ("First Contentful Paint", "fcp_ms", "ms", True),
-    ("Largest Contentful Paint", "lcp_ms", "ms", True),
-    ("Speed Index", "speed_index_ms", "ms", True),
-    ("Total Blocking Time", "tbt_ms", "ms", True),
-    ("Cumulative Layout Shift", "cls", "", True),
+    ("Performance score", "score", "points"),
+    ("First Contentful Paint", "fcp_ms", "ms"),
+    ("Largest Contentful Paint", "lcp_ms", "ms"),
+    ("Speed Index", "speed_index_ms", "ms"),
+    ("Total Blocking Time", "tbt_ms", "ms"),
+    ("Cumulative Layout Shift", "cls", ""),
 )
 AUDIT_KEYS = {
     "fcp_ms": "first-contentful-paint",
@@ -34,18 +47,32 @@ AUDIT_KEYS = {
 }
 
 
-def ensure_pages_are_available() -> None:
-    for variant in VARIANTS:
-        url = f"{BASE_URL}{variant}/"
+def ensure_pages_are_available(experiment: str) -> None:
+    configuration = EXPERIMENTS[experiment]
+    for variant in configuration["variants"]:
+        url = f"{configuration['base_url']}{variant}/"
         request = Request(url, headers={"User-Agent": "coding-blog-performance-comparison/1.0"})
         try:
             with urlopen(request, timeout=30) as response:
                 status = response.status
-                html = response.read(100_000).decode("utf-8", errors="replace")
-                if status != 200 or '<meta name="robots" content="noindex">' not in html:
-                    raise RuntimeError(f"Unexpected experimental page response: {url} (HTTP {status})")
+                html = response.read(150_000).decode("utf-8", errors="replace")
         except (HTTPError, URLError) as exc:
             raise RuntimeError(f"Experiment page unavailable: {url}: {exc}") from exc
+
+        if status != 200 or '<meta name="robots" content="noindex">' not in html:
+            raise RuntimeError(f"Unexpected experimental page response: {url} (HTTP {status})")
+
+        if experiment == "analytics":
+            google = "www.googletagmanager.com/gtag/js?id=" in html
+            clarity = "https://www.clarity.ms/tag/" in html
+            expected_google = variant in ("google", "both")
+            expected_clarity = variant in ("clarity", "both")
+            if google != expected_google or clarity != expected_clarity:
+                raise RuntimeError(
+                    f"Tracking scripts do not match variant {variant}: "
+                    f"Google={google}, Clarity={clarity} at {url}"
+                )
+
         print(f"Verified live page: {url}", flush=True)
 
 
@@ -56,6 +83,7 @@ def extract_metrics(report: Path) -> dict[str, float]:
     category = data.get("categories", {}).get("performance", {})
     if category.get("score") is None:
         raise RuntimeError(f"No performance score in {report}")
+
     result = {"score": round(category["score"] * 100, 2)}
     for name, audit_key in AUDIT_KEYS.items():
         number = data.get("audits", {}).get(audit_key, {}).get("numericValue")
@@ -77,6 +105,7 @@ def run_lighthouse(url: str, destination: Path, device: str) -> None:
     ]
     if device == "desktop":
         args.append("--preset=desktop")
+
     result = subprocess.run(args, text=True, capture_output=True, timeout=240, check=False)
     if result.returncode != 0:
         raise RuntimeError(
@@ -87,40 +116,77 @@ def run_lighthouse(url: str, destination: Path, device: str) -> None:
         raise RuntimeError(f"Lighthouse did not create {destination}")
 
 
-def render_report(rows: list[dict], device: str) -> str:
-    variants = {variant: [row for row in rows if row["variant"] == variant] for variant in VARIANTS}
-    lines = [
-        f"# Live CSS performance comparison — {device}",
-        "",
-        "Five alternating Lighthouse runs per URL, on the same GitHub-hosted runner.",
-        "The baseline loads five CSS files; optimized loads one combined file.",
-        "Both experimental pages omit Google Analytics and Microsoft Clarity and have noindex.",
-        "Lower is better for timing and layout-shift metrics; higher is better for Performance score.",
-        "",
-        "| Metric | Baseline median | Optimized median | Difference (optimized − baseline) |",
-        "| --- | ---: | ---: | ---: |",
-    ]
-    for label, key, unit, _lower_is_better in METRICS:
-        before = statistics.median(row[key] for row in variants["baseline"])
-        after = statistics.median(row[key] for row in variants["optimized"])
+def render_report(rows: list[dict], device: str, experiment: str) -> str:
+    configuration = EXPERIMENTS[experiment]
+    variants = configuration["variants"]
+    measurements = {
+        variant: [row for row in rows if row["variant"] == variant]
+        for variant in variants
+    }
+    if any(not values for values in measurements.values()):
+        raise ValueError("Missing measurements for one or more experiment variants")
+
+    def median(variant: str, metric: str) -> float:
+        return statistics.median(row[metric] for row in measurements[variant])
+
+    def formatted(value: float, key: str, unit: str, signed: bool = False) -> str:
         decimals = 3 if key == "cls" else 1
+        sign = "+" if signed and value > 0 else ""
+        return f"{sign}{value:.{decimals}f}{(' ' + unit) if unit else ''}"
 
-        def formatted(v: float, signed: bool = False) -> str:
-            sign = "+" if signed and v > 0 else ""
-            return f"{sign}{v:.{decimals}f}{(' ' + unit) if unit else ''}"
+    lines = [
+        f"# Live {experiment.upper()} performance comparison — {device}",
+        "",
+        f"{len(measurements[variants[0]])} runs for each of {len(variants)} variants, "
+        "alternating test order on the same GitHub-hosted runner.",
+        configuration["description"],
+        "All experiment pages are noindex and excluded from IndexNow.",
+        "Lower is better for timing and layout shift; higher is better for Performance score.",
+        "",
+    ]
+    headers = ["Metric"] + [variant.capitalize() + " median" for variant in variants]
+    if experiment == "css":
+        headers += ["Difference (optimized − baseline)"]
+    lines.append("| " + " | ".join(headers) + " |")
+    lines.append("| " + " | ".join(["---"] + ["---:"] * (len(headers) - 1)) + " |")
 
-        lines.append(
-            f"| {label} | {formatted(before)} | {formatted(after)} | {formatted(after - before, signed=True)} |"
-        )
+    for label, metric, unit in METRICS:
+        cells = [label] + [formatted(median(v, metric), metric, unit) for v in variants]
+        if experiment == "css":
+            cells += [formatted(median("optimized", metric) - median("baseline", metric),
+                                metric, unit, signed=True)]
+        lines.append("| " + " | ".join(cells) + " |")
+
+    if experiment == "analytics":
+        lines += [
+            "",
+            "### Change relative to no tracking",
+            "",
+            "| Metric | Google only − none | Clarity only − none | Both − none |",
+            "| --- | ---: | ---: | ---: |",
+        ]
+        for label, metric, unit in METRICS:
+            base = median("none", metric)
+            differences = [
+                formatted(median(v, metric) - base, metric, unit, signed=True)
+                for v in ("google", "clarity", "both")
+            ]
+            lines.append("| " + " | ".join([label, *differences]) + " |")
+        lines += [
+            "",
+            "The combined effect is not necessarily the sum of separate effects. "
+            "Network conditions and Lighthouse run-to-run variation can dominate small differences.",
+        ]
+
     lines += [
         "",
-        "**Interpretation:** Medians reduce single-run noise but do not eliminate it. Confirm any meaningful change with repeated runs and a production validation before deploying.",
+        "**Interpretation:** Compare medians and the individual runs. "
+        "Do not change production on small or inconsistent differences alone.",
         "",
         "### Tested URLs",
-        f"- Baseline: {BASE_URL}baseline/",
-        f"- Optimized: {BASE_URL}optimized/",
+        *[f"- {variant.capitalize()}: {configuration['base_url']}{variant}/" for variant in variants],
         "",
-        "The full JSON runs and CSV measurements are available as a GitHub Actions artifact.",
+        "Downloadable artifact: individual Lighthouse JSON results, measurements.csv, and summary.md.",
         "",
     ]
     return "\n".join(lines)
@@ -128,35 +194,46 @@ def render_report(rows: list[dict], device: str) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--experiment", choices=tuple(EXPERIMENTS), default="css")
     parser.add_argument("--device", choices=("mobile", "desktop"), default="mobile")
     parser.add_argument("--runs", type=int, default=5)
     parser.add_argument("--output-dir", type=Path, default=Path("performance-reports"))
     args = parser.parse_args()
     if not 1 <= args.runs <= 10:
         parser.error("--runs must be between 1 and 10")
+
+    config = EXPERIMENTS[args.experiment]
+    variants = config["variants"]
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    ensure_pages_are_available()
+    ensure_pages_are_available(args.experiment)
+
     rows = []
     for pair in range(1, args.runs + 1):
-        # Alternate order to avoid consistently favoring whichever page is tested second.
-        order = VARIANTS if pair % 2 == 1 else tuple(reversed(VARIANTS))
+        # Reverse order every other round to reduce systematic order effects.
+        order = variants if pair % 2 else tuple(reversed(variants))
         for variant in order:
-            url = f"{BASE_URL}{variant}/"
-            filename = f"{args.device}-pair-{pair:02d}-{variant}.json"
+            url = f"{config['base_url']}{variant}/"
+            filename = f"{args.experiment}-{args.device}-pair-{pair:02d}-{variant}.json"
             print(f"Pair {pair}/{args.runs}: testing {variant} ({args.device})", flush=True)
             run_lighthouse(url, args.output_dir / filename, args.device)
             metrics = extract_metrics(args.output_dir / filename)
-            rows.append({"pair": pair, "variant": variant, "device": args.device, **metrics})
-            print(f"  Performance {metrics['score']:.0f}; LCP {metrics['lcp_ms']:.0f} ms; Speed Index {metrics['speed_index_ms']:.0f} ms", flush=True)
+            rows.append({
+                "pair": pair, "variant": variant, "device": args.device,
+                "experiment": args.experiment, **metrics,
+            })
+            print(
+                f"  Performance {metrics['score']:.0f}; LCP {metrics['lcp_ms']:.0f} ms; "
+                f"Speed Index {metrics['speed_index_ms']:.0f} ms",
+                flush=True,
+            )
             time.sleep(2)
 
-    csv_path = args.output_dir / "measurements.csv"
-    with csv_path.open("w", encoding="utf-8", newline="") as handle:
+    with (args.output_dir / "measurements.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
 
-    summary = render_report(rows, args.device)
+    summary = render_report(rows, args.device, args.experiment)
     (args.output_dir / "summary.md").write_text(summary, encoding="utf-8")
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:

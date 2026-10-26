@@ -40,6 +40,8 @@ IGNORED_PREFIXES = (
 EXPERIMENT_SOURCE_FILES = {
     "_includes/css-experiment-home.html",
     "_layouts/css-experiment.html",
+    "_layouts/analytics-experiment.html",
+    "_includes/analytics-experiment.html",
 }
 
 

@@ -20,6 +20,9 @@ class IndexNowExperimentExclusionTests(unittest.TestCase):
             ("A", ["experiments/css-optimization/baseline/index.html"]),
             ("M", ["_layouts/css-experiment.html"]),
             ("M", ["_includes/css-experiment-home.html"]),
+            ("A", ["_layouts/analytics-experiment.html"]),
+            ("A", ["_includes/analytics-experiment.html"]),
+            ("A", ["experiments/analytics-impact/google/index.html"]),
         ]
         with patch.object(indexnow, "changed_paths", return_value=changes):
             urls, site_wide = indexnow.collect_changed_urls(

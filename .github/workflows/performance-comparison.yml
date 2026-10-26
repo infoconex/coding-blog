@@ -3,8 +3,16 @@ name: Performance Comparison
 on:
   workflow_dispatch:
     inputs:
+      experiment:
+        description: 'Which live experiment to compare'
+        required: true
+        type: choice
+        default: analytics
+        options:
+          - analytics
+          - css
       device:
-        description: 'Device to emulate for five baseline/optimized pairs'
+        description: 'Device to emulate'
         required: true
         type: choice
         default: mobile
@@ -38,17 +46,21 @@ jobs:
       - name: Install pinned Lighthouse version
         run: npm install --global lighthouse@13.5.0
 
-      - name: Compare five alternating pairs on live experiment pages
+      - name: Verify comparison report calculations
+        run: python3 -m unittest discover -s scripts -p 'test_performance_compare.py' -v
+
+      - name: Run five alternating rounds on live experiment pages
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
           DEVICE: ${{ inputs.device }}
-        run: python3 scripts/performance_compare.py --device "$DEVICE" --runs 5 --output-dir performance-reports
+          EXPERIMENT: ${{ inputs.experiment }}
+        run: python3 scripts/performance_compare.py --experiment "$EXPERIMENT" --device "$DEVICE" --runs 5 --output-dir performance-reports
 
       - name: Upload raw Lighthouse reports and summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: css-performance-${{ inputs.device }}-${{ github.run_number }}
+          name: ${{ inputs.experiment }}-performance-${{ inputs.device }}-${{ github.run_number }}
           path: performance-reports/
           if-no-files-found: warn
           retention-days: 30
