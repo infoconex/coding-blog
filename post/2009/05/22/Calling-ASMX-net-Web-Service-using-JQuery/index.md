@@ -16,143 +16,65 @@ Here is my final code
 
 Javascript in page
 
-```xml
-<script type=
-"text/javascript"
->
-    $(document).ready(
-function
-() {
-    $.ajax({
-            type:
-"POST"
-,
-            url:
-"default.asmx/GetCatalog"
-,
-            cache:
-false
-,
-            contentType:
-"application/json; charset=utf-8"
-,
-            data:
-"{}"
-,
-            dataType:
-"json"
-,
+```html
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "default.asmx/GetCatalog",
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            data: "{}",
+            dataType: "json",
             success: handleSuccess,
             error: handleError
         });
     });
 
-function
- handleSuccess(data, status) {
-
-for
- (
-var
- count
-in
- data.d) {
-            $(
-'#bookTitles'
-).html(
-
-' <strong>Book:</strong> '
- + data.d[count].BookName +
-
-'    <strong>Author:</strong> '
- + data.d[count].Author +
-
-' <br />'
-);
+    function handleSuccess(data, status) {
+        for (var count in data.d) {
+            $('#bookTitles').html(
+                ' <strong>Book:</strong> ' + data.d[count].BookName +
+                '    <strong>Author:</strong> ' + data.d[count].Author +
+                ' <br />'
+            );
         }
-
     }
 
-function
- handleError(xmlRequest) {
-        alert(xmlRequest.status +
-' \n\r '
-        + xmlRequest.statusText +
-'\n\r'
-
-        + xmlRequest.responseText);
+    function handleError(xmlRequest) {
+        alert(xmlRequest.status + ' \n\r ' +
+            xmlRequest.statusText + '\n\r' +
+            xmlRequest.responseText);
     }
 </script>
 ```
 
 and the div that I write the content to
 
-```xml
-<
-body
->
-
-<
-b
->
-Books List
-</
-b
->
-
-<
-div
-
-id
-="bookTitles"
->
-
-</
-div
->
-</
-body
->
+```html
+<body>
+    <b>Books List</b>
+    <div id="bookTitles"></div>
+</body>
 ```
 
 and my Web Service and Class Catalog
 
-```
+```csharp
 [WebMethod]
-public
- Catalog[] GetCatalog()
+public Catalog[] GetCatalog()
 {
-    Catalog[] catalog =
-new
- Catalog[1];
-    Catalog cat =
-new
- Catalog();
-    cat.Author =
-"Jim"
-;
-    cat.BookName =
-"His Book"
-;
+    Catalog[] catalog = new Catalog[1];
+    Catalog cat = new Catalog();
+    cat.Author = "Jim";
+    cat.BookName = "His Book";
     catalog.SetValue(cat, 0);
-
-return
- catalog;
-
+    return catalog;
 }
-public
 
-class
- Catalog
+public class Catalog
 {
-
-public
-
-string
- Author;
-
-public
-
-string
- BookName;
+    public string Author;
+    public string BookName;
 }
 ```
