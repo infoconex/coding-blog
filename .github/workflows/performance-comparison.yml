@@ -1,0 +1,54 @@
+name: Performance Comparison
+
+on:
+  workflow_dispatch:
+    inputs:
+      device:
+        description: 'Device to emulate for five baseline/optimized pairs'
+        required: true
+        type: choice
+        default: mobile
+        options:
+          - mobile
+          - desktop
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Set up Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+
+      - name: Install pinned Lighthouse version
+        run: npm install --global lighthouse@13.5.0
+
+      - name: Compare five alternating pairs on live experiment pages
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          DEVICE: ${{ inputs.device }}
+        run: python3 scripts/performance_compare.py --device "$DEVICE" --runs 5 --output-dir performance-reports
+
+      - name: Upload raw Lighthouse reports and summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: css-performance-${{ inputs.device }}-${{ github.run_number }}
+          path: performance-reports/
+          if-no-files-found: warn
+          retention-days: 30
