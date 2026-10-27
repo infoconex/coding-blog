@@ -13,6 +13,8 @@ Recently I responded to a question asked on StackOverflow. The question was "Wha
 
 Just by the question you might assume they were wanting to simply replace text in an existing file and of course you could do that by opening the file and looping over it or doing a Replace of content.
 
+## The problem: updating a large file header
+
 Here is the requirements they gave.
 
 Have a text file that is being written to as part of a very large data extract. The first line of the text file is the number of "accounts" extracted.
@@ -23,7 +25,11 @@ What is the BEST way in C# / .NET to open a file (in this case a simple text fil
 
 So as you can see they are in the process of writing the file, at the end of the write of the file they now know the information they wish to write at the top of the file. So how might we able to go back and write that information without having to open the file again and write the information at the top of the file?
 
+## Approach: reserve space and flush the stream
+
 It turns out it is actually fairly simple. One we want to make sure memory utilization is a factor since these files can be very large we probably do not want to open the whole file and prepend text, or do some kind of search and replace on text content that size. So my suggestion is using a stream. Also by using a Stream we can avoid entirely writing the file, then having to open the file again and write the text. StreamWriter has a BaseStream property that lets you access the underlying stream. However, the original example did not flush its buffered text before writing directly to that stream, and its initial blank line did not reserve enough space for a longer count. The corrected example reserves a fixed-width ASCII header, flushes the StreamWriter before seeking, then overwrites only those reserved bytes. This approach avoids loading a large extract into memory. The header width must be large enough for the expected count.
+
+## C# implementation
 
 Here is my answer.
 
