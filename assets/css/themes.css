@@ -8,6 +8,7 @@
   --heading-weight: 800;
   --code-bg: #081018;
   --code-text: #dbeafe;
+  --code-accent: #38bdf8;
 }
 
 html[data-theme="neo-industrial"] {
@@ -17,7 +18,7 @@ html[data-theme="neo-industrial"] {
   --font-heading: Inter, ui-sans-serif, system-ui, sans-serif;
   --page-pattern: linear-gradient(rgba(56,189,248,.025) 1px, transparent 1px),linear-gradient(90deg,rgba(56,189,248,.025) 1px,transparent 1px);
   --page-pattern-size:40px 40px;
-  --code-bg:#081018; --code-text:#bfdbfe;
+  --code-bg:#081018; --code-text:#bfdbfe; --code-accent:#38bdf8;
 }
 
 html[data-theme="midnight-editorial"] {
@@ -29,7 +30,7 @@ html[data-theme="midnight-editorial"] {
   --card-shadow:0 30px 80px rgba(0,0,0,.28);
   --page-pattern:radial-gradient(circle at 75% 0%, rgba(217,70,239,.08), transparent 32%);
   --page-pattern-size:auto;
-  --code-bg:#08090c; --code-text:#c4b5fd;
+  --code-bg:#08090c; --code-text:#c4b5fd; --code-accent:#e879f9;
 }
 
 html[data-theme="warm-analog"] {
@@ -40,7 +41,7 @@ html[data-theme="warm-analog"] {
   --heading-weight:400;
   --page-pattern:radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
   --page-pattern-size:5px 5px;
-  --code-bg:#100d0b; --code-text:#d7c2a2;
+  --code-bg:#100d0b; --code-text:#d7c2a2; --code-accent:#f5a76a;
 }
 
 html[data-theme="technical-brutalism"] {
@@ -53,7 +54,7 @@ html[data-theme="technical-brutalism"] {
   --heading-weight:900;
   --page-pattern:none;
   --page-pattern-size:auto;
-  --code-bg:#111; --code-text:#f4f4f4;
+  --code-bg:#111; --code-text:#f4f4f4; --code-accent:#ff784f;
 }
 
 html[data-theme="swiss-engineering"] {
@@ -65,7 +66,7 @@ html[data-theme="swiss-engineering"] {
   --heading-weight:760;
   --page-pattern:linear-gradient(90deg,rgba(36,87,214,.035) 1px,transparent 1px);
   --page-pattern-size:96px 100%;
-  --code-bg:#111318; --code-text:#f2f4f8;
+  --code-bg:#111318; --code-text:#f2f4f8; --code-accent:#85a8ff;
 }
 
 html[data-theme="terminal-modern"] {
@@ -77,7 +78,7 @@ html[data-theme="terminal-modern"] {
   --heading-weight:600;
   --page-pattern:linear-gradient(rgba(85,224,123,.018) 1px,transparent 1px);
   --page-pattern-size:100% 4px;
-  --code-bg:#050706; --code-text:#bdf5ca;
+  --code-bg:#050706; --code-text:#bdf5ca; --code-accent:#55e07b;
 }
 
 html[data-theme="technical-paper"] {
@@ -89,7 +90,7 @@ html[data-theme="technical-paper"] {
   --heading-weight:400;
   --page-pattern:none;
   --page-pattern-size:auto;
-  --code-bg:#27251f; --code-text:#eee9dc;
+  --code-bg:#27251f; --code-text:#eee9dc; --code-accent:#d8b68c;
 }
 
 html[data-theme="digital-garden"] {
@@ -102,7 +103,7 @@ html[data-theme="digital-garden"] {
   --card-shadow:0 14px 36px rgba(48,76,54,.07);
   --page-pattern:radial-gradient(circle at 18% 8%,rgba(60,113,72,.075),transparent 20%),radial-gradient(circle at 82% 30%,rgba(60,113,72,.05),transparent 24%);
   --page-pattern-size:auto;
-  --code-bg:#18301e; --code-text:#dcebdd;
+  --code-bg:#18301e; --code-text:#dcebdd; --code-accent:#98d8aa;
 }
 
 body { background-image:var(--page-pattern); background-size:var(--page-pattern-size); transition:background-color .18s ease,color .18s ease; }
