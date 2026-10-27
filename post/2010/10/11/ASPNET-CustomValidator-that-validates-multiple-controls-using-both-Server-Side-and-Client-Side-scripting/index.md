@@ -9,6 +9,8 @@ originalUrl: "http://coding.infoconex.com/post/2010/10/11/ASPNET-CustomValidator
 permalink: "/post/2010/10/11/ASPNET-CustomValidator-that-validates-multiple-controls-using-both-Server-Side-and-Client-Side-scripting"
 legacyPaths: ["/post/2010/10/11/ASPNET-CustomValidator-that-validates-multiple-controls-using-both-Server-Side-and-Client-Side-scripting"]
 ---
+## Built-in ASP.NET validation controls
+
 ASP.NET has some nice validation controls built in that can help make validating forms much easier. Listed below are a few of the available controls.
 
 [RequiredFieldValidator](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.requiredfieldvalidator.aspx) – Ensures that the user does not skip a field that has some requirement for being selected or filled out.
@@ -21,9 +23,13 @@ ASP.NET has some nice validation controls built in that can help make validating
 
 All the above controls have you specify the [ControlToValidate](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.basevalidator.controltovalidate.aspx) which can be any one of these types: [DropDownList](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.dropdownlist.aspx), [FileUpload](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.fileupload.aspx), [ListBox](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.listbox.aspx), [RadioButtonList](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.radiobuttonlist.aspx), [TextBox](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.textbox.aspx), [HtmlInputFile](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlinputfile.aspx), [HtmlInputPassword](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlinputpassword.aspx), [HtmlInputText](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlinputtext.aspx), [HtmlSelect](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlselect.aspx) and [HtmlTextArea](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmltextarea.aspx)
 
+## When to use a CustomValidator
+
 But what if you want to perform validation against a control type not listed or on multiple controls? Have no fear as the  [CustomValidator](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.customvalidator.aspx) control allows you to write your own server side and client side validation logic and get as complex as you want.
 
 All of the previously mentioned controls require you to specify the control you want to validate via the poperty ControlTValidate, however with CustomValidator you can leave it blank which then leaves you to specify logic server side and client side to perform any validation you like.
+
+## Example: Validating multiple controls
 
 So let’s take this to the real world. Recently I was faced a scenario that could not be handled by the standard set of validation controls.
 
@@ -62,6 +68,8 @@ Please select the skills you have:
 
 Notice that we do not have specified ControlToValidate. As well we have defined a OnServerValidate method that will get called when the page is posted back to the server.
 
+## Server-side validation
+
 Here is the server side method
 
 Code Snippet
@@ -92,6 +100,8 @@ protected void CustomValidatorSkillsYouHave_ServerValidate(
 ```
 
 In this method we check to see if at least one checkbox was checked and if not set the args.IsValid = false which will cause the validator to fail. If the first test is passed we check to see if the Other checkbox is checked and if so ensure that the texbox was filled out. If not then we set args.IsValid = false but we also change the error message to provide a better description of the failure.
+
+## Client-side validation
 
 However the above only happens when posted back to the server. We also want to provide some client side validation in order to prevent a post back to the server if the same type of validation fails on the client side.
 
@@ -136,6 +146,8 @@ function ValidateSkillsYouHave() {
 ```
 
 So with this extra bit of client side code we will now perform client side validation that if failed will prevent the page from being posted back to the server, thus avoiding an unnecessary round-trip.
+
+## Revalidate as the user corrects input
 
 BUT we are not done yet. I am picky and one of the things I don’t like about the following solution so far is that when you correct the validation failure by for instance selecting at least one checkbox or by filling out the textbox if you have selected Other is that the error message still appears until you click the submit button. I want the user to immediately know once they have correct the issue that they have satisfied the validation.
 
