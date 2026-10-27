@@ -46,6 +46,6 @@
 .related-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
 html[data-theme="technical-brutalism"] .series-panel,html[data-theme="technical-brutalism"] .series-panel__nav a,html[data-theme="technical-brutalism"] .article-toc-mobile,html[data-theme="technical-brutalism"] .related-card{border-width:3px;border-radius:0;box-shadow:none}
 /* Keep the fixed TOC outside the 1180px article shell, including full-width archive notices. */
-@media(min-width:1580px){.article-toc{display:block;position:fixed;z-index:5;top:156px;right:max(18px,calc((100vw - 1180px)/2 - 92px));width:160px;max-height:calc(100vh - 196px);overflow:auto;padding-left:12px;border-left:1px solid var(--line)}.article-toc-mobile{display:none}}
+@media(min-width:1580px){.article-toc{display:block;position:fixed;z-index:5;top:156px;right:max(18px,calc((100vw - 1180px)/2 - 92px));width:160px;max-height:calc(100vh - 196px);overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;padding-left:12px;border-left:1px solid var(--line)}.article-toc::-webkit-scrollbar{display:none}.article-toc-mobile{display:none}}
 @media(max-width:760px){.series-panel__head{align-items:start;flex-direction:column}.series-panel__position{align-items:flex-start}.series-panel__nav,.series-panel__nav--footer{grid-template-columns:1fr}.related-reading__grid{grid-template-columns:1fr}.related-card{min-height:150px}}
 @media(prefers-reduced-motion:reduce){.reading-progress span{transition:none}}
