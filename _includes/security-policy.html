@@ -14,7 +14,7 @@ script-src 'self' https://www.googletagmanager.com https://*.clarity.ms https://
 style-src 'self' 'unsafe-inline';
 img-src 'self' data: https:;
 font-src 'self' data: https://*.clarity.ms;
-connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.google.com https://*.clarity.ms https://c.bing.com{% if site.comments.enabled and page.comments %} https://giscus.app{% endif %};
+connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.google.com https://stats.g.doubleclick.net https://*.clarity.ms https://c.bing.com{% if site.comments.enabled and page.comments %} https://giscus.app{% endif %};
 frame-src {% if site.comments.enabled and page.comments %}https://giscus.app{% else %}'none'{% endif %};
 media-src 'self' https:;
 {% endcapture %}

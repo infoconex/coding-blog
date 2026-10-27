@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -73,7 +74,13 @@ def scan_site() -> tuple[list[dict], list[str]]:
                     if message.type == "error" and ("content security policy" in message.text.lower()
                                                     or "violates the following" in message.text.lower()
                                                     or "refused to" in message.text.lower()):
-                        console_csp.append(message.text[:500])
+                        # Never write visitor identifiers or measurement query strings to logs.
+                        sanitized = re.sub(
+                            r"https?://[^\\s'\\\"<>]+",
+                            lambda match: display_url(match.group(0)),
+                            message.text,
+                        )
+                        console_csp.append(sanitized[:500])
 
                 def on_request(request):
                     if (kind := tracker_kind(request.url)):

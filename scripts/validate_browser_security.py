@@ -61,6 +61,8 @@ class BrowserSecurityParser(HTMLParser):
                 errors.append("missing required CSP directives")
             if directives.get("object-src") != ["'none'"]:
                 errors.append("object-src must be 'none'")
+            if "https://stats.g.doubleclick.net" not in directives.get("connect-src", []):
+                errors.append("Google measurement endpoint missing from connect-src")
             if "frame-ancestors" in directives or "report-uri" in directives:
                 errors.append("header-only directives in meta CSP")
         if self.referrer != "strict-origin-when-cross-origin":

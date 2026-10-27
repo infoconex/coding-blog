@@ -15,7 +15,7 @@ def check(html: str) -> list[str]:
     return parser.validate()
 
 
-POLICY = "default-src 'none'; script-src 'self'; connect-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'"
+POLICY = "default-src 'none'; script-src 'self'; connect-src 'self' https://stats.g.doubleclick.net; base-uri 'self'; object-src 'none'; form-action 'self'"
 META = '<meta http-equiv="Content-Security-Policy" content="' + POLICY + '"><meta name="referrer" content="strict-origin-when-cross-origin">'
 
 
