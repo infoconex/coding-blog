@@ -22,7 +22,7 @@ Assuming you dont have DAG or RPMFORGE installed which a basic box does not you 
 ```bash
 # The original RPMForge package URL is no longer available.
 # rpm -Uhv <rpmforge-release-package>
-```
+```text
 
 **Edit rpmforge.repo**
 
@@ -30,13 +30,13 @@ This is a safety step to ensure that you do not accidently update any of the fol
 
 ```bash
 nano -w /etc/yum.repos.d/rpmforge.repo
-```
+```text
 
 **Add the following line to your config**
 
 ```text
 exclude=yum\*,centos-yumconf\*,httpd\*,mod\_ssl\*,sendmail\*,procmail\*,imap\*,nss\_db\*,pam\*,pwdb\*,webalizer\*,sysklogd\*,proftpd\*
-```
+```text
 
 Should look something like the following. Save the file once completed.
 
@@ -53,13 +53,13 @@ protect = 0
 gpgkey = <file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag>
 gpgcheck = 1
 exclude=yum\*,centos-yumconf\*,httpd\*,mod\_ssl\*,sendmail\*,procmail\*,imap\*,nss\_db\*,pam\*,pwdb\*,webalizer\*,sysklogd\*,proftpd\*
-```
+```text
 
 **Install ClamAV, ClamAV-Devel and ClamAV-Milter**
 
 ```bash
 yum install clamav clamav-devel clamav-milter
-```
+```text
 
 This will display that it wants to include other needed packages. Says y to the prompt and it will download and install the packages.
 
@@ -67,7 +67,7 @@ This will display that it wants to include other needed packages. Says y to the 
 
 ```
 mv /etc/yum.repos.d/rpmforge.repo /etc/yum.repos.d/rpmforge.repo.bak
-```
+```text
 
 This will prevent this repository from being used in regular system updates. If you ever want to use the repository to install other modules you can simply copy it back to .repo and remove the .bak from the name.
 
@@ -76,20 +76,20 @@ This will prevent this repository from being used in regular system updates. If 
 ```
 cp /etc/mail/sendmail.cf /etc/mail/sendmail.cf.bak
 cp /etc/mail/sendmail.mc /etc/mail/sendmail.mc.bak
-```
+```text
 
 **Edit sendmail.mc to include milter**
 
 ```bash
 nano -w /etc/mail/sendmail.mc
-```
+```text
 
 **Add mail filter lines to sendmail.mc just above confCACERT**
 
 ```
 INPUT_MAIL_FILTER(`clmilter',`S=local:/var/clamav/clmilter.socket,T=S:4m;R:4m')dnl
 define(`confINPUT_MAIL_FILTERS',`clmilter')dnl
-```
+```text
 
 **Example sendmail.mc modification**
 
@@ -112,14 +112,14 @@ dnl # This allows sendmail to use a keyfile that is shared with OpenLDAP's
 dnl # slapd, which requires the file to be readble by group ldap
 dnl #
 dnl define(`confDONT_BLAME_SENDMAIL',`groupreadablekeyfile')dnl
-```
+```text
 
 **Save changes to file and update sendmail.cf**
 
 ```
 cd /etc/mail/
 make
-```
+```text
 
 **The installation is now complete.** You can either reboot your machine or issue these commands.
 
@@ -127,23 +127,19 @@ make
 service clamd restart
 service clamav-milter restart
 service sendmail restart
-```
+```text
 
 **Verify installation is working**
 
 ```
 tail -f /var/log/maillog
-```
+```text
 
 send an email to the system in question
 You should see a message like the following
 
 ```
-Jun  1 14:04:16 sandbox sendmail[4600]: m51L409D004600:
-mailto:from=jscott@domain.com
-, size=11, class=0, nrcpts=1, msgid=<
-mailto:200806012104.m51L409D004600@sandbox2.10tohost.com
->, proto=SMTP, daemon=MTA, relay=192-168-105-5.domain.com [192.168.105.5] (may be forged)
+Jun  1 14:04:16 sandbox sendmail[4600]: m51L409D004600: from=<jscott@domain.com>, size=11, class=0, nrcpts=1, msgid=<200806012104.m51L409D004600@sandbox2.10tohost.com>, proto=SMTP, daemon=MTA, relay=192-168-105-5.domain.com [192.168.105.5] (may be forged)
 Jun  1 14:04:17 sandbox sendmail[4600]: m51L409D004600: Milter add: header: X-Virus-Scanned: ClamAV version 0.93, clamav-milter version 0.93 on sandbox.domain.com
 Jun  1 14:04:17 sandbox sendmail[4600]: m51L409D004600: Milter add: header: X-Virus-Status: Clean
 Jun  1 14:04:17 sandbox sendmail[4604]: m51L409D004600: to=admin, delay=00:00:04, xdelay=00:00:00, mailer=local, pri=30479, dsn=2.0.0, stat=Sent
