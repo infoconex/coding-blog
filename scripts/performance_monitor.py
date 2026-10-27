@@ -64,7 +64,9 @@ def validate_live_homepage():
     if loaded_css != EXPECTED_CSS:
         raise RuntimeError(f"Production stylesheet set changed: {loaded_css}")
     if ('https://www.googletagmanager.com/gtag/js?id=' not in html
-            or 'https://www.clarity.ms/tag/' not in html):
+            or '/assets/js/analytics-init.js' not in html
+            or '/assets/js/clarity-init.js' not in html
+            or not re.search(r'data-clarity-id="[A-Za-z0-9]+"', html)):
         raise RuntimeError("Unexpected production analytics configuration")
     print(f"Verified production homepage and dependencies: {PRODUCTION_URL}", flush=True)
 

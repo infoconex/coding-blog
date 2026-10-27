@@ -19,7 +19,8 @@ def homepage_html():
     return (
         "<html><head>" + stylesheets +
         '<script async src="https://www.googletagmanager.com/gtag/js?id=G-test"></script>'
-        '<script>var clarity = "https://www.clarity.ms/tag/";</script></head></html>'
+        '<script src="/assets/js/analytics-init.js?v=123" data-measurement-id="G-test"></script>'
+        '<script src="/assets/js/clarity-init.js?v=123" data-clarity-id="test"></script></head></html>'
     )
 
 

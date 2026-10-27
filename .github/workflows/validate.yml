@@ -42,6 +42,9 @@ jobs:
       - name: Test Lighthouse diagnostic and regression checks
         run: python -m unittest discover -s scripts -p 'test_performance*.py' -v
 
+      - name: Test browser security validation
+        run: python -m unittest discover -s scripts -p 'test_browser_security.py' -v
+
   security:
     name: Audit Python dependencies and scripts
     runs-on: ubuntu-latest

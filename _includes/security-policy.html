@@ -1,0 +1,21 @@
+{% comment %}
+GitHub Pages cannot set arbitrary HTTP response headers. This CSP meta policy
+must appear before any scripts/assets; frame-ancestors and reporting directives
+are not supported in meta CSP. The legacy archive uses inline CSS, but scripts
+must never rely on unsafe-inline or unsafe-eval.
+Google Analytics (without Ads features) and Microsoft Clarity remain enabled.
+{% endcomment %}
+{% capture coding_csp %}
+default-src 'none';
+base-uri 'self';
+form-action 'self';
+object-src 'none';
+script-src 'self' https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com{% if site.comments.enabled and page.comments %} https://giscus.app{% endif %};
+style-src 'self' 'unsafe-inline';
+img-src 'self' data: https:;
+font-src 'self' data: https://*.clarity.ms;
+connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.google.com https://*.clarity.ms https://c.bing.com{% if site.comments.enabled and page.comments %} https://giscus.app{% endif %};
+frame-src {% if site.comments.enabled and page.comments %}https://giscus.app{% else %}'none'{% endif %};
+media-src 'self' https:;
+{% endcapture %}
+<meta http-equiv="Content-Security-Policy" content="{{ coding_csp | normalize_whitespace | escape }}">

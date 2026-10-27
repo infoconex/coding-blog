@@ -1,28 +1,13 @@
 {% if site.analytics.enabled and site.analytics.provider == 'google' and site.analytics.measurement_id != '' %}
-<!-- Google tag (gtag.js) -->
+<!-- Google Analytics; configuration lives in a same-origin script (no unsafe-inline CSP). -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics.measurement_id | escape }}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', '{{ site.analytics.measurement_id | escape }}');
-</script>
+<script src="{{ '/assets/js/analytics-init.js' | relative_url }}?v={{ asset_version }}" data-measurement-id="{{ site.analytics.measurement_id | escape }}"></script>
 {% elsif site.analytics.enabled and site.analytics.provider == 'plausible' and site.analytics.script_src != '' %}
 <script async src="{{ site.analytics.script_src | escape }}"></script>
-<script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init();
-</script>
+<script src="{{ '/assets/js/plausible-init.js' | relative_url }}?v={{ asset_version }}"></script>
 {% endif %}
 
 {% if site.clarity.enabled and site.clarity.project_id != '' %}
-<!-- Microsoft Clarity -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "{{ site.clarity.project_id | escape }}");
-</script>
+<!-- Microsoft Clarity; the external loader keeps inline scripts disabled. -->
+<script src="{{ '/assets/js/clarity-init.js' | relative_url }}?v={{ asset_version }}" data-clarity-id="{{ site.clarity.project_id | escape }}"></script>
 {% endif %}
