@@ -13,6 +13,8 @@ I recently had to migrate some older BlueOnyx and BlueQuartz servers to newer ha
 
 For those interested in the steps to install on the BlueOnyx 5209 hosting control panel that runs on CentOS 7 here are the instructions.
 
+## Download and unpack Roundcube
+
 Create a temporary folder to download the install to and download the roundcube install.
 
 ```bash
@@ -21,6 +23,8 @@ cd /home/downloads
 wget https://downloads.sourceforge.net/project/roundcubemail/roundcubemail/1.1.4/roundcubemail-1.1.4-complete.tar.gz
 tar -xvzf roundcubemail-1.1.4-complete.tar.gz
 ```
+
+## Configure PHP on BlueOnyx
 
 Backup the php.conf file that BlueOnyx creates by default so that we can enable PHP on the web server and ensure that future updates to php.conf wont overwrite our changes.
 
@@ -38,6 +42,8 @@ nano -w /etc/httpd/conf.d/php_enable.conf
 AddType text/html .php
 DirectoryIndex index.php
 ```
+
+### Verify PHP is running
 
 Create a php test file
 
@@ -65,6 +71,8 @@ Open a browser and see if the php information is displayed. If this steps works 
 http://www.yourdomain.com/phpinfo.php
 ```
 
+## Install dependencies and deploy Roundcube
+
 Install php-intl that is a pre-requisite for Roundcube
 
 ```bash
@@ -77,6 +85,8 @@ Move roundcube to the webserver folder
 cd /home/downloads
 mv roundcubemail-1.1.4 /var/www/html/roundcubemail
 ```
+
+### Generate the Roundcube configuration
 
 You should now be able to access the web installer that will be used to generate the config.inc.php file.
 
@@ -91,6 +101,8 @@ nano -w /var/www/html/roundcubemail/config/config.inc.php
 ```
 
 Copy the configuration information to the open file.
+
+### Optional: adjust suggested email addresses
 
 The next step is optional but I added the following changes to the virtuser\_file.php file to remove the host information that is returned on the BlueOnyx server so that the users suggested email address does not include the host portion of the domain. For example sites on the box often start with @www.domain.com or @mail.domain.com and I only want them to be presented with @domain.com
 
@@ -123,6 +135,8 @@ if (count($arr) > 0 && strpos($arr[0], '@')) {
 }
 ```
 
+### Optional: add infinite scrolling
+
 Download infinitescroll plugin which creates a nice infinite scroll experience when paging through messages.
 
 ```bash
@@ -134,6 +148,8 @@ mv ./Roundcube-Plugin-Infinite-Scroll-master/* .
 rm Roundcube-Plugin-Infinite-Scroll-master/ -rf
 rm master.zip
 ```
+
+## Create and initialize the database
 
 Create MySQL database
 
@@ -150,6 +166,8 @@ Import the roundcube database
 ```
 mysql roundcubemail -u root -p < /var/www/html/roundcubemail/SQL/mysql.initial.sql
 ```
+
+## Configure the /webmail alias and restart Apache
 
 Setup /webmail alias so that all sites on the box can navigate to webmail by going to their domain ex: [www.yourdomain.com/webmail](http://www.yourdomain.com/webmail)
 
