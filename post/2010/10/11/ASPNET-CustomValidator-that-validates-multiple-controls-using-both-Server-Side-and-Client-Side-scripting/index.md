@@ -59,7 +59,9 @@ ID="CustomValidatorSkillsYouHave"
 runat="server"
 ErrorMessage="You must select at least one skill"
 ForeColor="Red"
-OnServerValidate="CustomValidatorSkillsYouHave_ServerValidate" />
+OnServerValidate="CustomValidatorSkillsYouHave_ServerValidate"
+ClientValidationFunction="IsSkillsYouHaveValid"
+ValidateEmptyText="true" />
 ```
 
 Notice that we do not have specified ControlToValidate. As well we have defined a OnServerValidate method that will get called when the page is posted back to the server.
@@ -70,24 +72,26 @@ Code Snippet
 
 ```csharp
 protected void CustomValidatorSkillsYouHave_ServerValidate(
-object source, ServerValidateEventArgs args)
+    object source, ServerValidateEventArgs args)
 {
-if (!this.checkBoxASPNET.Checked &&
-!this.checkBoxCSharp.Checked &&
-!this.checkBoxHtml.Checked &&
-!this.checkBoxJavascript.Checked &&
-!this.checkBoxOther.Checked)
-{
-args.IsValid = false;
-}
-else if (this.checkBoxOther.Checked &&
-string.IsNullOrEmpty(this.textBoxOther.Text.Trim()))
-{
-((CustomValidator)source)
-.ErrorMessage = @"You must supply a text
-description when selecting other";
-args.IsValid = false;
-}
+    args.IsValid = checkBoxASPNET.Checked ||
+                   checkBoxCSharp.Checked ||
+                   checkBoxHtml.Checked ||
+                   checkBoxJavascript.Checked ||
+                   checkBoxOther.Checked;
+
+    if (!args.IsValid)
+    {
+        ((CustomValidator)source).ErrorMessage =
+            "You must select at least one skill";
+    }
+    else if (checkBoxOther.Checked &&
+             string.IsNullOrEmpty(textBoxOther.Text.Trim()))
+    {
+        args.IsValid = false;
+        ((CustomValidator)source).ErrorMessage =
+            "You must supply a text description when selecting other";
+    }
 }
 ```
 
@@ -95,32 +99,42 @@ In this method we check to see if at least one checkbox was checked and if not s
 
 However the above only happens when posted back to the server. We also want to provide some client side validation in order to prevent a post back to the server if the same type of validation fails on the client side.
 
-To do this we specify the **ClientValidationFunction** property on the CustomValidator to point to our JavaScript function to perform the client side validation. In this case I created a JavaScript function called **IsSkillsYouHaveValid** as shown below.
+To do this we specify the **ClientValidationFunction** property on the CustomValidator to point to our JavaScript function to perform the client side validation. The ASPX snippet above includes this attribute and `ValidateEmptyText`. In this case I created a JavaScript function called **IsSkillsYouHaveValid** as shown below.
 
 Code Snippet
 
 ```javascript
 <script type="text/javascript">
 function IsSkillsYouHaveValid(source, args) {
-var checkBoxCSharp = document.getElementById('checkBoxCSharp');
-var checkBoxASPNET = document.getElementById('checkBoxASPNET');
-var checkBoxJavascript = document.getElementById('checkBoxJavascript');
-var checkBoxHtml = document.getElementById('checkBoxHtml');
-var checkBoxOther = document.getElementById('checkBoxOther');
-var textBoxOther = document.getElementById('textBoxOther');
-if (!checkBoxASPNET.checked &&
-!checkBoxCSharp.checked &&
-!checkBoxHtml.checked &&
-!checkBoxJavascript.checked &&
-!checkBoxOther.checked) {
-args.IsValid = false;
+    // Use Web Forms-generated client IDs (these may include naming containers).
+    var checkBoxCSharp = document.getElementById('<%= checkBoxCSharp.ClientID %>');
+    var checkBoxASPNET = document.getElementById('<%= checkBoxASPNET.ClientID %>');
+    var checkBoxJavascript = document.getElementById('<%= checkBoxJavascript.ClientID %>');
+    var checkBoxHtml = document.getElementById('<%= checkBoxHtml.ClientID %>');
+    var checkBoxOther = document.getElementById('<%= checkBoxOther.ClientID %>');
+    var textBoxOther = document.getElementById('<%= textBoxOther.ClientID %>');
+
+    var anySelected = checkBoxCSharp.checked || checkBoxASPNET.checked ||
+        checkBoxJavascript.checked || checkBoxHtml.checked || checkBoxOther.checked;
+    var message = !anySelected
+        ? 'You must select at least one skill'
+        : checkBoxOther.checked && !textBoxOther.value.trim()
+            ? 'You must supply a text description when selecting other'
+            : '';
+
+    args.IsValid = message === '';
+    source.errormessage = message;
+    source.textContent = message;
 }
-else if (checkBoxOther.checked &&
-textBoxOther.value == "") {
-source.innerText = 'You must supply a text ' +
-'description when selecting other';
-args.IsValid = false;
-}
+
+function ValidateSkillsYouHave() {
+    var validator = document.getElementById('<%= CustomValidatorSkillsYouHave.ClientID %>');
+    if (validator && typeof ValidatorValidate === 'function') {
+        ValidatorValidate(validator);
+        if (typeof ValidatorUpdateDisplay === 'function') {
+            ValidatorUpdateDisplay(validator);
+        }
+    }
 }
 </script>
 ```
@@ -129,41 +143,11 @@ So with this extra bit of client side code we will now perform client side valid
 
 BUT we are not done yet. I am picky and one of the things I don’t like about the following solution so far is that when you correct the validation failure by for instance selecting at least one checkbox or by filling out the textbox if you have selected Other is that the error message still appears until you click the submit button. I want the user to immediately know once they have correct the issue that they have satisfied the validation.
 
-To do this we need to add one more method. This method will be responsible revalidating to see if the validation passes if any change happens to one of the controls we are validating.
+The `ValidateSkillsYouHave` helper is included alongside the client validation function above. Call it from the five checkboxes’ client-side `onclick` handlers and from the Other textbox’s `oninput` handler. This triggers ASP.NET Web Forms validation again and refreshes the validation display.
 
-Code Snippet
+The examples use `<%= control.ClientID %>` so they work even when Web Forms changes client-side element IDs inside naming containers.
 
-```javascript
-function ValidateSkillsYouHave() {
-var customValidator = document.getElementById('CustomValidatorSkillsYouHave');
-var checkBoxCSharp = document.getElementById('checkBoxCSharp');
-var checkBoxASPNET = document.getElementById('checkBoxASPNET');
-var checkBoxJavascript = document.getElementById('checkBoxJavascript');
-var checkBoxHtml = document.getElementById('checkBoxHtml');
-var checkBoxOther = document.getElementById('checkBoxOther');
-var textBoxOther = document.getElementById('textBoxOther');
-if (!checkBoxASPNET.checked &&
-!checkBoxCSharp.checked &&
-!checkBoxHtml.checked &&
-!checkBoxJavascript.checked &&
-!checkBoxOther.checked &&
-!checkBoxOther.checked) {
-customValidator.isvalid = false;
-customValidator.style.visibility = "visible";
-}
-else if (checkBoxOther.checked &&
-textBoxOther.value == "") {
-customValidator.innerText = 'You must supply a text ' +
-'description when selecting other';
-customValidator.isvalid = false;
-customValidator.style.visibility = "visible";
-}
-else {
-customValidator.isvalid = true;
-customValidator.style.visibility = "hidden";
-}
-}
-```
+
 
 Now when we submit the form and the validation fails and the user goes and selects at least one checkbox then the validation will be re-evaluated and immediately update the display to remove the validation error when it passes.
 
