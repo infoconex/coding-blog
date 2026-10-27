@@ -237,7 +237,34 @@
       diff: 'Diff', dockerfile: 'Dockerfile'
     };
 
+    function getCodeLanguage(pre) {
+      // Kramdown/Rouge may attach the language to <code>, <pre>, or an
+      // outer .highlighter-rouge wrapper. Inspect metadata BEFORE moving
+      // a plain <pre> into our component, or its wrapper can be lost.
+      const code = pre.querySelector('code');
+      const candidates = [code, pre];
+      let ancestor = pre.parentElement;
+      while (ancestor && ancestor !== article) {
+        candidates.push(ancestor);
+        ancestor = ancestor.parentElement;
+      }
+
+      for (const element of candidates) {
+        if (!element) continue;
+        const className = [...element.classList].find((name) =>
+          name.startsWith('language-'));
+        const declared = element.dataset.lang ||
+          element.dataset.language ||
+          className?.slice('language-'.length);
+        if (declared) return declared.toLowerCase();
+      }
+
+      return 'text';
+    }
+
     article.querySelectorAll('pre').forEach((pre) => {
+      const declaredLanguage = getCodeLanguage(pre);
+
       const highlightedParent = pre.parentElement?.classList.contains('highlight')
         ? pre.parentElement : null;
       let container = highlightedParent;
@@ -252,16 +279,6 @@
       // Do not add duplicate controls if the enhancement runs more than once.
       if (container.querySelector(':scope > .code-toolbar')) return;
 
-      const languageWrapper = pre.closest('[class*="language-"]');
-      const languageClass = languageWrapper
-        ? [...languageWrapper.classList].find((value) => value.startsWith('language-'))
-        : null;
-      const declaredLanguage = (
-        pre.dataset.lang ||
-        pre.querySelector('code')?.dataset.lang ||
-        languageClass?.slice('language-'.length) ||
-        'text'
-      ).toLowerCase();
       const label = languageNames[declaredLanguage] ||
         declaredLanguage.replace(/[-_]/g, ' ').toUpperCase();
 
