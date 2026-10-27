@@ -14,6 +14,8 @@ I have been in the process of evaluating the BlueOnyx distribution that replaces
 
 So today I decided to work out what it would take to bring over Openwebmail to the BlueQuartz platform so that as I migrate users to the new platform they will have the same webmail interface that they have been used to. I will also be later installing RoundCube as a second webmail option but for now I want to maintain as much as possible backwards compatibility.
 
+## Download and unpack OpenWebmail
+
 Here is the installation steps:
 
 1) Grab the latest install of openwebmail from: <https://openwebmail.org/openwebmail/>
@@ -34,6 +36,8 @@ Here is the installation steps:
   - /var/www/cgi-bin/openwebmail
   - /var/www/data/openwebmail
 
+## File permissions and prerequisites
+
 4) Change permissions on created folders
 
 - chown root:mail /var/www/cgi-bin/openwebmail
@@ -42,6 +46,8 @@ Here is the installation steps:
 5) Install Text::Iconv perl module required
 
 - yum install perl-Text-Iconv
+
+## Configure Apache and OpenWebmail
 
 6) Add apache config file to set /webmail alias for openwebmail
 
@@ -66,10 +72,14 @@ Here is the installation steps:
 - nano -w /var/www/cgi-bin/openwebmail/etc/defaults/dbm.conf
 - Change dbm\_ext     .db      to      dbm\_ext     .pag
 
+## Restart and initialize OpenWebmail
+
 9) Restart httpd
 
 - /etc/init.d/httpd restart
 
 10) Initialize openwebmail by running /var/www/cgi-bin/openwebmail/openwebmail-tool.pl --init
+
+## Access the webmail interface
 
 11) Finished - Open your browser and go to one of your websites located on the server and append /webmail to the url and if all is well you will have running webmail on your BlueOnyx machine.
