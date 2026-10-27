@@ -497,5 +497,3 @@ public class CustomerViewTest
 ```
 
 That is all I have for now. Please provide feedback if you see anything wrong or have any suggestions that would further improve my approach. I am thinking about adding on to this post an example of taking the Interface and Presenter and moving them into its own project. Then creating this same interface in asp.net just to show the ability to reuse the code. For now I hope this helps someone with understanding the MVP – Passive View pattern.
-
-[![kick it on DotNetKicks.com](http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fcoding.infoconex.com%2fpost%2f(MVP)-Model-View-Presenter-Passive-View.aspx)](http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fcoding.infoconex.com%2fpost%2f(MVP)-Model-View-Presenter-Passive-View.aspx)
