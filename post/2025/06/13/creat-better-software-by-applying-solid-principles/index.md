@@ -22,7 +22,7 @@ SOLID is an acronym for five design principles that are considered fundamental t
 
 In this article, we will discuss each of these principles in detail and how they can be applied in practice.
 
-1. **Single Responsibility Principle (SRP)**
+## Single Responsibility Principle (SRP)
 
 The Single Responsibility Principle (SRP) states that a class should have only one reason to change. In other words, a class should have only one responsibility. This principle aims to make classes more focused and easier to understand, maintain and test.
 
@@ -30,7 +30,7 @@ If a class has multiple responsibilities, it becomes harder to change the class 
 
 Read Article: [Single Responsibility Principle (SRP) - Only one reason to change](/post/2025/06/28/single-responsibility-principle-srp "Single Responsibility Principle")
 
-2. **Open-Closed Principle (OCP)**
+## Open-Closed Principle (OCP)
 
 The Open-Closed Principle (OCP) states that classes should be open for extension but closed for modification. In other words, a class should be designed in such a way that new functionality can be added to it without changing its existing code.
 
@@ -38,7 +38,7 @@ This principle encourages the use of inheritance and interfaces to create a more
 
 Read Article: [Open/Closed Principle (OCP) – Building for Extension, Not Modification](/post/2025/06/28/open-closed-principle-ocp-building-for-extension-not-modification)
 
-3. **Liskov Substitution Principle (LSP)**
+## Liskov Substitution Principle (LSP)
 
 The Liskov Substitution Principle (LSP) states that subclasses should be substitutable for their base classes. In other words, if a program is written to use a base class, it should be able to use any subclass of that base class without issues.
 
@@ -46,7 +46,7 @@ This principle is important for maintaining the behavior and correctness of the 
 
 Read Article: [Liskov Substitution Principle (LSP) – Subtypes Should Keep Their Promises](/post/2025/06/29/liskov-substitution-principle-lsp)
 
-4. **Interface Segregation Principle (ISP)**
+## Interface Segregation Principle (ISP)
 
 The Interface Segregation Principle (ISP) states that a class should not be forced to depend on methods it does not use. In other words, interfaces should be designed to be as specific as possible to the needs of the class that uses them.
 
@@ -54,12 +54,14 @@ This principle encourages the use of smaller, more specific interfaces rather th
 
 Read Article: [Interface Segregation Principle (ISP) – Keep Interfaces Focused](/post/2025/06/30/interface-segregation-principle-isp)
 
-5. **Dependency Inversion Principle (DIP)**
+## Dependency Inversion Principle (DIP)
 
 The Dependency Inversion Principle (DIP) states that high-level modules should not depend on low-level modules. Instead, both should depend on abstractions. In addition, abstractions should not depend on details. Details should depend on abstractions.
 
 This principle encourages the use of abstractions to reduce coupling between different parts of the system. By designing classes in this way, it becomes easier to change the implementation of a class without affecting other parts of the system. This can lead to a more flexible and maintainable codebase.
 
 Read Article: [Dependency Inversion Principle (DIP) – Depend on Abstractions, Not Details](/post/2025/07/01/dependency-inversion-principle-dip)
+
+## Conclusion
 
 In conclusion, the SOLID principles are a set of design principles that can help to create more robust, flexible, and maintainable code. By adhering to these principles, developers can create more modular and reusable code, which can lead to a more efficient and effective development process. While these principles may take some time and effort to apply
