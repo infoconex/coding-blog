@@ -22,7 +22,7 @@ PATHS = (
     "/writing/",
     "/post/2010/10/11/ASPNET-CustomValidator-that-validates-multiple-controls-using-both-Server-Side-and-Client-Side-scripting",
 )
-TRACKERS = ("googletagmanager.com", "clarity.ms", "google-analytics.com", "c.bing.com")
+TRACKERS = ("googletagmanager.com", "clarity.ms", "google-analytics.com", "stats.g.doubleclick.net", "c.bing.com")
 CAPTURE_VIOLATIONS = """
 (() => {
   window.__cspViolations = [];
