@@ -1,24 +1,39 @@
 name: Production Performance Monitor
 
 on:
+  schedule:
+    # Every Monday at 14:17 UTC (07:17 PDT / 06:17 PST).
+    - cron: '17 14 * * 1'
   workflow_dispatch:
     inputs:
       device:
-        description: 'Device to emulate'
+        description: 'Device(s) to emulate'
         required: true
         type: choice
-        default: mobile
+        default: both
         options:
+          - both
           - mobile
           - desktop
 
 permissions:
   contents: read
 
+concurrency:
+  group: production-performance-history
+  cancel-in-progress: false
+
 jobs:
   monitor:
+    name: Lighthouse — ${{ matrix.device }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        device: ${{ fromJSON((github.event_name == 'schedule' || inputs.device == 'both') && '["mobile","desktop"]' || format('["{0}"]', inputs.device)) }}
+    permissions:
+      contents: read
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -44,14 +59,44 @@ jobs:
       - name: Run five production Lighthouse tests
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
-          DEVICE: ${{ inputs.device }}
+          DEVICE: ${{ matrix.device }}
         run: python3 scripts/performance_monitor.py --device "$DEVICE" --runs 5 --output-dir performance-reports
 
       - name: Upload raw Lighthouse reports and summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: production-performance-${{ inputs.device }}-${{ github.run_number }}
+          name: production-performance-${{ matrix.device }}-${{ github.run_number }}
           path: performance-reports/
           if-no-files-found: warn
           retention-days: 30
+
+  record-history:
+    name: Archive durable performance history
+    needs: monitor
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Download Lighthouse result artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: production-performance-*-${{ github.run_number }}
+          path: performance-history-input
+          merge-multiple: false
+
+      - name: Append medians and baseline comparisons to performance history
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/performance_history.py --artifact-root performance-history-input

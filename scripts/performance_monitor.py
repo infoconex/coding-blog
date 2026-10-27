@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run repeated Lighthouse measurements against the production homepage only.
 
-Manual GitHub Actions workflow. Warnings are lab heuristics and never block deployment.
+Scheduled and manual GitHub Actions workflow. Warnings never block deployment.
 No experiments, public reports, or site content are generated.
 """
 
@@ -187,7 +187,7 @@ def render_report(rows, device):
         f"Tested URL: {PRODUCTION_URL}",
         "",
         "Job artifact: Lighthouse JSON reports, measurements.csv, stylesheet-requests.csv, and summary.md.",
-        "Artifacts expire after 30 days. This summary is available only in GitHub Actions, not on the site.",
+        "Raw artifacts expire after 30 days. Historical medians are archived in GitHub issue #36.",
         "",
     ]
     return "\n".join(lines)
