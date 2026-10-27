@@ -188,7 +188,7 @@ allow-transfer – Set to allow the IP of the slave server assigned for external
 
 also-notify – Set to IP of secondary to notify it of zone updates
 
-zone mydomain.com – points to file containing the internal zone information
+zone mydomain.com – points to the file containing external zone information
 
 ```text
 view "external" {
@@ -284,7 +284,7 @@ view "internal" {
         zone "mydomain.com" {
                 type slave;
                 masters { 192.168.1.10; };
-                transfer-source 192.168.1.11
+                transfer-source 192.168.1.11;
                 file "/var/named/slaves/mydomain.com.internal";
         };
 };
@@ -298,7 +298,7 @@ recursion – Set to no so that external clients are not able to perform recursi
 
 allow-notify – Set to dns\_masters to allow notifications from the master server
 
-zone mydomain.com - This is the important part. Notice that transfer-source is set to 192.168.1.12. This forces the zone transfer request to come from the IP 192.168.1.12. When the master server see’s the query coming from that IP it will match the internal view and transfer the correct zone information for mydomain.com that matches the internal zone.
+zone mydomain.com - This is the important part. Notice that transfer-source is set to 192.168.1.12. This forces the zone transfer request to come from the IP 192.168.1.12. When the master server sees the transfer request coming from that IP it will match the external view and transfer the external zone information for mydomain.com.
 
 ```text
 view "external" {
