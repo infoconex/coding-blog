@@ -222,16 +222,56 @@
       heading.prepend(anchor);
     });
 
-    article.querySelectorAll('pre').forEach((pre) => {
-      if (pre.closest('.code-block')?.querySelector('.code-copy') || pre.parentElement?.querySelector(':scope > .code-copy')) return;
+    // Rouge wraps fenced code in a language-* highlighter container, while
+    // legacy snippets may be plain <pre> elements. Support both structures.
+    const languageNames = {
+      aspx: 'ASP.NET', ashx: 'ASP.NET', cs: 'C#', csharp: 'C#',
+      vb: 'VB.NET', vbnet: 'VB.NET', cpp: 'C++', c: 'C',
+      js: 'JavaScript', javascript: 'JavaScript', ts: 'TypeScript',
+      html: 'HTML', xml: 'XML', css: 'CSS', scss: 'SCSS',
+      bash: 'Bash', sh: 'Shell', shell: 'Shell', console: 'Console',
+      powershell: 'PowerShell', ps1: 'PowerShell',
+      sql: 'SQL', json: 'JSON', yaml: 'YAML', yml: 'YAML',
+      ini: 'INI', batch: 'Batch', bat: 'Batch', cmd: 'Command Prompt',
+      text: 'Text', plaintext: 'Text', txt: 'Text', output: 'Output',
+      diff: 'Diff', dockerfile: 'Dockerfile'
+    };
 
-      let container = pre.parentElement?.classList.contains('highlight') ? pre.parentElement : null;
+    article.querySelectorAll('pre').forEach((pre) => {
+      const highlightedParent = pre.parentElement?.classList.contains('highlight')
+        ? pre.parentElement : null;
+      let container = highlightedParent;
+
       if (!container) {
         container = document.createElement('div');
         container.className = 'code-block';
         pre.before(container);
         container.appendChild(pre);
       }
+
+      // Do not add duplicate controls if the enhancement runs more than once.
+      if (container.querySelector(':scope > .code-toolbar')) return;
+
+      const languageWrapper = pre.closest('[class*="language-"]');
+      const languageClass = languageWrapper
+        ? [...languageWrapper.classList].find((value) => value.startsWith('language-'))
+        : null;
+      const declaredLanguage = (
+        pre.dataset.lang ||
+        pre.querySelector('code')?.dataset.lang ||
+        languageClass?.slice('language-'.length) ||
+        'text'
+      ).toLowerCase();
+      const label = languageNames[declaredLanguage] ||
+        declaredLanguage.replace(/[-_]/g, ' ').toUpperCase();
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'code-toolbar';
+
+      const languageLabel = document.createElement('span');
+      languageLabel.className = 'code-language';
+      languageLabel.textContent = label;
+      toolbar.appendChild(languageLabel);
 
       const button = document.createElement('button');
       button.type = 'button';
@@ -240,6 +280,7 @@
       button.setAttribute('aria-label', 'Copy code to clipboard');
       button.addEventListener('click', async () => {
         try {
+          // Read only <pre>, never the toolbar or the language label.
           await navigator.clipboard.writeText(pre.innerText);
           button.textContent = 'Copied';
           window.setTimeout(() => { button.textContent = 'Copy'; }, 1400);
@@ -252,7 +293,8 @@
           selection.addRange(range);
         }
       });
-      container.appendChild(button);
+      toolbar.appendChild(button);
+      container.prepend(toolbar);
     });
 
     enhanceArticleNavigation(article);
