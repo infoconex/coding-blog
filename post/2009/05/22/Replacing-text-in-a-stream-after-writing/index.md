@@ -23,36 +23,41 @@ What is the BEST way in C# / .NET to open a file (in this case a simple text fil
 
 So as you can see they are in the process of writing the file, at the end of the write of the file they now know the information they wish to write at the top of the file. So how might we able to go back and write that information without having to open the file again and write the information at the top of the file?
 
-It turns out it is actually fairly simple. One we want to make sure memory utilization is a factor since these files can be very large we probably do not want to open the whole file and prepend text, or do some kind of search and replace on text content that size. So my suggestion is using a stream. Also by using a Stream we can avoid entirely writing the file, then having to open the file again and write the text. StreamWriter has a BaseStream property that provides you access to the base stream object which then allows you to set the position of the stream back to the top and write out the information.
+It turns out it is actually fairly simple. One we want to make sure memory utilization is a factor since these files can be very large we probably do not want to open the whole file and prepend text, or do some kind of search and replace on text content that size. So my suggestion is using a stream. Also by using a Stream we can avoid entirely writing the file, then having to open the file again and write the text. StreamWriter has a BaseStream property that lets you access the underlying stream. However, the original example did not flush its buffered text before writing directly to that stream, and its initial blank line did not reserve enough space for a longer count. The corrected example reserves a fixed-width ASCII header, flushes the StreamWriter before seeking, then overwrites only those reserved bytes. This approach avoids loading a large extract into memory. The header width must be large enough for the expected count.
 
 Here is my answer.
 
 ```csharp
 private void WriteUsers()
 {
-    string userCountString = null;
-    ASCIIEncoding enc = new ASCIIEncoding();
-    byte[] userCountBytes = null;
+    const int headerWidth = 32;
     int userCounter = 0;
 
-    using (StreamWriter sw = File.CreateText("myfile.txt"))
+    using (FileStream stream = new FileStream(
+        "myfile.txt", FileMode.Create, FileAccess.Write))
+    using (StreamWriter writer = new StreamWriter(stream, Encoding.ASCII))
     {
-        // Write a blank line; this will later contain the user count.
-        sw.WriteLine();
+        // Reserve a fixed-width first line; the count is not known yet.
+        writer.WriteLine(new string(' ', headerWidth));
 
-        // Write records and keep track of the count.
         for (int i = 1; i < 100; i++)
         {
-            sw.WriteLine("User" + i);
+            writer.WriteLine("User" + i);
             userCounter++;
         }
 
-        // Get the base stream and set the position to 0.
-        sw.BaseStream.Position = 0;
+        // Flush the text writer before writing directly to its BaseStream.
+        writer.Flush();
 
-        userCountString = "User Count: " + userCounter;
-        userCountBytes = enc.GetBytes(userCountString);
-        sw.BaseStream.Write(userCountBytes, 0, userCountBytes.Length);
+        string header = ("User Count: " + userCounter).PadRight(headerWidth);
+        if (header.Length != headerWidth)
+        {
+            throw new InvalidOperationException("Header exceeds reserved width.");
+        }
+
+        byte[] headerBytes = Encoding.ASCII.GetBytes(header);
+        stream.Position = 0;
+        stream.Write(headerBytes, 0, headerBytes.Length);
     }
 }
 ```
