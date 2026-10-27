@@ -38,6 +38,7 @@ namespace Design_Patterns
             if (args.Length != 2)
             {
                 Console.WriteLine("You must supply the URL and Content to check for.");
+                return;
             }
 
             string websiteUrl = args[0];
@@ -275,6 +276,19 @@ namespace Design_Patterns
 }
 ```
 
+**LoggerType** – The examples above use this enum to select which logging strategy to instantiate. For this demonstration we implement console and file logging; XML logging would be a separate future strategy.
+
+```csharp
+namespace Design_Patterns
+{
+    public enum LoggerType
+    {
+        Console,
+        File
+    }
+}
+```
+
 **Logger** – Client in strategy pattern that will contain an instance of the strategy to do the logging for the application. This class will be used inside the Program main method to do the logging for the application. The default  logger that will be used if not defined is the console logger, this allows us to implement the same behavior that the original application had without any extra configuration. You can also alternatively pass in the type of logger you wish to create or pass in a specific strategy required, this will be important when we implement the final refactoring as you will see in a bit.
 
 ```csharp
@@ -302,9 +316,6 @@ namespace Design_Patterns
                     break;
                 case LoggerType.File:
                     logger = new FileWriter();
-                    break;
-                case LoggerType.Xml:
-                    logger = new XmlWriter();
                     break;
                 default:
                     throw new Exception("LoggerType unknown: " + loggerType);
