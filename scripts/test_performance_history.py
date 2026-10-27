@@ -54,7 +54,7 @@ class LighthouseHistoryTests(unittest.TestCase):
         self.assertEqual(previous_record(parsed, "mobile", 4), record)
         self.assertIsNone(previous_record(parsed, "desktop", 4))
         self.assertEqual(metric_delta(900, 930, " ms"), "-30.0 ms")
-        output = render_comment([{**record, "run_id": 4}], parsed,
+        output = render_comment([{**record, "run_id": 4, "lcp_ms": 900}], parsed,
                                 "https://github.com/infoconex/coding-blog/actions/runs/4", "schedule")
         self.assertIn("mobile", output)
         self.assertIn("-30.0 ms", output)
