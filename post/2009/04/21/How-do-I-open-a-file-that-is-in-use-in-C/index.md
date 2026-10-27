@@ -45,5 +45,3 @@ private void LoadFile()
     }
 }
 ```
-
-[![kick it on DotNetKicks.com](http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fcoding.infoconex.com%2fpost%2f2009%2f04%2fHow-do-I-open-a-file-that-is-in-use-in-C.aspx)](http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fcoding.infoconex.com%2fpost%2f2009%2f04%2fHow-do-I-open-a-file-that-is-in-use-in-C.aspx)
