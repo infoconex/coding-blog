@@ -37,31 +37,26 @@ Here is a snippet from the ASPX source showing the controls and the CustomValida
 
 Code Snippet
 
-```xml
-Please select the skill's you have:
+```aspx
+Please select the skills you have:
 
 <asp:CheckBox ID="checkBoxCSharp" runat="server" Text="C#" />
-
 <asp:CheckBox ID="checkBoxASPNET" runat="server" Text="ASP.NET" />
-
-<asp:CheckBox ID="checkBoxJavascript" runat="server" Text="Javascript" />
-
-<asp:CheckBox ID="checkBoxHtml" runat="server" Text="Html" />
-
+<asp:CheckBox ID="checkBoxJavascript" runat="server" Text="JavaScript" />
+<asp:CheckBox ID="checkBoxHtml" runat="server" Text="HTML" />
 <asp:CheckBox ID="checkBoxOther" runat="server" Text="Other" />
-&nbsp;
 <asp:TextBox ID="textBoxOther" runat="server" />
 
-
 <asp:Button ID="buttonSubmit" runat="server" Text="Submit" />
+
 <asp:CustomValidator
-ID="CustomValidatorSkillsYouHave"
-runat="server"
-ErrorMessage="You must select at least one skill"
-ForeColor="Red"
-OnServerValidate="CustomValidatorSkillsYouHave_ServerValidate"
-ClientValidationFunction="IsSkillsYouHaveValid"
-ValidateEmptyText="true" />
+    ID="CustomValidatorSkillsYouHave"
+    runat="server"
+    ErrorMessage="You must select at least one skill"
+    ForeColor="Red"
+    OnServerValidate="CustomValidatorSkillsYouHave_ServerValidate"
+    ClientValidationFunction="IsSkillsYouHaveValid"
+    ValidateEmptyText="true" />
 ```
 
 Notice that we do not have specified ControlToValidate. As well we have defined a OnServerValidate method that will get called when the page is posted back to the server.
