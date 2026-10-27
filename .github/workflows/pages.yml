@@ -6,16 +6,23 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
+  validate:
+    name: Validate content and security
+    permissions:
+      contents: read
+    uses: ./.github/workflows/validate.yml
+
   build:
+    needs: validate
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -53,6 +60,9 @@ jobs:
           path: ./_site
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -64,6 +74,8 @@ jobs:
         uses: actions/deploy-pages@v4
 
   notify-indexnow:
+    permissions:
+      contents: write
     name: Notify IndexNow
     runs-on: ubuntu-latest
     needs: deploy
