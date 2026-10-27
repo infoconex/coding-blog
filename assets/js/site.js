@@ -249,14 +249,19 @@
         ancestor = ancestor.parentElement;
       }
 
+      // An explicit display language can differ from Rouge's lexer name.
+      // For example, ASP.NET Web Forms markup uses Rouge's XML lexer.
       for (const element of candidates) {
         if (!element) continue;
-        const className = [...element.classList].find((name) =>
-          name.startsWith('language-'));
-        const declared = element.dataset.lang ||
-          element.dataset.language ||
-          className?.slice('language-'.length);
+        const declared = element.dataset.lang || element.dataset.language;
         if (declared) return declared.toLowerCase();
+      }
+
+      for (const element of candidates) {
+        if (!element) continue;
+        const languageClass = [...element.classList].find((name) =>
+          name.startsWith('language-'));
+        if (languageClass) return languageClass.slice('language-'.length).toLowerCase();
       }
 
       return 'text';
