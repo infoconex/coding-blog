@@ -385,6 +385,13 @@
     render();
   }
 
+  // The 404 page opens the same accessible search dialog as the site header.
+  document.querySelectorAll('[data-open-site-search]').forEach((button) => {
+    button.addEventListener('click', () => {
+      document.querySelector('[data-search-trigger]')?.click();
+    });
+  });
+
   syncOptions();
   enhanceArticle();
   enhanceWritingBrowser();
