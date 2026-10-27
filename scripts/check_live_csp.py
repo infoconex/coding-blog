@@ -76,7 +76,7 @@ def scan_site() -> tuple[list[dict], list[str]]:
                                                     or "refused to" in message.text.lower()):
                         # Never write visitor identifiers or measurement query strings to logs.
                         sanitized = re.sub(
-                            r"https?://[^\\s'\\\"<>]+",
+                            r"https?://[^\s\"'<>]+",
                             lambda match: display_url(match.group(0)),
                             message.text,
                         )
