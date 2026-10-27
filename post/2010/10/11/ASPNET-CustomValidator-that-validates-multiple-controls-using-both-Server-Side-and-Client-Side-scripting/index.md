@@ -37,7 +37,7 @@ Here is a snippet from the ASPX source showing the controls and the CustomValida
 
 Code Snippet
 
-```aspx
+```xml
 Please select the skills you have:
 
 <asp:CheckBox ID="checkBoxCSharp" runat="server" Text="C#" />
@@ -58,6 +58,7 @@ Please select the skills you have:
     ClientValidationFunction="IsSkillsYouHaveValid"
     ValidateEmptyText="true" />
 ```
+{: data-lang="aspx" }
 
 Notice that we do not have specified ControlToValidate. As well we have defined a OnServerValidate method that will get called when the page is posted back to the server.
 
