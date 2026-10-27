@@ -114,9 +114,87 @@ a { color: inherit; }
 .post-content table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
 .post-content th, .post-content td { padding: 10px 14px; border: 1px solid var(--line); text-align: left; }
 
-.code-block, .post-content .highlight { position: relative; max-width: 1080px; margin: 30px 0; overflow: hidden; border: 1px solid var(--line); border-radius: max(4px, calc(var(--radius) * .8)); background: var(--code-bg, #081018); }
-.code-copy { position: absolute; top: 10px; right: 10px; z-index: 2; padding: 7px 9px; border: 1px solid color-mix(in srgb, var(--line) 70%, white 10%); border-radius: 7px; background: color-mix(in srgb, var(--code-bg, #081018) 86%, transparent); color: var(--code-text, #dbeafe); cursor: pointer; font: 700 10px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
-.code-copy:hover, .code-copy:focus-visible { border-color: var(--accent); outline: none; }
+/* Shared code panel; all colors and corners inherit the active site theme. */
+.code-block, .post-content div.highlight, .post-content figure.highlight {
+  position: relative;
+  max-width: 1080px;
+  margin: 30px 0;
+  overflow: hidden;
+  border: var(--border-size, 1px) solid var(--line);
+  border-radius: max(4px, calc(var(--radius) * .8));
+  background: var(--code-bg, #081018);
+}
+
+/* Rouge can assign "highlight" to both the outer wrapper and its <pre>.
+   Only the outer wrapper should receive the border and panel spacing. */
+.post-content .code-block > pre,
+.post-content div.highlight > pre,
+.post-content figure.highlight > pre,
+.post-content .highlight > pre.highlight {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 20px 24px 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: pre;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* The header is outside the scrollable <pre>, so controls stay in place. */
+.code-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 47px;
+  padding: 8px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--code-text, #dbeafe) 18%, transparent);
+  background: color-mix(in srgb, var(--code-bg, #081018) 93%, var(--code-accent, #38bdf8) 7%);
+}
+.code-language {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--code-accent, #38bdf8) 72%, transparent);
+  border-radius: max(3px, calc(var(--radius) * .35));
+  color: var(--code-accent, #38bdf8);
+  background: color-mix(in srgb, var(--code-accent, #38bdf8) 10%, transparent);
+  font: 700 10px/1.15 var(--font-mono);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.code-copy {
+  position: static;
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  border: 1px solid color-mix(in srgb, var(--code-text, #dbeafe) 36%, transparent);
+  border-radius: max(3px, calc(var(--radius) * .35));
+  background: var(--code-bg, #081018);
+  color: var(--code-text, #dbeafe);
+  cursor: pointer;
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.code-copy:hover, .code-copy:focus-visible {
+  border-color: var(--code-accent, #38bdf8);
+  color: var(--code-accent, #38bdf8);
+  outline-offset: 3px;
+}
+@media (max-width: 760px) {
+  .code-toolbar { padding: 8px 10px; }
+  .post-content .code-block > pre,
+  .post-content div.highlight > pre,
+  .post-content figure.highlight > pre { padding: 16px; }
+}
 .heading-anchor { position: absolute; right: 100%; top: 0; padding-right: 9px; color: var(--muted) !important; opacity: 0; text-decoration: none; font-family: var(--font-mono); font-weight: 400; }
 .post-content h2:hover .heading-anchor, .post-content h3:hover .heading-anchor, .heading-anchor:focus-visible { opacity: 1; }
 
