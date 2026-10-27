@@ -18,7 +18,11 @@ If you are using BIND DNS then you have an option called Views. Views allow you 
 
 So I am attempting to create an article that hopefully will help the next person who needs to set this up.
 
+## How BIND DNS views work
+
 So lets take a look at views. A view as defined by the creator of BIND is “The **view** statement is a powerful feature of BIND 9 that lets a name server answer a DNS query differently depending on who is asking. …. Each **view** statement defines a view of the DNS namespace that will be seen by a subset of clients. A client matches a view if its source IP address matches the `address_match_list` of the view's **match-clients** clause ”
+
+## Example network and DNS zones
 
 This looks like it will accomplish exactly what we want. So let me provide an example scenario to help us walk through the configuration.
 
@@ -31,6 +35,8 @@ The following information is fictitious and only used to create this example.
 **Internal Network:** 192.168.1.0/24
 
 **Domain:** mydomain.com
+
+### External DNS zone
 
 So lets assume our external zone should look like the following.
 
@@ -53,6 +59,8 @@ mydomain.com.   IN      MX      10 mail.mydomain.com.
 
 www.mydomain.com.     IN      A       74.125.127.6
 ```
+
+### Internal DNS zone
 
 and our internal zone looks like this
 
@@ -78,9 +86,11 @@ www.mydomain.com.     IN      A       192.168.1.6
 
 So what we want to happen is that if a client on the internet queries for [www.mydomain.com](http://www.mydomain.com) they will get 74.125.127.6 and if anything behind the firewall queries for [www.mydomain.com](http://www.mydomain.com) they will get the internal IP 192.168.1.6
 
-**MASTER SERVER**
+## Master DNS server configuration
 
 So lets take a look at the named.conf on our master server and see how it looks.
+
+### Master server access-control lists
 
 We first create some acl entries that will make it easier to configure some of our options by using a friendly name that contains a list of IP addresses.
 
@@ -117,6 +127,8 @@ acl "internal_hosts" {
 };
 ```
 
+### Master server global options
+
 options allows us to define global defaults for all zones and views. The two options that are important are the allow-query { any; } which allows by default any client to query the zone mydomain.com and any others we may decide to host in our DNS servers. The next important settings is recursion setting which we have defaulted to no. Recursion allows clients to query a DNS server for any domain that the server is not responsible for and get back DNS information. Since we do not want the world to use our DNS servers except when resolving our domains we have set this by default to no. Later we will override that setting for clients behind the firewall since they will be using the DNS server to also resolve other domains.
 
 ```text
@@ -127,6 +139,8 @@ options {
         recursion no;
 };
 ```
+
+### Master server internal view
 
 Now here is the configuration for our internal view.
 
@@ -178,6 +192,8 @@ view "internal" {
 };
 ```
 
+### Master server external view
+
 Now we jump to our external view
 
 match-clients – Matches a query from external\_slave which is the IP address that will be used by the slave server to query for zone information to the primary server. !internal\_hosts excludes any other IP address internal from querying the zones in external and the last statement any allows all other IP’s to match the view.
@@ -219,7 +235,9 @@ view "external" {
 
 So that finishes up our primary (master) server confirmation. In summary our master has two views “Internal” and “External” which hosts different zone files based on the clients that will query it. If someone queries and matches our “External” view they will get the public IP addresses. If someone queries and matches our “Internal” view they will get the private IP addresses.
 
-**SECONDARY SERVER**
+## Secondary DNS server configuration
+
+### Secondary server access-control lists
 
 ACL entries
 
@@ -235,6 +253,8 @@ acl internal\_hosts {
         192.168.1.0/24;
         };
 
+### Secondary server global options
+
 options has two entries that are important. allow-query {any;} which allows any IP to query the zones we host and recursion no to not allow by default recursive lookups.
 
 ```text
@@ -245,6 +265,8 @@ options {
         recursion no;
 };
 ```
+
+### Secondary server internal view
 
 Here is our internal view
 
@@ -290,7 +312,7 @@ view "internal" {
 };
 ```
 
-External View
+### Secondary server external view
 
 match-clients - !internal\_hosts prevents internal IP’s from getting external view and matches everything else due to the any statement.
 
