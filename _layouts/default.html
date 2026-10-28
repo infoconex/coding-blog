@@ -17,6 +17,29 @@
   {% if page.layout == 'post' %}<link rel="stylesheet" href="{{ '/assets/css/post-extras.css' | relative_url }}?v={{ asset_version }}">{% endif %}
   {% if page.stylesheet %}<link rel="stylesheet" href="{{ page.stylesheet | relative_url }}?v={{ asset_version }}">{% endif %}
   {% seo title=false %}
+  {% if page.profilePage %}
+  {% comment %}The normal {% seo %} WebPage metadata remains intact; this additional node
+  describes the author profile and is rendered only on the About page.{% endcomment %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": "{{ '/about/' | absolute_url }}#profile",
+    "url": "{{ '/about/' | absolute_url }}",
+    "name": "About {{ site.author.name }}",
+    "mainEntity": {
+      "@type": "Person",
+      "@id": "{{ '/about/' | absolute_url }}#person",
+      "name": {{ site.author.name | jsonify }},
+      "url": {{ site.author.url | jsonify }},
+      "jobTitle": "Vice President of Software Engineering",
+      "description": "Software engineering leader, technical author, and open-source developer.",
+      "knowsAbout": ["Software engineering", "Software architecture", "C#", ".NET", "Linux", "Automation"],
+      "sameAs": {{ site.social.links | jsonify }}
+    }
+  }
+  </script>
+  {% endif %}
   {% if page.isPost %}
     {% capture social_card_path %}/assets/og/{{ page.date | date: '%Y-%m-%d' }}-{{ page.slug }}.png{% endcapture %}
   {% else %}
