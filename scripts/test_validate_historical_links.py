@@ -49,6 +49,22 @@ class HistoricalMarkdownLinksTests(unittest.TestCase):
         self.assertEqual(validate.content_h1_count("<h1>Extra heading</h1>"), 1)
 
 
+    def test_unlabelled_code_fences_produce_warning_candidates(self):
+        body = "```\nconsole output\n```\n"
+        self.assertEqual(validate.unlabelled_code_fences(body), [1])
+
+    def test_named_code_fences_are_not_flagged(self):
+        body = "```csharp\nint x = 1;\n```\n"
+        self.assertEqual(validate.unlabelled_code_fences(body), [])
+
+    def test_kramdown_code_language_hint_is_respected(self):
+        body = '```\n<asp:CustomValidator />\n```\n{: data-lang="aspx" }\n'
+        self.assertEqual(validate.unlabelled_code_fences(body), [])
+
+    def test_tilde_code_fences_without_language_are_detected(self):
+        body = "~~~\nexample\n~~~\n"
+        self.assertEqual(validate.unlabelled_code_fences(body), [1])
+
 
 if __name__ == "__main__":
     unittest.main()
