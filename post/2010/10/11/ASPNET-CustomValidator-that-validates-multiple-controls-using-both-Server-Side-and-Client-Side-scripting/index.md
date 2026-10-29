@@ -11,21 +11,23 @@ legacyPaths: ["/post/2010/10/11/ASPNET-CustomValidator-that-validates-multiple-c
 ---
 ## Built-in ASP.NET validation controls
 
+> **Historical ASP.NET Web Forms example (2010):** This article demonstrates validation using the .NET Framework Web Forms model, including its server-side controls and browser scripts. It is not an ASP.NET Core example. The API references below now point to Microsoft's .NET Framework documentation.
+
 ASP.NET has some nice validation controls built in that can help make validating forms much easier. Listed below are a few of the available controls.
 
-[RequiredFieldValidator](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.requiredfieldvalidator.aspx) – Ensures that the user does not skip a field that has some requirement for being selected or filled out.
+[RequiredFieldValidator](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.requiredfieldvalidator?view=netframework-4.8.1) – Ensures that the user does not skip a field that has some requirement for being selected or filled out.
 
-[CompareValidator](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.comparevalidator.aspx) - Compares a user's entry against a constant value, against the value of another control (using a comparison operator such as less than, equal, or greater than), or for a specific data type.
+[CompareValidator](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.comparevalidator?view=netframework-4.8.1) - Compares a user's entry against a constant value, against the value of another control (using a comparison operator such as less than, equal, or greater than), or for a specific data type.
 
-[RangeValidator](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.rangevalidator.aspx) - Checks that a user's entry is between specified lower and upper boundaries. You can check ranges within pairs of numbers, alphabetic characters, and dates.
+[RangeValidator](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.rangevalidator?view=netframework-4.8.1) - Checks that a user's entry is between specified lower and upper boundaries. You can check ranges within pairs of numbers, alphabetic characters, and dates.
 
-[RegularExpressionValidator](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.regularexpressionvalidator.aspx) - Checks that the entry matches a pattern defined by a regular expression. This type of validation enables you to check for predictable sequences of characters, such as those in e-mail addresses, telephone numbers, postal codes, and so on.
+[RegularExpressionValidator](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.regularexpressionvalidator?view=netframework-4.8.1) - Checks that the entry matches a pattern defined by a regular expression. This type of validation enables you to check for predictable sequences of characters, such as those in e-mail addresses, telephone numbers, postal codes, and so on.
 
-All the above controls have you specify the [ControlToValidate](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.basevalidator.controltovalidate.aspx) which can be any one of these types: [DropDownList](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.dropdownlist.aspx), [FileUpload](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.fileupload.aspx), [ListBox](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.listbox.aspx), [RadioButtonList](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.radiobuttonlist.aspx), [TextBox](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.textbox.aspx), [HtmlInputFile](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlinputfile.aspx), [HtmlInputPassword](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlinputpassword.aspx), [HtmlInputText](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlinputtext.aspx), [HtmlSelect](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmlselect.aspx) and [HtmlTextArea](http://msdn.microsoft.com/en-us/library/system.web.ui.htmlcontrols.htmltextarea.aspx)
+All the above controls have you specify the [ControlToValidate](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.basevalidator.controltovalidate?view=netframework-4.8.1) which can be any one of these types: [DropDownList](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.dropdownlist?view=netframework-4.8.1), [FileUpload](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.fileupload?view=netframework-4.8.1), [ListBox](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.listbox?view=netframework-4.8.1), [RadioButtonList](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.radiobuttonlist?view=netframework-4.8.1), [TextBox](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.textbox?view=netframework-4.8.1), [HtmlInputFile](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.htmlcontrols.htmlinputfile?view=netframework-4.8.1), [HtmlInputPassword](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.htmlcontrols.htmlinputpassword?view=netframework-4.8.1), [HtmlInputText](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.htmlcontrols.htmlinputtext?view=netframework-4.8.1), [HtmlSelect](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.htmlcontrols.htmlselect?view=netframework-4.8.1) and [HtmlTextArea](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.htmlcontrols.htmltextarea?view=netframework-4.8.1)
 
 ## When to use a CustomValidator
 
-But what if you want to perform validation against a control type not listed or on multiple controls? Have no fear as the  [CustomValidator](http://msdn.microsoft.com/en-us/library/system.web.ui.webcontrols.customvalidator.aspx) control allows you to write your own server side and client side validation logic and get as complex as you want.
+But what if you want to perform validation against a control type not listed or on multiple controls? Have no fear as the  [CustomValidator](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.customvalidator?view=netframework-4.8.1) control allows you to write your own server side and client side validation logic and get as complex as you want.
 
 All of the previously mentioned controls require you to specify the control you want to validate via the poperty ControlTValidate, however with CustomValidator you can leave it blank which then leaves you to specify logic server side and client side to perform any validation you like.
 
@@ -69,6 +71,8 @@ Please select the skills you have:
 Notice that we do not have specified ControlToValidate. As well we have defined a OnServerValidate method that will get called when the page is posted back to the server.
 
 ## Server-side validation
+
+Server-side validation remains necessary even when the browser performs its own checks. The page that handles the postback must also check `Page.IsValid` before processing input, as described in the [CustomValidator documentation](https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.webcontrols.customvalidator?view=netframework-4.8.1).
 
 Here is the server side method
 
@@ -161,4 +165,4 @@ Now when we submit the form and the validation fails and the user goes and selec
 
 I know this was a bit of extra work but when you have a big form and you have implemented RequiredFieldValidators etc.. in which the error message goes away when you fill in the field but your custom validators do not it starts to stand out and the extra little bit of work provides a better end user experience.
 
-Now much of the Javascript code written about could have been done much easier using [JQuery](http://jquery.com/) and no guarantee the javascript written is cross browse safe. I used IE8 in all my testing and would personally recommend implementing a Javascript library like JQuery that abstracts the browser differences out. However I wanted to keep it simple without adding the need to explain the JQuery syntax.
+Now much of the Javascript code written about could have been done much easier using [jQuery](https://jquery.com/) and no guarantee the javascript written is cross browse safe. I used IE8 in all my testing and would personally recommend implementing a Javascript library like JQuery that abstracts the browser differences out. However I wanted to keep it simple without adding the need to explain the JQuery syntax.
