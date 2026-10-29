@@ -317,3 +317,38 @@ The new mandatory **Verify critical SEO metadata in generated HTML** step succee
 ### Verification limits and maintenance
 
 Generated-site Jekyll artifacts and Actions logs do not establish a live HTTP crawl, response-header correctness for every URL, actual Google/Bing indexing, external reference health, or social-preview appearance. Optional social metadata remains advisory by design. Non-HTML utility files are outside the indexable-page scan. Continue reviewing job output after changes to Jekyll, SEO Tag, generated social cards, or redirects; expand critical rules only when fixtures and complete generated builds support enforcement. The untouched 103-article baseline CSV remains the historical audit baseline. A separate next project should focus on search engine indexing, sitemap/robots coverage, Search Console and Bing Webmaster evidence.
+
+## Sitemap, robots and crawlability verification — 2026-10-29
+
+**Status: Generated-site audit and deploy-time enforcement completed. Official search-engine indexing coverage and raw live HTTP responses remain unverified.**
+
+### Baseline evidence and findings
+
+Examined the *actual* GitHub Pages artifact from successful [run #503](https://github.com/infoconex/coding-blog/actions/runs/40905240862), containing `artifact.tar` with Jekyll's full generated output (rather than assuming the source `robots.txt` or Jekyll sitemap plugin proves the output).
+
+* `_site/sitemap.xml`: **112 unique canonical HTTPS URLs**, on `coding.infoconex.com`: all **103 historical and modern articles** and **nine** other pages (homepage, About, writing, archive, series landing, four series collections). No duplicate URLs, unexpected hosts, query strings or fragments.
+* Generated indexable HTML canonical set: **112 matching sitemap entries**, with **zero omissions**, **zero unknown sitemap destinations**, and no duplicate canonical ownership. The prior SEO audit's 113 canonical-bearing pages **included `404.html`**, which is intentionally not advertised in the sitemap.
+* Historical author redirect `author/jscott/index.html` is excluded from sitemap coverage; experimental pages and utilities are not included. Historical article permalinks retain their extensionless forms.
+* Generated `robots.txt`: `User-agent: *`, `Allow: /`, and `Sitemap: https://coding.infoconex.com/sitemap.xml`. No wildcard site-wide disallow was found.
+* These checks audit generated files, not raw HTTP response status, redirect chains, CDN caching, `X-Robots-Tag` headers, Google Search Console, or Bing Webmaster Tools. Public web-crawler views displayed the homepage/About and article pages but cannot establish indexing coverage.
+
+### Automated preventive checks
+
+Committed directly to `main` as [`1974bed47e1549c79267d274b950bc71e54975c0`](https://github.com/infoconex/coding-blog/commit/1974bed47e1549c79267d274b950bc71e54975c0).
+
+* Added `scripts/validate_indexability.py`, using the existing `SeoParser` and `Finding` abstractions. Validates sitemap XML and duplicate entries, HTTPS/host/query/fragment correctness, the expected robots sitemap, wildcard `Disallow: /`, and exact two-way matching between generated canonical pages and sitemap locations. Excludes real generated redirects and `404.html`; does not hardcode the number of articles.
+* **Critical failures** (CRAWL001–004, CRAWL011, CRAWL013–014, CRAWL020–025) block the build. **Warnings** (CRAWL010/012) report a missing robots file or missing sitemap advertisement without failing publication. The validator does not treat optional sitemap `lastmod` as required, to avoid fabricated content-modification dates.
+* Added **15** focused regression tests in `scripts/test_validate_indexability.py`, including intentionally broken sitemap and robots fixtures, redirect exclusion, 404 handling, and extensionless article URLs. Extended existing `validate.yml` unit-test job and existing `pages.yml` post-Jekyll build; no new workflows or dependencies, and no content, URL, SEO template, IndexNow, or security changes.
+
+### Verified enforcement and deployment
+
+* [Deploy Jekyll site to Pages #504](https://github.com/infoconex/coding-blog/actions/runs/40906717516), on `1974bed47e1549c79267d274b950bc71e54975c0`: **success**. Reusable validation, security audit, Jekyll build, deployment, and IndexNow notification jobs **all succeeded**.
+* [Validate content and security #535](https://github.com/infoconex/coding-blog/actions/runs/40906717450): **success**. Job log confirms **15/15 crawlability regression tests passed** (including failure simulations).
+* Post-build logs: `Crawlability audit: 112 sitemap URLs, 112 indexable generated pages` and `0 critical error(s), 0 advisory warning(s)`. Existing SEO gate: **113 HTML pages / 103 articles, 0 errors, 0 warnings**. Image validation: **46 images, no broken local references or generic/missing alt text**. Browser security checks passed.
+* The new crawlability command runs **before artifact upload** and fails on critical errors. Tests confirm known critical failures are classified as blocking; the successful generated-site Actions run proves the clean deployment passes it. No deliberate failing production deployment was performed.
+
+### Remaining limitations and next independent work
+
+Actual indexed/not-indexed URL counts, discovery and crawl diagnostics, submitted sitemap statuses, `noindex` directives in **live HTTP headers**, live status/redirect behavior, and crawler-specific access cannot be established from artifact inspection alone. To measure indexing coverage and identify real exclusions, connect and inspect verified **Google Search Console** and **Bing Webmaster Tools** property data (or export their coverage/sitemap reports). Do not infer indexing from a `site:` query or from 112 technically valid sitemap entries.
+
+A future scoped live-origin smoke check could verify raw HTTP status, sitemap/robots availability, and response headers without making transient network errors deployment-blocking. Do not change IndexNow or original article dates as part of that work. Preserve the 103-article baseline CSV and this history of audit findings.
