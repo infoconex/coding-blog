@@ -74,8 +74,52 @@ class RenderedSeoTests(unittest.TestCase):
             target = root / "post/2010/01/04/ASPNET-MVC-Tutorials"
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(article_markup(), encoding="utf-8")
+            (root / "assets/og").mkdir(parents=True, exist_ok=True)
+            (root / "assets/og/card.png").write_bytes(b"test-card")
             result = audit_site(root)
             self.assertEqual(result, (1, 1, []))
+
+
+    def test_article_missing_both_canonical_and_og_url_is_not_skipped(self):
+        missing_canonical = article_markup().replace(
+            f'<link rel="canonical" href="{URL}">', ""
+        ).replace(f'<meta property="og:url" content="{URL}">', "")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "post/2010/01/04/ASPNET-MVC-Tutorials/index.html"
+            path.parent.mkdir(parents=True)
+            path.write_text(missing_canonical, encoding="utf-8")
+            checked, articles, errors = audit_site(root)
+            self.assertEqual((checked, articles), (1, 1))
+            self.assertTrue(any("missing canonical link" in error for error in errors))
+
+    def test_missing_local_social_card_is_reported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "post/2010/01/04/ASPNET-MVC-Tutorials/index.html"
+            path.parent.mkdir(parents=True)
+            path.write_text(article_markup(), encoding="utf-8")
+            checked, articles, errors = audit_site(root)
+            self.assertEqual((checked, articles), (1, 1))
+            self.assertTrue(any("og:image references missing local image" in error for error in errors))
+            self.assertTrue(any("twitter:image references missing local image" in error for error in errors))
+
+    def test_redirect_page_under_post_path_is_not_treated_as_article(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            article = root / "post/2010/01/04/ASPNET-MVC-Tutorials/index.html"
+            article.parent.mkdir(parents=True)
+            article.write_text(article_markup(), encoding="utf-8")
+            (root / "assets/og").mkdir(parents=True)
+            (root / "assets/og/card.png").write_bytes(b"test-card")
+            redirected = root / "post/2010/01/05/legacy-redirect/index.html"
+            redirected.parent.mkdir(parents=True)
+            redirected.write_text(
+                '<!doctype html><meta http-equiv="refresh" content="0; url=/about/">',
+                encoding="utf-8",
+            )
+            self.assertEqual(audit_site(root), (1, 1, []))
+
 
 
 if __name__ == "__main__":
