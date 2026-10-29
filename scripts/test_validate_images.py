@@ -116,6 +116,16 @@ class ImageValidationTests(unittest.TestCase):
         self.assertIn("SEO diagnostic (nonblocking)", output.getvalue())
         self.assertIn("SEO WARNING:", output.getvalue())
 
+    def test_unexpected_seo_scanner_failure_does_not_block_images(self):
+        self.page("index.html", "<p>Page content</p>", "https://coding.infoconex.com/")
+        output = io.StringIO()
+        with patch("validate_seo.audit_site", side_effect=RuntimeError("diagnostic failure")):
+            with patch("sys.argv", ["validate_images.py", "--site-dir", str(self.root)]):
+                with contextlib.redirect_stdout(output):
+                    result = main()
+        self.assertEqual(result, 0)
+        self.assertIn("SEO WARNING: diagnostic could not complete", output.getvalue())
+
     def test_no_html_files_is_error(self):
         self.assertEqual(audit_site(self.root)[0], 0)
         self.assertEqual(len(audit_site(self.root)[1]), 1)
