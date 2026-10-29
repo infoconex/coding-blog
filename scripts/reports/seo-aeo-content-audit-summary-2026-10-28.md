@@ -265,25 +265,55 @@ Continue verifying the full Jekyll Pages deployment and its SEO summary in Actio
 
 ### Baseline and confirmed gaps
 
-At the start of this milestone, commit \`ad3fde4dea13480ad1b924b1382f0cae1c934224\` was current on \`main\`. GitHub Actions Pages run [#497](https://github.com/infoconex/coding-blog/actions/runs/40901877345) showed successful content/security validation, build, deployment, and IndexNow jobs. Its build log reported 113 content HTML pages, 103 articles, 46 images, and zero SEO diagnostic findings. The SEO audit was still nonblocking inside \`validate_images.py\`.
+At the start of this milestone, commit `ad3fde4dea13480ad1b924b1382f0cae1c934224` was current on `main`. GitHub Actions Pages run [#497](https://github.com/infoconex/coding-blog/actions/runs/40901877345) showed successful content/security validation, build, deployment, and IndexNow jobs. Its build log reported 113 content HTML pages, 103 articles, 46 images, and zero SEO diagnostic findings. The SEO audit was still nonblocking inside `validate_images.py`.
 
 The old SEO checker skipped nonarticle HTML pages missing both canonical and Open Graph URLs. It scanned JSON-LD only for article pages; it did not require the About page's ProfilePage identity node, validate date syntax, verify the built URL for nonarticle canonical links, or compare canonical destinations across rendered pages. Unexpected SEO checker exceptions were swallowed by the nonblocking image validator.
 
 ### Enforcement design
 
-* The existing \`scripts/validate_seo.py\` now audits all generated indexable HTML documents, including homepage, About, and collections. Genuine Jekyll meta-refresh redirects remain excluded. Historical article paths retain their extensionless and trailing-slash compatibility.
+* The existing `scripts/validate_seo.py` now audits all generated indexable HTML documents, including homepage, About, and collections. Genuine Jekyll meta-refresh redirects remain excluded. Historical article paths retain their extensionless and trailing-slash compatibility.
 * **ERROR:** SEO001–006 (missing/duplicate/unsafe/wrong/shared canonical and unexpected indexing exclusion); SEO010 and SEO012 (conflicting social metadata); SEO020–027 (malformed JSON-LD and invalid required BlogPosting identity, date, URL, image); SEO030–036 (About ProfilePage and Person identity); SEO040–042 (broken or non-HTTPS local social/structured-data images); SEO900 (missing site, no content, invalid encoding, or other fundamental scan failure).
 * **WARNING:** SEO011 flags absent or empty optional Open Graph/Twitter fields. It is editorial/advisory; it does not fail the build. The validator does not attempt to judge social-card appearance or meta-description quality.
 * Critical diagnostics identify both the generated file and its expected public URL. The scan raises unexpected runtime exceptions rather than swallowing them.
-* The \`pages.yml\` build now runs \`python3 scripts/validate_seo.py --site-dir _site\` as an **independent mandatory post-Jekyll step** before uploading the Pages artifact. The image validator no longer invokes a second, nonblocking SEO scan. Image, browser-security, historical URL, content validation and IndexNow jobs remain unchanged.
+* The `pages.yml` build now runs `python3 scripts/validate_seo.py --site-dir _site` as an **independent mandatory post-Jekyll step** before uploading the Pages artifact. The image validator no longer invokes a second, nonblocking SEO scan. Image, browser-security, historical URL, content validation and IndexNow jobs remain unchanged.
 * No new dependency or GitHub Actions workflow was added.
 
 ### Regression and failure simulation
 
-Expanded \`scripts/test_validate_seo.py\` with focused missing canonical tests for homepage, About and collections; incorrect canonical paths and domains; shared canonical URLs; unintended robots noindex and malformed canonical syntax; malformed JSON-LD; valid @graph/array composition; invalid dates; missing or incorrect ProfilePage identity; optional social metadata warnings; missing structured-data image files; corrupt encoding; redirect spoof prevention; extensionless historical paths; and scanner exception propagation. Existing cases already cover missing BlogPosting, author attribution, duplicate social tags, missing social cards and legitimate redirects.
+Expanded `scripts/test_validate_seo.py` with focused missing canonical tests for homepage, About and collections; incorrect canonical paths and domains; shared canonical URLs; unintended robots noindex and malformed canonical syntax; malformed JSON-LD; valid @graph/array composition; invalid dates; missing or incorrect ProfilePage identity; optional social metadata warnings; missing structured-data image files; corrupt encoding; redirect spoof prevention; extensionless historical paths; and scanner exception propagation. Existing cases already cover missing BlogPosting, author attribution, duplicate social tags, missing social cards and legitimate redirects.
 
-The image regression suite was updated to remove obsolete assertions that SEO problems must remain nonblocking inside \`validate_images.py\`; the standalone SEO quality gate now owns that responsibility. Two replacement image regression tests confirm the image validator remains independent and broken local images remain blocking; the image regression count stays at eight.
+The image regression suite was updated to remove obsolete assertions that SEO problems must remain nonblocking inside `validate_images.py`; the standalone SEO quality gate now owns that responsibility. Two replacement image regression tests confirm the image validator remains independent and broken local images remain blocking; the image regression count stays at eight.
 
-### Verification boundary
+### Verified GitHub Actions and deployment results
 
-This section documents the intended enforcement behavior and the pre-change verified baseline. The source changes are present on `main` at `f1a441d4a41f13f5afff094159c41439437479f3` (following the initial enforcement commit and two corrective commits). The SEO regression suite now contains **34 test cases**; the image suite retains **8 cases**. **Post-change execution is NOT YET VERIFIED:** the connected GitHub workflow-run lookup returns an empty result for push-triggered commits, combined commit statuses are empty, and direct Actions browsing was unavailable. Consequently, no successful post-change test run, generated-site scan or deployment is claimed. Actual post-change GitHub Actions test counts, generated-site scan, deployment result, and any necessary fixes must be recorded after retrieving the corresponding workflow logs. A successful GitHub Pages build is evidence about generated artifacts, **not** an independent live-origin HTTP crawl or proof of Google/Bing indexing. Additional external-link maintenance, search-console analysis, and editorial AEO improvements remain separate projects.
+The GitHub connector's general REST fetch can list **push-triggered workflow runs**, and the job-log actions retrieve the complete job logs. Those logs establish the milestone's results:
+
+| Evidence | Initial enforcement run | Corrected final run |
+| --- | --- | --- |
+| Commit | `f4180c9171e3c5066c5011485da334b2d55a41f2` | `e66087bf23afe4d80c5b30d677907b030a387f29` |
+| Pages run | [#498](https://github.com/infoconex/coding-blog/actions/runs/40903406563): failed | [#502](https://github.com/infoconex/coding-blog/actions/runs/40904313928): **success** |
+| Standalone validation | [Run #529](https://github.com/infoconex/coding-blog/actions/runs/40903406288): failed | [Run #533](https://github.com/infoconex/coding-blog/actions/runs/40904313680): **success** |
+| SEO tests | failed | **34/34 passed** |
+| Image tests | not reached | **8/8 passed** |
+| Generated SEO audit | build not reached | **113 pages, 103 articles** |
+| Critical SEO errors / advisory warnings | not reached | **0 / 0** |
+| Rendered images | build not reached | **46, no local-image or alt-text failures** |
+| Browser security | not reached | **passed** |
+| Build / deploy / IndexNow jobs | skipped | **all succeeded** |
+
+The first enforcement run failed during the SEO unit tests with `AttributeError: 'SplitResult' object has no attribute 'params'`. The erroneous URL-parsing check was removed in commit `325f046525bf815a50509201563ef9e7e394a798`. The final deployment's SEO test job log explicitly reports `Ran 34 tests ... OK`; the image test job reports `Ran 8 tests ... OK`. The post-Jekyll build log explicitly reports:
+
+```text
+Image audit: examined 46 rendered images
+Image audit: no missing/local broken image links or missing/generic alt text
+SEO audit: 113 HTML pages, 103 articles
+SEO audit: 0 critical error(s), 0 advisory warning(s)
+```
+
+The new mandatory **Verify critical SEO metadata in generated HTML** step succeeded before Pages artifact upload. The subsequent GitHub Pages **deploy** and **Notify IndexNow** jobs both succeeded. Two intermediate Pages runs (#500 and #501) were automatically cancelled in favor of newer pushes by the existing concurrency policy, not by new SEO violations.
+
+**Outcome:** Deployment-blocking rendered SEO validation is active and passed on the complete generated Pages build. The tests simulate critical errors and an advisory-only warning; unit tests prove the expected classifications, while the full live Actions job proves clean generated-site acceptance. There was no separate intentional failing production build to test every type of critical violation end-to-end.
+
+### Verification limits and maintenance
+
+Generated-site Jekyll artifacts and Actions logs do not establish a live HTTP crawl, response-header correctness for every URL, actual Google/Bing indexing, external reference health, or social-preview appearance. Optional social metadata remains advisory by design. Non-HTML utility files are outside the indexable-page scan. Continue reviewing job output after changes to Jekyll, SEO Tag, generated social cards, or redirects; expand critical rules only when fixtures and complete generated builds support enforcement. The untouched 103-article baseline CSV remains the historical audit baseline. A separate next project should focus on search engine indexing, sitemap/robots coverage, Search Console and Bing Webmaster evidence.
