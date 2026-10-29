@@ -2,15 +2,15 @@
 
 title: "(MVP) Model View Presenter - Passive View"
 date: "2010-01-16"
-description: "In my journey to write better software I have been looking at various patterns available. One of them is known as the Model View Presenter or MVP pattern."
-tags: []
+description: "Refactor a C# Windows Forms application to Model View Presenter Passive View, extracting a presenter and view interface and testing behavior with a mock view."
+tags: ["C#", "Design Patterns", "Model View Presenter", "Windows Forms", "Unit Testing"]
 slug: "mvp-model-view-presenter-passive-view"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View"
 permalink: "/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View"
 legacyPaths: ["/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View"]
 ---
-In my journey to write better software I have been looking at various patterns available. One of them is known as the Model View Presenter or MVP pattern. In doing some reading many of the sites I have come across point to [Martin Fowlers website](http://martinfowler.com/) who is well known for his contribution in design patterns. He has put the MVP pattern into two separate types [Passive View](http://martinfowler.com/eaaDev/PassiveScreen.html) and [Supervising Controller](http://martinfowler.com/eaaDev/SupervisingPresenter.html).
+In my journey to write better software I have been looking at various patterns available. One of them is known as the Model View Presenter or MVP pattern. In doing some reading many of the sites I have come across point to [Martin Fowler’s website](https://martinfowler.com/) who is well known for his contribution in design patterns. He has put the MVP pattern into two separate types [Passive View](https://martinfowler.com/eaaDev/PassiveScreen.html) and [Supervising Controller](https://martinfowler.com/eaaDev/SupervisingPresenter.html).
 
 In this blog entry I am going to focus on the Passive View as it provides complete separation from your model and allows you to completely mock out your view for testing. One additional note is that I found many people swap out the term Presenter for Controller which is a bit confusing since another pattern exists called (MVC) Model View Controller. So I will be sticking to the term Presenter.
 
@@ -18,11 +18,15 @@ In this blog entry I am going to focus on the Passive View as it provides comple
 
 ***Disclaimer:*** I am just starting to understand this pattern so I may not explain it or design it in a way that maintains 100% true to the pattern. I am looking forward to feedback or comments that would correct anything I have misunderstood or may provide a clearer understanding of the pattern.
 
+## The three roles in Passive View
+
 **Views** - Views are the entry point into the process. In the case of a asp.net application this would be the .aspx page. In the case of a winform application it would be the form itself.  Each view will have a interface that represents the data that needs to be inserted, retrieved, or databound to the view.
 
 **Presenter** - Each view will have a presenter assigned to it that is responsible for handling all interaction with the view. The goal of the presenter is to move the logic out of the view itself and put the responsibility into the presenter.
 
 **Model** - The model is a representation of the data that should be displayed on the view. In some cases the model is represented by some object that is returned from a datasource such as a database. In many cases additional layers exist between the datasource and model and business specific entities may have been created to represent the model while abstracting away the source of the information.
+
+## The original Windows Forms application
 
 So how does this relate to a standard project we would create. In order to demonstrate the benefit of the pattern I am going to create a small winform application using the way I would have normally coded it and then refactor the project to use the MVP pattern.
 
@@ -132,7 +136,11 @@ public partial class CustomerView : Form
 }
 ```
 
+## Refactoring to Passive View
+
 **Refactoring to use MVP:** Now I will refactor the above code to use the MVP Passive View pattern. This will create an Interface that represents the view and place a presenter in between the Model and the View to do all the interaction between layers.
+
+### Extracting the view interface
 
 **ICustomerView** – I created an interface ICustomerView that will represent the data on the form as shown below. This view will get injected into the Presenter constructor so that it has access to writing and retrieving values from the View.
 
@@ -148,6 +156,8 @@ public interface ICustomerView
     void ShowMessage(string message);
 }
 ```
+
+### Introducing the presenter
 
 **CustomerViewPresenter** – The CustomerView form will contain an instance of this class which will take control of the setting and getting of values from the form. It will also handle the retrieving and saving of information from the Model. Notice that the constructor takes an instance of ICustomerView
 
@@ -175,6 +185,8 @@ public class CustomerViewPresenter
 **Refactored Project View** – This shows the additional files created ICustomerView and CustomerViewPresenter.
 
 ![Refactored project layout with ICustomerView and CustomerViewPresenter](/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View/images/projectfolderview-refactored.jpg)
+
+### Updating the form to delegate to the presenter
 
 **CustomerView Refactored** - Now that I have the interface and presenter created let’s move our code from our CustomerView form into our presenter. Notice that the form now has a private instance declared CustomerViewPresenter and in the constructor of the view we instantiate a new instance of the presenter and pass in ICustomerView represented by this. Also note that the search and save button click events no longer contain any code to load or save the customer but rather calls the presenter methods to take care of the logic.
 
@@ -245,6 +257,8 @@ public partial class CustomerView : Form, ICustomerView
     #endregion
 }
 ```
+
+### Moving the interaction logic into the presenter
 
 **CustomerViewPresenter** - Below shows what is inside the presenter now. Since the presenter gets passed into it an interface representing the view it can now interact directly with the view. It is now up to the presenter to talk to the Model and get a customer and set the views information or retrieve information from the view and save it.
 
@@ -339,6 +353,8 @@ public class CustomerViewPresenter
 }
 ```
 
+## Testing the presenter without opening the form
+
 So you might be asking about now *“Why do I want to move all my logic to another class? Seems like all I did was make things more complicated and created more code!”.* The real value of doing it this way comes in the ability to now write unit tests against our code.
 
 Since the CustomerView now has an interface ICustomerView that represents the view, we can now substitute the real form for a mocked version of it and perform all the validation we would normally have done manually.
@@ -425,6 +441,8 @@ public class CustomerViewMock : ICustomerView
 }
 ```
 
+### Unit tests for presenter behavior
+
 **CustomerViewTest** - And here is my test class with the various tests that I would have normally had to do manually. Now I can go in and make changes to the logic of my presenter and quickly run my existing tests and be sure I am not going to break any existing logic.
 
 ```csharp
@@ -496,4 +514,9 @@ public class CustomerViewTest
 }
 ```
 
+## What I learned from this refactoring
+
 That is all I have for now. Please provide feedback if you see anything wrong or have any suggestions that would further improve my approach. I am thinking about adding on to this post an example of taking the Interface and Presenter and moving them into its own project. Then creating this same interface in asp.net just to show the ability to reuse the code. For now I hope this helps someone with understanding the MVP – Passive View pattern.
+
+
+This example uses Windows Forms, LINQ to SQL, and .NET Framework 3.5 as they existed when the article was written. The underlying idea of separating view concerns for testing also connects to my earlier [exploration of object-oriented design patterns](/post/2008/10/14/Object-Oriented-Design-Patterns) and later [Strategy and Factory Method example](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method).
