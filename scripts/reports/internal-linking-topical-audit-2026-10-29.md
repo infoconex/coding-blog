@@ -36,3 +36,21 @@ Each link target was checked against an existing `post/YYYY/MM/DD/<slug>/index.m
 Existing `scripts/validate.py`, historical link checks, SEO quality gate, sitemap/crawlability gate, image validator, and browser-security checks must pass for deployment. The post-build artifact should be re-examined to confirm all new links rendered, resolve to canonical article pages, and the article graph improved as intended.
 
 This is a relevance-based editorial pass, **not** a promise of ranking or indexing gains. Do not automatically add links across all historical posts or force broad tag merges merely to increase link counts. Search engines and AI answer engines can discover content through the sitemap and existing navigational links even when there is no contextual link; prioritize reader relevance over artificial quotas. A future small pass can assess other genuinely connected topic pairs based on user interest and search evidence.
+
+## Post-deployment verification — completed
+
+GitHub Pages [Run #506](https://github.com/infoconex/coding-blog/actions/runs/40914316680) on commit `1d84be34ae152f02a325c6732625e3a07f199337` **succeeded**: content validation, dependency/source-security checks, Jekyll build, mandatory SEO and crawlability checks, generated images, browser security, Pages deployment, and IndexNow notification all passed. The standalone [validation run #537](https://github.com/infoconex/coding-blog/actions/runs/40914316364) also succeeded.
+
+Downloaded the **Run #506 generated Pages artifact** and compared every one of the **103** article `.post-content` sections with the pre-change Run #503 artifact. For every article, the original rendered content is an unchanged prefix of the new content. All newly added article URLs resolve to canonical pages in the generated artifact; no original contextual links were lost.
+
+| Measured item | Pre-change Run #503 | Post-change Run #506 |
+| --- | ---: | ---: |
+| Contextual article-to-article links | 35 | **57** |
+| Articles with outbound contextual article links | 21 | **33** |
+| Articles with no outbound contextual article links | 82 | **70** |
+| Articles with no inbound contextual article links | 75 | **65** |
+| Articles with no inbound contextual or incoming related-reading links | 51 | **47** |
+| Related-reading card links | 182 | **182** (unchanged) |
+| Total published article pages | 103 | **103** |
+
+The difference is **exactly 22 new source-to-destination links across exactly 12 edited articles**. Every new link and source was enumerated and validated against the 103 generated canonical article paths. This is a confirmed structural improvement to the site link graph, not a claim that search engines have indexed the pages or that rankings have improved. No broad additional linking pass is recommended until further topical priorities or search evidence emerge.
