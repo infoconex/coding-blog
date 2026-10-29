@@ -1,8 +1,8 @@
 ---
 title: "Spawning multiple .NET delegates really slow"
 date: "2008-10-14"
-description: "I recently worked on a project that had a listener service running that took TCP requests and made external calls to a remote WebService. The listener service could have up to 300 concurrent requests."
-tags: ["C#"]
+description: "A 2008 investigation of .NET 2.0 concurrency delays, covering HTTP connection limits, ThreadPool behavior, and the impact of .NET 2.0 SP1 and SP2."
+tags: ["C#", ".NET Framework", "ThreadPool", "Concurrency", "Performance"]
 slug: "spawning-multiple-net-delegates-really-slow"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2008/10/14/Spawning-multiple-NET-delegates-really-slow"
@@ -10,6 +10,8 @@ permalink: "/post/2008/10/14/Spawning-multiple-NET-delegates-really-slow"
 legacyPaths: ["/post/2008/10/14/Spawning-multiple-NET-delegates-really-slow"]
 ---
 I recently worked on a project that had a listener service running that took TCP requests and made external calls to a remote WebService. The listener service could have up to 300 concurrent requests.
+
+> **Historical context (2008):** These are my observations of .NET 2.0 and its service packs. The configuration values and ThreadPool behavior described here should not be assumed to apply to current .NET releases.
 
 ## HTTP connection limits
 
@@ -51,3 +53,5 @@ So we looked at what was different about the machines. Turned out my machine was
 Solution is to put a delay after each new call to a delegate for a few milliseconds using something like Thread.Sleep(50);. I had to put about 50ms delay on the machine in question. However I found that this bug was to be fixed in .NET 2.0 SP2. A bit of searching I found that .NET 2.0 SP2 had actually been released but not by itself. You have to download .NET 3.5 SP1 which also includes .NET 2.0 SP2. After installing this on the machine no delay was required any longer and performance was very good.
 
 Hope this helps someone
+
+I later wrote a short follow-up about [finding the .NET 2.0 SP2 installer](/post/2008/11/03/NET-20-SP2-Installation-Were-to-find-it), including an update on its separate release.
