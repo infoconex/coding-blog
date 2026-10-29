@@ -16,7 +16,16 @@ profilePage: true
     <div class="eyebrow">About</div>
     <h1>Building software, preserving the lessons.</h1>
   </div>
-  <p class="about-hero__lede">I’m Jim Scott, a Vice President of Software Engineering who still enjoys working directly with code. I write about software engineering, architecture, open-source tools, and the lessons that survive contact with production.</p>
+  <div class="about-hero__intro">
+    <p class="about-hero__lede">I’m Jim Scott, a Vice President of Software Engineering who still enjoys working directly with code. I write about software engineering, architecture, open-source tools, and the lessons that survive contact with production.</p>
+    {% if site.profile_links %}
+    <nav class="about-hero__links" aria-label="Professional profiles">
+      {% for link in site.profile_links %}
+        <a href="{{ link.url }}" rel="me">{{ link.title }} <span aria-hidden="true">↗</span></a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+  </div>
 </section>
 
 <section class="shell about-grid">
@@ -37,14 +46,6 @@ profilePage: true
     <div class="about-fact"><span>Role</span><strong>Vice President of Software Engineering</strong></div>
     <div class="about-fact"><span>Focus</span><strong>Software engineering</strong></div>
     <div class="about-fact"><span>Archive</span><strong>Historical URLs preserved</strong></div>
-    {% if site.profile_links %}
-    <div class="about-links">
-      <span>Elsewhere</span>
-      {% for link in site.profile_links %}
-        <a href="{{ link.url }}" rel="me">{{ link.title }} ↗</a>
-      {% endfor %}
-    </div>
-    {% endif %}
   </aside>
 </section>
 
