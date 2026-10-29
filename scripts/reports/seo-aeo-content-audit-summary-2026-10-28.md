@@ -83,6 +83,9 @@ Extended the existing `scripts/validate.py` to **warn** on fenced code blocks wi
 
 **Running total: nine articles improved across three groups.** The 103-article inventory CSV remains an unmodified **baseline**, rather than being overwritten after each article edit.
 
+**Limited production spot check (2026-10-29):** The live November 3, 2008 .NET 2.0 SP2 article visibly contains this group’s new description, topic tags, April 2009 H2, and related link. Retrieved copies of the LVM and ASP.NET pages were cached from an earlier state, so they did not establish those pages’ latest deployed state. The connected GitHub API exposes no push-triggered Actions run result through the available methods; complete deployment status and validation therefore remain unverified.
+
+
 ## Shared structured-data and deployment review
 
 - `_config.yml` uses `seo.type: BlogPosting` for the `post` directory, appropriate because migrated articles are pages rather than `site.posts`.
