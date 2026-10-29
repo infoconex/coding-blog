@@ -2,8 +2,8 @@
 
 title: ".NET 2.0 SP2 Installation - Were to find it"
 date: "2008-11-03"
-description: "I have seen many people referring to .NET 2.0 SP2 to fix some of the issues I have been dealing with."
-tags: [".NET"]
+description: "A 2008 note on locating .NET Framework 2.0 SP2 through .NET 3.5 SP1, with a 2009 update on its standalone installer and a historical archive reference."
+tags: [".NET Framework", ".NET 2.0", "Service Packs", "Windows"]
 slug: "net-2-0-sp2-installation-were-to-find-it"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2008/11/03/NET-20-SP2-Installation-Were-to-find-it"
@@ -16,8 +16,10 @@ So I downloaded [.NET Framework 3.5 SP1](https://www.microsoft.com/en-us/downloa
 
 The same Microsoft download page also provides the .NET Framework 3.5 SP1 bootstrapper and full-package options.
 
-**UPDATE April 23rd, 2009**
+## Update — April 23, 2009
 
 Microsoft later released .NET 2.0 SP2 as its own install. That download has since been removed from Microsoft.com, but a copy of the original Microsoft Download Center entry is preserved in the [Legacy Update archive](https://legacyupdate.net/download-center/download/1639/microsoft-.net-framework-2.0-sp2).
 
 This is legacy software preserved here for historical reference, not current deployment guidance.
+
+For the troubleshooting investigation that led me to this service-pack discovery, see [Spawning multiple .NET delegates really slow](/post/2008/10/14/Spawning-multiple-NET-delegates-really-slow).
