@@ -1,7 +1,7 @@
 
 const repo="infoconex/coding-blog",ref="756d345c9996dd1a778ae4e85f26df4349147c6c";
-const rr=await Promise.all(years.map(y=>tools.mcp__GitHub__search({query:"/post/"+y+"/",repository_name:repo,topn:100})));
-const all=[...new Set(rr.flatMap(r=>r.result.results.map(x=>x.path).filter(p=>/^post\/\d{4}\/\d\d\/\d\d\/.+\/index\.md$/.test(p)&&years.includes(Number(p.split("/")[1])))))].sort();
+const rr=explicit&&explicit.length?[]:await Promise.all(years.map(y=>tools.mcp__GitHub__search({query:"/post/"+y+"/",repository_name:repo,topn:100})));
+const all=explicit&&explicit.length?explicit:[...new Set(rr.flatMap(r=>r.result.results.map(x=>x.path).filter(p=>/^post\/\d{4}\/\d\d\/\d\d\/.+\/index\.md$/.test(p)&&years.includes(Number(p.split("/")[1])))))].sort();
 const paths=all.slice(start,start+take);
 const docs=await Promise.allSettled(paths.map(path=>tools.mcp__GitHub__fetch_file({repository_full_name:repo,path,ref})));
 const loc="scripts/reports/seo-aeo-article-baseline-2026-10-28.csv";
