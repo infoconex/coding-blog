@@ -1,5 +1,5 @@
 .about-hero{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(32px,5vw,58px);padding:clamp(72px,10vw,132px) 0 64px;border-bottom:1px solid var(--line)}
-.about-hero--with-photo{grid-template-columns:minmax(0,1fr) minmax(240px,340px);align-items:center}
+.about-hero--with-photo{grid-template-columns:minmax(0,1fr) minmax(220px,300px);align-items:center}
 .about-hero__identity{min-width:0}
 .about-hero h1{max-width:950px;margin:16px 0 0;font-family:var(--font-heading,var(--font-sans));font-size:clamp(56px,8vw,104px);font-weight:var(--heading-weight,800);line-height:.92;letter-spacing:-.06em;text-transform:var(--heading-transform,none)}
 .about-hero__intro{max-width:750px;margin-top:32px;min-width:0}
@@ -9,8 +9,8 @@
 .about-hero__icon{width:18px;height:18px;flex:none}
 .about-hero__links a span{margin-left:7px;color:var(--accent)}
 .about-hero__links a:hover,.about-hero__links a:focus-visible{border-color:var(--accent);color:var(--accent)}
-.about-hero__portrait{margin:0;aspect-ratio:4/5;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius,0)}
-.about-hero__portrait img{display:block;width:100%;height:100%;object-fit:cover}
+.about-hero__portrait{width:min(100%,300px);margin:0;justify-self:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--line);border-radius:50%}
+.about-hero__portrait img{display:block;width:100%;height:100%;object-fit:contain}
 .about-highlights{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .about-highlights>div{min-width:0;padding:22px 18px;border-right:1px solid var(--line)}
 .about-highlights>div:first-child{padding-left:0}
