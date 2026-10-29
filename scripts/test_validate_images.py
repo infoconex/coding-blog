@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
-from validate_images import audit_site, page_url
+from validate_images import audit_site, main, page_url
 
 
 class ImageValidationTests(unittest.TestCase):
@@ -98,6 +101,20 @@ class ImageValidationTests(unittest.TestCase):
         self.assertEqual(count, 1)
         self.assertEqual(len(errors), 1)
         self.assertIn("broken image srcset", errors[0])
+
+    def test_seo_diagnostic_is_visible_but_does_not_block_image_audit(self):
+        self.page(
+            "post/2010/01/04/ASPNET-MVC-Tutorials/index.html",
+            "<p>Historical example</p>",
+            "https://coding.infoconex.com/post/2010/01/04/ASPNET-MVC-Tutorials",
+        )
+        output = io.StringIO()
+        with patch("sys.argv", ["validate_images.py", "--site-dir", str(self.root)]):
+            with contextlib.redirect_stdout(output):
+                result = main()
+        self.assertEqual(result, 0)
+        self.assertIn("SEO diagnostic (nonblocking)", output.getvalue())
+        self.assertIn("SEO WARNING:", output.getvalue())
 
     def test_no_html_files_is_error(self):
         self.assertEqual(audit_site(self.root)[0], 0)
