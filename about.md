@@ -35,7 +35,7 @@ profilePage: true
   </div>
   {% if portrait_asset %}
   <figure class="about-hero__portrait">
-    <img src="{{ '/assets/images/about/jim-scott.webp' | relative_url }}" alt="Portrait of Jim Scott" width="480" height="600" loading="eager" decoding="async">
+    <img src="{{ '/assets/images/about/jim-scott.webp' | relative_url }}" alt="Portrait of Jim Scott" width="480" height="480" loading="eager" decoding="async">
   </figure>
   {% endif %}
   <dl class="about-highlights" aria-label="Professional background at a glance">
