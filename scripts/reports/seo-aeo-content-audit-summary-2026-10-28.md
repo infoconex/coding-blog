@@ -105,6 +105,21 @@ All four were independently fetched from `main` after the edits. Source verifica
 - `_layouts/default.html` unconditionally outputs an Open Graph image and Twitter image after `{% seo %}`. The SEO plugin may also emit image tags when articles specify `image:`, so **possible duplicate social image metadata** must be checked in generated HTML before changing the shared template.
 - Production pages and GitHub Actions runs were not accessible to the available independent retrieval method in this pass. The four commits are present on `main`; actual Pages deployment, rendered schema, and workflow execution remain unverified.
 
+## Implemented sixth article group — 2026-10-29
+
+Four further articles were updated on `main`, bringing the cumulative editorial improvements to **17 of 103 articles**. The audit CSV continues to capture the original 2026-10-28 baseline; it is not rescored automatically.
+
+| Article | Focused change | Preserved |
+| --- | --- | --- |
+| `post/2012/12/05/Calling-WCF-Service-using-LINQPad/index.md` | Added sections and WCF configuration tags; upgraded LINQPad link to HTTPS; explained why a class-library proxy configuration was not found by the query host; linked the official LINQPad FAQ and Microsoft WCF client documentation. Clarified LINQPad 5's F4 per-query app.config alternative without claiming it applied to every version. | Original two XML examples, date, permalink |
+| `post/2010/07/27/ASPNET-MVC3-Preview-1-Released-Today/index.md` | Added MVC/Razor/dependency-injection tags, section headings, an official Microsoft MVC 3 overview, and a link to the earlier MVC 2 article. Corrected the historical interface spelling `IValidateObject` to `IValidatableObject`, as explicitly documented by Microsoft. | Original 2010 preview context, date, permalink |
+| `post/2009/11/27/HP-MediaSmart-Server-is-my-favorite-device-for-2009/index.md` | Replaced truncated description, added Windows Home Server/backup tags, historical-hardware context and a warning against exposing unsupported home servers publicly. Updated three product links from HTTP to HTTPS without changing their affiliate paths or claiming they remain available; repaired two run-together labels. | Original firsthand review, seven images, date, permalink |
+| `post/2026/01/01/all-progress-depends-on-the-unreasonable/index.md` | Replaced the title-only meta description with a content-specific summary and added two navigable section headings. | Original leadership essay, date, permalink |
+
+All four were fetched from `main` after editing, confirming dates and permalinks, relevant tags, balanced code fences, and no article-authored H1s. Metadata descriptions range from **150 to 161 characters**. All newly examined article-body links use HTTPS or root-relative URLs; no live HTTP status was established for every external destination. Official LINQPad and Microsoft Learn references were checked.
+
+**Deployment and structured-data limits:** Production article pages and public Actions run details were not independently retrievable through the available web tools. The generated HTML SEO scanner remains committed and its unit tests are in the standard validation workflow, but the scanner is **not yet wired to the Pages built-site step** (the earlier workflow edit was blocked). Do not treat this source-level review as proof of successful deployment, canonical metadata or rich-result eligibility.
+
 ## Implemented fifth group — shared social metadata and SEO validation — 2026-10-29
 
 After reviewing the **actual upstream Jekyll SEO Tag Liquid template** (`jekyll/jekyll-seo-tag/lib/template.html`) alongside `_layouts/default.html`, duplicate metadata was confirmed at the source level:
