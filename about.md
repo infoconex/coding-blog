@@ -11,13 +11,13 @@ stylesheet: /assets/css/about.css
 profilePage: true
 ---
 
-<section class="shell about-hero">
-  <div>
+{% assign portrait_asset = site.static_files | where: "path", "/assets/images/about/jim-scott.webp" | first %}
+<section class="shell about-hero{% if portrait_asset %} about-hero--with-photo{% endif %}">
+  <div class="about-hero__identity">
     <div class="eyebrow">About</div>
     <h1>Building software, preserving the lessons.</h1>
-  </div>
-  <div class="about-hero__intro">
-    <p class="about-hero__lede">I’m Jim Scott, a Vice President of Software Engineering who still enjoys working directly with code. I write about software engineering, architecture, open-source tools, and the lessons that survive contact with production.</p>
+    <div class="about-hero__intro">
+      <p class="about-hero__lede">I’m Jim Scott, a Vice President of Software Engineering who still enjoys working directly with code. I write about software engineering, architecture, open-source tools, and the lessons that survive contact with production.</p>
     {% if site.profile_links %}
     <nav class="about-hero__links" aria-label="Professional profiles">
       {% for link in site.profile_links %}
@@ -31,12 +31,19 @@ profilePage: true
             <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM6.99 20.45H3.68V9h3.31v11.45ZM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54c0 .96.79 1.73 1.77 1.73h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0h.01Z"/>
           </svg>
           {% endif %}
-          {{ link.title }} <span aria-hidden="true">↗</span>
-        </a>
-      {% endfor %}
-    </nav>
-    {% endif %}
+    </div>
   </div>
+  {% if portrait_asset %}
+  <figure class="about-hero__portrait">
+    <img src="{{ '/assets/images/about/jim-scott.webp' | relative_url }}" alt="Portrait of Jim Scott" width="480" height="600" loading="eager" decoding="async">
+  </figure>
+  {% endif %}
+  <dl class="about-highlights" aria-label="Professional background at a glance">
+    <div><dt>Writing since</dt><dd>2008</dd></div>
+    <div><dt>Role</dt><dd>Vice President of Software Engineering</dd></div>
+    <div><dt>Focus</dt><dd>Software engineering</dd></div>
+    <div><dt>Archive</dt><dd>Historical URLs preserved</dd></div>
+  </dl>
 </section>
 
 <section class="shell about-grid">
@@ -52,16 +59,10 @@ profilePage: true
 
   </article>
 
-  <aside class="about-side">
-    <div class="about-fact"><span>Writing since</span><strong>2008</strong></div>
-    <div class="about-fact"><span>Role</span><strong>Vice President of Software Engineering</strong></div>
-    <div class="about-fact"><span>Focus</span><strong>Software engineering</strong></div>
-    <div class="about-fact"><span>Archive</span><strong>Historical URLs preserved</strong></div>
-  </aside>
 </section>
 
 
-<section class="shell about-archive-policy" aria-labelledby="about-projects-heading">
+<section class="shell about-feature-section" aria-labelledby="about-projects-heading">
   <div class="eyebrow">Selected open-source projects</div>
   <div>
     <h2 id="about-projects-heading">Build it. Test it. Share what works.</h2>
@@ -84,7 +85,7 @@ profilePage: true
   </div>
 </section>
 
-<section class="shell about-archive-policy" aria-labelledby="about-writing-heading">
+<section class="shell about-feature-section" aria-labelledby="about-writing-heading">
   <div class="eyebrow">Selected writing</div>
   <div>
     <h2 id="about-writing-heading">Technical answers backed by experiments.</h2>
@@ -104,16 +105,6 @@ profilePage: true
       </div>
     </div>
     <a class="text-link" href="{{ '/writing/' | relative_url }}">Explore the writing archive →</a>
-  </div>
-</section>
-
-<section class="shell about-archive-policy">
-  <div class="eyebrow">Archive policy</div>
-  <div>
-    <h2>Old technical writing stays old.</h2>
-    <p>I preserve historical posts at their original public paths instead of silently rewriting them to look current. Technology changes. APIs disappear. Practices improve. An older article can still be useful as a record of how a problem was approached at the time without pretending it is current guidance.</p>
-    <p>Older articles receive an archive notice when appropriate. If an article is substantially revisited, the update should be explicit rather than erasing the original context.</p>
-    <a class="text-link" href="{{ '/archive/' | relative_url }}">Browse the full archive →</a>
   </div>
 </section>
 
