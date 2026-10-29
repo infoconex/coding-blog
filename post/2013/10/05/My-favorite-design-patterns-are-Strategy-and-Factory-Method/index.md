@@ -2,8 +2,8 @@
 
 title: "My favorite design patterns are Strategy and Factory Method"
 date: "2013-10-05"
-description: "A number of years back I started my exploration into the world of design patterns and read an incredible book “ Design Patterns Explained ” that did a great job in getting me started on a path…"
-tags: []
+description: "Follow a C# console app as it evolves to use the Strategy design pattern for logging, with Factory Method identified as the next step in the design."
+tags: ["C#", "Design Patterns", "Strategy Pattern", "Factory Method", "Refactoring"]
 slug: "my-favorite-design-patterns-are-strategy-and-factory-method"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method"
@@ -18,7 +18,7 @@ Jump forward a few years now and the two patterns that I see used the most in my
 
 In order to demonstrate the use of these patterns I am going to create a simple application that I may have typically written in the past that could benefit from these two patterns. Unfortunately when I was learning about many of the patterns what was never really clear was when a pattern might typically be used to improve the code I was currently writing. I hope that by the end of the article you will see for at least these two patterns how you might be able to implement these patterns.
 
-**Application Requirements**
+## Application Requirements
 
 You will be building a simple console application that will be used to check to see if a website is up. The console application will initially be run manually by an individual responsible for making sure that the various websites are up and responding. The application must be able to check the content of the returned HTML for a given string to ensure that the content retrieved is returning the expected information. The application must take the following pieces of information as input (website address, content to look for) and then return the word SUCCESS if it found the content and ERROR followed by another line indicating the reason the test failed. The application should also write out the steps that it is performing to provide feedback to the person running the application.
 
@@ -81,7 +81,7 @@ namespace Design_Patterns
 [![Console output verifying that the website monitor found Google Search](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-thumb-6.png)](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-6.png)
 
 
-**Application Revision**
+## Application Revision
 
 The application designed has meet the needs expected, however after using it for a period of time it is realized that while it is great that someone can open the application and manually verify that a website is up and returning the expected content, they would like to make the process automated instead of manually running have it run on a regular basis and then have the person responsible check periodically to see the results of the tests. It is proposed that you log the output of the results to a text file that the person will check.
 
@@ -188,11 +188,11 @@ namespace Design_Patterns
 [![Website monitor console output after adding optional file logging](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-thumb-7.png)](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method/images/image-7.png)
 
 
-**Solution**
+## Solution
 
 Implement the strategy pattern to deal with the various ways the application would like to implement various logging algorithms.
 
-**Strategy Pattern**
+### Strategy Pattern
 
 When you look at any article that discusses the strategy pattern you will typically find a UML diagram that shows the various items that make up the pattern. The following UML diagram is an example of the strategy pattern that I will be implementing for logging messages in example code.
 
@@ -431,6 +431,8 @@ namespace Design_Patterns
     }
 }
 ```
+
+## Factory Method: A Next Step
 
 Our application however still needs to know a bit about how to create an instance of the Logger class and the various strategy classes, to solve this issue we are going to implement the Factory Method pattern which will be responsible for creating new instances. This will help when we decide to have some of our concrete strategy classes get more complex which could make our Logger class complex in understanding how to create the various instances in our switch statement. If you see the new statement used someplace it is probably a good indicator that a factory method pattern could be used. This article is getting a bit longer than I expected so I am going to do the next pattern in a part 2 article.
 
