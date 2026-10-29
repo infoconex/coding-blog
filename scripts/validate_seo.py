@@ -197,7 +197,6 @@ def audit_site(root: Path) -> tuple[int, int, list[str]]:
             articles += 1
         page_issues = inspect_html(markup, require_metadata=is_article_file)
         if is_article_file and parser.canonicals:
-            expected = "/" + relative.removeprefix("post/").replace("index.html", "")
             # Direct-to-file pages and folder/index pages have the same
             # historical URL except for a possible trailing slash.
             if relative.endswith("/index.html"):
