@@ -41,16 +41,24 @@
   }
   </script>
   {% endif %}
-  {% if page.isPost %}
+  {% if page.profilePage %}
+    {% assign social_card_path = '/assets/images/about/jim-scott.webp' %}
+    {% assign social_card_width = 480 %}
+    {% assign social_card_height = 480 %}
+  {% elsif page.isPost %}
     {% capture social_card_path %}/assets/og/{{ page.date | date: '%Y-%m-%d' }}-{{ page.slug }}.png{% endcapture %}
+    {% assign social_card_width = 1200 %}
+    {% assign social_card_height = 630 %}
   {% else %}
     {% assign social_card_path = '/assets/og/default.png' %}
+    {% assign social_card_width = 1200 %}
+    {% assign social_card_height = 630 %}
   {% endif %}
   <meta property="og:image" content="{{ social_card_path | absolute_url }}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image:width" content="{{ social_card_width }}">
+  <meta property="og:image:height" content="{{ social_card_height }}">
+  <meta property="og:image:alt" content="{% if page.profilePage %}Portrait of {{ site.author.name | escape }}{% elsif page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}">
+  <meta name="twitter:card" content="{% if page.profilePage %}summary{% else %}summary_large_image{% endif %}">
   <meta name="twitter:image" content="{{ social_card_path | absolute_url }}">
   <script src="{{ '/assets/js/theme-init.js' | relative_url }}?v={{ asset_version }}"></script>
   {% include analytics.html %}
