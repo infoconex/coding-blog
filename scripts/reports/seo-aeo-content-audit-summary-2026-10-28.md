@@ -105,6 +105,22 @@ All four were independently fetched from `main` after the edits. Source verifica
 - `_layouts/default.html` unconditionally outputs an Open Graph image and Twitter image after `{% seo %}`. The SEO plugin may also emit image tags when articles specify `image:`, so **possible duplicate social image metadata** must be checked in generated HTML before changing the shared template.
 - Production pages and GitHub Actions runs were not accessible to the available independent retrieval method in this pass. The four commits are present on `main`; actual Pages deployment, rendered schema, and workflow execution remain unverified.
 
+## Implemented fifth group — shared social metadata and SEO validation — 2026-10-29
+
+After reviewing the **actual upstream Jekyll SEO Tag Liquid template** (`jekyll/jekyll-seo-tag/lib/template.html`) alongside `_layouts/default.html`, duplicate metadata was confirmed at the source level:
+
+- The plugin always emits `twitter:card`. Previously, our layout emitted a second `twitter:card`.
+- When an article declares `image` in frontmatter, the plugin emits `og:image`, `twitter:image`, and corresponding image metadata. Previously, the layout emitted a second, sometimes conflicting, image URL based on the separate generated social-card path.
+- The default layout has been updated to **let the plugin own image metadata when `page.image` exists**. For older articles without explicit `image` frontmatter, the layout continues emitting its fallback `og:image` and `twitter:image`, with descriptive image-alt metadata. The custom `twitter:card` tag was removed everywhere to avoid duplication.
+- **Tradeoff:** the plugin emits a `summary` card for posts without explicit `image` frontmatter, rather than the former manually added `summary_large_image` card. Their fallback `twitter:image` remains. Evaluate previews before choosing an approach that supplies plugin-owned images for every historical article; do not reintroduce duplicate metadata solely to force large cards.
+- `_layouts/post.html` now renders visible update dates from `page.seo.date_modified` (or `page.last_modified_at`) to match the SEO plugin's documented modification-date precedence. A historical article does not receive an automatic new `dateModified` merely because its source was migrated or formatted. The original publication date is unchanged.
+
+Added `scripts/validate_seo.py`, an offline inspection tool for **built Jekyll HTML**, checking single canonical and social-image tags, matching canonical/OG/schema URLs, and one `BlogPosting` JSON-LD node with headline, description, dates, and identifiable author on article pages. It also considers extensionless post files and ignores bare redirect pages. Added `scripts/test_validate_seo.py` covering positive, duplicate, author, schema, redirect, and extensionless-file cases. These unit tests are wired into the **existing** `.github/workflows/validate.yml` validation job.
+
+**Important limitation:** The attempt to add `scripts/validate_seo.py --site-dir _site` to the **Pages build workflow** was blocked by the GitHub connector's safety check. Therefore the new *rendered-site* scanner is **not yet automatically run during Pages deployment**. It can be run manually after a Jekyll build, but no built-site scan, regression-test execution, GitHub Actions result, or production HTML validation has been independently verified in this pass. The source-level conflict and its conditional fix are verified; production is not certified. The existing Pages workflow was left unchanged.
+
+The article-improvement total remains **13 of the 103 original published articles**; these commits concern the common layout and validation coverage, not additional editorial article rewrites.
+
 ## Shared structured-data and deployment review
 
 - `_config.yml` uses `seo.type: BlogPosting` for the `post` directory, appropriate because migrated articles are pages rather than `site.posts`.
