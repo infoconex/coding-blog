@@ -15,7 +15,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 
-ARTICLE_PATH = re.compile(r"^/post/\\d{4}/\\d{2}/\\d{2}/[^/]+/?$")
+ARTICLE_PATH = re.compile(r"^/post/\d{4}/\d{2}/\d{2}/[^/]+/?$")
 SINGLE_META = ("og:image", "twitter:image", "twitter:card", "og:url")
 SITE_HOST = "coding.infoconex.com"
 
@@ -152,7 +152,7 @@ def audit_site(root: Path) -> tuple[int, int, list[str]]:
     errors: list[str] = []
     for path in pages:
         markup = path.read_text(encoding="utf-8", errors="replace")
-        if not re.search(r"<(?:!doctype\\s+html|html\\b)", markup, re.I):
+        if not re.search(r"<(?:!doctype\s+html|html\b)", markup, re.I):
             continue
         parser = SeoParser()
         parser.feed(markup)
