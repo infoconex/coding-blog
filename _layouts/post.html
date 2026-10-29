@@ -90,7 +90,12 @@ layout: default
     <div class="post-meta" aria-label="Article metadata">
       {% if page.author %}{% assign author_meta = site.data.authors[page.author] %}<span>{% if author_meta and author_meta.url %}<a href="{{ author_meta.url }}">{{ page.author }}</a>{% else %}{{ page.author }}{% endif %}</span><span aria-hidden="true">·</span>{% endif %}
       <span>{{ reading_minutes }} min read</span>
-      {% if page.updated %}<span aria-hidden="true">·</span><span>Updated {{ page.updated | date: "%B %-d, %Y" }}</span>{% endif %}
+      {% comment %}Use the same explicit modification date as jekyll-seo-tag.
+           Do not infer a new date from a Git commit or migration edit.{% endcomment %}
+      {% assign visible_modified = page.seo.date_modified | default: page.last_modified_at %}
+      {% assign published_day = page.date | date: "%Y-%m-%d" %}
+      {% assign modified_day = visible_modified | date: "%Y-%m-%d" %}
+      {% if visible_modified and modified_day != published_day %}<span aria-hidden="true">·</span><span>Updated {{ visible_modified | date: "%B %-d, %Y" }}</span>{% endif %}
       {% if page.tags and page.tags.size > 0 %}
         <span aria-hidden="true">·</span>
         <span>{{ page.tags | join: " · " }}</span>
