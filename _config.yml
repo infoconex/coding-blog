@@ -21,6 +21,10 @@ defaults:
     values:
       layout: post
       isPost: true
+      # Migrated articles are Jekyll pages, not entries in site.posts.
+      # Explicit type ensures jekyll-seo-tag emits BlogPosting metadata.
+      seo:
+        type: BlogPosting
 
 # GitHub Pages-supported plugins only.
 plugins:
