@@ -2,8 +2,8 @@
 
 title: "C# Traceroute using .net framework"
 date: "2009-01-14"
-description: "If you have ever tried to create a traceroute program using one of the few available ICMP libraries freely available for C# you may have run into some issues mainly to do with the ICMP…"
-tags: []
+description: "A 2009 C# traceroute example using the built-in .NET Framework Ping class, ICMP time-to-live settings, and a simple loop to display network hops."
+tags: ["C#", ".NET Framework", "Traceroute", "ICMP", "Networking"]
 slug: "c-traceroute-using-net-framework"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2009/01/14/C-Traceroute-using-net-framework"
@@ -11,6 +11,8 @@ permalink: "/post/2009/01/14/C-Traceroute-using-net-framework"
 legacyPaths: ["/post/2009/01/14/C-Traceroute-using-net-framework"]
 ---
 If you have ever tried to create a traceroute program using one of the few available ICMP libraries freely available for C# you may have run into some issues mainly to do with the ICMP checksum not being correct. It seems that as of .NET 2.0 framework that microsoft included a Ping class that makes it really easy to then use it to create a traceroute utility. Here is some basic code to create a traceroute utility.
+
+## C# traceroute example
 
 ```csharp
 public string Traceroute(string ipAddressOrHostName)
@@ -69,3 +71,4 @@ public string Traceroute(string ipAddressOrHostName)
 }
 ```
 
+For the earlier investigation into ICMP checksums and the built-in `Ping` class, see [C# Ping](/post/2009/01/12/C-Ping-and-Traceroute).
