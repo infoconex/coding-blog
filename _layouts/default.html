@@ -32,6 +32,7 @@
       "@id": "{{ '/about/' | absolute_url }}#person",
       "name": {{ site.author.name | jsonify }},
       "url": {{ site.author.url | jsonify }},
+      "image": {{ '/assets/images/about/jim-scott.webp' | absolute_url | jsonify }},
       "jobTitle": "Vice President of Software Engineering",
       "description": "Software engineering leader, technical author, and open-source developer.",
       "knowsAbout": ["Software engineering", "Software architecture", "C#", ".NET", "Linux", "Automation"],
