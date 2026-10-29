@@ -3,14 +3,18 @@
 title: "Automatically attaching VHD files in Windows 7 and Windows 2008"
 date: "2009-11-26"
 description: "Automatically reattach VHD files after restarting Windows 7 or Windows Server 2008 using DiskPart scripts and a repeatable startup configuration."
-tags: []
+tags: ["Windows", "Virtual Hard Disk", "DiskPart", "Task Scheduler", "Automation"]
 slug: "automatically-attaching-vhd-files-in-windows-7-and-windows-2008"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2009/11/26/Automatically-attaching-VHD-files-in-Windows-7-and-Windows-2008"
 permalink: "/post/2009/11/26/Automatically-attaching-VHD-files-in-Windows-7-and-Windows-2008"
 legacyPaths: ["/post/2009/11/26/Automatically-attaching-VHD-files-in-Windows-7-and-Windows-2008"]
 ---
+## The problem after a restart
+
 If you have played with the new VHD feature in windows 7 or windows 2008 then you know just how cool of a feature this is. However the problem is that when you reboot your machine you find that when it comes back up all your VHD files are no longer attached? Here is what I did to get around the issue.
+
+## Configure a startup task to attach a VHD
 
 1. **Create a batch file** that will hold the following line:
 
@@ -62,3 +66,8 @@ If you have played with the new VHD feature in windows 7 or windows 2008 then yo
 4. **You have now completed** all the necessary steps. Restart your computer and you should find that your VHD files are now automatically attached. One caveat is that if you reboot and you log into your machine quick enough it is possible that the task may not have been run yet. Once you are logged in if the task runs you will get an Autoplay dialog as follows. Simply close it. This does not happen if the task runs before you get logged in.
 
     [![Windows AutoPlay notification after attaching the virtual hard disk](/post/2009/11/26/Automatically-attaching-VHD-files-in-Windows-7-and-Windows-2008/images/auto-play-thumb-1.jpg)](/post/2009/11/26/Automatically-attaching-VHD-files-in-Windows-7-and-Windows-2008/images/auto-play-1.jpg)
+
+
+## Notes for newer Windows installations
+
+This walkthrough documents a 2009 Windows 7 / Windows Server 2008 configuration. Windows still documents the [`select vdisk`](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/select-vdisk) and [`attach vdisk`](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/attach-vdisk) DiskPart commands, but the Task Scheduler interface, startup permissions, and disk formats may differ on newer releases. Verify the target disk path before attaching it, protect any startup script against unauthorized edits, and configure the scheduled task with only the permissions needed for the operation. Microsoft also documents [Task Scheduler run levels](https://learn.microsoft.com/en-us/windows/win32/taskschd/principal-runlevel).
