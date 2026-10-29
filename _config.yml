@@ -47,12 +47,15 @@ navigation:
 profile_links:
   - title: GitHub
     url: https://github.com/infoconex
+  - title: LinkedIn
+    url: https://www.linkedin.com/in/jim-scott-a57782177/
 
 # SEO/social defaults consumed by jekyll-seo-tag.
 social:
   name: Jim Scott
   links:
     - https://github.com/infoconex
+    - https://www.linkedin.com/in/jim-scott-a57782177/
 
 # Comments are deliberately disabled until GitHub Discussions + Giscus are
 # configured. Articles must also opt in with `comments: true`.
