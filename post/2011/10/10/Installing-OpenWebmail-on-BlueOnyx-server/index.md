@@ -83,3 +83,7 @@ Here is the installation steps:
 ## Access the webmail interface
 
 11) Finished - Open your browser and go to one of your websites located on the server and append /webmail to the url and if all is well you will have running webmail on your BlueOnyx machine.
+
+## Related BlueOnyx history
+
+For the platform background, see [the transition from Cobalt and BlueQuartz to BlueOnyx](/post/2009/02/01/From-Cobalt-to-BlueQuartz-and-now-BlueOnyx). I also documented a later approach in [installing Roundcube on BlueOnyx 5209](/post/2016/03/10/installing-roundcube-webmail-on-blueonyx-5209). These older installation notes should not be treated as current security or deployment guidance.

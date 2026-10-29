@@ -437,3 +437,7 @@ namespace Design_Patterns
 Our application however still needs to know a bit about how to create an instance of the Logger class and the various strategy classes, to solve this issue we are going to implement the Factory Method pattern which will be responsible for creating new instances. This will help when we decide to have some of our concrete strategy classes get more complex which could make our Logger class complex in understanding how to create the various instances in our switch statement. If you see the new statement used someplace it is probably a good indicator that a factory method pattern could be used. This article is getting a bit longer than I expected so I am going to do the next pattern in a part 2 article.
 
 Stay Tuned!
+
+## Further reading on software design
+
+For the earlier perspective that led to these examples, see [Object Oriented Design Patterns](/post/2008/10/14/Object-Oriented-Design-Patterns). For later design guidance on responsibilities and dependencies, see [applying the SOLID principles](/post/2025/06/13/creat-better-software-by-applying-solid-principles). SOLID principles and design patterns address related but distinct design decisions.

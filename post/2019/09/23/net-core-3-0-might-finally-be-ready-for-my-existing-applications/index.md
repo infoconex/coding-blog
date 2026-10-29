@@ -20,3 +20,7 @@ But the decision is getting more interesting.
 C# 8 is also part of this release, and .NET Core continues to feel more complete each time Microsoft updates it. A few years ago I viewed .NET Core mostly as something interesting for new web applications and cross-platform development. With 3.0, the gap between it and the applications many of us already have is getting smaller.
 
 I am still not planning any large migrations tomorrow, but I am going to start looking more seriously at which applications might make sense to move.
+
+## Further reading: from .NET Core to modern .NET
+
+My earlier [.NET Core 2.0 assessment](/post/2017/08/14/net-core-2-0-is-starting-to-feel-ready) explains the compatibility concerns that preceded this release. Later, [.NET 6 felt like the version I had been waiting for](/post/2021/11/08/net-6-feels-like-the-version-ive-been-waiting-for).

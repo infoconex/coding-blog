@@ -22,3 +22,7 @@ There are plenty of new features to dig into, including C# 10, improvements to A
 I am not going to rush out and rewrite every existing .NET Framework application, but for new development I think the decision is getting pretty easy.
 
 After several years of watching this transition happen, .NET 6 feels like the version I have been waiting for.
+
+## Further reading: the changing .NET baseline
+
+For the earlier migration questions, see [my .NET Core 3.0 assessment](/post/2019/09/23/net-core-3-0-might-finally-be-ready-for-my-existing-applications). Two years later, [.NET 8 felt like the new normal](/post/2023/11/14/net-8-feels-like-the-new-normal) for new development.

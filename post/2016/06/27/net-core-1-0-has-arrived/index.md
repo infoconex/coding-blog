@@ -22,3 +22,7 @@ ASP.NET Core has changed quite a bit as well. It no longer depends on System.Web
 There is a lot here that I need to spend some time with.
 
 I am not ready to move my existing applications away from the .NET Framework, but .NET Core 1.0 feels like the beginning of a very different direction for .NET.
+
+## Further reading: the .NET Core transition
+
+This announcement captures my first impressions in 2016. To follow how the platform became more practical, see [why .NET Core 2.0 started to feel ready](/post/2017/08/14/net-core-2-0-is-starting-to-feel-ready) and [what .NET Core 3.0 meant for existing Windows applications](/post/2019/09/23/net-core-3-0-might-finally-be-ready-for-my-existing-applications).

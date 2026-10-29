@@ -163,3 +163,7 @@ esac
 
 exit $?
 ```
+
+## Further reading from the hosting archive
+
+For background on the hosting platform used in this article and its successor, see [the transition from Cobalt to BlueQuartz and BlueOnyx](/post/2009/02/01/From-Cobalt-to-BlueQuartz-and-now-BlueOnyx). This Mono setup remains a historical example, not an installation guide for current Linux distributions.

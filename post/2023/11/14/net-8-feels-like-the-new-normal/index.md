@@ -22,3 +22,7 @@ It is that modern .NET no longer feels like the alternative version of .NET.
 If I were starting a new application today, I would not be asking whether I should use .NET Framework or .NET Core. I would just start with .NET 8 unless there was a specific reason not to.
 
 That is a pretty big change from where things were only a few years ago.
+
+## Further reading: from platform adoption to SDK management
+
+Compare this view with [my reaction to .NET 6](/post/2021/11/08/net-6-feels-like-the-version-ive-been-waiting-for). Once modern .NET becomes the default, a practical next question is [how to test a new .NET SDK without installing it system-wide](/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide).

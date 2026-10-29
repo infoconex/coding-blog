@@ -46,3 +46,7 @@ That doesn't make the human less important. It changes where human attention pro
 AI can take on more responsibility for doing the work without removing our responsibility for the outcome.
 
 The future of working with AI shouldn't be measured only by how much work we can give it. It should also be measured by whether we can give AI more responsibility **while still understanding enough to make good decisions about what it produces.**
+
+## Related perspectives on AI-assisted engineering
+
+My earlier [ChatGPT first impressions](/post/2022/11/30/chatgpt-looks-interesting) show where this exploration began. For a concrete approach to specifying, executing, and evaluating AI-assisted work, see [AI Flywheel Spec: From Agent Loop to Compounding System](/post/2026/07/15/ai-flywheel-spec-from-agent-loop-to-compounding-system).

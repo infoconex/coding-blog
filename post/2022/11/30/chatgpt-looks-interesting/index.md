@@ -20,3 +20,7 @@ I am especially curious to see how useful it might be for software development. 
 I do not know yet.
 
 For now, it is one more thing on my list to try.
+
+## Further reading: from first impressions to engineering judgment
+
+This entry records my initial curiosity in 2022. A later discussion, [Understanding What We Ask AI to Do](/post/2026/08/17/understanding-what-we-ask-ai-to-do), looks at the responsibility to evaluate and understand AI-generated work.

@@ -183,3 +183,7 @@ service httpd restart
 ```
 
 Now go to [www.yourdomain.com/webmail](http://www.yourdomain.com/webmail) and login to the Roundcube webmail interface.
+
+## Related BlueOnyx history
+
+Earlier posts cover [how BlueOnyx followed Cobalt and BlueQuartz](/post/2009/02/01/From-Cobalt-to-BlueQuartz-and-now-BlueOnyx) and an [OpenWebmail installation on BlueOnyx](/post/2011/10/10/Installing-OpenWebmail-on-BlueOnyx-server). Those procedures document older systems and software versions.

@@ -22,3 +22,7 @@ I am still not planning to move existing .NET Framework applications just becaus
 For new web applications though, .NET Core is starting to look like a real option instead of an experiment I am keeping an eye on.
 
 I think it is time to start using it on something more than a test project.
+
+## Further reading: before and after .NET Core 2.0
+
+Compare this release with [my initial reaction to .NET Core 1.0](/post/2016/06/27/net-core-1-0-has-arrived) and my later assessment of [desktop application compatibility in .NET Core 3.0](/post/2019/09/23/net-core-3-0-might-finally-be-ready-for-my-existing-applications).

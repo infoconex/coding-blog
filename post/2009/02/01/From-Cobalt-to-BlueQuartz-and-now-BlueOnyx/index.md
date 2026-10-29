@@ -21,3 +21,7 @@ BlueOnyx is a Linux distribution (based on CentOS v5.2) which aims at delivering
 BlueOnyx is a modernized fork of [BlueQuartz](http://www.bluequartz.org/) and has been developed by [Solarspeed Ltd.](http://www.solarspeed.net/) and NuOnce Networks, Inc. and A lot of improvements and enhancements (compared to a regular BlueQuartz) went into BlueOnyx. Including support for Java Servlet Pages, built in web based email, phpMyAdmin for you and your webhosting clients and provisions to automatically create MySQL databases and users for each virtual site.
 
 Visit BlueOnyx site for more information [http://www.blueonyx.it](http://www.blueonyx.it/)
+
+## Further reading from the hosting archive
+
+For examples of working with BlueOnyx after this platform transition, see [installing OpenWebmail on BlueOnyx](/post/2011/10/10/Installing-OpenWebmail-on-BlueOnyx-server) and the later [Roundcube installation on BlueOnyx 5209](/post/2016/03/10/installing-roundcube-webmail-on-blueonyx-5209). Both are preserved as historical procedures, not current installation recommendations.
