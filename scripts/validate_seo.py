@@ -122,11 +122,21 @@ def inspect_html(markup: str, *, require_metadata: bool = False) -> list[str]:
 
     author = article.get("author")
     authors = author if isinstance(author, list) else [author]
-    if not any(
-        isinstance(a, dict) and a.get("name") and a.get("url")
-        for a in authors
+    # Google recommends an author profile URL when one exists, but author.name
+    # is the required identity property. Preserve historical guest authors
+    # without inventing profiles or attributing their work to Jim Scott.
+    named_authors = [
+        a for a in authors
+        if isinstance(a, dict) and isinstance(a.get("name"), str) and a["name"].strip()
+    ]
+    if not named_authors:
+        issues.append("BlogPosting author is missing a name")
+    elif not any(
+        a["name"] != "Jim Scott"
+        or a.get("url") == "https://coding.infoconex.com/about/"
+        for a in named_authors
     ):
-        issues.append("BlogPosting author is missing name or profile URL")
+        issues.append("BlogPosting author Jim Scott is missing the correct profile URL")
 
     if article.get("url") and article["url"] != canonical:
         issues.append("BlogPosting URL and canonical link disagree")
@@ -186,7 +196,9 @@ def audit_site(root: Path) -> tuple[int, int, list[str]]:
         parser.feed(markup)
         relative = path.relative_to(root).as_posix()
         is_article_file = bool(ARTICLE_FILE.match(relative))
-        if parser.is_redirect and not parser.canonicals and not parser.meta.get("og:url"):
+        # jekyll-redirect-from emits a canonical link to the destination
+        # but intentionally omits social tags. Do not audit redirects as pages.
+        if parser.is_redirect:
             continue
         if not parser.canonicals and not parser.meta.get("og:url") and not is_article_file:
             continue

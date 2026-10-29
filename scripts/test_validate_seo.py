@@ -145,5 +145,46 @@ class RenderedSeoTests(unittest.TestCase):
 
 
 
+    def test_guest_author_name_is_valid_without_invented_profile_url(self):
+        html = article_markup(author_url=False).replace(
+            '"name": "Jim Scott"', '"name": "John Scott"'
+        )
+        self.assertEqual(inspect_html(html), [])
+
+    def test_guest_author_still_requires_a_name(self):
+        html = article_markup(author_url=False).replace(
+            '"name": "Jim Scott"', '"name": ""'
+        )
+        self.assertTrue(any("author" in issue for issue in inspect_html(html)))
+
+    def test_jim_scott_author_url_must_identify_his_profile(self):
+        html = article_markup().replace(
+            '"url": "https://coding.infoconex.com/about/"',
+            '"url": "https://example.com/unrelated/"',
+        )
+        self.assertTrue(any("profile URL" in issue for issue in inspect_html(html)))
+
+    def test_canonical_redirect_skips_social_tag_validation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            article = root / "post/2010/01/04/ASPNET-MVC-Tutorials.html"
+            article.parent.mkdir(parents=True)
+            article.write_text(article_markup(), encoding="utf-8")
+            (root / "assets/og").mkdir(parents=True)
+            (root / "assets/og/card.png").write_bytes(b"test-card")
+            redirect = root / "author/jscott/index.html"
+            redirect.parent.mkdir(parents=True)
+            redirect.write_text(
+                '<!doctype html><html><head>'
+                '<title>Page moved</title>'
+                '<link rel="canonical" href="https://coding.infoconex.com/about/">'
+                '<meta name="robots" content="noindex, follow">'
+                '<meta http-equiv="refresh" content="0; url=https://coding.infoconex.com/about/">'
+                '</head><body></body></html>',
+                encoding="utf-8",
+            )
+            self.assertEqual(audit_site(root), (1, 1, []))
+
+
 if __name__ == "__main__":
     unittest.main()

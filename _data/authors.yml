@@ -2,3 +2,9 @@
   name: Jim Scott
   type: Person
   url: https://coding.infoconex.com/about/
+
+# Original 2010 byline uses "johnscott" and the article is signed "John".
+# Do not point this historical author at Jim Scott's profile.
+johnscott:
+  name: John Scott
+  type: Person
