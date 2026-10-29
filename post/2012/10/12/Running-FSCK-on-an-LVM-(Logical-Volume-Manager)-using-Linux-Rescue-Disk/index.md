@@ -24,7 +24,7 @@ Once in I attempted to run `fsck /dev/sda1` but I got an error back indicating i
 
 ## Locating and activating the LVM volumes
 
- Perform all of the following commands in the following order. I provided a link for each command if you are interested in knowing more about what each of the commands do.
+ The following are the original commands I used during this recovery, in the order I used them. They are preserved as a historical example; verify the volume names, arguments, and filesystem-specific repair steps before adapting any of them. I provided a link for each command if you are interested in knowing more about what each of the commands do.
 
 ### Scan physical volumes
 
