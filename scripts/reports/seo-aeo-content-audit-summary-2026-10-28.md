@@ -150,6 +150,25 @@ The article-improvement total remains **13 of the 103 original published article
 
 This change does not add or update article publication dates, change historical routes, or submit any URLs to IndexNow. **17 of 103 articles** remain the total edited in the baseline review series.
 
+## Milestone: SEO validation guardrails ready for production triage — 2026-10-29
+
+**Implementation is complete enough to pause this chat.** The next independent work item is **production-generated HTML verification and triage of SEO diagnostic warnings**. This is a handoff milestone, not a claim that production is certified.
+
+### Completed and checked in source
+
+- `scripts/validate_seo.py` now detects missing article canonical metadata, duplicate Open Graph/Twitter tags, missing local social images, absent or incomplete `BlogPosting` JSON-LD, and incorrect historical article canonical routes. Checking article identity by built-source path ensures a wrong canonical cannot suppress the schema inspection.
+- `scripts/test_validate_seo.py` now contains **11 regression tests**, covering valid pages, duplicate tags, missing author URLs, absent schema, extensionless and `.html` article builds, lost canonical metadata, wrong canonical URL, missing social-card files, and redirects.
+- `scripts/validate_images.py` invokes the built-site SEO scanner in **nonblocking** mode after the existing image audit; it prints totals and `SEO WARNING:` lines. Even unexpected scanner exceptions are reported as warnings without failing an otherwise successful image audit.
+- `scripts/test_validate_images.py` now has **8 tests**, including verification of visible SEO warnings and exception containment.
+- Existing `.github/workflows/validate.yml` already runs both regression test modules, while the unchanged `.github/workflows/pages.yml` already runs `scripts/validate_images.py --site-dir _site` after the Jekyll build. The scanner is therefore connected to the deployment pipeline **indirectly** via that existing step.
+- No workflow permissions, IndexNow behavior, publishing dates, historical paths, or article content were changed in this milestone. The original 103-row baseline remains untouched; **17 of 103 articles** were individually improved in preceding groups.
+
+### Limits and stop condition
+
+GitHub app source reads confirm the new methods, test cases, and workflow references exist on `main`. **The test suite has not been executed in this environment** because the complete repository is not mounted in the runtime and no GitHub Actions logs were available through the connected GitHub actions. Public browsing of article HTML or GitHub's workflow pages could not establish the latest deployed rendered metadata. **Do not equate the commits or a zero-context combined commit status with passing CI or a healthy production deployment.**
+
+**Next independent item:** Retrieve the most recent `Deploy Jekyll site to Pages` run, expand the build job's `Verify generated images, clickable image links, and alt text` step, and collect all `SEO diagnostic`/`SEO WARNING` lines. Validate them against the generated `_site` artifact (or representative production pages with raw HTML). Resolve verified issues without changing article dates or permalinks. Only if all diagnostics are accurate and pass, consider a separate change to make critical SEO failures build-blocking. Keep the external-link inventory, remaining article rewrites and AEO editorial work as separate later milestones.
+
 ## Shared structured-data and deployment review
 
 - `_config.yml` uses `seo.type: BlogPosting` for the `post` directory, appropriate because migrated articles are pages rather than `site.posts`.
