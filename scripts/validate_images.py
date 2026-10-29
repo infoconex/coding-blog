@@ -126,6 +126,18 @@ def main() -> int:
     options = parser.parse_args()
     images, errors = audit_site(options.site_dir)
     print(f"Image audit: examined {images} rendered images")
+
+    # The Pages workflow already runs this script after Jekyll builds the site.
+    # Surface new SEO findings in its logs without blocking deployment until
+    # the scanner has been verified against a complete production build.
+    from validate_seo import audit_site as audit_seo_site
+
+    seo_pages, seo_articles, seo_issues = audit_seo_site(options.site_dir)
+    print(f"SEO diagnostic (nonblocking): checked {seo_pages} pages, {seo_articles} articles")
+    for issue in seo_issues:
+        print(f"SEO WARNING: {issue}")
+    if seo_issues:
+        print(f"SEO diagnostic: {len(seo_issues)} issue(s) need investigation")
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
