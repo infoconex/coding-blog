@@ -4,6 +4,9 @@ title: About
 seoTitle: "About Jim Scott | VP of Software Engineering & Technical Author"
 description: "Meet Jim Scott, a Vice President of Software Engineering, technical author since 2008, and open-source developer focused on .NET, architecture, and automation."
 permalink: /about/
+redirect_from:
+  - /author/jscott/
+  - /author/jscott.aspx
 stylesheet: /assets/css/about.css
 profilePage: true
 ---
