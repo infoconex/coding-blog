@@ -86,6 +86,25 @@ Extended the existing `scripts/validate.py` to **warn** on fenced code blocks wi
 **Limited production spot check (2026-10-29):** The live November 3, 2008 .NET 2.0 SP2 article visibly contains this group’s new description, topic tags, April 2009 H2, and related link. Retrieved copies of the LVM and ASP.NET pages were cached from an earlier state, so they did not establish those pages’ latest deployed state. The connected GitHub API exposes no push-triggered Actions run result through the available methods; complete deployment status and validation therefore remain unverified.
 
 
+## Implemented fourth article group — 2026-10-29
+
+Four additional articles were updated directly on `main`. These edits preserve their original publication dates, permalink frontmatter, code examples, and image references:
+
+- `post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View/index.md`: rewrote the content description to reflect a concrete C# Windows Forms refactoring, added five topic tags and descriptive H2/H3 navigation through view/presenter setup and mock-based unit tests, changed three original Martin Fowler references to HTTPS, and linked the 2008 design-pattern and 2013 Strategy/Factory Method articles. Verified both Martin Fowler pattern destinations publicly.
+- `post/2009/11/26/Automatically-attaching-VHD-files-in-Windows-7-and-Windows-2008/index.md`: added Windows/DiskPart/automation tags and three useful H2 headings, with a historical caveat and authoritative Microsoft references for current DiskPart commands and Task Scheduler run-level considerations. All nine images and the original DiskPart script remain unchanged.
+- `post/2010/01/04/ASPNET-MVC-Tutorials/index.md`: improved the description and ASP.NET MVC 2-focused tags, introduced three semantic section headings, replaced a generic 'older versions' document link with Microsoft's specific MVC 1/2 archive and MVC 2 overview, and connected the article to the Passive View walkthrough.
+- `post/2008/10/14/Object-Oriented-Design-Patterns/index.md`: added topical tags and a short follow-up section linking the author's subsequent hands-on MVP and Strategy/Factory Method examples.
+
+All four were independently fetched from `main` after the edits. Source verification found no new article-level H1, missing frontmatter date/permalink, or unbalanced fenced code blocks; the original MVP's seven code blocks and five screenshots, and the Windows VHD post's nine images were preserved. Updated Microsoft and Martin Fowler reference destinations were located and opened. **Running total: 13 articles improved.** The original 103-row CSV remains the unchanged baseline.
+
+### Structured data — source-level findings, not rendered certification
+
+- The site config sets `seo.type: BlogPosting` for migrated article pages; the default layout invokes `{% seo title=false %}`. Official jekyll-seo-tag documentation confirms support for this type and the `seo.date_modified` override.
+- `_data/authors.yml` maps the author string `Jim Scott` to a `Person` record with the About URL, consistent with the SEO plugin's documented author lookup. This is better than relying only on the global author's URL, but rendered JSON-LD still requires checking.
+- The shared post layout displays `page.updated` when supplied, whereas jekyll-seo-tag's `dateModified` uses `seo.date_modified`, `last_modified_at`, then `date`. The two concepts need synchronization for any future explicit editorial update dates. Do not automatically mark the historical publication date as new.
+- `_layouts/default.html` unconditionally outputs an Open Graph image and Twitter image after `{% seo %}`. The SEO plugin may also emit image tags when articles specify `image:`, so **possible duplicate social image metadata** must be checked in generated HTML before changing the shared template.
+- Production pages and GitHub Actions runs were not accessible to the available independent retrieval method in this pass. The four commits are present on `main`; actual Pages deployment, rendered schema, and workflow execution remain unverified.
+
 ## Shared structured-data and deployment review
 
 - `_config.yml` uses `seo.type: BlogPosting` for the `post` directory, appropriate because migrated articles are pages rather than `site.posts`.
