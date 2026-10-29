@@ -51,6 +51,16 @@ jobs:
           source: ./
           destination: ./_site
 
+      - name: Verify legacy author redirects are generated
+        shell: bash
+        run: |
+          set -euo pipefail
+          for redirect_page in _site/author/jscott/index.html _site/author/jscott.aspx; do
+            test -f "$redirect_page"
+            grep -Fq 'http-equiv="refresh"' "$redirect_page"
+            grep -Fq 'https://coding.infoconex.com/about/' "$redirect_page"
+          done
+
       - name: Verify generated images, clickable image links, and alt text
         run: python3 scripts/validate_images.py --site-dir _site
 
