@@ -30,6 +30,9 @@ jobs:
       - name: Test generated SEO metadata validation
         run: python -m unittest discover -s scripts -p 'test_validate_seo.py' -v
 
+      - name: Test sitemap and robots crawlability validation
+        run: python -m unittest discover -s scripts -p 'test_validate_indexability.py' -v
+
       - name: Validate historical content
         run: python scripts/validate.py
 
