@@ -2,7 +2,7 @@
 title: "ASP.NET CustomValidator that validates multiple controls using both Server Side and Client Side scripting"
 date: "2010-10-11"
 description: "Learn how to validate multiple ASP.NET Web Forms controls with a CustomValidator using both client-side JavaScript and server-side validation logic."
-tags: []
+tags: ["ASP.NET", "Web Forms", "C#", "JavaScript", "Validation"]
 slug: "asp-net-customvalidator-that-validates-multiple-controls-using-both-server-side-and-client-side-scripting"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2010/10/11/ASPNET-CustomValidator-that-validates-multiple-controls-using-both-Server-Side-and-Client-Side-scripting"
