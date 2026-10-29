@@ -30,12 +30,6 @@ profilePage: true
     <p>I value simple designs, explicit tradeoffs, strong fundamentals, and code that the next person can understand without archaeology. I’m less interested in chasing patterns for their own sake than in understanding when an idea actually makes software better.</p>
     <p>Most of the writing here is practical: examples, architecture notes, debugging discoveries, design principles, and observations collected while building and maintaining software. I also share open-source projects and experiments so readers can inspect the implementation and evaluate the results themselves.</p>
 
-    <div class="about-principles">
-      <div><strong>Design</strong><span>Make intent visible and change affordable.</span></div>
-      <div><strong>Systems</strong><span>Understand behavior beyond a single function or service.</span></div>
-      <div><strong>Operations</strong><span>Production is where assumptions meet evidence.</span></div>
-      <div><strong>History</strong><span>Keep the record, including the parts that have aged.</span></div>
-    </div>
   </article>
 
   <aside class="about-side">
