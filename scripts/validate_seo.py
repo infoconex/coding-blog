@@ -94,7 +94,7 @@ def inspect_html(markup: str, *, require_metadata: bool = False) -> list[str]:
     if page.meta.get("og:url") and page.meta["og:url"][0] != canonical:
         issues.append("og:url and canonical link disagree")
 
-    if not ARTICLE_PATH.match(parsed.path):
+    if not require_metadata and not ARTICLE_PATH.match(parsed.path):
         return issues
 
     found_nodes: list[dict] = []
@@ -196,6 +196,21 @@ def audit_site(root: Path) -> tuple[int, int, list[str]]:
         ):
             articles += 1
         page_issues = inspect_html(markup, require_metadata=is_article_file)
+        if is_article_file and parser.canonicals:
+            expected = "/" + relative.removeprefix("post/").replace("index.html", "")
+            # Direct-to-file pages and folder/index pages have the same
+            # historical URL except for a possible trailing slash.
+            if relative.endswith("/index.html"):
+                expected = "/post/" + relative[len("post/") : -len("/index.html")]
+            elif relative.endswith(".html"):
+                expected = "/post/" + relative[len("post/") : -5]
+            else:
+                expected = "/" + relative
+            canonical_path = urlsplit(parser.canonicals[0]).path.rstrip("/")
+            if canonical_path != expected.rstrip("/"):
+                page_issues.append(
+                    f"article canonical path {canonical_path!r} differs from built article URL {expected!r}"
+                )
         page_issues.extend(missing_social_images(root, parser))
         errors.extend(f"{relative}: {issue}" for issue in page_issues)
 
