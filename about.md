@@ -14,7 +14,7 @@ profilePage: true
 {% assign portrait_asset = site.static_files | where: "path", "/assets/images/about/jim-scott.webp" | first %}
 <section class="shell about-hero">
   <div class="about-hero__identity">
-    <div class="eyebrow">About</div>
+    <div class="eyebrow">About Jim Scott</div>
     {% if portrait_asset %}
     <figure class="about-hero__portrait">
       <img src="{{ '/assets/images/about/jim-scott.webp' | relative_url }}" alt="Portrait of Jim Scott" width="480" height="480" loading="eager" decoding="async">
@@ -23,7 +23,6 @@ profilePage: true
     <h1>Building software, preserving the lessons.</h1>
     <div class="about-hero__intro">
       <p class="about-hero__lede">I’m Jim Scott, a Vice President of Software Engineering who still enjoys working directly with code. I write about software engineering, architecture, open-source tools, and the lessons that survive contact with production.</p>
-
     </div>
   </div>
   <dl class="about-highlights" aria-label="Professional background at a glance">
