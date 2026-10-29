@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-29  
 **Website:** https://coding.infoconex.com/  
-**Repository:** infoconex/coding-blog, \`main\`  
-**Baseline reviewed:** 103 articles in the successful GitHub Pages Run [#506](https://github.com/infoconex/coding-blog/actions/runs/40914316680) generated artifact, \`search.json\`, rendered HTML, series pages, and selected original article Markdown. Previous [SEO/AEO audit](seo-aeo-content-audit-summary-2026-10-28.md) and [internal-linking study](internal-linking-topical-audit-2026-10-29.md) were consulted. Counts below refer to the artifact, **not** search-engine performance data.
+**Repository:** infoconex/coding-blog, `main`  
+**Baseline reviewed:** 103 articles in the successful GitHub Pages Run [#506](https://github.com/infoconex/coding-blog/actions/runs/40914316680) generated artifact, `search.json`, rendered HTML, series pages, and selected original article Markdown. Previous [SEO/AEO audit](seo-aeo-content-audit-summary-2026-10-28.md) and [internal-linking study](internal-linking-topical-audit-2026-10-29.md) were consulted. Counts below refer to the artifact, **not** search-engine performance data.
 
 ## Executive finding
 
@@ -17,7 +17,7 @@ A strong second article can be written from **already completed evidence**: *How
 
 | Measured signal | Result | Interpretation |
 | --- | ---: | --- |
-| Total published articles in \`search.json\` and generated HTML | 103 | Source catalog and generated-site count agree |
+| Total published articles in `search.json` and generated HTML | 103 | Source catalog and generated-site count agree |
 | Published during 2008–2016 | 61 | Early historical archive, many event/news items |
 | Published during 2017–2024 | 13 | Occasional platform and personal observations |
 | Published during 2025–2026 | 29 | Newer, more in-depth technical series |
@@ -27,11 +27,11 @@ A strong second article can be written from **already completed evidence**: *How
 | Median, 2017–2024 | ~240 | Mix of short commentary and announcements |
 | Median, 2025–2026 | ~1,186 | More structured, hands-on reporting |
 | Articles with fewer than 250 rendered words | 41 | **All pre-2025**; do not automatically expand |
-| Articles without an \`h2\` in their body | 47 | Mostly shorter pieces; not automatically a structural error |
-| Articles with at least one rendered \`pre\` code block | 43 | Opinion, history and release posts need not have code |
+| Articles without an `h2` in their body | 47 | Mostly shorter pieces; not automatically a structural error |
+| Articles with at least one rendered `pre` code block | 43 | Opinion, history and release posts need not have code |
 | Articles with no code block | 60 | Not an SEO failure |
 
-*Method:* Word counts are simple word-token estimates from the text of each generated \`.post-content\`; image captions, table text, and code can affect counts. This is not a full editorial line-by-line fact check, original-content detector, search-rank assessment, or engagement analysis. The previous SEO/AEO technical milestone reported zero critical errors or advisory warnings and is not re-opened here.
+*Method:* Word counts are simple word-token estimates from the text of each generated `.post-content`; image captions, table text, and code can affect counts. This is not a full editorial line-by-line fact check, original-content detector, search-rank assessment, or engagement analysis. The previous SEO/AEO technical milestone reported zero critical errors or advisory warnings and is not re-opened here.
 
 ### Existing curated series
 
@@ -43,7 +43,7 @@ A strong second article can be written from **already completed evidence**: *How
 | [SOLID Principles](https://coding.infoconex.com/series/solid-principles/) | 6 | Introduction and one detailed article per principle |
 | **Total curated-series pages** | **21** | Four meaningful topical paths |
 
-**Existing strengths:** In the current .NET series, \`global.json\`, clean environments, isolation boundaries, actual CLI commands, and Microsoft references already receive substantial explanation. The NuGet publication-cooldown post already includes a controlled proof-of-concept, five scenarios, and source repository. The CopyGitHubRepo and AI Flywheel posts already explain planning, tests, authority boundaries and evidence. These are **not gaps** to fill with near-duplicate introductions.
+**Existing strengths:** In the current .NET series, `global.json`, clean environments, isolation boundaries, actual CLI commands, and Microsoft references already receive substantial explanation. The NuGet publication-cooldown post already includes a controlled proof-of-concept, five scenarios, and source repository. The CopyGitHubRepo and AI Flywheel posts already explain planning, tests, authority boundaries and evidence. These are **not gaps** to fill with near-duplicate introductions.
 
 **Historical content treatment:** Articles about events, early release announcements, BlueQuartz/BlueOnyx, obsolete ASP.NET technologies, and early networking code should remain accessible with original dates and examples. Where context is needed, prefer a clearly dated note or an original new retrospective **based on evidence**, rather than quietly revising old material to sound current. Do not unpublish, merge, redirect, bulk retag, or expand 41 short pieces merely to satisfy a word threshold.
 
@@ -59,7 +59,7 @@ A strong second article can be written from **already completed evidence**: *How
 
 **Minimum real-world exercise before publication:**
 1. Choose or construct a permission-safe sample .NET repository, with pinned inputs and an explicitly documented SDK environment.
-2. Capture source-controlled settings (\`global.json\`, project target frameworks, \`Directory.Build.props\`, \`Directory.Packages.props\`, \`NuGet.config\`, package lockfiles and tool manifests) **only where actually present**.
+2. Capture source-controlled settings (`global.json`, project target frameworks, `Directory.Build.props`, `Directory.Packages.props`, `NuGet.config`, package lockfiles and tool manifests) **only where actually present**.
 3. Compare static declared dependencies with what tools resolve, distinguishing direct from transitive package dependencies and host tool installation from repository declarations.
 4. Demonstrate at least one real discrepancy (e.g., SDK selection, workload or package source) on a clean environment and its documented resolution.
 5. Publish exact command versions, representative verified output, limitations (especially machine-specific state), and a reproducible companion repository or branch.
@@ -74,7 +74,7 @@ A strong second article can be written from **already completed evidence**: *How
 
 **New material compared with existing content:** [Out With the Old, In With the New: Rebuilding Coding](https://coding.infoconex.com/post/2026/08/29/out-with-the-old-in-with-the-new-rebuilding-coding) explains the migration, **not** the later post-build enforcement implementation.
 
-**Verified source evidence available now:** \`scripts/validate_seo.py\`, \`scripts/validate_indexability.py\`, fixture tests, \`.github/workflows/pages.yml\`, clean generated-site counts (113 HTML pages/103 articles, 112 sitemap destinations), and successful [Pages Run #505](https://github.com/infoconex/coding-blog/actions/runs/40907202932). Previous initial failed [Run #498](https://github.com/infoconex/coding-blog/actions/runs/40903406563) demonstrates why executable regression tests are needed; explain the corrected \`SplitResult.params\` bug without obscuring it.
+**Verified source evidence available now:** `scripts/validate_seo.py`, `scripts/validate_indexability.py`, fixture tests, `.github/workflows/pages.yml`, clean generated-site counts (113 HTML pages/103 articles, 112 sitemap destinations), and successful [Pages Run #505](https://github.com/infoconex/coding-blog/actions/runs/40907202932). Previous initial failed [Run #498](https://github.com/infoconex/coding-blog/actions/runs/40903406563) demonstrates why executable regression tests are needed; explain the corrected `SplitResult.params` bug without obscuring it.
 
 **Suggested article sequence:** Why source Markdown checks are insufficient → inspect generated HTML → distinguish redirect/404/indexable pages → critical versus advisory checks → enforce after Jekyll and before Pages upload → demonstrate negative fixture tests → show a successful real build → explain why this does **not** prove live-origin behavior or Google/Bing indexing.
 
@@ -94,9 +94,9 @@ A strong second article can be written from **already completed evidence**: *How
 
 **Working title:** *Microsoft's dotnetup vs. Isolated .NET SDK: What Does Each Actually Guarantee?*
 
-**Existing anchor:** [Managing .NET SDKs: Installation Was Just the Beginning](https://coding.infoconex.com/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning), and the public \`isolated-dotnet-sdk\` project referenced there.
+**Existing anchor:** [Managing .NET SDKs: Installation Was Just the Beginning](https://coding.infoconex.com/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning), and the public `isolated-dotnet-sdk` project referenced there.
 
-**Required evidence:** Record exact compared versions/commit IDs, documented responsibilities and platform support, isolated install vs management operations, selection behavior with \`global.json\`, removal/uninstall boundaries, network failures and failure recovery. Publish a runnable matrix, raw commands, outcomes and environment constraints.
+**Required evidence:** Record exact compared versions/commit IDs, documented responsibilities and platform support, isolated install vs management operations, selection behavior with `global.json`, removal/uninstall boundaries, network failures and failure recovery. Publish a runnable matrix, raw commands, outcomes and environment constraints.
 
 **Cautions:** This is an engineering comparison, not a marketing scorecard. Do not assert current dotnetup capabilities, release status or compatibility without checking the pinned upstream version. **Status:** worthwhile once the existing experimental data is updated and independently reproduced; potentially overlaps P1, so sequence carefully.
 
