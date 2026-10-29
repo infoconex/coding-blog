@@ -129,6 +129,7 @@ The article-improvement total remains **13 of the 103 original published article
 - Confirm, using rendered production HTML, the actual `headline`, `description`, `author.url`, `datePublished`, `dateModified`, image URL and canonical URL; the source alone cannot prove these outputs.
 - Modification dates should be provided only for meaningful changes. Verify that the current visible `page.updated` field agrees with the SEO plugin's documented `seo.date_modified` field when both are present. Do not update original `date`.
 - The Pages workflow has a `continue-on-error: true` social-card generation step. Review whether missing generated cards can leave broken Open Graph image URLs, ideally via a nonblocking artifact check first.
+- **Updated after this baseline:** the earlier unconditional social-image markup has been changed to a conditional fallback when `page.image` is absent, and the custom `twitter:card` tag has been removed. The upstream plugin is the sole source of image tags when frontmatter specifies an image. Production proof still requires examining built HTML.
 
 ## Recommended ongoing validation
 
