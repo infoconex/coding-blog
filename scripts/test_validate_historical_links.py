@@ -38,5 +38,17 @@ class HistoricalMarkdownLinksTests(unittest.TestCase):
         )
 
 
+    def test_body_h1_is_detected_without_flagging_second_level_headings(self):
+        self.assertEqual(validate.content_h1_count("# Duplicate title\n## Section\n"), 1)
+
+    def test_h1_in_fenced_code_does_not_count(self):
+        body = "```markdown\n# Example heading in code\n```\n## Actual section\n"
+        self.assertEqual(validate.content_h1_count(body), 0)
+
+    def test_html_h1_in_article_body_is_detected(self):
+        self.assertEqual(validate.content_h1_count("<h1>Extra heading</h1>"), 1)
+
+
+
 if __name__ == "__main__":
     unittest.main()
