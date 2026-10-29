@@ -186,3 +186,74 @@ GitHub app source reads confirm the new methods, test cases, and workflow refere
 Prefer extending `scripts/validate.py` and `.github/workflows/validate.yml`. Potential **errors**: duplicate permalink, missing required metadata, absent linked local image, malformed fences, broken internal historical URLs, or a body H1 that duplicates the layout-owned H1. Potential **warnings**: duplicate description text, missing useful tags, generic alt text, unlabeled code blocks, sparse headings in lengthy technical material, and review-candidate external HTTP URLs. Avoid arbitrary minimum word counts.
 
 **Remaining work:** inspect any duplicate-description warnings from the updated validator; verify rendered article structured data and social cards; live-test external links; review the next editorial batch; run and verify Actions/deployment; add targeted warnings and tests to existing validation. Do not report these as completed until independently confirmed.
+
+
+## Production-generated HTML verification and diagnostic remediation — 2026-10-29
+
+**Status: Completed for this milestone, with explicit live-origin limitations.**
+The previous milestone's unverified workflow state has now been superseded by **actual GitHub Actions logs, two downloaded Pages build artifacts, and a reproducible examination of their generated HTML**.
+
+### GitHub Actions evidence
+
+| Evidence | Before correction (commit `e82722bd`) | After correction (commit `a53e8671`) |
+| --- | --- | --- |
+| Deploy Jekyll site to Pages | [Run #495](https://github.com/infoconex/coding-blog/actions/runs/40899349304): **success** | [Run #496](https://github.com/infoconex/coding-blog/actions/runs/40901319305): **success** |
+| Validate content and security | [Run #526](https://github.com/infoconex/coding-blog/actions/runs/40899349200): **success** | [Validation run](https://github.com/infoconex/coding-blog/actions/runs/40901318649): **success** |
+| Generated HTML / article audit | **114 pages / 103 articles** | **113 pages / 103 articles** (one canonical redirect now excluded) |
+| SEO diagnostic warnings | **5** | **0** |
+| Rendered image audit | **46**, no broken local images or alt-text failures | **46**, no broken local images or alt-text failures |
+| SEO regression suite | **11/11 passed** | **15/15 passed** |
+| Image validator regression suite | **8/8 passed** | **8/8 passed** |
+| Built-page browser security checks | **114 HTML files**, passed | **114 HTML files**, passed |
+| Pages deployment | **success** | **success** |
+
+Logs were retrieved from the actual `build` and `validate` jobs, including the step **Verify generated images, clickable image links, and alt text**. No unexpected SEO scanner exceptions or image-validation errors appeared. The pre-fix Jekyll artifact was GitHub Actions artifact **12906944815**; the corrected build artifact was **12909182798**. Both artifacts were downloaded and inspected rather than inferred from commits or green status indicators.
+
+### Full rendered HTML inspection
+
+The pre-fix built artifact contained **114 HTML files**: 113 canonical-bearing content files and one legacy redirect. An independent parser inspection of the generated HTML found:
+
+- Exactly one canonical URL on each of the 113 content files, all with the expected `https://coding.infoconex.com` host, and no repeated canonical destinations.
+- Exactly one each of `og:url`, `og:image`, `twitter:image`, `twitter:card`, and `description` on those files; no empty HTML `<title>` elements.
+- **103 BlogPosting JSON-LD nodes**, matching their article canonical URLs; all publication and modification dates were parseable. **102** already had `Jim Scott` and the correct `/about/` profile URL. One historical article had `johnscott` and lacked a public author profile.
+- Exactly one About-page `ProfilePage` JSON-LD node. Its `mainEntity` identifies Jim Scott, his About URL, portrait, Vice President of Software Engineering role, and external profiles.
+- No unexpected `robots`, `googlebot`, or `bingbot` index directives on the 113 content files. The redirect deliberately has `noindex, follow` and a canonical to `/about/`.
+- Local social image references were present in the generated artifact, as independently checked by the build-time SEO and image scanners. This is not a claim that third-party crawlers always fetch or display those images.
+
+Representative generated URLs specifically inspected (title, description, canonical, social metadata, JSON-LD when relevant, dates, indexing metadata, and relevant image references):
+
+| Type | URL |
+| --- | --- |
+| Homepage | https://coding.infoconex.com/ |
+| Author About / ProfilePage | https://coding.infoconex.com/about/ |
+| Writing collection | https://coding.infoconex.com/writing/ |
+| Writing archive | https://coding.infoconex.com/archive/ |
+| Historical article without explicit banner | https://coding.infoconex.com/post/2009/01/14/C-Traceroute-using-net-framework |
+| Recently improved historical article | https://coding.infoconex.com/post/2009/04/21/How-do-I-open-a-file-that-is-in-use-in-C |
+| Historical screenshot-rich article | https://coding.infoconex.com/post/2009/11/26/Automatically-attaching-VHD-files-in-Windows-7-and-Windows-2008 |
+| Historical guest-authored article with image | https://coding.infoconex.com/post/2010/01/16/Visual-Studio-CloudService-app-Build-fails-Unable-to-remove-directory |
+| Modern article with banner | https://coding.infoconex.com/post/2026/10/24/my-github-projects-needed-a-home-so-i-built-one |
+| Modern NuGet research with banner | https://coding.infoconex.com/post/2026/10/22/too-hot-to-handle-testing-nugets-new-package-cooldown |
+
+Public web crawler retrieval additionally corroborated visible content on the homepage, About, writing, archive, the October 24 project article, and the improved April 2009 file-access article. Some web crawler results were stale or inaccessible. **Raw HTTP response headers, live-origin HTML bytes for all 113 pages, Google/Bing indexing outcomes, and social-preview rendering were not independently established.** The authoritative rendered-markup evidence in this milestone is the deployed GitHub Pages build artifact from successful run #496; do not confuse that with a complete independent live-site crawl.
+
+### Five warnings resolved
+
+1. **Four false positives on `author/jscott/index.html`** — The `jekyll-redirect-from` page has an intentional canonical to `/about/`, a meta-refresh, and `noindex, follow`; redirect pages need no Open Graph or Twitter cards. The scanner formerly skipped only redirects with no canonical. It now excludes explicitly identified redirect pages even when they include the destination canonical. Added a canonical-redirect regression fixture.
+2. **One real author-identification issue on the January 16, 2010 Azure/Visual Studio article** — Frontmatter retains the original historical author key `johnscott`; the article is signed **John**. Since this byline did not match `_data/authors.yml`, the built BlogPosting contained the unhelpful display name `johnscott` and no `author.url`. Added a mapping from `johnscott` to **John Scott**, derived from the byline identifier and signature, and made the shared post layout show mapped author names. The corrected build artifact confirms both visible byline and schema now say **John Scott**. **No independent public author profile was verified, so none was invented and the article was not falsely attributed to Jim Scott.** Identity corroboration beyond the original byline is still a possible historical editorial follow-up.
+3. **Refined author validation** — A populated author name is required. For the primary author `Jim Scott`, the validator still requires the correct `https://coding.infoconex.com/about/` profile URL. For a historical guest without an identified public profile, `author.url` is advisory rather than mandatory. Added tests for permitted guest name-only metadata, unnamed guests, and incorrect Jim Scott URLs.
+
+The fixes were committed **directly to `main`** as [`a53e8671a485065a582af0933d227c8dab7a719f`](https://github.com/infoconex/coding-blog/commit/a53e8671a485065a582af0933d227c8dab7a719f). No article publication date, URL, original example, IndexNow configuration, security policy, or third-party dependencies were altered.
+
+### Deployment-blocking decision
+
+**Keep the integrated SEO diagnostic nonblocking for now.** The initial five findings are resolved, and the corrected full build shows **zero SEO warnings**. However, one clean generated build is not sufficient evidence to turn every SEO diagnostic into a deployment failure. In particular:
+
+- Nonarticle files with **both** missing canonical and missing `og:url` are currently skipped; that could hide a future regression on the homepage or About page. Add explicit indexing-page coverage before relying on this scanner as a required deployment gate.
+- The image validator deliberately catches unexpected exceptions from the SEO checker and only warns. A mandatory gate must surface scanner crashes as failures.
+- Ensure genuine redirects are excluded without accidentally bypassing validation on normal content pages; enforce well-formed JSON-LD and local social assets as critical failures, while keeping editorial/social-preview recommendations advisory.
+- Retain `scripts/validate_seo.py --site-dir _site` as a **strict standalone scan**, which already exits with error for detected findings. Promote only stable, well-tested critical checks to the existing post-build workflow after the missing-metadata blind spot and exception handling are covered by regression tests.
+
+### Remaining monitoring and next project
+
+Continue verifying the full Jekyll Pages deployment and its SEO summary in Actions; monitor search indexing and sitemap coverage independently in Google Search Console and Bing Webmaster Tools. The unchanged historical 103-article baseline CSV remains the pre-edit inventory. Consider **SEO guardrail enforcement and indexability coverage** as the next independent engineering project: detect missing metadata even on nonarticle pages, add ProfilePage and malformed-JSON-LD regression cases, distinguish true redirects, and introduce narrowly scoped deployment-blocking failures after a clean full-build test. Later editorial/AEO opportunities (internal topic clusters, citations and external-link maintenance) are separate work items.
