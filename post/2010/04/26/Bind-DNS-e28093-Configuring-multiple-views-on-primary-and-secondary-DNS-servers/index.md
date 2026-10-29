@@ -10,6 +10,7 @@ originalUrl: "http://coding.infoconex.com/post/2010/04/26/Bind-DNS-e28093-Config
 permalink: "/post/2010/04/26/Bind-DNS-e28093-Configuring-multiple-views-on-primary-and-secondary-DNS-servers"
 legacyPaths: ["/post/2010/04/26/Bind-DNS-e28093-Configuring-multiple-views-on-primary-and-secondary-DNS-servers"]
 ---
+
 > **Historical configuration (2010):** This example records a BIND split-DNS setup from 2010. Before adapting it for a current server, verify client-view matching, recursion access, zone-transfer permissions, and version-specific syntax against the [BIND 9 Administrator Reference Manual](https://bind9.readthedocs.io/en/stable/). Validate your actual configuration with `named-checkconf` and zone files with `named-checkzone`.
 
 If you have a firewall with DMZ and Internal zones and you have machines that sit behind the firewall that query DNS that resolves back to your machines inside one of those zones then it is likely that you have had to setup some type of DNS configuration that allows internal hosts to resolve a DNS name to the internal IP rather than the public IP address.
@@ -246,7 +247,7 @@ ACL entries
 dns\_master is the IP address of the master server
 
 ```text
-acl dns\_masters {
+acl dns_masters {
         192.168.1.10;
         };
 ```
@@ -254,7 +255,7 @@ acl dns\_masters {
 internal\_hosts is our internal ip range
 
 ```text
-acl internal\_hosts {
+acl internal_hosts {
         192.168.1.0/24;
         };
 ```
