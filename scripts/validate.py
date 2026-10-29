@@ -112,7 +112,7 @@ def unlabelled_code_fences(body: str) -> list[int]:
     opening_has_language = False
 
     for index, line in enumerate(lines):
-        match = re.match(r"^\\s*(`{3,}|~{3,})(.*)$", line)
+        match = re.match(r"^\s*(`{3,}|~{3,})(.*)$", line)
         if not match:
             continue
         fence, info = match.groups()
@@ -122,7 +122,7 @@ def unlabelled_code_fences(body: str) -> list[int]:
             opening_has_language = bool(info.strip())
         elif fence[0] == opener[0] and len(fence) >= len(opener) and not info.strip():
             has_kramdown_label = any(
-                re.match(r'^\\s*\\{:\\s*data-lang\\s*=', next_line)
+                re.match(r'^\s*\{:\s*data-lang\s*=', next_line)
                 for next_line in lines[index + 1 : index + 3]
             )
             if not opening_has_language and not has_kramdown_label:
