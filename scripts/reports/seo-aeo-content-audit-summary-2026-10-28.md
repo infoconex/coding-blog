@@ -55,6 +55,18 @@ The following low-risk improvements were committed to `main` after the baseline 
 
 Article publication dates, original C# code, canonical historical paths and technical assertions were preserved in this batch.
 
+## Implemented second article group — 2026-10-29
+
+These articles received focused changes on `main` after the unchanged 103-article baseline:
+
+- `post/2008/10/14/Spawning-multiple-NET-delegates-really-slow/index.md`: more precise description, .NET/ThreadPool/concurrency tags, historical context, and an exact follow-up link to the 2008 .NET 2.0 SP2 installation article.
+- `post/2009/04/21/How-do-I-open-a-file-that-is-in-use-in-C/index.md`: two descriptive H2 headings, C# file-I/O/log4net tags, current Microsoft FileShare documentation, a source-backed warning that sharing flags cannot override an existing exclusive file handle, and a contextual link to the file-stream article.
+- `post/2010/04/26/Bind-DNS-e28093-Configuring-multiple-views-on-primary-and-secondary-DNS-servers/index.md`: split-DNS tags, historical deployment caveat with authoritative ISC guidance, non-clickable example hostnames, and fenced secondary ACL examples.
+
+Re-read all three files from `main` after the commits and verified required date/permalink fields, nonempty tags, balanced Markdown code fences and absence of article-authored H1 headings. Original fenced code examples were preserved. The report's baseline rows remain a record of the pre-improvement snapshot, not a current-state scan.
+
+**Verification boundary:** The GitHub connector returned no combined status contexts on the latest commit; it does not expose push-triggered Actions runs through its available run lookup. Public GitHub Actions and site pages were inaccessible through the browsing tool, so GitHub Actions, Jekyll build and production deployment are still **unverified**, not claimed successful.
+
 ## Shared structured-data and deployment review
 
 - `_config.yml` uses `seo.type: BlogPosting` for the `post` directory, appropriate because migrated articles are pages rather than `site.posts`.
