@@ -67,6 +67,22 @@ Re-read all three files from `main` after the commits and verified required date
 
 **Verification boundary:** The GitHub connector returned no combined status contexts on the latest commit; it does not expose push-triggered Actions runs through its available run lookup. Public GitHub Actions and site pages were inaccessible through the browsing tool, so GitHub Actions, Jekyll build and production deployment are still **unverified**, not claimed successful.
 
+## Implemented third article group — 2026-10-29
+
+Three additional articles were improved on `main`, with their original dates, permalinks and original technical examples retained:
+
+- `post/2012/10/12/Running-FSCK-on-an-LVM-(Logical-Volume-Manager)-using-Linux-Rescue-Disk/index.md`: added Linux/LVM/recovery tags; organized the rescue steps under meaningful headings; preserved the original `fsck` invocation as a code block; added prominent safety and historical-context guidance based on Red Hat's filesystem-repair documentation. The original account remains intact, but the commands are explicitly **not** presented as a universal modern procedure.
+- `post/2010/10/11/ASPNET-CustomValidator-that-validates-multiple-controls-using-both-Server-Side-and-Client-Side-scripting/index.md`: replaced **16 obsolete MSDN API links** with corresponding Microsoft Learn .NET Framework API references; updated jQuery to HTTPS; emphasized server-side `Page.IsValid` checks and the fact that Web Forms is not ASP.NET Core. Original ASPX, C# and JavaScript code was preserved. Representative Microsoft Learn references were verified; this is not a claim that every link was independently checked end-to-end.
+- `post/2008/11/03/NET-20-SP2-Installation-Were-to-find-it/index.md`: improved descriptive metadata and topic tags, converted the historical April 2009 update to a semantic H2, and linked back to the original .NET delegate/ThreadPool investigation.
+
+The post-change source review confirmed that all three retain their original date/permalink fields and balanced code fences, with no additional article-body H1.
+
+### New nonblocking prevention check
+
+Extended the existing `scripts/validate.py` to **warn** on fenced code blocks without a language identifier; Kramdown `{: data-lang="..." }` attributes remain supported. Added four regression tests to the existing `scripts/test_validate_historical_links.py` suite. The validator now distinguishes these editorial warnings from the existing hard errors that fail publishing. The existing GitHub Actions workflows were not duplicated or modified. Actions and deployment results are not independently confirmed.
+
+**Running total: nine articles improved across three groups.** The 103-article inventory CSV remains an unmodified **baseline**, rather than being overwritten after each article edit.
+
 ## Shared structured-data and deployment review
 
 - `_config.yml` uses `seo.type: BlogPosting` for the `post` directory, appropriate because migrated articles are pages rather than `site.posts`.
