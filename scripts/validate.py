@@ -76,12 +76,35 @@ def local_path_for_url(index_md: Path, url: str) -> Path | None:
     return None
 
 
+
+def content_h1_count(body: str) -> int:
+    """Count author-authored H1 headings outside fenced code blocks."""
+    in_fence = False
+    fence_marker = ""
+    count = 0
+    for line in body.splitlines():
+        fence = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if fence:
+            marker = fence.group(1)
+            if not in_fence:
+                in_fence = True
+                fence_marker = marker[0]
+            elif marker[0] == fence_marker:
+                in_fence = False
+            continue
+        if in_fence:
+            continue
+        if re.match(r"^\s*#(?!#)\s+\S", line) or re.search(r"<h1(?:\s|>)", line, re.I):
+            count += 1
+    return count
+
 def main() -> int:
     files = sorted(POSTS.glob("*/*/*/*/index.md")) if POSTS.exists() else []
     errors: list[str] = []
     warnings: list[str] = []
     slugs: list[str] = []
     titles: list[tuple[str, str]] = []
+    descriptions: list[tuple[str, str]] = []
     routes: dict[str, str] = {}
     bodies: dict[str, str] = {}
 
@@ -112,6 +135,8 @@ def main() -> int:
             errors.append(f"{path_label}: empty title")
 
         description = str(data.get("description") or "").strip()
+        if description:
+            descriptions.append((re.sub(r"\s+", " ", description).casefold(), path_label))
         if description and not 40 <= len(description) <= 200:
             warnings.append(f"{path_label}: description length is {len(description)} characters; target 40-200")
 
@@ -180,6 +205,9 @@ def main() -> int:
             if not isinstance(legacy_paths, list) or not legacy_paths:
                 errors.append(f"{path_label}: legacyPaths must be a non-empty list")
 
+        if content_h1_count(body):
+            errors.append(f"{path_label}: article body contains H1; post layout already renders article title as H1")
+
         if len(FENCE_RE.findall(body)) % 2:
             errors.append(f"{path_label}: malformed Markdown code fences (odd number of ``` fences)")
 
@@ -229,6 +257,12 @@ def main() -> int:
     for slug, count in Counter(slugs).items():
         if slug and count > 1:
             errors.append(f"duplicate slug: {slug}")
+
+    description_counts = Counter(description for description, _ in descriptions)
+    for normalized_description, count in description_counts.items():
+        if count > 1:
+            paths = [path for description, path in descriptions if description == normalized_description]
+            warnings.append(f"duplicate description across {count} posts: {', '.join(paths)}")
 
     title_counts = Counter(title for title, _ in titles)
     for normalized_title, count in title_counts.items():
