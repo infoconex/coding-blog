@@ -25,7 +25,7 @@ The core idea remains the same: build systems that are **easy to extend** withou
 
 ---
 
-### Common Signs You May Be Violating OCP
+## Common Signs You May Be Violating OCP
 
 - Large **switch** or **if-else** chains based on types or enum values.
 - Classes that require frequent modifications to add new behavior.
@@ -35,7 +35,7 @@ The core idea remains the same: build systems that are **easy to extend** withou
 
 ---
 
-### The Problem: Violating the Open/Closed Principle
+## The Problem: Violating the Open/Closed Principle
 
 Suppose you’re building a reporting system that generates different types of reports:
 
@@ -62,7 +62,7 @@ public class ReportGenerator
 
  This implementation works, but every time you need to add a new report type, you must modify the `GenerateReport` method. That violates the **Open/Closed Principle**.
 
-### The Solution: Apply the Open/Closed Principle
+## The Solution: Apply the Open/Closed Principle
 
 Let’s refactor the design to allow new behavior without modifying existing logic.
 
@@ -118,7 +118,7 @@ public class ReportGenerator
 
 Now if you want to add a new report format—say **WordReport**—you just create a new class without touching any existing code.
 
-### Summary
+## Summary
 
 | Without OCP | With OCP |
 | --- | --- |
@@ -128,7 +128,7 @@ Now if you want to add a new report format—say **WordReport**—you just creat
 
 ---
 
-### When to Apply the Open/Closed Principle
+## When to Apply the Open/Closed Principle
 
 - When new behavior is expected to be added in the future
 - When you notice repeated modification of the same class
@@ -138,7 +138,7 @@ Avoid overengineering. If there’s only one type of behavior and no likelihood 
 
 ---
 
-### Final Thoughts
+## Final Thoughts
 
 The **Open/Closed Principle** helps you build code that is easier to maintain, extend, and test. You reduce risk by protecting existing code from frequent edits while still making room for growth.
 
