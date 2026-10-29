@@ -64,6 +64,9 @@ jobs:
       - name: Verify generated images, clickable image links, and alt text
         run: python3 scripts/validate_images.py --site-dir _site
 
+      - name: Verify critical SEO metadata in generated HTML
+        run: python3 scripts/validate_seo.py --site-dir _site
+
       - name: Verify CSP, referrer policy, and no executable inline scripts
         run: python3 scripts/validate_browser_security.py --site-dir _site
 

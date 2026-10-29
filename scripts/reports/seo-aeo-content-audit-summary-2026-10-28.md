@@ -257,3 +257,33 @@ The fixes were committed **directly to `main`** as [`a53e8671a485065a582af0933d2
 ### Remaining monitoring and next project
 
 Continue verifying the full Jekyll Pages deployment and its SEO summary in Actions; monitor search indexing and sitemap coverage independently in Google Search Console and Bing Webmaster Tools. The unchanged historical 103-article baseline CSV remains the pre-edit inventory. Consider **SEO guardrail enforcement and indexability coverage** as the next independent engineering project: detect missing metadata even on nonarticle pages, add ProfilePage and malformed-JSON-LD regression cases, distinguish true redirects, and introduce narrowly scoped deployment-blocking failures after a clean full-build test. Later editorial/AEO opportunities (internal topic clusters, citations and external-link maintenance) are separate work items.
+
+
+## SEO validation hardening and deployment enforcement — 2026-10-29
+
+**Scope:** Preserve the original 103-article baseline and previous audit findings. No article content, publication dates, permalinks, IndexNow behavior, social-card generation, or Jekyll ownership of SEO metadata were changed.
+
+### Baseline and confirmed gaps
+
+At the start of this milestone, commit \`ad3fde4dea13480ad1b924b1382f0cae1c934224\` was current on \`main\`. GitHub Actions Pages run [#497](https://github.com/infoconex/coding-blog/actions/runs/40901877345) showed successful content/security validation, build, deployment, and IndexNow jobs. Its build log reported 113 content HTML pages, 103 articles, 46 images, and zero SEO diagnostic findings. The SEO audit was still nonblocking inside \`validate_images.py\`.
+
+The old SEO checker skipped nonarticle HTML pages missing both canonical and Open Graph URLs. It scanned JSON-LD only for article pages; it did not require the About page's ProfilePage identity node, validate date syntax, verify the built URL for nonarticle canonical links, or compare canonical destinations across rendered pages. Unexpected SEO checker exceptions were swallowed by the nonblocking image validator.
+
+### Enforcement design
+
+* The existing \`scripts/validate_seo.py\` now audits all generated indexable HTML documents, including homepage, About, and collections. Genuine Jekyll meta-refresh redirects remain excluded. Historical article paths retain their extensionless and trailing-slash compatibility.
+* **ERROR:** SEO001–005 (missing/duplicate/unsafe/wrong/shared canonical); SEO010 and SEO012 (conflicting social metadata); SEO020–027 (malformed JSON-LD and invalid required BlogPosting identity, date, URL, image); SEO030–036 (About ProfilePage and Person identity); SEO040–042 (broken or non-HTTPS local social/structured-data images); SEO900 (missing site, no content, invalid encoding, or other fundamental scan failure).
+* **WARNING:** SEO011 flags absent or empty optional Open Graph/Twitter fields. It is editorial/advisory; it does not fail the build. The validator does not attempt to judge social-card appearance or meta-description quality.
+* Critical diagnostics identify both the generated file and its expected public URL. The scan raises unexpected runtime exceptions rather than swallowing them.
+* The \`pages.yml\` build now runs \`python3 scripts/validate_seo.py --site-dir _site\` as an **independent mandatory post-Jekyll step** before uploading the Pages artifact. The image validator no longer invokes a second, nonblocking SEO scan. Image, browser-security, historical URL, content validation and IndexNow jobs remain unchanged.
+* No new dependency or GitHub Actions workflow was added.
+
+### Regression and failure simulation
+
+Expanded \`scripts/test_validate_seo.py\` with focused missing canonical tests for homepage, About and collections; incorrect canonical paths and domains; shared canonical URLs; malformed JSON-LD; valid @graph/array composition; invalid dates; missing or incorrect ProfilePage identity; optional social metadata warnings; missing structured-data image files; corrupt encoding; redirect spoof prevention; extensionless historical paths; and scanner exception propagation. Existing cases already cover missing BlogPosting, author attribution, duplicate social tags, missing social cards and legitimate redirects.
+
+The image regression suite was updated to remove obsolete assertions that SEO problems must remain nonblocking inside \`validate_images.py\`; the standalone SEO quality gate now owns that responsibility.
+
+### Verification boundary
+
+This section documents the intended enforcement behavior and the pre-change verified baseline. Actual post-change GitHub Actions test counts, generated-site scan, deployment result, and any necessary fixes must be recorded after retrieving the corresponding workflow logs. A successful GitHub Pages build is evidence about generated artifacts, **not** an independent live-origin HTTP crawl or proof of Google/Bing indexing. Additional external-link maintenance, search-console analysis, and editorial AEO improvements remain separate projects.

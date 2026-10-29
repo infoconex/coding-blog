@@ -186,5 +186,153 @@ class RenderedSeoTests(unittest.TestCase):
             self.assertEqual(audit_site(root), (1, 1, []))
 
 
+    def test_homepage_missing_both_canonical_and_og_url_is_critical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "index.html").write_text("<!doctype html><html><head></head></html>")
+            _, _, errors = audit_site(root)
+            self.assertTrue(any("SEO001" in error and "index.html" in error for error in errors))
+
+    def test_about_missing_canonical_is_critical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            about = root / "about/index.html"
+            about.parent.mkdir()
+            about.write_text("<!doctype html><html><head></head></html>")
+            _, _, errors = audit_site(root)
+            self.assertTrue(any("SEO001" in error and "/about/" in error for error in errors))
+
+    def test_collection_missing_canonical_is_critical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            collection = root / "writing/index.html"
+            collection.parent.mkdir()
+            collection.write_text("<!doctype html><html><head></head></html>")
+            _, _, errors = audit_site(root)
+            self.assertTrue(any("SEO001" in error for error in errors))
+
+    def test_wrong_homepage_canonical_is_critical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "index.html").write_text('<!doctype html><html><head>'
+                '<link rel="canonical" href="https://coding.infoconex.com/other/">'
+                '</head></html>')
+            _, _, errors = audit_site(root)
+            self.assertTrue(any("SEO004" in error for error in errors))
+
+    def test_canonical_query_and_http_are_critical(self):
+        html = article_markup().replace(URL, "http://coding.infoconex.com/post/2010/01/04/ASPNET-MVC-Tutorials?preview=1")
+        issues = inspect_html(html, require_metadata=True)
+        self.assertTrue(any("unexpected canonical" in issue for issue in issues))
+
+    def test_duplicate_canonical_across_pages_is_critical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for path in ("index.html", "writing/index.html"):
+                target = root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text('<!doctype html><html><head>'
+                    '<link rel="canonical" href="https://coding.infoconex.com/">'
+                    '</head></html>')
+            _, _, errors = audit_site(root)
+            self.assertTrue(any("SEO005" in issue for issue in errors))
+
+    def test_malformed_json_ld_on_nonarticle_is_critical(self):
+        html = '<!doctype html><html><head><link rel="canonical" href="https://coding.infoconex.com/">' \
+            '<script type="application/ld+json">{oops</script></head></html>'
+        self.assertTrue(any("invalid JSON-LD" in error for error in inspect_html(html)))
+
+    def test_array_graph_and_additional_nodes_are_valid(self):
+        data = {"@graph": [
+            {"@type": "WebPage", "url": URL},
+            {"@type": ["CreativeWork", "BlogPosting"],
+             "headline": "Test", "description": "Description", "url": URL,
+             "datePublished": "2010-01-04", "dateModified": "2010-01-04",
+             "author": {"@type": "Person", "name": "John Scott"}}]}
+        html = article_markup(schema=False, author_url=False)
+        html = html.replace("</head>", '<script type="application/ld+json">' +
+            json.dumps([{"@type":"WebSite"}, data]) + '</script></head>')
+        self.assertEqual(inspect_html(html), [])
+
+    def test_malformed_publication_date_is_critical(self):
+        html = article_markup().replace("2010-01-04T00:00:00-08:00", "not-a-date")
+        self.assertTrue(any("datePublished" in issue for issue in inspect_html(html)))
+
+    def test_about_profile_identity_is_required(self):
+        html = '<!doctype html><html><head><link rel="canonical" ' \
+               'href="https://coding.infoconex.com/about/"></head></html>'
+        self.assertTrue(any("ProfilePage" in issue for issue in inspect_html(html)))
+
+    def test_valid_about_profile_and_wrong_person(self):
+        url = "https://coding.infoconex.com/about/"
+        profile = {"@type":"ProfilePage", "url":url, "mainEntity":{
+            "@type":"Person", "name":"Jim Scott", "url":url,
+            "image":"https://coding.infoconex.com/assets/images/about/jim-scott.webp",
+            "jobTitle":"Vice President of Software Engineering",
+            "description":"Software engineering leader",
+            "sameAs":["https://github.com/infoconex"]}}
+        html = '<!doctype html><html><head><link rel="canonical" href="' + url + '">' \
+               '<script type="application/ld+json">' + json.dumps(profile) + '</script></head></html>'
+        self.assertEqual(inspect_html(html), [])
+        wrong = html.replace('"name": "Jim Scott"', '"name": "Other"')
+        self.assertTrue(any("Person name" in issue for issue in inspect_html(wrong)))
+
+    def test_missing_social_image_tag_is_advisory_not_critical(self):
+        from validate_seo import audit_site_detailed
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            article = root / "post/2010/01/04/ASPNET-MVC-Tutorials.html"
+            article.parent.mkdir(parents=True, exist_ok=True)
+            html = article_markup().replace(
+                '<meta property="og:image" content="https://coding.infoconex.com/assets/og/card.png">', '')
+            html = html.replace(
+                '<meta name="twitter:image" content="https://coding.infoconex.com/assets/og/card.png">', '')
+            article.write_text(html)
+            _, _, findings = audit_site_detailed(root)
+            self.assertTrue(any(f.severity == "WARNING" and f.code == "SEO011" for f in findings))
+            self.assertFalse(any(f.severity == "ERROR" for f in findings))
+
+    def test_missing_local_blogposting_image_is_critical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / "post/2010/01/04/ASPNET-MVC-Tutorials.html"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            html = article_markup()
+            html = html.replace('"headline": "ASP.NET MVC Tutorials"',
+                '"image": "https://coding.infoconex.com/assets/missing.png", "headline": "ASP.NET MVC Tutorials"')
+            target.write_text(html)
+            (root / "assets/og").mkdir(parents=True)
+            (root / "assets/og/card.png").write_bytes(b"card")
+            _, _, errors = audit_site(root)
+            self.assertTrue(any("SEO041" in error for error in errors))
+
+    def test_corrupt_html_encoding_is_critical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "index.html").write_bytes(b"\xff\xfe")
+            _, _, errors = audit_site(root)
+            self.assertTrue(any("SEO900" in error for error in errors))
+
+    def test_seo_scanner_exception_is_not_swallowed(self):
+        from unittest.mock import patch
+        from validate_seo import main
+        with patch("validate_seo.audit_site_detailed", side_effect=RuntimeError("scanner crash")):
+            with patch("sys.argv", ["validate_seo.py", "--site-dir", "_site"]):
+                with self.assertRaisesRegex(RuntimeError, "scanner crash"):
+                    main()
+
+    def test_normal_page_with_stray_refresh_cannot_bypass_checks(self):
+        html = '<!doctype html><html><head>' \
+            '<meta http-equiv="refresh" content="0;url=/about/">' \
+            '<meta property="og:url" content="https://coding.infoconex.com/">' \
+            '</head></html>'
+        self.assertTrue(any("missing canonical" in issue for issue in inspect_html(html)))
+
+    def test_trailing_slash_does_not_change_historical_article_path(self):
+        from validate_seo import intended_url
+        self.assertEqual(intended_url("post/2010/01/04/ASPNET-MVC-Tutorials.html", True), URL)
+        self.assertEqual(intended_url("post/2010/01/04/ASPNET-MVC-Tutorials/index.html", True), URL + "/")
+
+
 if __name__ == "__main__":
     unittest.main()
