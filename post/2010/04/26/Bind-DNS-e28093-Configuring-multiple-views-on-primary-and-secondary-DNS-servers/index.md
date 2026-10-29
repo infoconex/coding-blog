@@ -3,13 +3,15 @@
 title: "Bind DNS – Configuring multiple views on primary and secondary DNS servers"
 date: "2010-04-26"
 description: "Configure BIND DNS views on primary and secondary servers so internal and external clients resolve the appropriate addresses across firewall zones."
-tags: []
+tags: ["BIND", "DNS", "Linux", "Network Configuration", "Split-horizon DNS"]
 slug: "bind-dns-configuring-multiple-views-on-primary-and-secondary-dns-servers"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2010/04/26/Bind-DNS-e28093-Configuring-multiple-views-on-primary-and-secondary-DNS-servers"
 permalink: "/post/2010/04/26/Bind-DNS-e28093-Configuring-multiple-views-on-primary-and-secondary-DNS-servers"
 legacyPaths: ["/post/2010/04/26/Bind-DNS-e28093-Configuring-multiple-views-on-primary-and-secondary-DNS-servers"]
 ---
+> **Historical configuration (2010):** This example records a BIND split-DNS setup from 2010. Before adapting it for a current server, verify client-view matching, recursion access, zone-transfer permissions, and version-specific syntax against the [BIND 9 Administrator Reference Manual](https://bind9.readthedocs.io/en/stable/). Validate your actual configuration with `named-checkconf` and zone files with `named-checkzone`.
+
 If you have a firewall with DMZ and Internal zones and you have machines that sit behind the firewall that query DNS that resolves back to your machines inside one of those zones then it is likely that you have had to setup some type of DNS configuration that allows internal hosts to resolve a DNS name to the internal IP rather than the public IP address.
 
 Now you could do that by creating hosts entries on each machine so that it does not use DNS to resolve the machine name, or you could setup a set of DNS servers for internal machines to use that only host internal DNS. However that complicates things and makes it very hard to maintain.
@@ -84,7 +86,7 @@ mydomain.com.   IN      MX      10 mail.mydomain.com.
 www.mydomain.com.     IN      A       192.168.1.6
 ```
 
-So what we want to happen is that if a client on the internet queries for [www.mydomain.com](http://www.mydomain.com) they will get 74.125.127.6 and if anything behind the firewall queries for [www.mydomain.com](http://www.mydomain.com) they will get the internal IP 192.168.1.6
+So what we want to happen is that if a client on the internet queries for `www.mydomain.com` they will get 74.125.127.6 and if anything behind the firewall queries for `www.mydomain.com` they will get the internal IP 192.168.1.6
 
 ## Master DNS server configuration
 
@@ -243,15 +245,19 @@ ACL entries
 
 dns\_master is the IP address of the master server
 
+```text
 acl dns\_masters {
         192.168.1.10;
         };
+```
 
 internal\_hosts is our internal ip range
 
+```text
 acl internal\_hosts {
         192.168.1.0/24;
         };
+```
 
 ### Secondary server global options
 
