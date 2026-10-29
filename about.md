@@ -23,8 +23,16 @@ profilePage: true
     <h1>Building software, preserving the lessons.</h1>
     <div class="about-hero__intro">
       <p class="about-hero__lede">I’m Jim Scott, a Vice President of Software Engineering who still enjoys working directly with code. I write about software engineering, architecture, open-source tools, and the lessons that survive contact with production.</p>
+
+    </div>
+  </div>
+  <dl class="about-highlights" aria-label="Professional background at a glance">
+    <div><dt>Writing since</dt><dd>2008</dd></div>
+    <div><dt>Role</dt><dd>Vice President of Software Engineering</dd></div>
+    <div><dt>Focus</dt><dd>Software engineering</dd></div>
+    <div class="about-highlights__connect"><dt>Connect</dt><dd>
     {% if site.profile_links %}
-    <nav class="about-hero__links" aria-label="Professional profiles">
+    <nav class="about-highlights__links" aria-label="Professional profiles">
       {% for link in site.profile_links %}
         <a href="{{ link.url }}" rel="me">
           {% if link.title == 'GitHub' %}
@@ -41,13 +49,7 @@ profilePage: true
       {% endfor %}
     </nav>
     {% endif %}
-    </div>
-  </div>
-  <dl class="about-highlights" aria-label="Professional background at a glance">
-    <div><dt>Writing since</dt><dd>2008</dd></div>
-    <div><dt>Role</dt><dd>Vice President of Software Engineering</dd></div>
-    <div><dt>Focus</dt><dd>Software engineering</dd></div>
-    <div><dt>Archive</dt><dd>Historical URLs preserved</dd></div>
+    </dd></div>
   </dl>
 </section>
 
