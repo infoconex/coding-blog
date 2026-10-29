@@ -27,6 +27,9 @@ jobs:
       - name: Test historical Markdown link parsing
         run: python -m unittest discover -s scripts -p 'test_validate_historical_links.py' -v
 
+      - name: Test generated SEO metadata validation
+        run: python -m unittest discover -s scripts -p 'test_validate_seo.py' -v
+
       - name: Validate historical content
         run: python scripts/validate.py
 
