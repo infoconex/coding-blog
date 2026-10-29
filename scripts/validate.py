@@ -98,6 +98,39 @@ def content_h1_count(body: str) -> int:
             count += 1
     return count
 
+
+def unlabelled_code_fences(body: str) -> list[int]:
+    """Return opening line numbers of unlabelled fenced code blocks.
+
+    Kramdown's {: data-lang="..." } attribute following a code block is an
+    accepted alternative to an opening-fence language identifier.
+    """
+    lines = body.splitlines()
+    unlabelled: list[int] = []
+    opener = ""
+    opening_line = 0
+    opening_has_language = False
+
+    for index, line in enumerate(lines):
+        match = re.match(r"^\\s*(`{3,}|~{3,})(.*)$", line)
+        if not match:
+            continue
+        fence, info = match.groups()
+        if not opener:
+            opener = fence
+            opening_line = index + 1
+            opening_has_language = bool(info.strip())
+        elif fence[0] == opener[0] and len(fence) >= len(opener) and not info.strip():
+            has_kramdown_label = any(
+                re.match(r'^\\s*\\{:\\s*data-lang\\s*=', next_line)
+                for next_line in lines[index + 1 : index + 3]
+            )
+            if not opening_has_language and not has_kramdown_label:
+                unlabelled.append(opening_line)
+            opener = ""
+    return unlabelled
+
+
 def main() -> int:
     files = sorted(POSTS.glob("*/*/*/*/index.md")) if POSTS.exists() else []
     errors: list[str] = []
@@ -210,6 +243,9 @@ def main() -> int:
 
         if len(FENCE_RE.findall(body)) % 2:
             errors.append(f"{path_label}: malformed Markdown code fences (odd number of ``` fences)")
+
+        for line_number in unlabelled_code_fences(body):
+            warnings.append(f"{path_label}:{line_number}: code block has no language identifier")
 
         for match in MARKDOWN_IMAGE_RE.finditer(body):
             if not match.group("alt").strip():
