@@ -333,6 +333,18 @@ class RenderedSeoTests(unittest.TestCase):
         self.assertEqual(intended_url("post/2010/01/04/ASPNET-MVC-Tutorials.html", True), URL)
         self.assertEqual(intended_url("post/2010/01/04/ASPNET-MVC-Tutorials/index.html", True), URL + "/")
 
+    def test_indexable_page_noindex_is_critical(self):
+        html = '<!doctype html><html><head>' \
+               '<link rel="canonical" href="https://coding.infoconex.com/">' \
+               '<meta name="robots" content="noindex, follow"></head></html>'
+        self.assertTrue(any("robots noindex" in e for e in inspect_html(html)))
+
+    def test_malformed_ipv6_canonical_returns_error_not_exception(self):
+        html = '<!doctype html><html><head>' \
+               '<link rel="canonical" href="https://[broken"></head></html>'
+        errors = inspect_html(html)
+        self.assertTrue(any("malformed canonical" in e for e in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

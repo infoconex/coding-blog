@@ -153,7 +153,11 @@ def inspect_page(page: SeoParser, *, article: bool, about: bool,
         add("SEO002", "ERROR", f"expected one canonical link, found {len(page.canonicals)}")
 
     canonical = page.canonicals[0] if len(page.canonicals) == 1 else ""
-    parsed = urlsplit(canonical)
+    try:
+        parsed = urlsplit(canonical)
+    except ValueError:
+        add("SEO003", "ERROR", f"malformed canonical URL: {canonical!r}")
+        parsed = urlsplit("")
     if canonical:
         if (parsed.scheme != "https" or parsed.netloc != SITE_HOST
                 or parsed.query or parsed.fragment or parsed.username or parsed.password
@@ -163,6 +167,10 @@ def inspect_page(page: SeoParser, *, article: bool, about: bool,
             kind = "article " if article else ""
             add("SEO004", "ERROR",
                 f"{kind}canonical path {parsed.path!r} differs from built page URL {urlsplit(expected_url).path!r}")
+
+    directives = " ".join(page.meta.get("robots", [])).lower()
+    if re.search(r"\bnoindex\b", directives):
+        add("SEO006", "ERROR", "indexable page unexpectedly contains robots noindex")
 
     for key in SOCIAL_KEYS:
         values = page.meta.get(key, [])
@@ -249,7 +257,10 @@ def inspect_html(markup: str, *, require_metadata: bool = False) -> list[str]:
     if parser.is_generated_redirect:
         return []
     canonical = parser.canonicals[0] if len(parser.canonicals) == 1 else ""
-    path = urlsplit(canonical).path
+    try:
+        path = urlsplit(canonical).path
+    except ValueError:
+        path = ""
     issues = inspect_page(parser, article=require_metadata or bool(ARTICLE_PATH.match(path)),
                           about=path.rstrip("/") == "/about")
     return [item.message for item in issues if item.severity == "ERROR"]
