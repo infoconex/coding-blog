@@ -3,7 +3,7 @@
 title: "Object Oriented Design Patterns"
 date: "2008-10-14"
 description: "While I have been programming now for about 3 years using the Object Oriented programming environment of C# I have not really spent any time looking at patterns."
-tags: []
+tags: ["Design Patterns", "Object-Oriented Design", "C#", "Software Architecture"]
 slug: "object-oriented-design-patterns"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2008/10/14/Object-Oriented-Design-Patterns"
@@ -39,3 +39,7 @@ Ben Northrop's 2006 design patterns post was also referenced here, but the origi
 An O'Reilly ONJava design patterns article was also referenced here, but the original link is no longer available.
 
 Good reference resource Wikipedia: [Software design pattern](https://en.wikipedia.org/wiki/Software_design_pattern)
+
+## Follow-up examples from my own C# projects
+
+I later returned to these ideas with a concrete [Model View Presenter (Passive View) Windows Forms refactoring](/post/2010/01/16/(MVP)-Model-View-Presenter-Passive-View), then expanded on applying the [Strategy and Factory Method patterns](/post/2013/10/05/My-favorite-design-patterns-are-Strategy-and-Factory-Method) to a working C# example.
