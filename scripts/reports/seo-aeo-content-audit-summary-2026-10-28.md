@@ -101,8 +101,8 @@ All four were independently fetched from `main` after the edits. Source verifica
 
 - The site config sets `seo.type: BlogPosting` for migrated article pages; the default layout invokes `{% seo title=false %}`. Official jekyll-seo-tag documentation confirms support for this type and the `seo.date_modified` override.
 - `_data/authors.yml` maps the author string `Jim Scott` to a `Person` record with the About URL, consistent with the SEO plugin's documented author lookup. This is better than relying only on the global author's URL, but rendered JSON-LD still requires checking.
-- The shared post layout displays `page.updated` when supplied, whereas jekyll-seo-tag's `dateModified` uses `seo.date_modified`, `last_modified_at`, then `date`. The two concepts need synchronization for any future explicit editorial update dates. Do not automatically mark the historical publication date as new.
-- `_layouts/default.html` unconditionally outputs an Open Graph image and Twitter image after `{% seo %}`. The SEO plugin may also emit image tags when articles specify `image:`, so **possible duplicate social image metadata** must be checked in generated HTML before changing the shared template.
+- At the time of this editorial group, the shared post layout displayed `page.updated`, while jekyll-seo-tag used `seo.date_modified`, `last_modified_at`, then `date`; the fifth group subsequently aligned the visible update field with the plugin's metadata. Do not automatically mark the historical publication date as new.
+- At the time of this review, `_layouts/default.html` unconditionally emitted Open Graph and Twitter image tags after `{% seo %}`; the fifth group later made these conditional. The SEO plugin may also emit image tags when articles specify `image:`, so **possible duplicate social image metadata** must be checked in generated HTML before changing the shared template.
 - Production pages and GitHub Actions runs were not accessible to the available independent retrieval method in this pass. The four commits are present on `main`; actual Pages deployment, rendered schema, and workflow execution remain unverified.
 
 ## Implemented sixth article group — 2026-10-29
@@ -118,7 +118,7 @@ Four further articles were updated on `main`, bringing the cumulative editorial 
 
 All four were fetched from `main` after editing, confirming dates and permalinks, relevant tags, balanced code fences, and no article-authored H1s. Metadata descriptions range from **150 to 161 characters**. All newly examined article-body links use HTTPS or root-relative URLs; no live HTTP status was established for every external destination. Official LINQPad and Microsoft Learn references were checked.
 
-**Deployment and structured-data limits:** Production article pages and public Actions run details were not independently retrievable through the available web tools. The generated HTML SEO scanner remains committed and its unit tests are in the standard validation workflow, but the scanner is **not yet wired to the Pages built-site step** (the earlier workflow edit was blocked). Do not treat this source-level review as proof of successful deployment, canonical metadata or rich-result eligibility.
+**Deployment and structured-data limits:** Production article pages and public Actions run details were not independently retrievable through the available web tools. The generated HTML SEO scanner remains committed and its unit tests are in the standard validation workflow, but the scanner was **not yet wired to the Pages built-site step at the time of that batch** (a later nonblocking integration is recorded in the seventh group). Do not treat this source-level review as proof of successful deployment, canonical metadata or rich-result eligibility.
 
 ## Implemented fifth group — shared social metadata and SEO validation — 2026-10-29
 
@@ -132,9 +132,23 @@ After reviewing the **actual upstream Jekyll SEO Tag Liquid template** (`jekyll/
 
 Added `scripts/validate_seo.py`, an offline inspection tool for **built Jekyll HTML**, checking single canonical and social-image tags, matching canonical/OG/schema URLs, and one `BlogPosting` JSON-LD node with headline, description, dates, and identifiable author on article pages. It also considers extensionless post files and ignores bare redirect pages. Added `scripts/test_validate_seo.py` covering positive, duplicate, author, schema, redirect, and extensionless-file cases. These unit tests are wired into the **existing** `.github/workflows/validate.yml` validation job.
 
-**Important limitation:** The attempt to add `scripts/validate_seo.py --site-dir _site` to the **Pages build workflow** was blocked by the GitHub connector's safety check. Therefore the new *rendered-site* scanner is **not yet automatically run during Pages deployment**. It can be run manually after a Jekyll build, but no built-site scan, regression-test execution, GitHub Actions result, or production HTML validation has been independently verified in this pass. The source-level conflict and its conditional fix are verified; production is not certified. The existing Pages workflow was left unchanged.
+**Important limitation:** The attempt to add `scripts/validate_seo.py --site-dir _site` to the **Pages build workflow** was blocked by the GitHub connector's safety check. At the time, the rendered-site scanner was **not automatically invoked during Pages deployment**. The seventh group subsequently added nonblocking diagnostic invocation through the already-executed image-validation script. It can be run manually after a Jekyll build, but no built-site scan, regression-test execution, GitHub Actions result, or production HTML validation has been independently verified in this pass. The source-level conflict and its conditional fix are verified; production is not certified. The existing Pages workflow was left unchanged.
 
 The article-improvement total remains **13 of the 103 original published articles**; these commits concern the common layout and validation coverage, not additional editorial article rewrites.
+
+## Seventh group — automatic, nonblocking rendered SEO diagnostics — 2026-10-29
+
+**Purpose:** Close gaps in the generated-HTML checker and put its results into an existing post-build Actions log without editing the Pages deployment workflow.
+
+- `scripts/validate_seo.py`: fixed a false-negative where a rendered article with **neither** a canonical link **nor** an `og:url` could be silently skipped. Source-path detection now distinguishes genuine historical article output from lightweight redirect pages. The scanner also verifies that same-site `og:image` and `twitter:image` references point to files present in the generated `_site` directory (including generated social-card fallbacks).
+- `scripts/test_validate_seo.py`: now covers the new missing-metadata and missing-asset cases, a historical post redirect, and successful article output with an actual local social-card fixture. Nine SEO scanner tests are present in source.
+- `scripts/validate_images.py`: the existing **post-Jekyll-build image validation** now invokes the SEO scanner and prints its page/article totals and individual findings as `SEO WARNING` messages. **SEO findings do not block deployment at this stage**; the existing image/accessibility errors still fail as before.
+- `scripts/test_validate_images.py`: added a regression test that verifies SEO warnings are visible while an otherwise clean image audit succeeds.
+- `.github/workflows/pages.yml` remains unchanged: it **already runs `scripts/validate_images.py --site-dir _site` after the Jekyll build**, so these diagnostics should be visible in that step's logs on the next successful run. This is not yet a fail-on-SEO-error gate.
+
+**Verification boundary:** Committed source and test fixtures were reviewed; no complete Jekyll site build or GitHub Actions log has been independently retrieved or executed here. Consequently, the number and severity of actual rendered SEO findings are **unknown**. Before promoting the SEO scan to deployment-blocking enforcement, inspect the next build log and resolve any true positives and false positives. The separate `python3 scripts/validate_seo.py --site-dir _site` command remains available to fail an intentional manual/local audit.
+
+This change does not add or update article publication dates, change historical routes, or submit any URLs to IndexNow. **17 of 103 articles** remain the total edited in the baseline review series.
 
 ## Shared structured-data and deployment review
 
@@ -142,7 +156,7 @@ The article-improvement total remains **13 of the 103 original published article
 - `_layouts/default.html` invokes `{% seo title=false %}`, and restricts its additional `ProfilePage` JSON-LD to the About page. Avoid adding another BlogPosting block.
 - `_layouts/post.html` has one layout-owned article H1, a historical notice for articles older than five years, and related-content navigation.
 - Confirm, using rendered production HTML, the actual `headline`, `description`, `author.url`, `datePublished`, `dateModified`, image URL and canonical URL; the source alone cannot prove these outputs.
-- Modification dates should be provided only for meaningful changes. Verify that the current visible `page.updated` field agrees with the SEO plugin's documented `seo.date_modified` field when both are present. Do not update original `date`.
+- Modification dates should be provided only for meaningful changes. The fifth group updated the visible timestamp source to `page.seo.date_modified`, falling back to `page.last_modified_at`; verify the rendered output when explicitly set. Do not update original `date`.
 - The Pages workflow has a `continue-on-error: true` social-card generation step. Review whether missing generated cards can leave broken Open Graph image URLs, ideally via a nonblocking artifact check first.
 - **Updated after this baseline:** the earlier unconditional social-image markup has been changed to a conditional fallback when `page.image` is absent, and the custom `twitter:card` tag has been removed. The upstream plugin is the sole source of image tags when frontmatter specifies an image. Production proof still requires examining built HTML.
 
