@@ -36,9 +36,19 @@ I hadn't planned on building an SDK management tool. I wanted a convenient way t
 
 But as the project evolved, I found there was more to managing an isolated SDK than getting it installed.
 
-## Moving Beyond Microsoft's Installer Scripts
+## What Is Isolated .NET SDK?
 
-Microsoft's `dotnet-install` scripts already provide a way to install SDKs outside the normal system locations. That's where I started, and they're still useful for many situations.
+Isolated .NET SDK is a cross-platform tool for installing, listing, verifying, auditing, and removing specific .NET SDK versions without modifying your normal system-wide SDK installations.
+
+It supports Windows through PowerShell 7 and Linux and macOS through Bash. SDKs are installed into separate, user-owned directories without permanently changing the system's PATH.
+
+Isolation refers to where SDKs are installed. **It isn't a security sandbox.**
+
+## How Is Isolated .NET SDK Different from Microsoft's Installer Scripts?
+
+Microsoft provides two `dotnet-install` scripts: `dotnet-install.ps1` for Windows and `dotnet-install.sh` for Linux and macOS.
+
+They provide a convenient way to install .NET SDKs into selected directories. That's where I started, and they're still useful for many situations.
 
 My original tool simplified the process of selecting, installing, and removing SDK versions.
 
@@ -46,17 +56,15 @@ But installation raised some questions.
 
 How do I know the downloaded SDK is actually the version I requested? What happens if installation fails halfway through? How do I avoid leaving behind something that looks installed but isn't usable?
 
-Starting with v0.2.0, the project moved away from relying on Microsoft's installer scripts.
+Starting with v0.2.0, Isolated .NET SDK moved away from relying on Microsoft's installation scripts.
 
-It now uses Microsoft's published release metadata to locate the exact SDK archive, verify its checksum, and validate the installation before moving it into its final location.
+Instead, it uses Microsoft's published release metadata to identify the exact SDK archive, verifies the download against Microsoft's published checksum, and validates the SDK's version and isolated location before completing installation.
 
-The tool still relies on Microsoft's official SDK distributions. What changed is that it takes responsibility for the installation process rather than delegating that work to another script.
+Both approaches use Microsoft's official SDK distributions. The difference is that Isolated .NET SDK takes responsibility for downloading, validating, and managing SDK installations rather than delegating installation to Microsoft's scripts.
 
 ## Installing an SDK Wasn't the End of the Problem
 
 Once I could install SDKs into separate directories, I needed a better way to manage them.
-
-What started as a simple installer has grown into a tool for managing the lifecycle of isolated .NET SDKs.
 
 Here's the main menu from v0.4.0:
 
@@ -76,11 +84,25 @@ What would you like to do?
 Selection:
 ```
 
-The menu provides an overview of what the tool can do. Three operations in particular help answer questions that come up when working with different SDK versions.
+The menu provides an overview of what the tool can do.
 
-The following examples are from my Windows development machine running the official v0.4.0 release. I've anonymized my Windows account name and omitted the temporary loading messages.
+Three operations in particular help answer different questions that come up when working with multiple SDK versions.
 
-### List: What Do I Have Installed?
+### What's the Difference Between List, Verify, and Audit?
+
+| Operation | Question answered | What it establishes |
+|---|---|---|
+| **List** | Which .NET SDKs are installed? | Discovered SDK versions and their installation locations |
+| **Verify** | Does this isolated .NET SDK work? | Whether the installation is usable and the expected SDK resolves from its isolated directory |
+| **Audit** | Are my installed SDKs current and supported? | Support lifecycle, servicing status, and available updates |
+
+These distinctions matter.
+
+An SDK can be installed without being usable. An SDK can be usable without being current. And an SDK can be current without being the version required by a particular application.
+
+I wanted the tool to help distinguish those situations rather than treating every installed SDK as ready to use.
+
+### List: Which Isolated and System-Wide .NET SDKs Are Installed?
 
 The normal `dotnet --list-sdks` command doesn't necessarily show SDKs deliberately installed in separate locations.
 
@@ -102,9 +124,11 @@ System SDKs:
 
 I have two isolated SDKs and four system SDKs.
 
+For system-wide installations, List uses the SDK inventory reported by the normally resolved `dotnet` host. It doesn't attempt to find every SDK directory that might exist anywhere on the machine.
+
 The distinction matters because the tool can inspect system SDKs, but it doesn't own them or attempt to remove them.
 
-### Verify: Does This SDK Actually Work?
+### Verify: Does This Isolated .NET SDK Work Correctly?
 
 Finding an SDK directory doesn't mean the installation is healthy.
 
@@ -145,9 +169,9 @@ Isolated SDK 10.0.303 verified successfully.
 
 The isolated SDK is working correctly, even though a newer version is available.
 
-Verify tells me whether the SDK installation is usable, not whether it's the latest version or whether my application will build successfully with it.
+Verify tells me whether the SDK installation is usable, not whether it's the latest version or whether my application will build successfully with it. Application compatibility still needs to be evaluated separately.
 
-### Audit: Is This SDK Still Current and Supported?
+### Audit: Are My Installed .NET SDKs Current and Supported?
 
 An SDK can work perfectly and still be outdated or out of support.
 
@@ -175,13 +199,17 @@ That doesn't make the isolated installations invalid. They might be there intent
 
 Audit gives me the information I need to decide whether to keep them, update them, or remove them.
 
+Unlike Verify, Audit isn't determining whether an SDK installation works. It's evaluating installed versions against Microsoft's published release and support information.
+
+An older SDK may still be needed to reproduce a historical build even when Microsoft no longer supports it.
+
 It also connects directly to my [Staying Current with .NET](https://coding.infoconex.com/series/staying-current-with-dotnet/) series. I don't want to discover an unsupported SDK only when an upgrade becomes urgent.
 
 While the interactive menu makes the tool convenient to use from a terminal, the same operations are available directly from the command line for scripts and automation.
 
 I've also moved away from downloading the tool from a changing `main` branch. The recommended installation now uses verified scripts from published GitHub releases, with the option to select a specific version. The [GitHub repository](https://github.com/infoconex/isolated-dotnet-sdk) contains the installation instructions and command documentation.
 
-## The Edge Cases Made Things Interesting
+## Handling Older .NET SDKs and Failed Removals
 
 One of the more challenging areas of v0.4.0 was improving support for older .NET SDKs.
 
@@ -193,9 +221,13 @@ Supporting those versions meant accounting for the differences without weakening
 
 Removal presented its own challenges. A build process might still have files open, or an earlier installation might have left behind an incomplete directory.
 
-Version 0.4.0 improves handling of these situations, including safer removal and recovery when something doesn't finish cleanly.
+Version 0.4.0 improves handling of these situations with more explicit safeguards.
 
-There are still limits. Some historical SDKs won't run on modern operating systems, and locked files can't always be removed immediately.
+Removing an SDK requires confirmation. The tool accounts for build-server shutdown, including compatibility handling for certain older SDK versions that don't support the same commands as modern releases. If a supported build-server shutdown fails, removal is blocked rather than assuming it's safe to proceed.
+
+The tool can also identify incomplete installation directories and offer them for confirmed cleanup. If a removal is only partially completed because of locked files, the operation can be retried after those locks are released.
+
+There are still limits. Some historical SDKs won't run on modern operating systems, and locked files can't always be removed immediately. Even a successful build-server shutdown doesn't guarantee that every process using an SDK has exited.
 
 I'd rather have the tool report those limitations clearly than make an operation appear successful when it wasn't.
 
