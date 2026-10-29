@@ -3,18 +3,20 @@
 title: "Calling WCF Service using LINQPad"
 date: "2012-12-05"
 description: "Troubleshoot calling a WCF web service from LINQPad using a generated service-reference proxy and the configuration needed to test service operations."
-tags: ["LINQPad", "WCF"]
+tags: ["LINQPad", "WCF", ".NET Framework", "Service References", "Troubleshooting"]
 slug: "calling-wcf-service-using-linqpad"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2012/12/05/Calling-WCF-Service-using-LINQPad"
 permalink: "/post/2012/12/05/Calling-WCF-Service-using-LINQPad"
 legacyPaths: ["/post/2012/12/05/Calling-WCF-Service-using-LINQPad"]
 ---
-First, if you are a .NET developer and you are not using LINQPad yet go and check it out at [www.linqpad.net](http://www.linqpad.net). They offer a free version that is the same as the paid version but without intellisense and the pricing to upgrade to the full version is well worth the productivity gain you get.
+First, if you are a .NET developer and you are not using LINQPad yet go and check it out at [LINQPad](https://www.linqpad.net/). They offer a free version that is the same as the paid version but without intellisense and the pricing to upgrade to the full version is well worth the productivity gain you get.
 
 
 Ok, with that out of the way let me get to the issue I came across and how I solved it.
 
+
+## The error: a WCF client endpoint was not found
 
 **Issue:**
 
@@ -48,13 +50,15 @@ That is odd I can see that my assembly includes a file Proxy.exe.config that has
 So why was it not working?
 
 
+## Why LINQPad did not find the endpoint
+
 **Answer:**
 
 
 Well it turns out that LINQPad needs to have this configuration information included in a file it uses since it is the application executing the proxy. At first glance one might assume they would place it in the the file included with LINQPad called LINQPad.exe.config but that would result in the same issue.
 
 
-Instead you need to create a file in the same directory that LINQPad is installed in and name it linqpad.config
+Instead you need to create a file in the same directory that LINQPad is installed in and name it `linqpad.config`.
 
 
 Adding the following to my new file resolved the issue
@@ -81,3 +85,11 @@ Adding the following to my new file resolved the issue
 
 
 Hopefully this article will save someone the time I spent figuring this out.
+
+## Version-specific configuration guidance
+
+This example reflects the LINQPad and .NET Framework WCF workflow I used in 2012. The important distinction is that the WCF client configuration must be available to the application hosting the client proxy—not simply stored beside the class library. Microsoft documents the address, binding and contract fields in [WCF client configuration](https://learn.microsoft.com/en-us/dotnet/framework/wcf/feature-details/client-configuration).
+
+The [LINQPad FAQ](https://www.linqpad.net/FAQ.aspx) also explains that, for **LINQPad 5**, you can open **Query Properties (F4) → app.config** to provide settings for one query. Alternatively, `linqpad.config` beside `LINQPad.exe` applies to scripts unless overridden. This is different from `LINQPad.exe.config`, which configures the LINQPad application itself. Check the documentation for the LINQPad version you use, rather than assuming the 2012 file layout is universal.
+
+The example service address uses an HTTP URL from the original troubleshooting scenario; do not copy it into a production configuration without verifying the endpoint and transport security.
