@@ -2,7 +2,7 @@
 title: "C# Ping"
 date: "2009-01-12"
 description: "Investigate a C# ping and traceroute implementation using ICMP, including troubleshooting behavior on Windows Vista with packet analysis and Wireshark."
-tags: []
+tags: ["C#", ".NET Framework", "ICMP", "Networking", "Ping"]
 slug: "c-ping"
 author: "Jim Scott"
 originalUrl: "http://coding.infoconex.com/post/2009/01/12/C-Ping-and-Traceroute"
@@ -21,9 +21,9 @@ The code I was using was returning an incorrect checksum on the ICMP reply. So I
 
 So I am posting this in hopes of saving someone a bunch of time with the same issue I had. Also the code I had to put together initially was much more complex. This I think you will see is very straight forward.
 
-Example Output:
+## Example output
 
-```
+```text
 Pinging 192.168.105.10 with 32 bytes of data:
 
 Reply from 192.168.105.10: bytes=32 time=11ms TTL=128
@@ -37,7 +37,7 @@ Approximate round trip times in milli-seconds:
 	Minimum = 3ms, Maximum = 11ms
 ```
 
-**Code:**
+## C# implementation
 
 ```csharp
 public static string Ping()
@@ -115,3 +115,5 @@ public static string Ping()
     }
 }
 ```
+
+For a related example that uses the same built-in `Ping` API to trace network hops, see [C# Traceroute using .NET Framework](/post/2009/01/14/C-Traceroute-using-net-framework).
