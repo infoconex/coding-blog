@@ -66,6 +66,8 @@ Article publication dates, original C# code, canonical historical paths and tech
 
 ## Recommended ongoing validation
 
+**Implemented after the baseline:** Existing `scripts/validate.py` now rejects an author-authored article H1 that would duplicate the shared article heading, and warns on duplicate normalized meta descriptions. The already-running `scripts/test_validate_historical_links.py` suite now covers H1 behavior in Markdown, HTML, and fenced code. No new workflow or dependency was introduced.
+
 Prefer extending `scripts/validate.py` and `.github/workflows/validate.yml`. Potential **errors**: duplicate permalink, missing required metadata, absent linked local image, malformed fences, broken internal historical URLs, or a body H1 that duplicates the layout-owned H1. Potential **warnings**: duplicate description text, missing useful tags, generic alt text, unlabeled code blocks, sparse headings in lengthy technical material, and review-candidate external HTTP URLs. Avoid arbitrary minimum word counts.
 
-**Remaining work:** reconcile duplicate descriptions with complete YAML parsing; verify rendered article structured data and social cards; live-test external links; review the next editorial batch; run and verify Actions/deployment; add targeted warnings and tests to existing validation. Do not report these as completed until independently confirmed.
+**Remaining work:** inspect any duplicate-description warnings from the updated validator; verify rendered article structured data and social cards; live-test external links; review the next editorial batch; run and verify Actions/deployment; add targeted warnings and tests to existing validation. Do not report these as completed until independently confirmed.
