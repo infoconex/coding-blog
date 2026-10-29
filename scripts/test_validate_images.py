@@ -102,6 +102,26 @@ class ImageValidationTests(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertIn("broken image srcset", errors[0])
 
+    def test_images_validate_independently_of_seo_scanner(self):
+        self.page("index.html", "<p>No rendered images</p>", "https://coding.infoconex.com/")
+        output = io.StringIO()
+        with patch("validate_seo.audit_site_detailed", side_effect=RuntimeError("SEO unavailable")):
+            with patch("sys.argv", ["validate_images.py", "--site-dir", str(self.root)]):
+                with contextlib.redirect_stdout(output):
+                    self.assertEqual(main(), 0)
+        self.assertNotIn("SEO WARNING", output.getvalue())
+
+    def test_broken_rendered_image_remains_fatal(self):
+        self.page("index.html",
+                  '<img src="/assets/missing.png" alt="Architecture diagram">',
+                  "https://coding.infoconex.com/")
+        output = io.StringIO()
+        with patch("sys.argv", ["validate_images.py", "--site-dir", str(self.root)]):
+            with contextlib.redirect_stdout(output):
+                result = main()
+        self.assertEqual(result, 1)
+        self.assertIn("broken image src", output.getvalue())
+
     def test_no_html_files_is_error(self):
         self.assertEqual(audit_site(self.root)[0], 0)
         self.assertEqual(len(audit_site(self.root)[1]), 1)

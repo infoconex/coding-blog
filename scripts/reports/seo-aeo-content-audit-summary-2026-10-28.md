@@ -282,7 +282,7 @@ The old SEO checker skipped nonarticle HTML pages missing both canonical and Ope
 
 Expanded \`scripts/test_validate_seo.py\` with focused missing canonical tests for homepage, About and collections; incorrect canonical paths and domains; shared canonical URLs; unintended robots noindex and malformed canonical syntax; malformed JSON-LD; valid @graph/array composition; invalid dates; missing or incorrect ProfilePage identity; optional social metadata warnings; missing structured-data image files; corrupt encoding; redirect spoof prevention; extensionless historical paths; and scanner exception propagation. Existing cases already cover missing BlogPosting, author attribution, duplicate social tags, missing social cards and legitimate redirects.
 
-The image regression suite was updated to remove obsolete assertions that SEO problems must remain nonblocking inside \`validate_images.py\`; the standalone SEO quality gate now owns that responsibility.
+The image regression suite was updated to remove obsolete assertions that SEO problems must remain nonblocking inside \`validate_images.py\`; the standalone SEO quality gate now owns that responsibility. Two replacement image regression tests confirm the image validator remains independent and broken local images remain blocking; the image regression count stays at eight.
 
 ### Verification boundary
 
