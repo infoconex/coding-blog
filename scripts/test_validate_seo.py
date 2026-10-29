@@ -104,6 +104,29 @@ class RenderedSeoTests(unittest.TestCase):
             self.assertTrue(any("og:image references missing local image" in error for error in errors))
             self.assertTrue(any("twitter:image references missing local image" in error for error in errors))
 
+    def test_wrong_article_canonical_is_reported_even_if_schema_is_missing(self):
+        incorrect_url = "https://coding.infoconex.com/"
+        bad_markup = article_markup(schema=False).replace(URL, incorrect_url)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "post/2010/01/04/ASPNET-MVC-Tutorials/index.html"
+            path.parent.mkdir(parents=True)
+            path.write_text(bad_markup, encoding="utf-8")
+            _, count, errors = audit_site(root)
+            self.assertEqual(count, 1)
+            self.assertTrue(any("canonical path" in issue for issue in errors))
+            self.assertTrue(any("BlogPosting" in issue for issue in errors))
+
+    def test_valid_html_article_extension_maps_to_historical_canonical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "post/2010/01/04/ASPNET-MVC-Tutorials.html"
+            path.parent.mkdir(parents=True)
+            path.write_text(article_markup(), encoding="utf-8")
+            (root / "assets/og").mkdir(parents=True)
+            (root / "assets/og/card.png").write_bytes(b"test-card")
+            self.assertEqual(audit_site(root), (1, 1, []))
+
     def test_redirect_page_under_post_path_is_not_treated_as_article(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
