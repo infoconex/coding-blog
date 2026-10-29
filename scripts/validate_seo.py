@@ -157,7 +157,7 @@ def inspect_page(page: SeoParser, *, article: bool, about: bool,
     if canonical:
         if (parsed.scheme != "https" or parsed.netloc != SITE_HOST
                 or parsed.query or parsed.fragment or parsed.username or parsed.password
-                or parsed.params):
+                or ";" in parsed.path):
             add("SEO003", "ERROR", f"unexpected canonical URL: {canonical!r}")
         if expected_url and parsed.path.rstrip("/") != urlsplit(expected_url).path.rstrip("/"):
             kind = "article " if article else ""
