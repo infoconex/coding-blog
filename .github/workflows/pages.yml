@@ -51,6 +51,12 @@ jobs:
           source: ./
           destination: ./_site
 
+      - name: Apply external-link policy to generated HTML
+        run: python3 scripts/external_links.py --site-dir _site
+
+      - name: Verify external-link policy and representative historical articles
+        run: python3 scripts/external_links.py --site-dir _site --check
+
       - name: Verify legacy author redirects are generated
         shell: bash
         run: |
