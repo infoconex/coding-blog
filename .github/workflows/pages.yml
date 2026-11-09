@@ -51,6 +51,9 @@ jobs:
           source: ./
           destination: ./_site
 
+      - name: Allow the runner to update Jekyll-generated output
+        run: sudo chown -R "$(id -u):$(id -g)" _site
+
       - name: Apply external-link policy to generated HTML
         run: python3 scripts/external_links.py --site-dir _site
 
