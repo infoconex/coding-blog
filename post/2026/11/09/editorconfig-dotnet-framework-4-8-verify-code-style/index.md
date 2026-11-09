@@ -15,7 +15,10 @@ tags:
   - C#
   - EditorConfig
   - Code Style
+image: /post/2026/11/09/editorconfig-dotnet-framework-4-8-verify-code-style/images/editorconfig-dotnet-framework-4-8-verify-code-style-banner.png
 ---
+
+![EditorConfig for .NET Framework 4.8: Set Up, Break a Rule, Verify](images/editorconfig-dotnet-framework-4-8-verify-code-style-banner.png)
 
 Coding conventions help maintain consistency across a codebase. But even when developers agree on how code should be written, their development environments may apply different preferences.
 
