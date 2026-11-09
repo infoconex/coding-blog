@@ -32,7 +32,7 @@ But before creating one, we should answer a more important question:
 
 EditorConfig works with traditional .NET Framework 4.8 projects without requiring SDK-style conversion. You can define naming and formatting conventions in `.editorconfig`, then test them by deliberately introducing violations and checking the results in Visual Studio and `dotnet format`.
 
-We'll use [RecordSift](https://github.com/infoconex/RecordSift), a traditional .NET Framework 4.8 library, as our working example.
+We'll use [RecordSift](https://github.com/infoconex/RecordSift){:target="_blank" rel="noopener noreferrer"}, a traditional .NET Framework 4.8 library, as our working example.
 
 ## Coding Standards vs. Code Style
 
@@ -50,7 +50,7 @@ For RecordSift, we adopted Microsoft's published C# coding conventions and appli
 
 Rather than inventing a comprehensive style guide, we use Microsoft's guidance as our foundation and document our project-specific decisions.
 
-Our [C# coding standards](https://github.com/infoconex/RecordSift/blob/main/docs/engineering/csharp-style.md) include conventions such as:
+Our [C# coding standards](https://github.com/infoconex/RecordSift/blob/main/docs/engineering/csharp-style.md){:target="_blank" rel="noopener noreferrer"} include conventions such as:
 
 | Code element | Convention | Example |
 |---|---|---|
@@ -64,9 +64,9 @@ We also preserve compatibility with C# 7.3. For example, we use block-scoped nam
 
 Useful Microsoft references include:
 
-- [C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-- [C# Identifier Naming Guidelines](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names)
-- [.NET Code Analysis Overview](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview)
+- [C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions){:target="_blank" rel="noopener noreferrer"}
+- [C# Identifier Naming Guidelines](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names){:target="_blank" rel="noopener noreferrer"}
+- [.NET Code Analysis Overview](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview){:target="_blank" rel="noopener noreferrer"}
 
 **Our standards describe what we expect. EditorConfig expresses the conventions supported by our development tools.**
 
@@ -118,7 +118,7 @@ Rather than using personal IDE preferences, IntelliCode generates configuration 
 
 This can be useful when inheriting an application whose coding conventions were never formally documented.
 
-Feature availability depends on your Visual Studio installation and IntelliCode support. See Microsoft's [Define consistent coding styles with EditorConfig](https://learn.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2022) for details.
+Feature availability depends on your Visual Studio installation and IntelliCode support. See Microsoft's [Define consistent coding styles with EditorConfig](https://learn.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2022){:target="_blank" rel="noopener noreferrer"} for details.
 
 ### Explore Conventions with AI
 
@@ -134,8 +134,8 @@ The instruction not to modify files keeps the initial exercise focused on discov
 
 You can also edit `.editorconfig` directly using Microsoft's documentation:
 
-- [.NET Code-Style Rule Options](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options)
-- [Code-Style Naming Rules](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/naming-rules)
+- [.NET Code-Style Rule Options](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options){:target="_blank" rel="noopener noreferrer"}
+- [Code-Style Naming Rules](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/naming-rules){:target="_blank" rel="noopener noreferrer"}
 
 These approaches can be combined.
 
@@ -276,7 +276,7 @@ We selected error severity because we want automated naming verification to reje
 
 Setting diagnostic severity makes violations eligible for enforcement through compatible analyzer and build tooling. It doesn't, by itself, enable analyzers during compilation.
 
-You can examine our complete configuration in [RecordSift's `.editorconfig`](https://github.com/infoconex/RecordSift/blob/main/.editorconfig).
+You can examine our complete configuration in [RecordSift's `.editorconfig`](https://github.com/infoconex/RecordSift/blob/main/.editorconfig){:target="_blank" rel="noopener noreferrer"}.
 
 ## Verify That Your Rules Actually Work
 
@@ -361,7 +361,7 @@ In Visual Studio 2022, the status bar can indicate when EditorConfig settings ov
 
 If the diagnostic doesn't update after changing the configuration, reload the affected source file and check the Error List.
 
-See Microsoft's [EditorConfig guidance](https://learn.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2022) for additional details.
+See Microsoft's [EditorConfig guidance](https://learn.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2022){:target="_blank" rel="noopener noreferrer"} for additional details.
 
 ### Verify EditorConfig Naming Rules in CI with `dotnet format`
 
@@ -422,7 +422,7 @@ However, the SDK must be able to load the solution. Traditional projects may req
 
 RecordSift uses Visual Studio MSBuild for compilation and the installed .NET SDK for its targeted naming check.
 
-For reproducibility, our Windows CI workflow records the SDK version used during analysis. For example, the [successful November 8, 2026 run](https://github.com/infoconex/RecordSift/actions/runs/42531816187) recorded .NET SDK `10.0.403`.
+For reproducibility, our Windows CI workflow records the SDK version used during analysis. For example, the [successful November 8, 2026 run](https://github.com/infoconex/RecordSift/actions/runs/42531816187){:target="_blank" rel="noopener noreferrer"} recorded .NET SDK `10.0.403`.
 
 That version is evidence of a verified execution, not a required SDK version. The workflow currently uses the SDK installed on the Windows runner rather than pinning a specific release.
 
@@ -432,7 +432,7 @@ For traditional projects, C# code-style analyzers have also been distributed thr
 
 We haven't adopted those packages for RecordSift's production projects. Their integration and value warrant a separate evaluation rather than being prerequisites for our existing targeted verification.
 
-See Microsoft's [Code Analysis Overview](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview) for additional guidance.
+See Microsoft's [Code Analysis Overview](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview){:target="_blank" rel="noopener noreferrer"} for additional guidance.
 
 ### When Verification Reveals a Gap
 
@@ -450,11 +450,11 @@ private const int MaxRecordCount = 100;
 
 The problem wasn't the constant's value. It was the identifier's naming style.
 
-Because our verification didn't consistently detect this pattern, we added a focused supplemental check using [`scripts/validate_constant_names.py`](https://github.com/infoconex/RecordSift/blob/main/scripts/validate_constant_names.py).
+Because our verification didn't consistently detect this pattern, we added a focused supplemental check using [`scripts/validate_constant_names.py`](https://github.com/infoconex/RecordSift/blob/main/scripts/validate_constant_names.py){:target="_blank" rel="noopener noreferrer"}.
 
 The script runs in our documentation-validation CI workflow, including positive and negative examples. It supplements Roslyn rather than replacing semantic analysis.
 
-Our investigation and supporting evidence are documented in [ADR 0012 — Enforce Microsoft C# Naming](https://github.com/infoconex/RecordSift/blob/main/docs/engineering/decisions/0012-microsoft-csharp-naming-ci.md).
+Our investigation and supporting evidence are documented in [ADR 0012 — Enforce Microsoft C# Naming](https://github.com/infoconex/RecordSift/blob/main/docs/engineering/decisions/0012-microsoft-csharp-naming-ci.md){:target="_blank" rel="noopener noreferrer"}.
 
 This is why we recommend deliberately violating conventions that matter to your enforcement policy.
 
