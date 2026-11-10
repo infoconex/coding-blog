@@ -34,7 +34,7 @@ Imagine two developers cloning the same repository. One has only nuget.org confi
 
 **That does not prove they restored from the same configured sources.** NuGet combines settings from machine-, user-, and directory-level configuration files. More specific settings take precedence; entries in collections such as package sources are inherited unless cleared.
 
-Our goal isn't merely to make restore succeed. It's to make the source policy understandable, intentional, and testable—much like the coding conventions we established in our [EditorConfig article](/post/2026/11/09/editorconfig-dotnet-framework-4-8-verify-code-style).
+The goal isn't merely to make restore succeed. It's to make source policy understandable, intentional, and testable—much like the coding conventions established in the earlier [EditorConfig article](/post/2026/11/09/editorconfig-dotnet-framework-4-8-verify-code-style).
 
 ## Step 1: Discover the configuration you're inheriting
 
@@ -110,7 +110,7 @@ Without `--configfile`, NuGet evaluates the applicable configuration hierarchy. 
 
 ### Does capitalization matter?
 
-We use lowercase `nuget.config` throughout our examples. NuGet recognizes several filename spellings during automatic discovery on case-sensitive file systems; its [commit-pinned implementation](https://github.com/NuGet/NuGet.Client/blob/59daae5c6fb0c9655e00fd70169b905463c29147/src/NuGet.Core/NuGet.Configuration/Settings/Settings.cs#L24-L43) explicitly prefers lowercase.
+The examples use lowercase `nuget.config`. NuGet recognizes several filename spellings during automatic discovery on case-sensitive file systems; its [commit-pinned implementation](https://github.com/NuGet/NuGet.Client/blob/59daae5c6fb0c9655e00fd70169b905463c29147/src/NuGet.Core/NuGet.Configuration/Settings/Settings.cs#L24-L43) explicitly prefers lowercase.
 
 When using `--configfile`, supply the filename's actual spelling.
 
@@ -172,7 +172,7 @@ NuGet Audit supports traditional `packages.config` projects from NuGet 6.10, and
 
 ## Step 3: Verify inheritance with positive and negative controls
 
-We investigated source inheritance on a disposable Windows GitHub Actions runner, using parent and child configuration files. This diagram uses the repository's current filename:
+Source inheritance was tested on a disposable Windows GitHub Actions runner using parent and child configuration files. This diagram uses the repository's current filename:
 
 ```text
 NuGetTest/
@@ -196,7 +196,7 @@ The **parent** configuration introduced an extra feed and disabled nuget.org:
 </configuration>
 ```
 
-The **child** configuration—our positive control—declared nuget.org and cleared both inherited collections:
+The **child** configuration—the positive control—declared nuget.org and cleared both inherited collections:
 
 ```xml
 <configuration>
@@ -211,13 +211,13 @@ The **child** configuration—our positive control—declared nuget.org and clea
 </configuration>
 ```
 
-From the child directory, we ran:
+From the child directory, the experiment ran:
 
 ```shell
 dotnet nuget list source
 ```
 
-We changed one configuration setting at a time and repeated the command.
+Each test changed one configuration setting before repeating the command.
 
 These are the **observed results from the original EXP-044 research run**:
 
@@ -236,7 +236,7 @@ Registered Sources:
       https://api.nuget.org/v3/index.json
 ```
 
-Removing the package-source `<clear />` exposed not only our `test-feed`, but also the runner's inherited **Microsoft Visual Studio Offline Packages** source:
+Removing the package-source `<clear />` exposed both the configured `test-feed` and the runner's inherited **Microsoft Visual Studio Offline Packages** source:
 
 ```text
 Registered Sources:
@@ -276,7 +276,7 @@ The [subsequent stage run](https://github.com/infoconex/RecordSift/actions/runs/
 
 `dotnet nuget list source` verifies effective configuration, but it doesn't prove that package acquisition succeeds or fails because of that configuration.
 
-We added a second experiment using a disposable `packages.config` with **NUnit 3.14.0**, a dependency already used by RecordSift. The experiment used the standalone `nuget.exe` CLI on Windows; it was not run on macOS or Linux:
+A second experiment tested package restoration using a disposable `packages.config` containing **NUnit 3.14.0**, a dependency already used by RecordSift. The experiment used the standalone `nuget.exe` CLI on Windows; it was not run on macOS or Linux:
 
 ```xml
 <packages>
@@ -314,7 +314,7 @@ The same positive and negative controls passed in the later stage. The [successf
 
 ### Verify the application solution
 
-We separately ran an ordinary RecordSift solution restore without `-ConfigFile`, using a fresh package directory.
+A separate test restored the RecordSift solution without `-ConfigFile`, using a fresh package directory.
 
 **Actual stage command (PowerShell syntax):**
 
@@ -339,7 +339,7 @@ Both solution restores succeeded without an explicit configuration-file override
 
 The restore experiments justified one **behavioral change**: add a `disabledPackageSources` clearing section while retaining the existing package and audit sources.
 
-Separately, we standardized the repository filename as `nuget.config` and updated its references. That was a consistency change, not an experimental finding.
+A separate consistency change standardized the repository filename as `nuget.config` and updated its references. It was not an experimental finding.
 
 The complete case-study configuration is:
 
@@ -384,7 +384,7 @@ In traditional `packages.config` projects, NuGet doesn't support using `NoWarn` 
 
 ### Should every .NET repository contain a nuget.config?
 
-We recommend source-controlled NuGet configuration for independently maintained applications when package-source policy should be explicit. A repository already governed by an intentional monorepo-level configuration may not need a duplicate file.
+For independently maintained applications, source-controlled NuGet configuration is recommended when package-source policy should be explicit. A repository already governed by an intentional monorepo-level configuration may not need a duplicate file.
 
 ### Does nuget.config require SDK-style projects?
 
@@ -402,7 +402,7 @@ Not on its own. It makes an important part of the environment explicit and testa
 
 Modernization doesn't always begin with a framework upgrade.
 
-For RecordSift, we investigated an inherited setting that could override the intent of an existing repository configuration. We reproduced the issue, confirmed the effective source listings, used an NUnit restore to verify package acquisition with and without the clearing rule, and preserved a small, reviewable change.
+For RecordSift, an inherited setting could override the intent of the existing repository configuration. The investigation reproduced the issue, confirmed the effective source listings, used an NUnit restore to verify package acquisition with and without the clearing rule, and preserved a small, reviewable change.
 
 The XML change was simple. The verification made it meaningful.
 
