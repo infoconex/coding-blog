@@ -15,7 +15,10 @@ tags:
   - NuGet
   - Dependency Management
   - Security
+image: /post/2026/11/10/nuget-config-dotnet-framework-control-package-sources/images/nuget-config-dotnet-framework-control-package-sources-banner.png
 ---
+
+![Take Control of NuGet Package Sources in .NET — Discover, Configure, Verify](images/nuget-config-dotnet-framework-control-package-sources-banner.png)
 
 Your .NET application restores its dependencies successfully. Visual Studio builds the solution, tests pass, and everything seems to work.
 
