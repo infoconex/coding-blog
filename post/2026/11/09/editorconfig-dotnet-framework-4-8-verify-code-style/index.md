@@ -15,6 +15,8 @@ tags:
   - C#
   - EditorConfig
   - Code Style
+series: "Staying Current with .NET"
+seriesOrder: 6
 image: /post/2026/11/09/editorconfig-dotnet-framework-4-8-verify-code-style/images/editorconfig-dotnet-framework-4-8-verify-code-style-banner.png
 ---
 
