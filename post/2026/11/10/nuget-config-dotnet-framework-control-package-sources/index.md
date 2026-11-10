@@ -181,7 +181,7 @@ NuGetTest/
     └── nuget.config
 ```
 
-The four results below came from the original EXP-044 research run. Subsequent stage CI verified the disabled-source behavior and package-restore controls.
+The four results below came from the original EXP-044 research run. A subsequent CI run verified the disabled-source behavior and package-restore controls.
 
 The **parent** configuration introduced an extra feed and disabled nuget.org:
 
@@ -270,7 +270,7 @@ Restoring both clear elements returned nuget.org to `[Enabled]`. All four compar
 The experiment ran on Windows, although the source-listing command itself is cross-platform.
 
 The original outputs are retained in [EXP-044](https://github.com/infoconex/dotnet-modernization/blob/47866780f9a629dd56bf6ee3a4e175e247c4f480/projects/recordsift/evaluations/2026-11-pre-sdk/experiments/EXP-044-nuget-config-source-inheritance.md) and its [successful research run](https://github.com/infoconex/RecordSift/actions/runs/42737924517). 
-The [subsequent stage run](https://github.com/infoconex/RecordSift/actions/runs/42775223915) also passed.
+The [subsequent CI run](https://github.com/infoconex/RecordSift/actions/runs/42775223915) also passed.
 
 ## Step 4: Test an actual restore—not just the source listing
 
@@ -286,7 +286,7 @@ A second experiment tested package restoration using a disposable `packages.conf
 
 From the disposable `Application` directory, the verification script ran the same command twice: once with the child's `disabledPackageSources` clearing rule removed, and once with it present. In each run, `$destination` was a different, initially empty temporary package directory.
 
-**Actual command (PowerShell syntax):**
+**Command used for both restore tests:**
 
 ```powershell
 nuget restore .\packages.config -NonInteractive -PackagesDirectory $destination -DirectDownload -NoHttpCache -Verbosity detailed
@@ -310,26 +310,26 @@ Unable to find version '3.14.0' of package 'NUnit'.
 
 The successful control instead shows NuGet downloading `nunit.3.14.0.nupkg` from nuget.org, installing it, and recording nuget.org under *Feeds used*. The paired source listings, the package-not-found message, and the successful retry with the clearing rule establish the observed difference. Full logs, including NuGet's cleanup diagnostics, are retained with the workflow artifact.
 
-The same positive and negative controls passed in the later stage. The [successful stage workflow](https://github.com/infoconex/RecordSift/actions/runs/42775223915) retains both [complete restore logs and results](https://github.com/infoconex/RecordSift/actions/runs/42775223915/artifacts/13743955821).
+The same positive and negative controls passed again. The [successful verification workflow](https://github.com/infoconex/RecordSift/actions/runs/42775223915) retains both [complete restore logs and results](https://github.com/infoconex/RecordSift/actions/runs/42775223915/artifacts/13743955821).
 
 ### Verify the application solution
 
 A separate test restored the RecordSift solution without `-ConfigFile`, using a fresh package directory.
 
-**Actual stage command (PowerShell syntax):**
+**Command used to restore the solution:**
 
 ```powershell
 nuget restore .\RecordSift.sln -NonInteractive -PackagesDirectory $packagesPath -Verbosity detailed
 ```
 
-The stage script assigned `$packagesPath` a fresh temporary directory.
+The verification script assigned `$packagesPath` a fresh temporary directory.
 
 **Observed results:**
 
 | Configuration | Effective source | Restore result |
 |---|---|---|
 | Original two-section configuration | nuget.org enabled | Exit `0` |
-| Three-section modernization-stage configuration | nuget.org enabled | Exit `0` |
+| Updated three-section configuration | nuget.org enabled | Exit `0` |
 
 Both solution restores succeeded without an explicit configuration-file override.
 
