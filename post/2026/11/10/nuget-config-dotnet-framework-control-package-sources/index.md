@@ -15,6 +15,8 @@ tags:
   - NuGet
   - Dependency Management
   - Security
+series: "Staying Current with .NET"
+seriesOrder: 7
 image: /post/2026/11/10/nuget-config-dotnet-framework-control-package-sources/images/nuget-config-dotnet-framework-control-package-sources-banner.png
 ---
 
