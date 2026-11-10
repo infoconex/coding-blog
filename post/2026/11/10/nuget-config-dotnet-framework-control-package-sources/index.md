@@ -112,7 +112,7 @@ Without `--configfile`, NuGet evaluates the applicable configuration hierarchy. 
 
 We use lowercase `nuget.config` throughout our examples. NuGet recognizes several filename spellings during automatic discovery on case-sensitive file systems; its [commit-pinned implementation](https://github.com/NuGet/NuGet.Client/blob/59daae5c6fb0c9655e00fd70169b905463c29147/src/NuGet.Core/NuGet.Configuration/Settings/Settings.cs#L24-L43) explicitly prefers lowercase.
 
-When using `--configfile`, supply the filename's actual spelling. The RecordSift modernization case study now uses lowercase `nuget.config` consistently.
+When using `--configfile`, supply the filename's actual spelling.
 
 ## Step 2: Declare an explicit package-source policy
 
@@ -172,7 +172,7 @@ NuGet Audit supports traditional `packages.config` projects from NuGet 6.10, and
 
 ## Step 3: Verify inheritance with positive and negative controls
 
-We investigated source inheritance on a disposable Windows GitHub Actions runner, using parent and child configuration files. This diagram shows the arrangement using our standardized lowercase filename:
+We investigated source inheritance on a disposable Windows GitHub Actions runner, using parent and child configuration files. This diagram uses the repository's current filename:
 
 ```text
 NuGetTest/
@@ -181,7 +181,7 @@ NuGetTest/
     └── nuget.config
 ```
 
-The diagram uses our standardized lowercase filename. The four results below came from the original EXP-044 research run. Subsequent stage CI verified the disabled-source behavior and package-restore controls using lowercase `nuget.config`.
+The four results below came from the original EXP-044 research run. Subsequent stage CI verified the disabled-source behavior and package-restore controls.
 
 The **parent** configuration introduced an extra feed and disabled nuget.org:
 
@@ -270,7 +270,7 @@ Restoring both clear elements returned nuget.org to `[Enabled]`. All four compar
 The experiment ran on Windows, although the source-listing command itself is cross-platform.
 
 The original outputs are retained in [EXP-044](https://github.com/infoconex/dotnet-modernization/blob/47866780f9a629dd56bf6ee3a4e175e247c4f480/projects/recordsift/evaluations/2026-11-pre-sdk/experiments/EXP-044-nuget-config-source-inheritance.md) and its [successful research run](https://github.com/infoconex/RecordSift/actions/runs/42737924517). 
-The [post-rename stage run](https://github.com/infoconex/RecordSift/actions/runs/42775223915) also passed with the lowercase file.
+The [subsequent stage run](https://github.com/infoconex/RecordSift/actions/runs/42775223915) also passed.
 
 ## Step 4: Test an actual restore—not just the source listing
 
@@ -310,7 +310,7 @@ Unable to find version '3.14.0' of package 'NUnit'.
 
 The successful control instead shows NuGet downloading `nunit.3.14.0.nupkg` from nuget.org, installing it, and recording nuget.org under *Feeds used*. The paired source listings, the package-not-found message, and the successful retry with the clearing rule establish the observed difference. Full logs, including NuGet's cleanup diagnostics, are retained with the workflow artifact.
 
-The same positive and negative controls passed after the lowercase rename. The [successful post-rename stage workflow](https://github.com/infoconex/RecordSift/actions/runs/42775223915) retains both [complete restore logs and results](https://github.com/infoconex/RecordSift/actions/runs/42775223915/artifacts/13743955821).
+The same positive and negative controls passed in the later stage. The [successful stage workflow](https://github.com/infoconex/RecordSift/actions/runs/42775223915) retains both [complete restore logs and results](https://github.com/infoconex/RecordSift/actions/runs/42775223915/artifacts/13743955821).
 
 ### Verify the application solution
 
@@ -339,7 +339,7 @@ Both solution restores succeeded without an explicit configuration-file override
 
 The restore experiments justified one **behavioral change**: add a `disabledPackageSources` clearing section while retaining the existing package and audit sources.
 
-We made a **separate convention cleanup** at the same time: standardize the repository's root filename as lowercase `nuget.config` and update its references. That rename was not a conclusion of the source-inheritance experiments; it was a repository consistency decision.
+Separately, we standardized the repository filename as `nuget.config` and updated its references. That was a consistency change, not an experimental finding.
 
 The complete case-study configuration is:
 
@@ -402,7 +402,7 @@ Not on its own. It makes an important part of the environment explicit and testa
 
 Modernization doesn't always begin with a framework upgrade.
 
-For RecordSift, we investigated an inherited setting that could override the intent of an existing repository configuration. We reproduced the issue, confirmed the effective source listings, used an NUnit restore to verify package acquisition with and without the clearing rule, and preserved a small, reviewable change. We also adopted a consistent lowercase filename as a separate convention cleanup.
+For RecordSift, we investigated an inherited setting that could override the intent of an existing repository configuration. We reproduced the issue, confirmed the effective source listings, used an NUnit restore to verify package acquisition with and without the clearing rule, and preserved a small, reviewable change.
 
 The XML change was simple. The verification made it meaningful.
 
