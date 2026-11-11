@@ -26,7 +26,7 @@ That may sound contradictory. It isn't. November 10 was both a major .NET releas
 
 For development teams, the announcements call for three different responses: evaluate .NET 11, apply the applicable servicing and security fixes, and migrate applications still depending on .NET 8 or .NET 9.
 
-In September, I wrote [“.NET 11 RC1 Is Here. Is Your Upgrade Process Ready?”](https://coding.infoconex.com/post/2026/09/12/net-11-rc1-is-here-is-your-upgrade-process-ready). I argued that upgrade readiness should be an ongoing evaluation rather than a project triggered by an approaching end-of-support deadline. Today's releases put that approach to the test.
+In September, I wrote [“.NET 11 RC1 Is Here. Is Your Upgrade Process Ready?”](/post/2026/09/12/net-11-rc1-is-here-is-your-upgrade-process-ready). I argued that upgrade readiness should be an ongoing evaluation rather than a project triggered by an approaching end-of-support deadline. Today's releases put that approach to the test.
 
 ## What Did Microsoft Release on November 10, 2026?
 
@@ -108,13 +108,13 @@ For organizations following an LTS-oriented production strategy, .NET 10 remains
 
 A `global.json` file can specify an SDK version and roll-forward policy, giving a repository more control over its build toolchain. The CLI searches for this file starting from the current working directory and moving up through parent directories. You can check the selected SDK with `dotnet --version` from the directory where you normally build the project.
 
-I explored this in [“Before You Upgrade .NET, Do You Know What Is Building It?”](https://coding.infoconex.com/post/2026/09/16/before-you-upgrade-dotnet-do-you-know-what-is-building-it), including why two developers can build the same project with different SDKs and how `global.json` makes that choice intentional. Microsoft documents the selection rules in its [SDK guidance](https://learn.microsoft.com/en-us/dotnet/core/versions/selection) and [`global.json` reference](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json).
+I explored this in [“Before You Upgrade .NET, Do You Know What Is Building It?”](/post/2026/09/16/before-you-upgrade-dotnet-do-you-know-what-is-building-it), including why two developers can build the same project with different SDKs and how `global.json` makes that choice intentional. Microsoft documents the selection rules in its [SDK guidance](https://learn.microsoft.com/en-us/dotnet/core/versions/selection) and [`global.json` reference](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json).
 
 A newer SDK can change the compiler, analyzers, build tools, and SDK defaults used for an existing project. However, **the default C# language version still follows the project's target framework**, unless the project explicitly overrides it with `LangVersion`. For example, a `net8.0` project defaults to C# 12, not C# 15, when built with the .NET 11 SDK. Microsoft documents this in its [C# language versioning guidance](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-versioning).
 
 This is a change to the development toolchain, not an automatic upgrade of the application's target framework or deployed runtime.
 
-This is one reason I built [Isolated .NET SDK](https://github.com/infoconex/isolated-dotnet-sdk). It installs an exact SDK version into a separate, user-owned directory without permanently modifying the normal `PATH`, so I can test .NET 11 by invoking its isolated `dotnet` host explicitly. SDK selection rules still apply when using that host. If a repository's `global.json` pins a different SDK, I need to account for that pin in the test setup; using an isolated host does not bypass it. The [earlier article on testing an SDK without installing it system-wide](https://coding.infoconex.com/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide) walks through that distinction.
+This is one reason I built [Isolated .NET SDK](https://github.com/infoconex/isolated-dotnet-sdk). It installs an exact SDK version into a separate, user-owned directory without permanently modifying the normal `PATH`, so I can test .NET 11 by invoking its isolated `dotnet` host explicitly. SDK selection rules still apply when using that host. If a repository's `global.json` pins a different SDK, I need to account for that pin in the test setup; using an isolated host does not bypass it. The [earlier article on testing an SDK without installing it system-wide](/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide) walks through that distinction.
 
 ## How Can You Find Applications Still Using .NET 8 or .NET 9?
 
@@ -134,7 +134,7 @@ These commands **do not tell you which runtime each production application actua
 - **Runtime requirements:** Inspect deployed `*.runtimeconfig.json` files and runtime roll-forward configuration for framework-dependent applications. By default, a `net8.0` application will not roll forward to a newer major runtime; `RollForward`, `DOTNET_ROLL_FORWARD`, or `--roll-forward` can change that behavior. See Microsoft's [runtime-selection documentation](https://learn.microsoft.com/en-us/dotnet/core/versions/selection).
 - **Actual deployment:** Verify hosting environments, application diagnostics, deployed container images, and self-contained application artifacts to understand what is running.
 
-In [“Managing .NET SDKs: Installation Was Just the Beginning,”](https://coding.infoconex.com/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning) I showed how Isolated .NET SDK can list, verify, and audit SDK installations against Microsoft's release information. That is useful for understanding a development environment, but an SDK inventory is not a complete inventory of production application dependencies.
+In [“Managing .NET SDKs: Installation Was Just the Beginning,”](/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning) I showed how Isolated .NET SDK can list, verify, and audit SDK installations against Microsoft's release information. That is useful for understanding a development environment, but an SDK inventory is not a complete inventory of production application dependencies.
 
 One terminology reminder: **.NET Framework 4.8 is not .NET 8.** .NET Framework 4.8 follows the lifecycle of the Windows version on which it is installed. The end of support for .NET 8 and .NET 9 does not retire .NET Framework 4.8.
 
@@ -144,12 +144,12 @@ I would prioritize four actions:
 
 1. **Find unsupported workloads.** Identify applications targeting or running .NET 8 or .NET 9, including containers and self-contained deployments. Prioritize upgrades by exposure and business criticality.
 2. **Apply the relevant fixes.** Bring .NET 10 environments up to the November servicing level. Apply the final .NET 8 or .NET 9 patches where an immediate upgrade is not possible, and follow security advisories for NuGet packages, tooling, and generated code.
-3. **Evaluate .NET 11.** Run builds and automated tests, check dependencies and hosting support, and decide whether its new capabilities justify adoption. My earlier articles on [clean-machine builds](https://coding.infoconex.com/post/2026/09/17/can-you-build-your-dotnet-application-on-a-clean-machine) and [testing SDKs without system-wide installation](https://coding.infoconex.com/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide) describe useful preparation steps. Remaining on supported .NET 10 is also a valid outcome.
+3. **Evaluate .NET 11.** Run builds and automated tests, check dependencies and hosting support, and decide whether its new capabilities justify adoption. My earlier articles on [clean-machine builds](/post/2026/09/17/can-you-build-your-dotnet-application-on-a-clean-machine) and [testing SDKs without system-wide installation](/post/2026/09/20/how-to-test-a-new-dotnet-sdk-without-installing-it-system-wide) describe useful preparation steps. Remaining on supported .NET 10 is also a valid outcome.
 4. **Make lifecycle checks routine.** Track support dates and servicing levels across application and build inventories. Review framework currency before deadlines create urgency.
 
 ## A New Release Is an Opportunity. End of Support Is a Deadline.
 
-In the [opening article of this series](https://coding.infoconex.com/post/2026/09/12/net-11-rc1-is-here-is-your-upgrade-process-ready), I described a simple operating rhythm: **RC is preflight, GA is the decision point, and EOS is the execution deadline.**
+In the [opening article of this series](/post/2026/09/12/net-11-rc1-is-here-is-your-upgrade-process-ready), I described a simple operating rhythm: **RC is preflight, GA is the decision point, and EOS is the execution deadline.**
 
 November 10 illustrates why that distinction matters. .NET 11 is ready to evaluate. .NET 10 has servicing fixes to apply. .NET 8 and .NET 9 have received their final updates. Applications still depending on them need to move to a supported release.
 
