@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Modernizing .NET Framework: Take Control of NuGet Package Sources"
-seoTitle: "nuget.config for .NET Framework: Control Package Sources"
+title: "Modernizing .NET: Take Control of NuGet Package Sources"
+seoTitle: "nuget.config for .NET: Control Package Sources"
 date: "2026-11-10"
 slug: "nuget-config-dotnet-framework-control-package-sources"
 author: "Jim Scott"

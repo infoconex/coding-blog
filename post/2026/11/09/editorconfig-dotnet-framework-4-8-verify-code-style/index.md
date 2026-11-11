@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Modernizing .NET Framework: Establishing and Verifying Code Style with EditorConfig"
-seoTitle: "EditorConfig for .NET Framework 4.8: Set Up and Verify Rules"
+title: "Modernizing .NET: Establishing and Verifying Code Style with EditorConfig"
+seoTitle: "EditorConfig for .NET: Set Up and Verify Code Style"
 date: "2026-11-09"
 slug: "editorconfig-dotnet-framework-4-8-verify-code-style"
 author: "Jim Scott"
