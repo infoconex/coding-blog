@@ -18,7 +18,10 @@ tags:
   - Lifecycle Management
 series: "Staying Current with .NET"
 seriesOrder: 8
+image: /post/2026/11/10/net-11-released-net-8-9-end-of-support/images/net-11-released-net-8-9-end-of-support-banner.png
 ---
+
+![Illustration of the .NET 11 release beside .NET 10, with .NET 8 and .NET 9 marked end of support](images/net-11-released-net-8-9-end-of-support-banner.png)
 
 On November 10, 2026, Microsoft officially [released .NET 11](https://devblogs.microsoft.com/dotnet/announcing-dotnet-11/). But did you know Microsoft also released servicing updates for .NET 8, .NET 9, and .NET 10, even though .NET 8 and .NET 9 reached end of support on the very same day?
 
