@@ -1,0 +1,92 @@
+name: Temporary article publication validation (no deploy)
+
+on:
+  pull_request:
+    paths:
+      - 'post/**'
+      - '_data/series.yml'
+      - '.github/workflows/pr-article-publication-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Render and audit new articles without deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out proposed changes
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Configure GitHub Pages build
+        uses: actions/configure-pages@v6
+
+      - name: Mark only two drafts as publishable inside CI checkout
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          paths = [
+              Path('post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/index.md'),
+              Path('post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/index.md'),
+          ]
+          for path in paths:
+              original = path.read_text(encoding='utf-8')
+              assert original.count('published: false') == 1, str(path)
+              path.write_text(original.replace('published: false', 'published: true', 1), encoding='utf-8')
+              print('Publication preview in runner checkout only:', path)
+          PY
+
+      - name: Install social card tooling
+        run: python3 -m pip install --user -r scripts/requirements.txt
+
+      - name: Generate preview social cards
+        run: python3 scripts/generate_og.py
+
+      - name: Build Jekyll site without deploying
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Make rendered output accessible to validators
+        run: sudo chown -R "$(id -u):$(id -g)" _site
+
+      - name: Verify expected rendered articles and series navigation
+        shell: bash
+        run: |
+          set -euo pipefail
+          intro="_site/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/index.html"
+          baseline="_site/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/index.html"
+          series="_site/series/staying-current-with-dotnet/index.html"
+          test -s "$intro"
+          test -s "$baseline"
+          test -s "$series"
+          grep -Fq '/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application' "$intro"
+          grep -Fq '/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift' "$baseline"
+          grep -Fq 'How to Establish a Technical Baseline' "$series"
+          grep -Fq 'Modernizing .NET: An Evidence-Driven Journey with RecordSift' "$series"
+
+      - name: Apply and check external link behavior
+        shell: bash
+        run: |
+          python3 scripts/external_links.py --site-dir _site
+          python3 scripts/external_links.py --site-dir _site --check
+
+      - name: Validate rendered image links and alt text
+        run: python3 scripts/validate_images.py --site-dir _site
+
+      - name: Validate SEO and BlogPosting metadata
+        run: python3 scripts/validate_seo.py --site-dir _site
+
+      - name: Validate sitemap, robots, canonicals and indexability
+        run: python3 scripts/validate_indexability.py --site-dir _site
+
+      - name: Validate CSP and browser security
+        run: python3 scripts/validate_browser_security.py --site-dir _site
