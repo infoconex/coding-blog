@@ -1,0 +1,376 @@
+---
+layout: post
+title: "How to Establish a Technical Baseline for a .NET Application"
+description: "A practical methodology for documenting the technical foundation of a .NET application before modernization."
+date: 2026-11-12
+published: false
+---
+
+Before modernizing a .NET application, we need to understand its existing technical foundation.
+
+That sounds straightforward, but a .NET application's technical characteristics aren't necessarily defined in one place.
+
+Its target frameworks may be declared in individual project files. Compiler settings may be inherited from MSBuild properties. Dependencies may be managed through NuGet configuration files. Build behavior can depend on installed tooling, environment variables, imported targets, and continuous integration workflows.
+
+Even when an application builds successfully, those details may not be fully documented.
+
+**Establishing a technical baseline gives us a reproducible picture of how the application is assembled, configured, built, tested, and delivered today.**
+
+This is the first step in our .NET modernization series. We'll explain what information to collect, how to organize it, and how to distinguish documented configuration from verified execution.
+
+In a companion article, we'll apply this methodology to [RecordSift](https://github.com/infoconex/RecordSift), our .NET Framework 4.8 case-study application, with actual discovery commands, outputs, and findings.
+
+For now, our objective is discovery—not improvement.
+
+## What Is a Technical Baseline?
+
+A technical baseline is a documented snapshot of an application's technical characteristics at a particular source revision.
+
+It should describe the application's:
+
+- Repository, solutions, and projects.
+- Target frameworks, project formats, and compiler configuration.
+- Project references and external dependencies.
+- MSBuild and repository-wide configuration.
+- Development tools, SDKs, runtimes, and build environment.
+- Dependency restoration and package management.
+- Automated testing infrastructure.
+- Continuous integration and delivery workflows.
+- Packaging, deployment, and runtime requirements.
+- Existing compatibility verification mechanisms.
+
+A useful baseline also identifies where each observation came from and whether it has been independently verified.
+
+For example, a project file might declare that an application targets .NET Framework 4.8. That is a source-inspected fact.
+
+A successful build using a particular MSBuild version on a Windows runner is a different fact, supported by execution evidence.
+
+Neither observation replaces the other.
+
+The goal is to establish an accurate technical record that another engineer can inspect, understand, and reproduce.
+
+## 1. Establish the Source of Truth
+
+Technical discovery should begin by identifying the exact source being examined.
+
+Record the repository URL, branch or tag, full Git commit SHA, discovery date, and whether the working tree contains uncommitted changes.
+
+An immutable commit is particularly important because branch names are movable references.
+
+Two engineers examining the same branch on different dates may be looking at different code.
+
+A technical baseline should therefore be associated with a specific commit rather than relying solely on a branch name.
+
+For applications maintained across multiple repositories, the baseline may need to identify several source revisions and explain how those repositories relate to one another.
+
+The same principle applies to generated source or externally managed build inputs: identify what was actually used rather than assuming it is represented by the main repository.
+
+## 2. Understand the Solution and Project Structure
+
+A .NET application's solution and project files provide the starting point for understanding how it is assembled.
+
+Begin by identifying every relevant solution and project, including projects that aren't referenced by the primary solution.
+
+For each project, document:
+
+| Characteristic | Information to collect |
+|---|---|
+| Project identity | Name, path, and purpose |
+| Project type | Library, executable, web application, test project, etc. |
+| Project format | Traditional or SDK-style |
+| Target framework | Declared framework or frameworks |
+| Language | C#, F#, Visual Basic, or another language |
+| Compiler settings | Language version and applicable options |
+| Build configuration | Debug, Release, platforms, and conditional variations |
+| References | Project-to-project and assembly references |
+| Outputs | Assemblies, executables, documentation, and other artifacts |
+
+Not every project will use the same settings.
+
+A solution might combine traditional .NET Framework projects, SDK-style libraries, multi-targeted packages, and test projects targeting different frameworks.
+
+The baseline needs to preserve those differences.
+
+### Document project relationships
+
+The relationship between projects is as important as the list of projects themselves.
+
+Project references determine which components depend on others and contribute to the application's compilation structure.
+
+A dependency diagram or project-reference table can make these relationships easier to understand.
+
+We don't need to document every class or functional workflow. At this stage, we want to understand the technical organization of the codebase and the responsibilities represented by its projects and assemblies.
+
+## 3. Examine MSBuild and Compiler Configuration
+
+.NET project files describe how source code is transformed into build outputs, but the effective build configuration can involve much more than the individual project file.
+
+MSBuild properties and items may originate from:
+
+- Individual project files.
+- Imported `.props` and `.targets` files.
+- Repository-wide configuration.
+- SDK-provided imports and defaults.
+- Conditional property groups.
+- Environment variables.
+- Command-line parameters.
+- Custom build targets and generated inputs.
+
+The technical baseline should identify those sources and document the settings relevant to the application.
+
+Examples include target frameworks, language versions, nullable-reference settings, assembly generation, output paths, compilation constants, warnings, analyzers, and platform targets.
+
+### Declared versus evaluated configuration
+
+An important distinction is the difference between a property appearing in a source file and its final evaluated value.
+
+For example, a project might declare one setting while an imported file or command-line parameter supplies another.
+
+**Source inspection tells us what is declared. MSBuild evaluation tells us what the build system resolves for a particular set of inputs.**
+
+A thorough baseline should distinguish the two, particularly when settings vary by project, configuration, target framework, or build environment.
+
+We should also record custom build steps, generated code, and other nonstandard inputs where they affect compilation or artifact generation.
+
+## 4. Inventory Repository-Wide Configuration
+
+Many .NET repositories use files that apply configuration across multiple projects.
+
+Examples include:
+
+| Configuration | Purpose |
+|---|---|
+| `global.json` | Selects .NET SDK versions and roll-forward behavior |
+| `Directory.Build.props` | Defines shared MSBuild properties |
+| `Directory.Build.targets` | Defines shared MSBuild targets |
+| `Directory.Packages.props` | Supports central NuGet package version management |
+| `nuget.config` | Configures NuGet sources and related behavior |
+| `.editorconfig` | Defines code-style and formatting settings |
+| `Directory.Build.rsp` or other response files | Supplies additional MSBuild options where applicable |
+
+These files have different scopes and precedence rules. Their presence alone doesn't establish which settings are effective for every project.
+
+The baseline should capture their locations, relevant settings, inheritance, and applicability.
+
+It should also record when a relevant configuration mechanism isn't present.
+
+**An absent file is an inventory observation, not a recommendation to introduce it.**
+
+That distinction keeps discovery objective.
+
+## 5. Document Dependencies and NuGet Configuration
+
+NuGet dependencies are another major part of the technical foundation.
+
+The inventory should identify how packages are declared, restored, and resolved.
+
+Different .NET applications may use `packages.config`, `PackageReference`, central package management, direct assembly references, or combinations of these mechanisms.
+
+The baseline should capture package IDs and versions, dependency declarations, package sources, restore configuration, and any relevant lock files or generated dependency artifacts.
+
+It is also important to distinguish **declared dependencies from resolved dependencies**.
+
+A project file or package manifest describes the intended inputs. A completed restore can establish which package graph was resolved in a particular environment.
+
+Both observations belong in the technical baseline, with the appropriate evidence.
+
+Dependencies aren't limited to NuGet packages. Native libraries, local assemblies, external build utilities, and system-provided components may also be necessary to compile or execute the application.
+
+Those should be documented when applicable.
+
+## 6. Identify the Development and Build Environment
+
+An application can depend on tools that aren't fully represented in source control.
+
+The development and build environment may include:
+
+- Operating system and architecture.
+- Installed .NET SDKs and runtimes.
+- .NET Framework targeting packs.
+- MSBuild implementation and version.
+- Visual Studio or Visual Studio Build Tools.
+- C# and other language compilers.
+- NuGet tooling.
+- Test runners.
+- Environment variables and external build prerequisites.
+
+Documenting the environment helps distinguish application configuration from assumptions supplied by a particular machine.
+
+For example, an installed .NET SDK and an installed .NET Framework targeting pack serve different purposes.
+
+Likewise, the `dotnet` CLI and Visual Studio MSBuild may have different capabilities depending on the project type and installed tooling.
+
+A technical baseline should record the actual tools and versions associated with successful or unsuccessful operations.
+
+When the environment hasn't been inspected, that should be stated rather than inferred from project configuration.
+
+## 7. Document the Build Process
+
+Once the projects, configuration, dependencies, and tooling are identified, we need to understand how the application is built.
+
+The baseline should capture the build entry points, commands, configurations, required environment, and expected outputs.
+
+This includes any restore prerequisites, code generation, custom targets, prebuild or postbuild operations, and scripts used to coordinate the process.
+
+It is useful to distinguish three separate questions:
+
+**What is configured to build?** This can often be established through source inspection.
+
+**What build command is documented or automated?** This can be identified through scripts and CI workflow definitions.
+
+**What has actually built successfully?** This requires execution evidence associated with a particular source revision and environment.
+
+The distinction is especially important when an application has multiple build configurations or target frameworks.
+
+A successful Debug build does not automatically establish that Release packaging succeeds, and a successful build of one project does not necessarily cover the full solution.
+
+## 8. Inventory Automated Testing
+
+Testing infrastructure is part of the application's technical foundation.
+
+For discovery, our primary objective is to understand how tests are organized, built, selected, and executed—not to reproduce their functional specifications.
+
+Document the testing frameworks, test projects, test runners, supporting packages, test categories, and execution entry points.
+
+Identify how tests are run locally and in CI, whether filtering or parallel execution is supported, and where results and coverage artifacts are recorded.
+
+Existing results should be associated with the exact source revision, test environment, and command that produced them.
+
+Test totals can be useful, but they need context.
+
+A count of 500 passing tests doesn't tell us whether all relevant test assemblies were included or whether every project participated in the execution.
+
+The baseline should distinguish configured test infrastructure from observed test execution.
+
+## 9. Examine CI/CD and Delivery
+
+Continuous integration workflows often provide some of the clearest documentation of an application's actual engineering processes.
+
+They can reveal how an application restores dependencies, selects toolchains, builds configurations, runs tests, validates artifacts, and prepares releases.
+
+For each relevant workflow, collect its source file, triggers, runners, tool versions, principal commands, validation steps, artifacts, and available execution results.
+
+Pay attention to differences between local development and CI.
+
+For example, an application may use a PowerShell script locally while GitHub Actions invokes a separate build and test sequence.
+
+Both should be represented in the baseline.
+
+Deployment and distribution details also matter.
+
+A class library may produce NuGet packages, while another application may publish a web deployment, desktop installer, Windows service, or container image.
+
+Document the actual delivery mechanism, packaging inputs, output artifacts, environment assumptions, and available release evidence.
+
+Avoid treating a package definition, a locally generated artifact, and a published release as interchangeable evidence.
+
+## 10. Identify Existing Compatibility Evidence
+
+Applications often maintain technical contracts that can be inspected independently of their functional requirements.
+
+Examples include public assembly APIs, assembly identities, generated XML documentation, serialized data formats, package contents, configuration contracts, and consumer integration checks.
+
+The technical baseline should identify which contracts are documented and how they are currently verified.
+
+For instance, a repository may contain a public API snapshot and an automated command that compares it against compiled assemblies.
+
+The baseline should record both the snapshot and the verification mechanism.
+
+It should also indicate whether that mechanism has been executed against the selected source revision.
+
+This isn't an assessment of whether the existing verification is sufficient. It is an inventory of the compatibility evidence already available.
+
+## 11. Record Evidence and Uncertainty
+
+A technical inventory becomes much more useful when readers can distinguish observations from assumptions.
+
+I would classify evidence into four categories:
+
+| Evidence type | What it establishes |
+|---|---|
+| Source-inspected | A setting, file, declaration, reference, or implementation exists at a specified revision |
+| Tool-evaluated | A tool resolved particular configuration values or dependencies under recorded inputs |
+| Executed | A command or verification ran and produced recorded results |
+| Reused historical evidence | A previous result applies to its documented revision and environment, subject to stated limitations |
+
+Each important finding should have a source, tool output, execution log, or other supporting reference.
+
+A finding may also have an explicit status such as *not verified*, *not executed*, or *conflicting evidence*.
+
+For example, we might determine that a repository contains five test projects while having no evidence of a complete test execution at the selected revision.
+
+Both facts should be recorded.
+
+Likewise, discovering a discrepancy between documentation and current source is a legitimate discovery outcome.
+
+**A baseline does not have to claim everything is working. It has to accurately report what is known, what was observed, and what remains unverified.**
+
+## 12. Produce a Reproducible Baseline
+
+Collecting information is only part of the process. The final documentation should make that information accessible to another engineer.
+
+I prefer a concise discovery overview supported by a detailed technical baseline.
+
+The overview establishes the application identity, source revision, discovery scope, and links to the technical evidence.
+
+The baseline contains the actual inventory, grouped into consistent technical categories.
+
+For a substantial application, it should be possible to navigate directly to project configuration, dependencies, build tooling, testing, CI/CD, packaging, and compatibility evidence without searching through unrelated documentation.
+
+The record should avoid duplicating material already maintained elsewhere.
+
+For example, a repository may already document its functional requirements, architecture, and test scenarios. The technical baseline can reference those records where relevant without recreating them.
+
+### How do we know the baseline is useful?
+
+Another engineer should be able to retrieve the same source, identify the applicable tools, understand the build and dependency configuration, find the documented commands, locate the verification evidence, and distinguish established facts from outstanding gaps.
+
+The baseline should also be dated and tied to an immutable source revision so that future discoveries can be compared with it.
+
+A technical baseline is a snapshot, not an assertion that the application will never change.
+
+## Discovery Is Not Assessment
+
+There is a deliberate boundary to this exercise.
+
+During discovery, we may encounter traditional project formats, repeated build settings, old dependencies, missing configuration files, or differences between local and CI execution.
+
+We should document those observations.
+
+But deciding whether they should change requires a different activity.
+
+Modernization assessment considers applicability, alternatives, benefits, risks, compatibility, effort, and priorities.
+
+Discovery establishes the facts on which those decisions can be based.
+
+Separating the activities prevents a technical inventory from becoming a collection of recommendations before the application's current state has been adequately established.
+
+It also makes the baseline useful for applications that are already using modern .NET versions, SDK-style projects, and contemporary build tooling.
+
+## Applying the Methodology to RecordSift
+
+Throughout this series, I'm using [RecordSift](https://github.com/infoconex/RecordSift) as a practical case study.
+
+Rather than mix an extensive investigation into this conceptual article, the companion walkthrough will demonstrate how we collected RecordSift's technical baseline.
+
+That article will include actual commands, recorded output, source files, build and dependency information, test infrastructure, CI execution evidence, and the completed documentation.
+
+Where information comes from an earlier execution, we'll identify that original source revision and environment. Where a command hasn't been executed, we'll say so.
+
+This allows readers to distinguish the general methodology from its application to a particular repository.
+
+## Conclusion
+
+A successful modernization effort begins with understanding the application's existing technical foundation.
+
+That requires more than identifying its target framework or opening its solution in Visual Studio.
+
+We need to know how the projects are organized, how configuration is applied, what tooling and dependencies are required, how builds and tests are performed, how deliverables are created, and what evidence supports our understanding.
+
+Most importantly, we need to distinguish what the repository declares from what we've actually verified.
+
+A reproducible technical baseline provides that foundation.
+
+In the next article, we'll apply this methodology to RecordSift and document the discovery process with real commands, evidence, and results.
+
+Only after that will we move into evaluating modernization opportunities.
