@@ -204,7 +204,7 @@ Dependencies aren't limited to NuGet packages. Native libraries, local assemblie
 
 ## 6. Identify the Development and Build Environment
 
-An application can depend on tools that aren't fully represented in source control.
+An application can depend on tools that aren't fully represented in source control, although some tooling is captured through project references or local `.config/dotnet-tools.json` manifests.
 
 The development and build environment may include:
 
@@ -222,11 +222,11 @@ Documenting the environment helps distinguish application configuration from ass
 
 For example, an installed .NET SDK and an installed .NET Framework targeting pack serve different purposes.
 
-Likewise, the `dotnet` CLI and Visual Studio MSBuild may have different capabilities depending on the project type and installed tooling.
+Likewise, the `dotnet` CLI and Visual Studio MSBuild may differ in project-type support or installed components; record the actual build entry point.
 
 A technical baseline should record the actual tools and versions associated with successful or unsuccessful operations.
 
-When the environment hasn't been inspected, that should be stated rather than inferred from project configuration.
+When the environment hasn't been inspected, that should be stated rather than inferred from project configuration. Identify required variables and authentication prerequisites without copying credentials or tokens into the baseline.
 
 ## 7. Document the Build Process
 
@@ -236,13 +236,11 @@ The baseline should capture the build entry points, commands, configurations, re
 
 This includes any restore prerequisites, code generation, custom targets, prebuild or postbuild operations, and scripts used to coordinate the process.
 
-It is useful to distinguish three separate questions:
+Apply the evidence model to three separate questions:
 
-**What is configured to build?** This can often be established through source inspection.
-
-**What build command is documented or automated?** This can be identified through scripts and CI workflow definitions.
-
-**What has actually built successfully?** This requires execution evidence associated with a particular source revision and environment.
+- **Configured inputs:** What projects, configurations, and build steps are declared in source?
+- **Documented invocation:** Which commands are specified by scripts, developer instructions, or CI definitions?
+- **Observed outcome:** Which commands actually ran, against what source revision and environment, and with what results?
 
 The distinction is especially important when an application has multiple build configurations or target frameworks.
 
@@ -268,9 +266,7 @@ The baseline should distinguish configured test infrastructure from observed tes
 
 ## 9. Examine CI/CD and Delivery
 
-Continuous integration workflows often provide some of the clearest documentation of an application's actual engineering processes.
-
-They can reveal how an application restores dependencies, selects toolchains, builds configurations, runs tests, validates artifacts, and prepares releases.
+Continuous integration workflow **definitions** document the intended automation for restoring dependencies, selecting toolchains, building, testing, validating artifacts, and preparing releases. Completed workflow runs and retained logs are separate evidence of the steps actually executed and their outcomes.
 
 For each relevant workflow, collect its source file, triggers, runners, tool versions, principal commands, validation steps, artifacts, and available execution results.
 
@@ -286,15 +282,17 @@ A class library may produce NuGet packages, while another application may publis
 
 Document the actual delivery mechanism, packaging inputs, output artifacts, environment assumptions, and available release evidence.
 
+Include **runtime and hosting requirements** where applicable: .NET Framework or .NET runtime versions, operating systems, architectures, hosting components such as IIS, native dependencies, runtime identifiers, deployment mode (for example, framework-dependent or self-contained), and configuration such as `app.config`, `web.config`, or `runtimeconfig.json`. Distinguish requirements declared in source from those verified through execution or deployment.
+
 Avoid treating a package definition, a locally generated artifact, and a published release as interchangeable evidence.
 
 ## 10. Identify Existing Compatibility Evidence
 
-Applications often maintain technical contracts that can be inspected independently of their functional requirements.
+Some applications—particularly libraries and shared components—maintain technical contracts that can be inspected independently of their functional requirements.
 
 Examples include public assembly APIs, assembly identities, generated XML documentation, serialized data formats, package contents, configuration contracts, and consumer integration checks.
 
-The technical baseline should identify which contracts are documented and how they are currently verified.
+The technical baseline should identify which applicable contracts are documented and how they are currently verified. Examples include source or binary API comparisons, approval snapshots, and assembly metadata checks; no particular validation tool is mandatory.
 
 For instance, a repository may contain a public API snapshot and an automated command that compares it against compiled assemblies.
 
@@ -304,34 +302,17 @@ It should also indicate whether that mechanism has been executed against the sel
 
 This isn't an assessment of whether the existing verification is sufficient. It is an inventory of the compatibility evidence already available.
 
-## 11. Record Evidence and Uncertainty
+## 11. Reconcile Evidence and Outstanding Gaps
 
-A technical inventory becomes much more useful when readers can distinguish observations from assumptions.
+Before finalizing the inventory, compare current declarations, evaluated values, and execution records for the same technical areas. Do not silently combine observations from different source revisions, toolchains, configurations, or test scopes.
 
-I would classify evidence into four categories:
+Record conflicting information, missing source inputs, failed commands, incomplete test coverage, and unexecuted verification as explicit findings. A baseline does not have to claim every check passed; it must report what is known, which evidence applies, and where verification remains outstanding.
 
-| Evidence type | What it establishes |
-|---|---|
-| Source-inspected | A setting, file, declaration, reference, or implementation exists at a specified revision |
-| Tool-evaluated | A tool resolved particular configuration values or dependencies under recorded inputs |
-| Executed | A command or verification ran and produced recorded results |
-| Reused historical evidence | A previous result applies to its documented revision and environment, subject to stated limitations |
-
-Each important finding should have a source, tool output, execution log, or other supporting reference.
-
-A finding may also have an explicit status such as *not verified*, *not executed*, or *conflicting evidence*.
-
-For example, we might determine that a repository contains five test projects while having no evidence of a complete test execution at the selected revision.
-
-Both facts should be recorded.
-
-Likewise, discovering a discrepancy between documentation and current source is a legitimate discovery outcome.
-
-**A baseline does not have to claim everything is working. It has to accurately report what is known, what was observed, and what remains unverified.**
+Use the evidence record introduced earlier rather than duplicating test matrices, requirements, or workflow logs inside the baseline.
 
 ## 12. Produce a Reproducible Baseline
 
-Collecting information is only part of the process. The final documentation should make that information accessible to another engineer.
+Collecting information is only part of the process. The documentation should allow another engineer to repeat the **investigation** under identified source, tooling, and environment inputs, without promising identical build binaries or success under different conditions.
 
 I prefer a concise discovery overview supported by a detailed technical baseline.
 
@@ -357,7 +338,7 @@ A technical baseline is a snapshot, not an assertion that the application will n
 
 There is a deliberate boundary to this exercise.
 
-During discovery, we may encounter traditional project formats, repeated build settings, old dependencies, missing configuration files, or differences between local and CI execution.
+During discovery, we may encounter non-SDK-style project formats, repeated build settings, particular dependency versions, absent configuration files, or differences between local and CI execution.
 
 We should document those observations.
 
@@ -373,28 +354,14 @@ It also makes the baseline useful for applications that are already using modern
 
 ## Applying the Methodology to RecordSift
 
-Throughout this series, I'm using [RecordSift](https://github.com/infoconex/RecordSift) as a practical case study.
-
-Rather than mix an extensive investigation into this conceptual article, the companion walkthrough will demonstrate how we collected RecordSift's technical baseline.
-
-That article will include actual commands, recorded output, source files, build and dependency information, test infrastructure, CI execution evidence, and the completed documentation.
-
-Where information comes from an earlier execution, we'll identify that original source revision and environment. Where a command hasn't been executed, we'll say so.
-
-This allows readers to distinguish the general methodology from its application to a particular repository.
+The companion [RecordSift](https://github.com/infoconex/RecordSift) walkthrough will apply these discovery categories to a .NET Framework 4.8 repository, using captured commands, outputs, identified source revisions, and the resulting technical baseline. It will distinguish current execution from historical evidence and checks not performed.
 
 ## Conclusion
 
-A successful modernization effort begins with understanding the application's existing technical foundation.
+A useful technical baseline documents the projects, configuration, dependencies, tooling, build and test infrastructure, runtime requirements, and delivery process of an application at an identified source revision.
 
-That requires more than identifying its target framework or opening its solution in Visual Studio.
+It distinguishes what source declares, what tools evaluate, and what has actually been executed. It also preserves the context needed to interpret historical evidence and outstanding gaps.
 
-We need to know how the projects are organized, how configuration is applied, what tooling and dependencies are required, how builds and tests are performed, how deliverables are created, and what evidence supports our understanding.
+That gives another engineer a repeatable way to investigate the same technical state without mistaking configuration for verified outcomes.
 
-Most importantly, we need to distinguish what the repository declares from what we've actually verified.
-
-A reproducible technical baseline provides that foundation.
-
-In the next article, we'll apply this methodology to RecordSift and document the discovery process with real commands, evidence, and results.
-
-Only after that will we move into evaluating modernization opportunities.
+In the companion RecordSift walkthrough, we'll show the real commands, recorded results, and baseline produced by applying this method. Assessment of modernization opportunities follows as a separate article.
