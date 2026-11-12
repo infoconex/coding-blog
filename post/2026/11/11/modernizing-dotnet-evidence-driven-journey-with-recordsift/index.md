@@ -4,9 +4,12 @@ title: "Modernizing .NET: An Evidence-Driven Journey with RecordSift"
 description: "Explore an evidence-driven approach to .NET modernization using RecordSift, from application discovery and engineering practices to runtime evolution."
 date: 2026-11-11
 published: false
+image: /post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/images/modernizing-dotnet-evidence-driven-journey-with-recordsift-banner.png
 ---
 
 > **Editorial draft:** This article is not published. Review the phase navigation, article links, RecordSift package details, and series integration before release.
+
+![Laptop displaying the five phases of the RecordSift .NET modernization journey, from discovery through sustained improvement](images/modernizing-dotnet-evidence-driven-journey-with-recordsift-banner.png)
 
 An application can run on the latest version of .NET and still be difficult to build, test, understand, or maintain.
 
