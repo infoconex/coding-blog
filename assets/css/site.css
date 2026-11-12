@@ -111,8 +111,24 @@ a { color: inherit; }
 .post-content code { font-family: var(--font-mono); }
 .post-content :not(pre) > code { padding: .14em .38em; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); font-size: .88em; }
 .post-content blockquote { margin-left: 0; padding: 4px 0 4px 22px; border-left: 3px solid var(--accent); color: var(--muted); }
-.post-content table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
-.post-content th, .post-content td { padding: 10px 14px; border: 1px solid var(--line); text-align: left; }
+/* Keep table columns readable on narrow screens; scroll the table, not the page. */
+.post-content table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+}
+.post-content th, .post-content td {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  text-align: left;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.post-content th { white-space: nowrap; }
 
 /* Shared code panel; all colors and corners inherit the active site theme. */
 .code-block, .post-content div.highlight, .post-content figure.highlight {
