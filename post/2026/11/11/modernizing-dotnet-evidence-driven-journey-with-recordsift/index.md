@@ -2,12 +2,22 @@
 layout: post
 title: "Modernizing .NET: An Evidence-Driven Journey with RecordSift"
 description: "Explore an evidence-driven approach to .NET modernization using RecordSift, from application discovery and engineering practices to runtime evolution."
-date: 2026-11-11
+date: "2026-11-11"
+slug: "modernizing-dotnet-evidence-driven-journey-with-recordsift"
+author: "Jim Scott"
 published: false
+featured: false
+permalink: "/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift"
+tags:
+  - .NET
+  - Software Engineering
+  - Modernization
+  - Architecture
+  - RecordSift
+series: "Staying Current with .NET"
+seriesOrder: 9
 image: /post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/images/modernizing-dotnet-evidence-driven-journey-with-recordsift-banner.png
 ---
-
-> **Editorial draft:** This article is not published. Review the phase navigation, article links, RecordSift package details, and series integration before release.
 
 ![Laptop displaying the five phases of the RecordSift .NET modernization journey, from discovery through sustained improvement](images/modernizing-dotnet-evidence-driven-journey-with-recordsift-banner.png)
 
@@ -161,13 +171,14 @@ This phase examines the solution structure, projects, dependencies, target frame
 
 It also distinguishes verified facts from assumptions and identifies gaps in existing documentation.
 
-**Expected outcome:** A documented application inventory, compatibility baseline, and risk register.
+**Expected outcome:** An evidence-backed technical inventory and compatibility baseline. A later assessment will identify and evaluate modernization opportunities.
 
 **Articles and Walkthroughs**
 
-- [Before You Upgrade .NET: Do You Know What Is Building It?](https://coding.infoconex.com/post/2026/09/16/before-you-upgrade-dotnet-do-you-know-what-is-building-it)
-- [Can You Build Your .NET Application on a Clean Machine?](https://coding.infoconex.com/post/2026/09/17/can-you-build-your-dotnet-application-on-a-clean-machine)
-- Discovering and Documenting the Existing Application. *Planned*
+- [Before You Upgrade .NET: Do You Know What Is Building It?](/post/2026/09/16/before-you-upgrade-dotnet-do-you-know-what-is-building-it)
+- [Can You Build Your .NET Application on a Clean Machine?](/post/2026/09/17/can-you-build-your-dotnet-application-on-a-clean-machine)
+- [How to Establish a Technical Baseline for a .NET Application](/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application)
+- RecordSift technical discovery walkthrough. *Planned*
 
 ### Phase 2: Strengthen Engineering Practices
 
@@ -181,8 +192,8 @@ For RecordSift, preserving import behavior, validation results, diagnostics, and
 
 **Articles and Walkthroughs**
 
-- [Modernizing .NET: Establishing and Verifying Code Style with EditorConfig](https://coding.infoconex.com/post/2026/11/09/editorconfig-dotnet-framework-4-8-verify-code-style)
-- [Modernizing .NET: Take Control of NuGet Package Sources](https://coding.infoconex.com/post/2026/11/10/nuget-config-dotnet-framework-control-package-sources)
+- [Modernizing .NET: Establishing and Verifying Code Style with EditorConfig](/post/2026/11/09/editorconfig-dotnet-framework-4-8-verify-code-style)
+- [Modernizing .NET: Take Control of NuGet Package Sources](/post/2026/11/10/nuget-config-dotnet-framework-control-package-sources)
 - RecordSift characterization testing and regression verification. *Planned*
 
 ### Phase 3: Simplify Project Infrastructure
@@ -204,7 +215,7 @@ Each proposed change will be evaluated independently to determine whether it add
 
 **Articles and Walkthroughs**
 
-- [Managing .NET SDKs: Installation Was Just the Beginning](https://coding.infoconex.com/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning)
+- [Managing .NET SDKs: Installation Was Just the Beginning](/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning)
 - Shared MSBuild configuration with `Directory.Build.props` and `Directory.Build.targets`. *Planned*
 - Evaluating SDK-style project conversion. *Planned*
 
@@ -291,7 +302,7 @@ It provides supporting evidence without confusing experimental findings with cha
 
 ### Coding Blog: Articles and Walkthroughs
 
-[Staying Current with .NET](https://coding.infoconex.com/series/staying-current-with-dotnet/)
+[Staying Current with .NET](/series/staying-current-with-dotnet/)
 
 The blog connects the research and implementation through articles that explain the engineering questions, evaluation methods, findings, and practical implications.
 
@@ -325,13 +336,11 @@ Evidence may include build and test results, public API comparisons, dependency 
 
 For a reusable library such as RecordSift, downstream consumer compatibility may also be part of the acceptance criteria.
 
-## What's Next: Discovering and Documenting the Existing Application
+## What's Next: Establishing the Technical Baseline
 
-The first RecordSift-focused walkthrough will examine how to understand and document an existing .NET application before making modernization changes.
+The next article, [How to Establish a Technical Baseline for a .NET Application](/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application), explains what to collect and how to record reliable technical evidence without evaluating improvements.
 
-The investigation will inventory the solution, identify dependencies and build requirements, examine available documentation, establish a verification baseline, and record what remains uncertain.
-
-The result should be documentation that supports engineering decisions, not documentation produced merely to satisfy a checklist.
+A separate RecordSift walkthrough will then follow the methodology with actual commands, captured results, and a source-pinned baseline. The modernization assessment will use those facts to evaluate potential changes.
 
 Whether an application targets .NET Framework 4.8, a modern .NET version, or another supported environment, the starting point is the same:
 
