@@ -15,11 +15,11 @@
   <title>How to Establish a .NET Technical Baseline</title>
   <link rel="alternate" type="application/atom+xml" title="Coding" href="https://coding.infoconex.com/feed.xml">
   
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/site.css?v=1794524155">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/themes.css?v=1794524155">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/search.css?v=1794524155">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/mobile-header.css?v=1794524155">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/post-extras.css?v=1794524155">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/site.css?v=1794524367">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/themes.css?v=1794524367">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/search.css?v=1794524367">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/mobile-header.css?v=1794524367">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/post-extras.css?v=1794524367">
   
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <meta name="generator" content="Jekyll v3.10.0" />
@@ -659,7 +659,7 @@
     <p class="post-description">How to document .NET projects, builds, dependencies, tooling, and tests while separating declared settings from verified results.</p>
     <div class="post-meta" aria-label="Article metadata">
       <span><a href="https://coding.infoconex.com/about/">Jim Scott</a></span><span aria-hidden="true">·</span>
-      <span>9 min read</span>
+      <span>5 min read</span>
       
       
       
@@ -710,207 +710,134 @@
 
 <h2 id="what-is-a-technical-baseline">What Is a Technical Baseline?</h2>
 
-<p>A technical baseline describes how an application is organized, configured, built, tested, and delivered <strong>as it exists today</strong>. It is an inventory and a record of supporting evidence, not an improvement plan.</p>
-
-<p>At minimum, it answers four questions:</p>
+<p>A technical baseline records how an application is configured, built, tested, and delivered <strong>at a specific point in time</strong>. It answers four questions:</p>
 
 <ul>
-  <li><strong>What are we examining?</strong> The repository, exact source revision, relevant solutions and projects, and the scope of discovery.</li>
-  <li><strong>How is it assembled?</strong> Project relationships, target frameworks, build configuration, dependencies, and the tools and environment involved.</li>
-  <li><strong>What has been verified?</strong> Which operations actually ran, under what conditions, and with what outcomes.</li>
-  <li><strong>What do we still not know?</strong> Missing inputs, conflicting observations, failed commands, and verification that has not been performed.</li>
+  <li><strong>What exists?</strong> The source revision, projects, dependencies, and configuration.</li>
+  <li><strong>How does it work technically?</strong> The tools, environments, and build processes.</li>
+  <li><strong>What is verified?</strong> Operations actually performed and their results.</li>
+  <li><strong>What remains unknown?</strong> Missing inputs, conflicting evidence, or unexecuted checks.</li>
 </ul>
 
-<p>The source revision matters. Branch names can move, and two engineers examining the same branch a week apart may be looking at different code. Record the repository, a full commit SHA, the discovery date, and any uncommitted changes or external inputs that affect the investigation. Where applicable, preserve submodule revisions and references to separately maintained build inputs.</p>
+<p>Identify the repository, full commit SHA, discovery date, and scope. Capture uncommitted changes and external inputs when relevant; a branch name alone is not a fixed reference.</p>
 
-<p>A reproducible baseline means another engineer can retrieve the identified sources and <strong>repeat the investigation</strong>. It does not promise identical binaries or a successful build on every machine.</p>
+<p><strong>Reproducible discovery</strong> means another engineer can repeat the investigation using the documented inputs. It does not guarantee identical build artifacts.</p>
 
 <h2 id="what-makes-technical-evidence-reliable">What Makes Technical Evidence Reliable?</h2>
 
-<p>The central distinction is between <strong>what source declares, what a tool evaluates, and what execution demonstrates</strong>.</p>
+<p>Classify each finding by <strong>what its evidence establishes</strong>:</p>
 
 <table>
   <thead>
     <tr>
       <th>Evidence method</th>
-      <th>What it establishes</th>
+      <th>What it proves</th>
       <th>Example</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><strong>Source-inspected</strong></td>
-      <td>A declaration, file, reference, or workflow definition exists at a particular revision</td>
-      <td>A project file declares a target framework</td>
+      <td>A declaration exists at a recorded revision</td>
+      <td>A project declares its target framework</td>
     </tr>
     <tr>
       <td><strong>Tool-evaluated</strong></td>
-      <td>A tool resolves configuration or dependencies using specified inputs</td>
-      <td>MSBuild reports the evaluated target framework or properties</td>
+      <td>A tool resolved a value under known inputs</td>
+      <td>MSBuild evaluates a property</td>
     </tr>
     <tr>
       <td><strong>Executed</strong></td>
-      <td>An operation ran and produced a recorded result</td>
-      <td>A particular solution build or test run succeeded or failed</td>
+      <td>An operation ran with a recorded outcome</td>
+      <td>A build or test run succeeded or failed</td>
     </tr>
   </tbody>
 </table>
 
-<p>These methods answer different questions. A source declaration is not proof that the build succeeds. An evaluated MSBuild property reflects a particular invocation and its inputs, not necessarily the state after targets execute. And a successful Debug build does not verify Release packaging or every target framework.</p>
+<p>These aren’t interchangeable. MSBuild imports, conditions, and command-line settings can change evaluated properties; evaluation alone does not establish build success or the final state after target execution. See <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/evaluate-items-and-properties">MSBuild evaluation</a>.</p>
 
-<p>MSBuild can combine settings from projects, imported <code class="language-plaintext highlighter-rouge">.props</code> and <code class="language-plaintext highlighter-rouge">.targets</code> files, SDK defaults, conditions, environment variables, and command-line properties. Its <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/build-process-overview">build process</a> and <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/evaluate-items-and-properties">property evaluation behavior</a> help explain why inspecting a project file and inspecting an evaluated value are different activities.</p>
+<p>Similarly, a package declaration is not a verified restore. For <code class="language-plaintext highlighter-rouge">PackageReference</code>, a restore can produce the resolved graph in <code class="language-plaintext highlighter-rouge">project.assets.json</code>; a lock file does not, by itself, prove that locked-mode restore ran. <code class="language-plaintext highlighter-rouge">packages.config</code> has different dependency-recording semantics.</p>
 
-<p>The same principle applies to dependencies. A <code class="language-plaintext highlighter-rouge">PackageReference</code> declaration identifies a requested dependency. Restore produces an execution result and can generate a resolved dependency graph in <code class="language-plaintext highlighter-rouge">project.assets.json</code>. A <code class="language-plaintext highlighter-rouge">packages.lock.json</code> file records resolved dependency information, but its presence alone does not prove that a current restore succeeded or enforced locked mode. For <code class="language-plaintext highlighter-rouge">packages.config</code>, the recorded package list has different semantics from <code class="language-plaintext highlighter-rouge">PackageReference</code>; neither format should be mistaken for an observed restore outcome.</p>
+<p><strong>Provenance is separate from method.</strong> An earlier test run remains executed evidence, but only for its recorded commit, environment, command, and scope.</p>
 
-<p><strong>Evidence provenance is separate from evidence method.</strong> A test run from an earlier investigation is still executed evidence, but it belongs to the source revision, environment, command, and scope that produced it. It cannot automatically verify today’s baseline.</p>
-
-<p>For material findings, retain enough context to interpret the result: source revision, relevant file or artifact, method, tool and version, invocation or conditions, observed result, and verification status. Use precise statuses such as <em>verified for the stated scope</em>, <em>not verified</em>, <em>incomplete</em>, or <em>conflicting</em>.</p>
-
-<p>A failed build or an unexecuted test suite is not something to hide. It is part of an accurate baseline.</p>
+<p>For each significant finding, retain the source revision, evidence location, method, relevant tool and invocation, outcome, and verification status. Record failures and gaps rather than implying they passed.</p>
 
 <h2 id="what-should-a-net-technical-baseline-document">What Should a .NET Technical Baseline Document?</h2>
 
-<p>The goal is a complete technical inventory <strong>without turning the methodology article into a command reference</strong>. The categories below provide a consistent structure; the RecordSift walkthrough will show how to collect each one.</p>
+<p>Use a consistent inventory of the application’s technical foundations:</p>
 
 <table>
   <thead>
     <tr>
       <th>Area</th>
-      <th>What to capture</th>
+      <th>What to document</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><strong>Source identity</strong></td>
-      <td>Repository, immutable commit, discovery scope, local modifications, and relevant external inputs</td>
-    </tr>
-    <tr>
       <td><strong>Solutions and projects</strong></td>
-      <td><code class="language-plaintext highlighter-rouge">.sln</code>, <code class="language-plaintext highlighter-rouge">.slnx</code>, or <code class="language-plaintext highlighter-rouge">.slnf</code> entry points; project paths, roles, formats, target frameworks, and project-reference relationships</td>
+      <td>Solution entry points, project roles, formats, target frameworks, and references</td>
     </tr>
     <tr>
-      <td><strong>MSBuild and compilation</strong></td>
-      <td>Applicable properties and imports, conditions, SDK selection, compiler options, configurations, custom targets, and evaluated values when available</td>
-    </tr>
-    <tr>
-      <td><strong>Repository-wide configuration</strong></td>
-      <td>Relevant <code class="language-plaintext highlighter-rouge">global.json</code>, <code class="language-plaintext highlighter-rouge">Directory.Build.props</code>, <code class="language-plaintext highlighter-rouge">Directory.Build.targets</code>, <code class="language-plaintext highlighter-rouge">Directory.Packages.props</code>, <code class="language-plaintext highlighter-rouge">.editorconfig</code>, NuGet configuration, and other shared settings</td>
+      <td><strong>Build configuration</strong></td>
+      <td>MSBuild imports and evaluated settings, compiler options, <code class="language-plaintext highlighter-rouge">global.json</code>, <code class="language-plaintext highlighter-rouge">Directory.Build.props</code> and <code class="language-plaintext highlighter-rouge">Directory.Build.targets</code>, and other shared configuration</td>
     </tr>
     <tr>
       <td><strong>Dependencies</strong></td>
-      <td>Project and assembly references, NuGet management format, package sources, direct and resolved dependencies, lock files, and non-NuGet prerequisites</td>
+      <td>NuGet format, <code class="language-plaintext highlighter-rouge">Directory.Packages.props</code> where applicable, package sources, declared and resolved packages, and external prerequisites</td>
     </tr>
     <tr>
-      <td><strong>Development and build environment</strong></td>
-      <td>OS and architecture, .NET SDKs and runtimes, .NET Framework targeting packs, MSBuild or Visual Studio versions, package tools, and required environment inputs</td>
+      <td><strong>Toolchain and environment</strong></td>
+      <td>OS, architecture, SDKs, runtimes, .NET Framework targeting packs, MSBuild or Visual Studio, and required inputs</td>
     </tr>
     <tr>
-      <td><strong>Build and test execution</strong></td>
-      <td>Documented commands, selected configurations, test frameworks and runners, actual outcomes, result artifacts, and coverage of projects or test assemblies</td>
+      <td><strong>Builds and tests</strong></td>
+      <td>Commands, configurations, test runners, coverage of projects or tests, execution results, and artifacts</td>
     </tr>
     <tr>
       <td><strong>CI/CD and delivery</strong></td>
-      <td>Workflow definitions and completed runs, runner environments, validation steps, packaging, published artifacts, and deployment processes</td>
+      <td>Workflow definitions versus completed runs, packaging, releases, and deployment requirements</td>
     </tr>
     <tr>
-      <td><strong>Runtime requirements</strong></td>
-      <td>Hosting platform, runtime version, architecture, native prerequisites, configuration files, and deployment assumptions</td>
-    </tr>
-    <tr>
-      <td><strong>Existing compatibility evidence</strong></td>
-      <td>Public API checks, assembly identities, serialization contracts, package validation, or consumer checks where relevant</td>
+      <td><strong>Runtime and compatibility</strong></td>
+      <td>Hosting, native dependencies, runtime configuration, and existing API or compatibility checks</td>
     </tr>
   </tbody>
 </table>
 
-<p>The table is intentionally broad. Not every application has every file, framework, workflow, or delivery mechanism. <strong>An absent configuration file is an observation, not an instruction to add it.</strong></p>
+<p>Keep project format separate from target framework: an SDK-style project can target .NET Framework. Likewise, configuration can be inherited, and NuGet settings can extend beyond the repository. Record <strong>which settings actually apply</strong>, not just which files exist.</p>
 
-<p>A few distinctions are particularly important:</p>
-
-<ul>
-  <li>An SDK-style project is not the same thing as a modern target framework. SDK-style projects can target .NET Framework, and one solution may combine different project formats and frameworks.</li>
-  <li>Effective MSBuild behavior may depend on imports and invocation context; the settings visible in one file do not necessarily describe the entire build.</li>
-  <li>NuGet settings can come from repository, user, and machine scope. Central Package Management applies to relevant <code class="language-plaintext highlighter-rouge">PackageReference</code> projects; it is not a third dependency-management format.</li>
-  <li>CI workflow definitions tell us what <em>should</em> run; completed runs and retained logs tell us what <em>did</em> run. Local and CI commands may differ.</li>
-  <li>Existing testing and compatibility documentation should be referenced, not duplicated. This baseline inventories the technical mechanisms and their execution evidence rather than restating functional test scenarios.</li>
-</ul>
-
-<p>For technical details on these mechanisms, see Microsoft’s documentation for <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory">MSBuild directory imports</a>, <a href="https://learn.microsoft.com/en-us/dotnet/core/tools/global-json">SDK selection with <code class="language-plaintext highlighter-rouge">global.json</code></a>, <a href="https://learn.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior">NuGet configuration</a>, and <a href="https://learn.microsoft.com/en-us/nuget/concepts/dependency-resolution">dependency resolution</a>.</p>
+<p>Not every area applies to every application. <strong>An absent file is an observation, not a recommendation to create it.</strong> Reference existing functional and test documentation instead of duplicating it.</p>
 
 <h2 id="what-should-the-finished-baseline-look-like">What Should the Finished Baseline Look Like?</h2>
 
-<p>I prefer a short discovery overview supported by a navigable technical baseline and links to the actual evidence.</p>
+<p>Keep the output simple and navigable:</p>
 
-<p>The <strong>overview</strong> identifies the application, source revision, discovery date, scope, and the location of the detailed inventory. Someone new to the repository should be able to understand what was examined without reading every tool output.</p>
+<ul>
+  <li><strong>Discovery overview:</strong> application, commit SHA, date, scope, and links to supporting records.</li>
+  <li><strong>Technical inventory:</strong> the relevant areas above, organized for easy reference.</li>
+  <li><strong>Evidence and gaps:</strong> source files, evaluated outputs, run logs, results, and anything unverified or conflicting.</li>
+</ul>
 
-<p>The <strong>technical inventory</strong> organizes the areas above into consistent sections or files. Larger repositories may need separate project, dependency, build, and test records. A small repository might reasonably keep them together.</p>
+<p>For example, a project file can establish a <strong>declared target framework</strong> without proving the project builds. Record the source path and method, then track build verification separately.</p>
 
-<p>The <strong>evidence references</strong> connect important claims to source paths, evaluated output, workflow runs, test reports, or build artifacts. A concise finding might look like this:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Field</th>
-      <th>Illustrative record</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Observation</td>
-      <td>Project declares a particular target framework</td>
-    </tr>
-    <tr>
-      <td>Source and scope</td>
-      <td>Specific project at a recorded commit</td>
-    </tr>
-    <tr>
-      <td>Evidence</td>
-      <td>Project-file path</td>
-    </tr>
-    <tr>
-      <td>Method</td>
-      <td>Source-inspected</td>
-    </tr>
-    <tr>
-      <td>Verification</td>
-      <td>Declaration identified; successful build not established by this observation</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>This is an illustration of how to record a finding, <strong>not a claim about RecordSift</strong>. The companion article will use actual evidence.</p>
-
-<p>Finally, preserve an <strong>outstanding-gaps record</strong>. If a restore fails, a tool is unavailable, a CI result belongs to a different commit, or some projects have not been tested, say so explicitly. Avoid collapsing different revisions, platforms, configurations, or test scopes into a single claim that something is “verified.”</p>
-
-<p>The baseline is useful when another engineer can identify the same source, find the applicable tools and configuration, locate the verification evidence, and see which questions remain open.</p>
-
-<p>It is a dated snapshot that future discoveries can be compared against, not a document claiming the application will never change.</p>
+<p>A useful baseline lets another engineer locate the same source, understand the configuration, repeat the investigation, and distinguish verified results from outstanding questions.</p>
 
 <h2 id="where-does-discovery-end-and-modernization-assessment-begin">Where Does Discovery End and Modernization Assessment Begin?</h2>
 
-<p>Discovery and assessment are related, but they serve different purposes.</p>
+<p><strong>Discovery establishes facts; assessment decides what to change.</strong></p>
 
-<p>During discovery, we might find traditional project formats, duplicated properties, specific package versions, missing configuration files, or differences between local and CI execution. We should record those facts and how we established them.</p>
+<p>Finding an older project format, repeated setting, particular dependency version, or missing configuration file does not automatically make it a defect.</p>
 
-<p><strong>We should not automatically treat every observation as a problem to fix.</strong></p>
-
-<p>Modernization assessment asks different questions: Which changes are applicable? What benefits or risks do they introduce? What might affect compatibility? How should changes be prioritized and verified?</p>
-
-<p>Separating those activities keeps the baseline factual and makes it useful even for a repository already using current .NET versions, SDK-style projects, and modern build tooling.</p>
-
-<p>It also gives us a stable point of comparison: when we later change the project system, dependencies, or build process, we can compare the new state with the documented baseline rather than relying on memory.</p>
+<p>Modernization assessment evaluates options, compatibility, benefits, risks, and priorities <strong>after</strong> the existing state is documented. This separation makes the baseline equally useful for traditional and modern .NET projects.</p>
 
 <h2 id="applying-the-methodology-to-recordsift">Applying the Methodology to RecordSift</h2>
 
-<p>The next article puts this method to work using <a href="https://github.com/infoconex/RecordSift">RecordSift</a>, a .NET Framework 4.8 application.</p>
+<p>The companion article will apply this method to <a href="https://github.com/infoconex/RecordSift">RecordSift</a>, our .NET Framework 4.8 case study.</p>
 
-<p>We’ll identify the source revision, inspect the solutions and projects, examine build configuration and dependencies, document the environment, and capture the results of the build and test infrastructure. We’ll distinguish declarations from evaluated configuration and executed verification throughout.</p>
+<p>We’ll inspect the real repository, run appropriate discovery and verification commands, and publish the technical baseline with its evidence and open questions. Modernization assessment will follow separately.</p>
 
-<p>Most importantly, we’ll publish the resulting technical documentation and its evidence, including anything we cannot establish. Readers will be able to follow a real investigation instead of a hypothetical set of commands.</p>
-
-<p>Only after that baseline exists will we move into assessing modernization opportunities.</p>
-
-<p>The guiding principle is simple: <strong>document what exists, show what the evidence proves, and keep recommendations separate from the facts.</strong></p>
+<p><strong>First document what exists. Then decide what should change.</strong></p>
 
   </div>
 
@@ -1093,13 +1020,8 @@
                 
               
                 
-              
-                
-              
-                
-              
-                
-              
+                  
+                  
               
             
           
@@ -1113,8 +1035,13 @@
                 
               
                 
-                  
-                  
+              
+                
+              
+                
+              
+                
+              
               
             
           
