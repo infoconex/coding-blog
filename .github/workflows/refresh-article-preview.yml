@@ -112,3 +112,4 @@ jobs:
             git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "docs(preview): refresh Jekyll article previews [skip ci]"
             git push origin HEAD:preview-pr42
           fi
+# Latest draft source revision: f0d9adc4343d079a6cdc388f288ebbb2a8d42492
