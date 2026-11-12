@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to Establish a Technical Baseline for a .NET Application"
-description: "A practical methodology for documenting the technical foundation of a .NET application before modernization."
+description: "How to document a .NET application’s projects, build configuration, dependencies, tooling, tests, and evidence without confusing declarations with verified results."
 date: 2026-11-12
 published: false
 ---
@@ -14,9 +14,9 @@ Its target frameworks may be declared in individual project files. Compiler sett
 
 Even when an application builds successfully, those details may not be fully documented.
 
-**Establishing a technical baseline gives us a reproducible picture of how the application is assembled, configured, built, tested, and delivered today.**
+**Establishing a technical baseline gives us a repeatable, evidence-backed picture of how the application is assembled, configured, built, tested, and delivered today.**
 
-This is the first step in our .NET modernization series. We'll explain what information to collect, how to organize it, and how to distinguish documented configuration from verified execution.
+This article explains what to collect, how to organize it, and how to distinguish source declarations, tool-evaluated configuration, and executed verification. The method applies to applications already using current .NET tooling as well as older project systems.
 
 In a companion article, we'll apply this methodology to [RecordSift](https://github.com/infoconex/RecordSift), our .NET Framework 4.8 case-study application, with actual discovery commands, outputs, and findings.
 
@@ -24,7 +24,7 @@ For now, our objective is discovery—not improvement.
 
 ## What Is a Technical Baseline?
 
-A technical baseline is a documented snapshot of an application's technical characteristics at a particular source revision.
+A technical baseline is a documented snapshot of an application's technical characteristics at a particular source revision. **Repeatable discovery** means another engineer can retrieve the identified inputs and repeat the investigation; it does not guarantee deterministic, byte-for-byte identical build artifacts.
 
 It should describe the application's:
 
@@ -47,13 +47,40 @@ A successful build using a particular MSBuild version on a Windows runner is a d
 
 Neither observation replaces the other.
 
-The goal is to establish an accurate technical record that another engineer can inspect, understand, and reproduce.
+The goal is an accurate technical record that another engineer can inspect, understand, and independently investigate.
+
+## How to Record Evidence
+
+A baseline is most useful when it identifies **how** each important observation was established.
+
+| Evidence method | What it establishes |
+|---|---|
+| **Source-inspected** | A file, declaration, reference, or documented instruction exists at a specified revision |
+| **Tool-evaluated** | A tool resolved particular properties, items, or dependencies under recorded inputs; evaluation need not execute build targets |
+| **Executed** | A command, build, test, or verification operation ran and produced a recorded result |
+
+**Provenance is separate from evidence method.** Evidence may be collected during this discovery or carried forward from an earlier investigation. A previous test run remains executed evidence, but only for the source revision, environment, and scope it actually covered. It does not automatically verify the current baseline.
+
+For each material observation, retain a compact record:
+
+| Field | What to record |
+|---|---|
+| Observation and scope | The technical fact and the project, framework, configuration, or workflow it describes |
+| Source identity | Repository and commit SHA, plus local or external changes if relevant |
+| Evidence location | Source path, tool output, workflow run, test report, or artifact |
+| Method and context | Inspection, evaluation, or execution; commands, relevant arguments, tool versions, environment, and date as applicable |
+| Result and status | Observed value or outcome; verified for its stated scope, not verified, incomplete, or conflicting |
+| Origin | Collected now or reused from an earlier record, with its original revision and environment |
+
+Document required environment variables, package-feed authentication, and credential sources **without recording secret values**. A failed check, missing artifact, or unresolved discrepancy is a valid finding.
+
+This evidence model applies to every discovery category that follows.
 
 ## 1. Establish the Source of Truth
 
 Technical discovery should begin by identifying the exact source being examined.
 
-Record the repository URL, branch or tag, full Git commit SHA, discovery date, and whether the working tree contains uncommitted changes.
+Record the repository URL, branch or tag, full Git commit SHA, discovery date, and working-tree state.
 
 An immutable commit is particularly important because branch names are movable references.
 
@@ -61,9 +88,7 @@ Two engineers examining the same branch on different dates may be looking at dif
 
 A technical baseline should therefore be associated with a specific commit rather than relying solely on a branch name.
 
-For applications maintained across multiple repositories, the baseline may need to identify several source revisions and explain how those repositories relate to one another.
-
-The same principle applies to generated source or externally managed build inputs: identify what was actually used rather than assuming it is represented by the main repository.
+If uncommitted or untracked files affect the investigation, preserve the relevant diff or identify those inputs explicitly. Record submodule revisions, linked repositories, generated source, and externally supplied build inputs when applicable. A commit SHA cannot reproduce local modifications that were never captured.
 
 ## 2. Understand the Solution and Project Structure
 
@@ -75,9 +100,9 @@ For each project, document:
 
 | Characteristic | Information to collect |
 |---|---|
-| Project identity | Name, path, and purpose |
+| Project identity | Name, path, and technical role |
 | Project type | Library, executable, web application, test project, etc. |
-| Project format | Traditional or SDK-style |
+| Project format | Non-SDK-style (traditional) or SDK-style |
 | Target framework | Declared framework or frameworks |
 | Language | C#, F#, Visual Basic, or another language |
 | Compiler settings | Language version and applicable options |
@@ -87,7 +112,7 @@ For each project, document:
 
 Not every project will use the same settings.
 
-A solution might combine traditional .NET Framework projects, SDK-style libraries, multi-targeted packages, and test projects targeting different frameworks.
+A solution might combine non-SDK-style and SDK-style projects, multi-targeted packages, and test projects targeting different frameworks. **Project format, target framework, and build toolchain are separate characteristics**: SDK-style projects can target .NET Framework.
 
 The baseline needs to preserve those differences.
 
@@ -99,7 +124,7 @@ Project references determine which components depend on others and contribute to
 
 A dependency diagram or project-reference table can make these relationships easier to understand.
 
-We don't need to document every class or functional workflow. At this stage, we want to understand the technical organization of the codebase and the responsibilities represented by its projects and assemblies.
+We don't need to document every class or functional workflow. At this stage, we want to understand build dependencies, project output roles, and assembly boundaries.
 
 ## 3. Examine MSBuild and Compiler Configuration
 
@@ -120,17 +145,17 @@ The technical baseline should identify those sources and document the settings r
 
 Examples include target frameworks, language versions, nullable-reference settings, assembly generation, output paths, compilation constants, warnings, analyzers, and platform targets.
 
-### Declared versus evaluated configuration
+### Declared, evaluated, and executed configuration
 
-An important distinction is the difference between a property appearing in a source file and its final evaluated value.
+An important distinction is the difference between a setting declared in source and the value MSBuild evaluates for a particular invocation.
 
-For example, a project might declare one setting while an imported file or command-line parameter supplies another.
+A project may declare one value while imported files, conditions, environment variables, command-line properties, or SDK selection produce another.
 
-**Source inspection tells us what is declared. MSBuild evaluation tells us what the build system resolves for a particular set of inputs.**
+**Source inspection identifies declarations. MSBuild evaluation resolves properties and items under specified inputs. Target execution can subsequently modify properties, items, and build outputs.** An evaluated value is therefore not always the value observed after execution. [Microsoft's MSBuild evaluation reference](https://learn.microsoft.com/en-us/visualstudio/msbuild/evaluate-items-and-properties) documents this distinction.
 
-A thorough baseline should distinguish the two, particularly when settings vary by project, configuration, target framework, or build environment.
+Record the entry point (Visual Studio, `MSBuild.exe`, or the `dotnet` CLI), MSBuild/SDK versions, project and target framework, configuration, platform, relevant command-line arguments, working directory, and environment when they affect the result.
 
-We should also record custom build steps, generated code, and other nonstandard inputs where they affect compilation or artifact generation.
+Also record custom targets, code generation, and other nonstandard inputs where they affect compilation or artifact generation.
 
 ## 4. Inventory Repository-Wide Configuration
 
@@ -140,17 +165,17 @@ Examples include:
 
 | Configuration | Purpose |
 |---|---|
-| `global.json` | Selects .NET SDK versions and roll-forward behavior |
+| `global.json` | Influences SDK selection and roll-forward rules where .NET SDK resolution applies; can also specify versions for MSBuild project SDKs |
 | `Directory.Build.props` | Defines shared MSBuild properties |
 | `Directory.Build.targets` | Defines shared MSBuild targets |
-| `Directory.Packages.props` | Supports central NuGet package version management |
+| `Directory.Packages.props` | Provides central package versions for applicable `PackageReference` projects |
 | `nuget.config` | Configures NuGet sources and related behavior |
 | `.editorconfig` | Defines code-style and formatting settings |
-| `Directory.Build.rsp` or other response files | Supplies additional MSBuild options where applicable |
+| `Directory.Build.rsp` or other response files | Supplies default command-line MSBuild options; not applied to builds inside the Visual Studio IDE |
 
-These files have different scopes and precedence rules. Their presence alone doesn't establish which settings are effective for every project.
+These mechanisms have different search, import, and precedence rules. For example, [MSBuild directory imports](https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory) depend on project location and import context, while `global.json` resolution depends on the tool invoking the SDK. [MSBuild response files](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-response-files) affect command-line invocations, not IDE builds.
 
-The baseline should capture their locations, relevant settings, inheritance, and applicability.
+Where applicable, also inventory `.globalconfig`, analyzer rulesets, `.config/dotnet-tools.json` local tool manifests, and solution-level build configuration. Capture locations, relevant settings, and applicability without assuming every repository has them.
 
 It should also record when a relevant configuration mechanism isn't present.
 
@@ -162,21 +187,20 @@ That distinction keeps discovery objective.
 
 NuGet dependencies are another major part of the technical foundation.
 
-The inventory should identify how packages are declared, restored, and resolved.
+Inventory how packages are declared, restored, and resolved: direct references, relevant transitive dependencies, package sources, version constraints, and the restore tool and context.
 
-Different .NET applications may use `packages.config`, `PackageReference`, central package management, direct assembly references, or combinations of these mechanisms.
+Two common management formats represent dependencies differently:
 
-The baseline should capture package IDs and versions, dependency declarations, package sources, restore configuration, and any relevant lock files or generated dependency artifacts.
+- **`packages.config`** records a flat list of installed packages, including dependencies installed on behalf of other packages.
+- **`PackageReference`** normally declares top-level dependencies; restore resolves the transitive graph. Central Package Management, when enabled, manages versions for `PackageReference` through `Directory.Packages.props`. It is not a third parallel dependency format.
 
-It is also important to distinguish **declared dependencies from resolved dependencies**.
+A manifest describes declared dependencies. A successful restore is **executed evidence that restore completed**; it does not by itself document the complete resolved graph. For `PackageReference`, generated artifacts such as `obj/project.assets.json` record the resolved graph, while an applicable `packages.lock.json` records locked package versions and relationships. For `packages.config`, record the manifest's package versions and corresponding restore behavior and outputs.
 
-A project file or package manifest describes the intended inputs. A completed restore can establish which package graph was resolved in a particular environment.
+NuGet configuration can also come from directory, user, or machine scope, so a repository's `nuget.config` is not necessarily the complete effective source configuration. Record the applicable configuration and command-line overrides.
 
-Both observations belong in the technical baseline, with the appropriate evidence.
+See [NuGet dependency resolution](https://learn.microsoft.com/en-us/nuget/concepts/dependency-resolution) and [PackageReference and lock files](https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files).
 
-Dependencies aren't limited to NuGet packages. Native libraries, local assemblies, external build utilities, and system-provided components may also be necessary to compile or execute the application.
-
-Those should be documented when applicable.
+Dependencies aren't limited to NuGet packages. Native libraries, local assemblies, externally supplied binaries, and system-provided components may also be necessary to compile or execute an application. Document those when applicable.
 
 ## 6. Identify the Development and Build Environment
 
