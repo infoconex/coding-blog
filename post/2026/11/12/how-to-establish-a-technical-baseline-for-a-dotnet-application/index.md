@@ -54,7 +54,7 @@ Classify each finding by **what its evidence establishes**:
 
 These aren't interchangeable. MSBuild imports, conditions, and command-line settings can change evaluated properties; evaluation alone does not establish build success or the final state after target execution. See [MSBuild evaluation](https://learn.microsoft.com/en-us/visualstudio/msbuild/evaluate-items-and-properties).
 
-Similarly, a package declaration is not a verified restore. For \`PackageReference\`, a restore can produce the resolved graph in \`project.assets.json\`; a lock file does not, by itself, prove that locked-mode restore ran. \`packages.config\` has different dependency-recording semantics.
+Similarly, a package declaration is not a verified restore. For `PackageReference`, a restore can produce the resolved graph in `project.assets.json`; a lock file does not, by itself, prove that locked-mode restore ran. `packages.config` has different dependency-recording semantics.
 
 **Provenance is separate from method.** An earlier test run remains executed evidence, but only for its recorded commit, environment, command, and scope.
 
@@ -67,8 +67,8 @@ Use a consistent inventory of the application's technical foundations:
 | Area | What to document |
 |---|---|
 | **Solutions and projects** | Solution entry points, project roles, formats, target frameworks, and references |
-| **Build configuration** | MSBuild imports and evaluated settings, compiler options, \`global.json\`, \`Directory.Build.props\` and \`Directory.Build.targets\`, and other shared configuration |
-| **Dependencies** | NuGet format, \`Directory.Packages.props\` where applicable, package sources, declared and resolved packages, and external prerequisites |
+| **Build configuration** | MSBuild imports and evaluated settings, compiler options, `global.json`, `Directory.Build.props` and `Directory.Build.targets`, and other shared configuration |
+| **Dependencies** | NuGet format, `Directory.Packages.props` where applicable, package sources, declared and resolved packages, and external prerequisites |
 | **Toolchain and environment** | OS, architecture, SDKs, runtimes, .NET Framework targeting packs, MSBuild or Visual Studio, and required inputs |
 | **Builds and tests** | Commands, configurations, test runners, coverage of projects or tests, execution results, and artifacts |
 | **CI/CD and delivery** | Workflow definitions versus completed runs, packaging, releases, and deployment requirements |
