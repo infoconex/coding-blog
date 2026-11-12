@@ -1,0 +1,114 @@
+name: Refresh PR 42 browser previews (no deployment)
+
+on:
+  push:
+    branches: [preview-pr42]
+    paths: ['.github/workflows/refresh-article-preview.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout isolated preview branch
+        uses: actions/checkout@v4
+        with:
+          ref: preview-pr42
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Checkout article drafts into separate source directory
+        uses: actions/checkout@v4
+        with:
+          ref: draft/dotnet-modernization-introduction
+          path: source
+          persist-credentials: false
+
+      - name: Enable two articles only in the temporary build checkout
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in (
+              "2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift",
+              "2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application",
+          ):
+              path = Path("source/post") / name / "index.md"
+              text = path.read_text(encoding="utf-8")
+              assert text.count("published: false") == 1, path
+              path.write_text(text.replace("published: false", "published: true", 1), encoding="utf-8")
+          PY
+
+      - name: Configure Jekyll build
+        uses: actions/configure-pages@v5
+
+      - name: Build without GitHub Pages publication
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./source
+          destination: ./site-build
+
+      - name: Regenerate static noindex review pages
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          blog = "https://coding.infoconex.com"
+          repo = "https://raw.githubusercontent.com/infoconex/coding-blog/preview-pr42"
+          preview = "https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42"
+          intro = "post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift"
+          baseline = "post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application"
+          pages = (
+              ("site-build/" + intro + ".html", "introduction.html", intro),
+              ("site-build/" + baseline + ".html", "technical-baseline.html", baseline),
+              ("site-build/series/staying-current-with-dotnet/index.html", "series.html", None),
+          )
+          sibling_links = {
+              blog + "/" + intro: preview + "/introduction.html",
+              blog + "/" + baseline: preview + "/technical-baseline.html",
+              blog + "/series/staying-current-with-dotnet/": preview + "/series.html",
+          }
+          output = Path("_preview/pr-42")
+          output.mkdir(parents=True, exist_ok=True)
+          for source_path, name, article_path in pages:
+              html = Path(source_path).read_text(encoding="utf-8")
+              # Avoid production-only CSP, canonical tags, scripts and analytics.
+              html = re.sub(r'<meta\s+http-equiv="Content-Security-Policy"[^>]*>', "", html, flags=re.I)
+              html = re.sub(r'<script\b[^>]*>[\s\S]*?</script\s*>', "", html, flags=re.I)
+              html = re.sub(r'<link\s+rel="canonical"[^>]*>', "", html, flags=re.I)
+              html = html.replace('<head>', '<head>\n<meta name="robots" content="noindex,nofollow">\n', 1)
+              # Use the already-published shared styling and assets.
+              html = html.replace('href="/', 'href="' + blog + '/')
+              html = html.replace('src="/', 'src="' + blog + '/')
+              if article_path:
+                  banners = [tag for tag in re.findall(r'<img\b[^>]*>', html, flags=re.I) if "-banner.png" in tag]
+                  assert banners, "Article banner not rendered in " + name
+                  for tag in banners:
+                      match = re.search(r'src="([^"]+)"', tag)
+                      assert match, "Missing src on banner"
+                      src = match.group(1)
+                      filename = src.rsplit("/", 1)[-1]
+                      url = repo + "/" + article_path + "/images/" + filename
+                      html = html.replace('src="' + src + '"', 'src="' + url + '"', 1)
+              for old_url, new_url in sibling_links.items():
+                  html = html.replace('href="' + old_url + '"', 'href="' + new_url + '"')
+              html = html.replace('</body>', '<div role="note" style="position:fixed;z-index:99999;bottom:12px;right:12px;padding:8px 12px;border-radius:6px;color:white;background:#3730a3;font:600 12px sans-serif;box-shadow:0 2px 12px #0005">DRAFT PREVIEW - NOT PUBLISHED</div>\n</body>', 1)
+              assert 'noindex,nofollow' in html and 'rel="stylesheet"' in html, name
+              (output / name).write_text(html, encoding="utf-8")
+              print("Rendered", name, len(html), "bytes")
+          PY
+
+      - name: Save browser previews only to the preview branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add _preview/pr-42/*.html
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "docs(preview): refresh Jekyll article previews [skip ci]"
+            git push origin HEAD:preview-pr42
+          fi
