@@ -62,8 +62,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          intro="_site/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/index.html"
-          baseline="_site/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/index.html"
+          intro="_site/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift.html"
+          baseline="_site/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application.html"
           series="_site/series/staying-current-with-dotnet/index.html"
           test -s "$intro"
           test -s "$baseline"
