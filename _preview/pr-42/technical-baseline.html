@@ -15,11 +15,11 @@
   <title>How to Establish a .NET Technical Baseline</title>
   <link rel="alternate" type="application/atom+xml" title="Coding" href="https://coding.infoconex.com/feed.xml">
   
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/site.css?v=1794524049">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/themes.css?v=1794524049">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/search.css?v=1794524049">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/mobile-header.css?v=1794524049">
-  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/post-extras.css?v=1794524049">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/site.css?v=1794524155">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/themes.css?v=1794524155">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/search.css?v=1794524155">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/mobile-header.css?v=1794524155">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/post-extras.css?v=1794524155">
   
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <meta name="generator" content="Jekyll v3.10.0" />
@@ -659,7 +659,7 @@
     <p class="post-description">How to document .NET projects, builds, dependencies, tooling, and tests while separating declared settings from verified results.</p>
     <div class="post-meta" aria-label="Article metadata">
       <span><a href="https://coding.infoconex.com/about/">Jim Scott</a></span><span aria-hidden="true">·</span>
-      <span>10 min read</span>
+      <span>9 min read</span>
       
       
       
@@ -700,17 +700,13 @@
   <div class="post-content" data-article-content>
     <p><img src="https://raw.githubusercontent.com/infoconex/coding-blog/preview-pr42/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/images/how-to-establish-a-technical-baseline-for-a-dotnet-application-banner.png" alt="Illustration of .NET project structure, MSBuild configuration, dependencies, test results, and a technical evidence checklist" /></p>
 
-<p>Before deciding how to modernize a .NET application, we need to understand what actually exists.</p>
+<p>Before modernizing a .NET application, establish <strong>what exists and what has actually been verified</strong>.</p>
 
-<p>That can be harder than it sounds. A project’s target framework may be obvious, but its effective build settings can depend on imported MSBuild files, installed tools, environment variables, package configuration, and continuous integration workflows. A successful build tells us something useful; it doesn’t necessarily explain all the conditions that made the build possible.</p>
+<p>A technical baseline records the projects, configuration, dependencies, build and test evidence, and unanswered questions at a specific source revision.</p>
 
-<p><strong>A technical baseline is an evidence-backed snapshot of an application’s technical state at a known source revision.</strong> It documents what the repository declares, what tools resolve, what has actually been executed, and what remains unverified.</p>
+<p>This article explains the methodology. The companion <a href="https://github.com/infoconex/RecordSift">RecordSift walkthrough</a> will demonstrate the investigation using actual commands, evidence, and documentation. The method applies to both traditional and modern .NET projects.</p>
 
-<p>This approach is useful whether the application targets .NET Framework 4.8 or a current .NET release, and whether its projects use traditional or SDK-style formats.</p>
-
-<p>This article establishes the methodology. The companion <a href="https://github.com/infoconex/RecordSift">RecordSift</a> walkthrough will apply it to a real application, showing the commands, outputs, and resulting documentation rather than repeating the checklist in the abstract.</p>
-
-<p>This is part of the <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/series.html">Staying Current with .NET</a> series and follows the <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/introduction.html">introduction to our evidence-driven modernization journey</a>.</p>
+<p>This article follows our <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/introduction.html">introduction to evidence-driven modernization</a> in the <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/series.html">Staying Current with .NET</a> series.</p>
 
 <h2 id="what-is-a-technical-baseline">What Is a Technical Baseline?</h2>
 
@@ -1097,8 +1093,13 @@
                 
               
                 
-                  
-                  
+              
+                
+              
+                
+              
+                
+              
               
             
           
@@ -1112,13 +1113,8 @@
                 
               
                 
-              
-                
-              
-                
-              
-                
-              
+                  
+                  
               
             
           
