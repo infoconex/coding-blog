@@ -1,0 +1,2870 @@
+<!doctype html>
+<html lang="en-US" data-theme="neo-industrial">
+<head>
+<meta name="robots" content="noindex,nofollow">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  
+
+
+
+  
+  <title>How to Establish a .NET Technical Baseline</title>
+  <link rel="alternate" type="application/atom+xml" title="Coding" href="https://coding.infoconex.com/feed.xml">
+  
+  <link rel="stylesheet" href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/assets/css/site.css?v=1794524689">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/themes.css?v=1794524689">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/search.css?v=1794524689">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/mobile-header.css?v=1794524689">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/post-extras.css?v=1794524689">
+  
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="How to Establish a Technical Baseline for a .NET Application" />
+<meta name="author" content="Jim Scott" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How to document .NET projects, builds, dependencies, tooling, and tests while separating declared settings from verified results." />
+<meta property="og:description" content="How to document .NET projects, builds, dependencies, tooling, and tests while separating declared settings from verified results." />
+
+<meta property="og:url" content="https://coding.infoconex.com/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application" />
+<meta property="og:site_name" content="Coding" />
+<meta property="og:image" content="https://coding.infoconex.com/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/images/how-to-establish-a-technical-baseline-for-a-dotnet-application-banner.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-11-12T00:00:00-08:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://coding.infoconex.com/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/images/how-to-establish-a-technical-baseline-for-a-dotnet-application-banner.png" />
+<meta property="twitter:title" content="How to Establish a Technical Baseline for a .NET Application" />
+
+<!-- End Jekyll SEO tag -->
+
+  
+  
+  
+  
+  
+<!-- Google Analytics; configuration lives in a same-origin script (no unsafe-inline CSP). -->
+
+
+
+
+
+<!-- Microsoft Clarity; the external loader keeps inline scripts disabled. -->
+
+
+
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+  <div class="shell site-header__inner">
+    <a class="brand" href="https://coding.infoconex.com/" aria-label="Coding home">CODING<span>.</span></a>
+    <div class="site-header__actions">
+      <nav class="site-nav" aria-label="Primary">
+        
+          <a href="https://coding.infoconex.com/writing/">Writing</a>
+        
+          <a href="https://coding.infoconex.com/series/">Series</a>
+        
+          <a href="https://coding.infoconex.com/archive/">Archive</a>
+        
+          <a href="https://coding.infoconex.com/about/">About</a>
+        
+      </nav>
+      <div class="site-header__utilities" aria-label="Site tools">
+        <button type="button" class="search-trigger" data-search-trigger data-search-index="/search.json" aria-haspopup="dialog" aria-expanded="false" aria-label="Search">
+          <span aria-hidden="true">⌕</span>
+          <span class="search-trigger__label">Search</span>
+          <kbd>⌘K</kbd>
+        </button>
+        <div class="theme-picker" data-theme-picker>
+  <button class="theme-picker__trigger" type="button" data-theme-trigger aria-label="Choose visual theme" aria-haspopup="dialog" aria-expanded="false" aria-controls="theme-picker-panel">
+    <span class="theme-picker__icon" aria-hidden="true">◐</span>
+    <span class="theme-picker__label">Theme</span>
+  </button>
+  <div class="theme-picker__panel" id="theme-picker-panel" data-theme-panel role="dialog" aria-label="Choose visual theme" hidden>
+    <div class="theme-picker__heading">
+      <div>
+        <span class="theme-picker__eyebrow">Display mode</span>
+        <strong>Choose a personality</strong>
+      </div>
+      <button class="theme-picker__close" type="button" data-theme-close aria-label="Close theme picker">×</button>
+    </div>
+    <div class="theme-picker__options" role="radiogroup" aria-label="Visual theme">
+      <button type="button" class="theme-option" data-theme-option="neo-industrial" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Neo Industrial</strong><small>Precision · steel · instrumentation</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="midnight-editorial" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Midnight Editorial</strong><small>Elegant · cinematic · literary</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="warm-analog" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Warm Analog</strong><small>Tactile · timeless · notebook</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="technical-brutalism" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Technical Brutalism</strong><small>Bold · graphic · unapologetic</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="swiss-engineering" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Swiss Engineering</strong><small>Rigorous · modern · editorial</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="terminal-modern" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Terminal Modern</strong><small>Developer-native · focused · precise</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="technical-paper" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Technical Paper</strong><small>Quiet · scholarly · writing-first</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="digital-garden" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Digital Garden</strong><small>Connected · organic · knowledge-led</small></span>
+      </button>
+    </div>
+    <p class="theme-picker__hint"><kbd>T</kbd> opens themes · your choice is remembered</p>
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</header>
+
+  <main id="main-content" class="site-main">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    
+      
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+
+
+
+
+
+  
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+        
+          
+            
+            
+        
+          
+          
+        
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+            
+            
+        
+          
+          
+        
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+        
+          
+            
+            
+        
+          
+          
+
+
+<article class="post-shell">
+  <header class="post-header">
+    <p class="post-kicker">November 12, 2026</p>
+    <h1>How to Establish a Technical Baseline for a .NET Application</h1>
+    <p class="post-description">How to document .NET projects, builds, dependencies, tooling, and tests while separating declared settings from verified results.</p>
+    <div class="post-meta" aria-label="Article metadata">
+      <span><a href="https://coding.infoconex.com/about/">Jim Scott</a></span><span aria-hidden="true">·</span>
+      <span>5 min read</span>
+      
+      
+      
+      
+      
+      
+        <span aria-hidden="true">·</span>
+        <span>.NET · Software Engineering · Modernization · MSBuild · Technical Discovery</span>
+      
+    </div>
+  </header>
+
+  
+
+  
+    <aside class="series-panel" aria-labelledby="series-heading">
+      <div class="series-panel__head">
+        <div>
+          <div class="eyebrow">Series</div>
+          <h2 id="series-heading"><a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/series.html">Staying Current with .NET</a></h2>
+        </div>
+        <div class="series-panel__position">
+          <span>Part 10 of 10</span>
+          <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/series.html">View series</a>
+        </div>
+      </div>
+      
+      <nav class="series-panel__nav" aria-label="Series navigation">
+        
+          <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/introduction.html"><span>← Previous part</span><strong>Modernizing .NET: An Evidence-Driven Journey with RecordSift</strong></a>
+        
+        
+      </nav>
+      
+    </aside>
+  
+
+  <div class="post-content" data-article-content>
+    <p><img src="https://raw.githubusercontent.com/infoconex/coding-blog/preview-pr42/post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/images/how-to-establish-a-technical-baseline-for-a-dotnet-application-banner.png" alt="Illustration of .NET project structure, MSBuild configuration, dependencies, test results, and a technical evidence checklist" /></p>
+
+<p>Before modernizing a .NET application, establish <strong>what exists and what has actually been verified</strong>.</p>
+
+<p>A technical baseline records the projects, configuration, dependencies, build and test evidence, and unanswered questions at a specific source revision.</p>
+
+<p>This article explains the methodology. The companion <a href="https://github.com/infoconex/RecordSift">RecordSift walkthrough</a> will demonstrate the investigation using actual commands, evidence, and documentation. The method applies to both traditional and modern .NET projects.</p>
+
+<p>This article follows our <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/introduction.html">introduction to evidence-driven modernization</a> in the <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/series.html">Staying Current with .NET</a> series.</p>
+
+<h2 id="what-is-a-technical-baseline">What Is a Technical Baseline?</h2>
+
+<p>A technical baseline records how an application is configured, built, tested, and delivered <strong>at a specific point in time</strong>. It answers four questions:</p>
+
+<ul>
+  <li><strong>What exists?</strong> The source revision, projects, dependencies, and configuration.</li>
+  <li><strong>How does it work technically?</strong> The tools, environments, and build processes.</li>
+  <li><strong>What is verified?</strong> Operations actually performed and their results.</li>
+  <li><strong>What remains unknown?</strong> Missing inputs, conflicting evidence, or unexecuted checks.</li>
+</ul>
+
+<p>Identify the repository, full commit SHA, discovery date, and scope. Capture uncommitted changes and external inputs when relevant; a branch name alone is not a fixed reference.</p>
+
+<p><strong>Reproducible discovery</strong> means another engineer can repeat the investigation using the documented inputs. It does not guarantee identical build artifacts.</p>
+
+<h2 id="what-makes-technical-evidence-reliable">What Makes Technical Evidence Reliable?</h2>
+
+<p>Classify each finding by <strong>what its evidence establishes</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Evidence method</th>
+      <th>What it proves</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Source-inspected</strong></td>
+      <td>A declaration exists at a recorded revision</td>
+      <td>A project declares its target framework</td>
+    </tr>
+    <tr>
+      <td><strong>Tool-evaluated</strong></td>
+      <td>A tool resolved a value under known inputs</td>
+      <td>MSBuild evaluates a property</td>
+    </tr>
+    <tr>
+      <td><strong>Executed</strong></td>
+      <td>An operation ran with a recorded outcome</td>
+      <td>A build or test run succeeded or failed</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These aren’t interchangeable. MSBuild imports, conditions, and command-line settings can change evaluated properties; evaluation alone does not establish build success or the final state after target execution. See <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/evaluate-items-and-properties">MSBuild evaluation</a>.</p>
+
+<p>Similarly, a package declaration is not a verified restore. For <code class="language-plaintext highlighter-rouge">PackageReference</code>, a restore can produce the resolved graph in <code class="language-plaintext highlighter-rouge">project.assets.json</code>; a lock file does not, by itself, prove that locked-mode restore ran. <code class="language-plaintext highlighter-rouge">packages.config</code> has different dependency-recording semantics.</p>
+
+<p><strong>Provenance is separate from method.</strong> An earlier test run remains executed evidence, but only for its recorded commit, environment, command, and scope.</p>
+
+<p>For each significant finding, retain the source revision, evidence location, method, relevant tool and invocation, outcome, and verification status. Record failures and gaps rather than implying they passed.</p>
+
+<h2 id="what-should-a-net-technical-baseline-document">What Should a .NET Technical Baseline Document?</h2>
+
+<p>Use a consistent inventory of the application’s technical foundations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>What to document</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Solutions and projects</strong></td>
+      <td>Solution entry points, project roles, formats, target frameworks, and references</td>
+    </tr>
+    <tr>
+      <td><strong>Build configuration</strong></td>
+      <td>MSBuild imports and evaluated settings, compiler options, <code class="language-plaintext highlighter-rouge">global.json</code>, <code class="language-plaintext highlighter-rouge">Directory.Build.props</code> and <code class="language-plaintext highlighter-rouge">Directory.Build.targets</code>, and other shared configuration</td>
+    </tr>
+    <tr>
+      <td><strong>Dependencies</strong></td>
+      <td>NuGet format, <code class="language-plaintext highlighter-rouge">Directory.Packages.props</code> where applicable, package sources, declared and resolved packages, and external prerequisites</td>
+    </tr>
+    <tr>
+      <td><strong>Toolchain and environment</strong></td>
+      <td>OS, architecture, SDKs, runtimes, .NET Framework targeting packs, MSBuild or Visual Studio, and required inputs</td>
+    </tr>
+    <tr>
+      <td><strong>Builds and tests</strong></td>
+      <td>Commands, configurations, test runners, coverage of projects or tests, execution results, and artifacts</td>
+    </tr>
+    <tr>
+      <td><strong>CI/CD and delivery</strong></td>
+      <td>Workflow definitions versus completed runs, packaging, releases, and deployment requirements</td>
+    </tr>
+    <tr>
+      <td><strong>Runtime and compatibility</strong></td>
+      <td>Hosting, native dependencies, runtime configuration, and existing API or compatibility checks</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Keep project format separate from target framework: an SDK-style project can target .NET Framework. Likewise, configuration can be inherited, and NuGet settings can extend beyond the repository. Record <strong>which settings actually apply</strong>, not just which files exist.</p>
+
+<p>Not every area applies to every application. <strong>An absent file is an observation, not a recommendation to create it.</strong> Reference existing functional and test documentation instead of duplicating it.</p>
+
+<h2 id="what-should-the-finished-baseline-look-like">What Should the Finished Baseline Look Like?</h2>
+
+<p>Keep the output simple and navigable:</p>
+
+<ul>
+  <li><strong>Discovery overview:</strong> application, commit SHA, date, scope, and links to supporting records.</li>
+  <li><strong>Technical inventory:</strong> the relevant areas above, organized for easy reference.</li>
+  <li><strong>Evidence and gaps:</strong> source files, evaluated outputs, run logs, results, and anything unverified or conflicting.</li>
+</ul>
+
+<p>For example, a project file can establish a <strong>declared target framework</strong> without proving the project builds. Record the source path and method, then track build verification separately.</p>
+
+<p>A useful baseline lets another engineer locate the same source, understand the configuration, repeat the investigation, and distinguish verified results from outstanding questions.</p>
+
+<h2 id="where-does-discovery-end-and-modernization-assessment-begin">Where Does Discovery End and Modernization Assessment Begin?</h2>
+
+<p><strong>Discovery establishes facts; assessment decides what to change.</strong></p>
+
+<p>Finding an older project format, repeated setting, particular dependency version, or missing configuration file does not automatically make it a defect.</p>
+
+<p>Modernization assessment evaluates options, compatibility, benefits, risks, and priorities <strong>after</strong> the existing state is documented. This separation makes the baseline equally useful for traditional and modern .NET projects.</p>
+
+<h2 id="applying-the-methodology-to-recordsift">Applying the Methodology to RecordSift</h2>
+
+<p>The companion article will apply this method to <a href="https://github.com/infoconex/RecordSift">RecordSift</a>, our .NET Framework 4.8 case study.</p>
+
+<p>We’ll inspect the real repository, run appropriate discovery and verification commands, and publish the technical baseline with its evidence and open questions. Modernization assessment will follow separately.</p>
+
+<p><strong>First document what exists. Then decide what should change.</strong></p>
+
+  </div>
+
+  
+    <aside class="series-panel series-panel--footer" aria-labelledby="series-footer-heading">
+      <div class="series-panel__head">
+        <div>
+          <div class="eyebrow">Continue the series</div>
+          <h2 id="series-footer-heading"><a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/series.html">Staying Current with .NET</a></h2>
+        </div>
+        <div class="series-panel__position"><span>Part 10 of 10</span></div>
+      </div>
+      <nav class="series-panel__nav series-panel__nav--footer" aria-label="Series navigation after article">
+        
+          <a href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/introduction.html"><span>← Previous part</span><strong>Modernizing .NET: An Evidence-Driven Journey with RecordSift</strong></a>
+        
+        
+          <a class="series-panel__overview" href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/_preview/pr-42/series.html"><span>Series overview</span><strong>View complete series</strong></a>
+        
+        <span></span>
+      </nav>
+    </aside>
+  
+
+  
+    <section class="related-reading" aria-labelledby="related-heading">
+      <div class="related-reading__head">
+        <h2 id="related-heading">Related reading</h2>
+        <span class="related-reading__rule"></span>
+      </div>
+      <div class="related-reading__grid">
+        
+        
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+                <a class="related-card" href="https://coding.infoconex.com/post/2026/10/24/my-github-projects-needed-a-home-so-i-built-one">
+                  <div class="related-card__meta">Software Engineering · 2026</div>
+                  <strong>My GitHub Projects Needed a Home. So I Built One.</strong>
+                  <p>Why I created a home for my public GitHub projects, and how GitHub Pages, a project catalog, and autom...</p>
+                </a>
+                
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+                <a class="related-card" href="https://coding.infoconex.com/post/2026/10/22/too-hot-to-handle-testing-nugets-new-package-cooldown">
+                  <div class="related-card__meta">.NET · 2026</div>
+                  <strong>Too Hot to Handle? Testing NuGet's New Package Cooldown</strong>
+                  <p>I tested NuGet publication cooldowns in .NET 11 RC2 to see when they delay package updates, when resto...</p>
+                </a>
+                
+              
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+                <a class="related-card" href="https://coding.infoconex.com/post/2026/09/07/labor-day-software-development-and-the-work-we-should-be-automating">
+                  <div class="related-card__meta">Software Engineering · 2026</div>
+                  <strong>Labor Day, Software Development, and the Work We Should Be Automating</strong>
+                  <p>A Labor Day reflection on automation, AI, software engineering, and why progress should remove unneces...</p>
+                </a>
+                
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+      </div>
+    </section>
+  
+
+  
+
+  
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="shell site-footer__inner">
+    <span>© 2026 Jim Scott</span>
+    <a href="https://coding.infoconex.com/about/">Engineering notes since 2008 · About</a>
+  </div>
+</footer>
+
+  <div class="search-overlay" data-search-overlay hidden>
+  <section class="search-dialog" role="dialog" aria-modal="true" aria-labelledby="search-title">
+    <div class="search-dialog__head">
+      <div>
+        <div class="eyebrow">Search archive</div>
+        <h2 id="search-title">Find an article.</h2>
+      </div>
+      <button type="button" class="search-close" data-search-close aria-label="Close search">×</button>
+    </div>
+    <label class="search-input-wrap">
+      <span class="sr-only">Search articles</span>
+      <input type="search" data-search-input placeholder="Search titles, tags, descriptions, code…" autocomplete="off" spellcheck="false">
+      <kbd>Esc</kbd>
+    </label>
+    <div class="search-status" data-search-status aria-live="polite">Type to search the full archive.</div>
+    <div class="search-results" data-search-results role="listbox" aria-label="Search results"></div>
+    <div class="search-dialog__foot">
+      <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span>Cmd/Ctrl + K search</span>
+    </div>
+  </section>
+</div>
+
+  
+  
+<div role="note" style="position:fixed;z-index:99999;bottom:12px;right:12px;padding:8px 12px;border-radius:6px;color:white;background:#3730a3;font:600 12px sans-serif;box-shadow:0 2px 12px #0005">DRAFT PREVIEW - NOT PUBLISHED</div>
+</body>
+</html>
