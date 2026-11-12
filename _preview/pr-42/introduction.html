@@ -1,0 +1,3161 @@
+<!doctype html>
+<html lang="en-US" data-theme="neo-industrial">
+<head>
+<meta name="robots" content="noindex,nofollow">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  
+
+
+
+  
+  <title>Modernizing .NET: An Evidence-Driven Journey with RecordSift</title>
+  <link rel="alternate" type="application/atom+xml" title="Coding" href="https://coding.infoconex.com/feed.xml">
+  
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/site.css?v=1794523205">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/themes.css?v=1794523205">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/search.css?v=1794523205">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/mobile-header.css?v=1794523205">
+  <link rel="stylesheet" href="https://coding.infoconex.com/assets/css/post-extras.css?v=1794523205">
+  
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Modernizing .NET: An Evidence-Driven Journey with RecordSift" />
+<meta name="author" content="Jim Scott" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Explore an evidence-driven approach to .NET modernization using RecordSift, from application discovery and engineering practices to runtime evolution." />
+<meta property="og:description" content="Explore an evidence-driven approach to .NET modernization using RecordSift, from application discovery and engineering practices to runtime evolution." />
+
+<meta property="og:url" content="https://coding.infoconex.com/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift" />
+<meta property="og:site_name" content="Coding" />
+<meta property="og:image" content="https://coding.infoconex.com/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/images/modernizing-dotnet-evidence-driven-journey-with-recordsift-banner.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-11-11T00:00:00-08:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://coding.infoconex.com/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/images/modernizing-dotnet-evidence-driven-journey-with-recordsift-banner.png" />
+<meta property="twitter:title" content="Modernizing .NET: An Evidence-Driven Journey with RecordSift" />
+
+<!-- End Jekyll SEO tag -->
+
+  
+  
+  
+  
+  
+<!-- Google Analytics; configuration lives in a same-origin script (no unsafe-inline CSP). -->
+
+
+
+
+
+<!-- Microsoft Clarity; the external loader keeps inline scripts disabled. -->
+
+
+
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+  <div class="shell site-header__inner">
+    <a class="brand" href="https://coding.infoconex.com/" aria-label="Coding home">CODING<span>.</span></a>
+    <div class="site-header__actions">
+      <nav class="site-nav" aria-label="Primary">
+        
+          <a href="https://coding.infoconex.com/writing/">Writing</a>
+        
+          <a href="https://coding.infoconex.com/series/">Series</a>
+        
+          <a href="https://coding.infoconex.com/archive/">Archive</a>
+        
+          <a href="https://coding.infoconex.com/about/">About</a>
+        
+      </nav>
+      <div class="site-header__utilities" aria-label="Site tools">
+        <button type="button" class="search-trigger" data-search-trigger data-search-index="/search.json" aria-haspopup="dialog" aria-expanded="false" aria-label="Search">
+          <span aria-hidden="true">⌕</span>
+          <span class="search-trigger__label">Search</span>
+          <kbd>⌘K</kbd>
+        </button>
+        <div class="theme-picker" data-theme-picker>
+  <button class="theme-picker__trigger" type="button" data-theme-trigger aria-label="Choose visual theme" aria-haspopup="dialog" aria-expanded="false" aria-controls="theme-picker-panel">
+    <span class="theme-picker__icon" aria-hidden="true">◐</span>
+    <span class="theme-picker__label">Theme</span>
+  </button>
+  <div class="theme-picker__panel" id="theme-picker-panel" data-theme-panel role="dialog" aria-label="Choose visual theme" hidden>
+    <div class="theme-picker__heading">
+      <div>
+        <span class="theme-picker__eyebrow">Display mode</span>
+        <strong>Choose a personality</strong>
+      </div>
+      <button class="theme-picker__close" type="button" data-theme-close aria-label="Close theme picker">×</button>
+    </div>
+    <div class="theme-picker__options" role="radiogroup" aria-label="Visual theme">
+      <button type="button" class="theme-option" data-theme-option="neo-industrial" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Neo Industrial</strong><small>Precision · steel · instrumentation</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="midnight-editorial" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Midnight Editorial</strong><small>Elegant · cinematic · literary</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="warm-analog" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Warm Analog</strong><small>Tactile · timeless · notebook</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="technical-brutalism" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Technical Brutalism</strong><small>Bold · graphic · unapologetic</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="swiss-engineering" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Swiss Engineering</strong><small>Rigorous · modern · editorial</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="terminal-modern" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Terminal Modern</strong><small>Developer-native · focused · precise</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="technical-paper" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Technical Paper</strong><small>Quiet · scholarly · writing-first</small></span>
+      </button>
+      <button type="button" class="theme-option" data-theme-option="digital-garden" role="radio" aria-checked="false">
+        <span class="theme-option__swatches" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>Digital Garden</strong><small>Connected · organic · knowledge-led</small></span>
+      </button>
+    </div>
+    <p class="theme-picker__hint"><kbd>T</kbd> opens themes · your choice is remembered</p>
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</header>
+
+  <main id="main-content" class="site-main">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+    
+    
+
+
+
+
+
+
+
+
+  
+  
+    
+      
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+      
+      
+
+
+
+
+
+  
+    
+      
+      
+      
+    
+  
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+        
+          
+            
+            
+        
+          
+          
+        
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+            
+            
+        
+          
+          
+        
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+      
+        
+        
+          
+        
+          
+            
+            
+        
+          
+          
+
+
+<article class="post-shell">
+  <header class="post-header">
+    <p class="post-kicker">November 11, 2026</p>
+    <h1>Modernizing .NET: An Evidence-Driven Journey with RecordSift</h1>
+    <p class="post-description">Explore an evidence-driven approach to .NET modernization using RecordSift, from application discovery and engineering practices to runtime evolution.</p>
+    <div class="post-meta" aria-label="Article metadata">
+      <span><a href="https://coding.infoconex.com/about/">Jim Scott</a></span><span aria-hidden="true">·</span>
+      <span>12 min read</span>
+      
+      
+      
+      
+      
+      
+        <span aria-hidden="true">·</span>
+        <span>.NET · Software Engineering · Modernization · Architecture · RecordSift</span>
+      
+    </div>
+  </header>
+
+  
+
+  
+    <aside class="series-panel" aria-labelledby="series-heading">
+      <div class="series-panel__head">
+        <div>
+          <div class="eyebrow">Series</div>
+          <h2 id="series-heading"><a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/series.html">Staying Current with .NET</a></h2>
+        </div>
+        <div class="series-panel__position">
+          <span>Part 9 of 10</span>
+          <a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/series.html">View series</a>
+        </div>
+      </div>
+      
+      <nav class="series-panel__nav" aria-label="Series navigation">
+        
+          <a href="https://coding.infoconex.com/post/2026/11/10/net-11-released-net-8-9-end-of-support"><span>← Previous part</span><strong>.NET 11 Is Here. .NET 8 and .NET 9 Are Out of Support.</strong></a>
+        
+        
+          <a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/technical-baseline.html"><span>Next part →</span><strong>How to Establish a Technical Baseline for a .NET Application</strong></a>
+        
+      </nav>
+      
+    </aside>
+  
+
+  <div class="post-content" data-article-content>
+    <p><img src="https://raw.githubusercontent.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/images/modernizing-dotnet-evidence-driven-journey-with-recordsift-banner.png" alt="Laptop displaying the five phases of the RecordSift .NET modernization journey, from discovery through sustained improvement" /></p>
+
+<p>An application can run on the latest version of .NET and still be difficult to build, test, understand, or maintain.</p>
+
+<p>Conversely, an application targeting .NET Framework 4.8 can adopt many modern engineering practices without changing its target framework.</p>
+
+<p><strong>Modernization is not the same as upgrading .NET.</strong></p>
+
+<p>That distinction is at the center of this series.</p>
+
+<p>Using <a href="https://github.com/infoconex/RecordSift">RecordSift</a>, a working C# library built on .NET Framework 4.8, this series investigates how to understand an existing codebase, establish a reliable engineering baseline, evaluate modernization opportunities, and verify changes before adopting them.</p>
+
+<p>The investigations will examine what works, what fails, and which improvements are not justified by the evidence.</p>
+
+<p>The objective is not to reach a particular target framework. It is to make future engineering decisions, including runtime upgrades, more predictable and easier to validate.</p>
+
+<h2 id="what-does-modernizing-a-net-application-mean">What Does Modernizing a .NET Application Mean?</h2>
+
+<p>Modernization improves an application’s maintainability, reliability, security, development experience, and ability to evolve.</p>
+
+<p>This series examines three related areas:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>Examples</th>
+      <th>Objective</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Engineering practices</td>
+      <td>Coding standards, testing, dependency management, security, and continuous integration</td>
+      <td>Strengthen how software is developed and verified</td>
+    </tr>
+    <tr>
+      <td>Project infrastructure</td>
+      <td>MSBuild configuration, SDK selection, package management, build automation, and project formats</td>
+      <td>Simplify configuration and improve build reliability</td>
+    </tr>
+    <tr>
+      <td>Runtime and architecture</td>
+      <td>Target frameworks, dependency compatibility, architectural boundaries, and platform support</td>
+      <td>Enable new capabilities and supported environments</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These areas do not need to change together.</p>
+
+<p>A team maintaining a .NET Framework application might improve automated testing and build configuration without changing its runtime. A team already using a modern .NET version and SDK-style projects might still need to address undocumented dependencies, unreliable tests, or architectural limitations.</p>
+
+<p>The starting point is the application’s actual engineering needs, not its framework version alone.</p>
+
+<h2 id="introducing-recordsift">Introducing RecordSift</h2>
+
+<p><a href="https://github.com/infoconex/RecordSift">RecordSift</a> is a reusable C# library for importing and processing structured data, including CSV and Excel files.</p>
+
+<p>Its capabilities include data mapping, validation, diagnostics, and reporting.</p>
+
+<p>The initial modernization baseline includes:</p>
+
+<ul>
+  <li>.NET Framework 4.8 and C# 7.3.</li>
+  <li>Traditional, non-SDK-style project files.</li>
+  <li>Five production library projects and five NUnit test projects.</li>
+  <li>Windows-based build and test automation.</li>
+  <li>NuGet packaging and distribution.</li>
+</ul>
+
+<p>RecordSift is distributed through NuGet, beginning with version 0.1.0.</p>
+
+<h3 id="why-use-a-traditional-net-framework-application">Why Use a Traditional .NET Framework Application?</h3>
+
+<p>RecordSift was deliberately constructed with a traditional .NET Framework foundation to support realistic engineering and modernization investigations. It is not recovered historical production software, and I do not want to present it that way.</p>
+
+<p>Its project structure provides meaningful technical constraints without inventing a legacy production history.</p>
+
+<p>Those constraints include MSBuild imports, framework targeting, dependency compatibility, automated testing, and package distribution.</p>
+
+<p>RecordSift also provides observable behavior worth protecting.</p>
+
+<p>For example, a modernization change should not unexpectedly alter how a CSV file is interpreted, how validation failures are reported, or how diagnostic information is exposed. Because other applications can consume RecordSift as a library, public API and package compatibility matter alongside internal correctness.</p>
+
+<p>This creates several useful questions to investigate:</p>
+
+<ul>
+  <li>Can project configuration be simplified without changing observable behavior?</li>
+  <li>Which modern tools work with traditional projects?</li>
+  <li>How can compatibility regressions be detected?</li>
+  <li>When is SDK-style conversion justified?</li>
+  <li>What evidence should support a runtime migration?</li>
+</ul>
+
+<p><strong>RecordSift provides the constraints for the experiments, not the boundaries of what readers can learn.</strong></p>
+
+<h2 id="an-evidence-driven-approach-to-modernization">An Evidence-Driven Approach to Modernization</h2>
+
+<p>Modernization recommendations are easy to find. Determining whether they are appropriate for a particular application requires investigation.</p>
+
+<p>Five principles guide this series.</p>
+
+<h3 id="1-understand-before-changing">1. Understand Before Changing</h3>
+
+<p>Begin by examining the application’s structure, behavior, dependencies, public interfaces, build requirements, and tests.</p>
+
+<p>Documentation is useful, but it is not automatically authoritative. Source code, build outputs, automated tests, and observed behavior can reveal discrepancies between what an application is believed to do and what it actually does.</p>
+
+<p>The purpose of discovery is to establish an accurate understanding of the application before making changes that could affect its behavior or compatibility.</p>
+
+<h3 id="2-establish-a-baseline">2. Establish a Baseline</h3>
+
+<p>Before evaluating improvements, determine whether the existing solution can be restored, built, tested, and packaged under documented conditions.</p>
+
+<p>The baseline should include known failures, environmental requirements, and compatibility constraints.</p>
+
+<p>A repeatable build process does not necessarily produce byte-for-byte identical artifacts. Those outcomes should be distinguished and measured according to the evidence available.</p>
+
+<p>Without a reliable baseline, it becomes difficult to determine whether a proposed change improves the application or introduces a regression.</p>
+
+<h3 id="3-change-one-thing-at-a-time">3. Change One Thing at a Time</h3>
+
+<p>Each experiment should answer a specific engineering question.</p>
+
+<p>Whenever practical, isolate changes to project configuration, dependencies, tooling, and runtime targeting rather than combining them into a single migration.</p>
+
+<p>For example, evaluating shared MSBuild configuration should not require simultaneously converting project formats, replacing package management, and changing target frameworks.</p>
+
+<p>Smaller changes make failures easier to diagnose and successful results easier to interpret.</p>
+
+<h3 id="4-record-what-worked-and-what-did-not">4. Record What Worked and What Did Not</h3>
+
+<p>A modernization investigation should document unsuccessful experiments, unexpected results, and changes that turn out to be unnecessary, not just successful implementations.</p>
+
+<p>A tool or configuration option may be technically compatible with an application without providing a meaningful benefit. Likewise, an unsuccessful experiment can reveal important constraints that influence future decisions.</p>
+
+<p>Each investigation will document the intended improvement, evaluation approach, observed results, and rationale for adopting, deferring, or rejecting the proposed change.</p>
+
+<p><strong>The goal is not to adopt every available modernization feature. It is to make informed engineering decisions based on demonstrated needs and verified results.</strong></p>
+
+<h3 id="5-distinguish-evaluation-implementation-and-release">5. Distinguish Evaluation, Implementation, and Release</h3>
+
+<p>This series uses three distinct states when describing modernization work.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>State</th>
+      <th>What it establishes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Evaluated</strong></td>
+      <td>Research documents the experiment, observations, risks, and recommendation</td>
+    </tr>
+    <tr>
+      <td><strong>Implemented</strong></td>
+      <td>Source control and verification evidence establish what was incorporated into RecordSift</td>
+    </tr>
+    <tr>
+      <td><strong>Released</strong></td>
+      <td>A versioned NuGet artifact establishes what downstream consumers can obtain</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These states do not imply automatic progression.</p>
+
+<p>An evaluated change may be rejected or deferred. An implemented change may not yet be released. A successful build does not necessarily establish compatibility with every downstream consumer.</p>
+
+<p>The <a href="https://github.com/infoconex/dotnet-modernization">dotnet-modernization research repository</a> records investigations and decisions, while the <a href="https://github.com/infoconex/RecordSift">RecordSift repository</a> establishes what has been implemented.</p>
+
+<p>Published NuGet packages provide a separate record of what consumers can install.</p>
+
+<p>This distinction is especially important when evaluating changes to packaging, dependencies, project structure, and runtime compatibility.</p>
+
+<h2 id="the-net-modernization-roadmap">The .NET Modernization Roadmap</h2>
+
+<p>The RecordSift modernization journey is organized into five phases.</p>
+
+<p>The phases describe an engineering progression rather than a strict publication sequence. Some supporting engineering practice articles are already published, while the RecordSift case study will develop through additional investigations and walkthroughs.</p>
+
+<p>The roadmap identifies planned areas of investigation. It does not imply that every activity has been completed.</p>
+
+<h3 id="phase-1-discover-and-document">Phase 1: Discover and Document</h3>
+
+<p><strong>Understand what exists.</strong></p>
+
+<p>This phase examines the solution structure, projects, dependencies, target frameworks, public interfaces, build environment, automated tests, and known risks.</p>
+
+<p>It also distinguishes verified facts from assumptions and identifies gaps in existing documentation.</p>
+
+<p><strong>Expected outcome:</strong> An evidence-backed technical inventory and compatibility baseline. A later assessment will identify and evaluate modernization opportunities.</p>
+
+<p><strong>Articles and Walkthroughs</strong></p>
+
+<ul>
+  <li><a href="https://coding.infoconex.com/post/2026/09/16/before-you-upgrade-dotnet-do-you-know-what-is-building-it">Before You Upgrade .NET: Do You Know What Is Building It?</a></li>
+  <li><a href="https://coding.infoconex.com/post/2026/09/17/can-you-build-your-dotnet-application-on-a-clean-machine">Can You Build Your .NET Application on a Clean Machine?</a></li>
+  <li><a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/technical-baseline.html">How to Establish a Technical Baseline for a .NET Application</a></li>
+  <li>RecordSift technical discovery walkthrough. <em>Planned</em></li>
+</ul>
+
+<h3 id="phase-2-strengthen-engineering-practices">Phase 2: Strengthen Engineering Practices</h3>
+
+<p><strong>Increase confidence in the application and its behavior.</strong></p>
+
+<p>Topics include coding standards, automated testing, characterization tests, dependency management, security checks, continuous integration, and development documentation.</p>
+
+<p>For RecordSift, preserving import behavior, validation results, diagnostics, and public interfaces is particularly important.</p>
+
+<p><strong>Expected outcome:</strong> Verified improvements in development practices and regression detection.</p>
+
+<p><strong>Articles and Walkthroughs</strong></p>
+
+<ul>
+  <li><a href="https://coding.infoconex.com/post/2026/11/09/editorconfig-dotnet-framework-4-8-verify-code-style">Modernizing .NET: Establishing and Verifying Code Style with EditorConfig</a></li>
+  <li><a href="https://coding.infoconex.com/post/2026/11/10/nuget-config-dotnet-framework-control-package-sources">Modernizing .NET: Take Control of NuGet Package Sources</a></li>
+  <li>RecordSift characterization testing and regression verification. <em>Planned</em></li>
+</ul>
+
+<h3 id="phase-3-simplify-project-infrastructure">Phase 3: Simplify Project Infrastructure</h3>
+
+<p><strong>Reduce unnecessary complexity in project configuration and tooling.</strong></p>
+
+<p>Potential investigations include:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Directory.Build.props</code> and <code class="language-plaintext highlighter-rouge">Directory.Build.targets</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">global.json</code> and SDK selection.</li>
+  <li><code class="language-plaintext highlighter-rouge">PackageReference</code> and Central Package Management.</li>
+  <li>NuGet configuration.</li>
+  <li>SDK-style project conversion.</li>
+  <li>Build tooling and framework targeting requirements.</li>
+</ul>
+
+<p>Each proposed change will be evaluated independently to determine whether it addresses an actual need.</p>
+
+<p><strong>Expected outcome:</strong> Documented tooling decisions, compatibility findings, and simpler configuration where justified.</p>
+
+<p><strong>Articles and Walkthroughs</strong></p>
+
+<ul>
+  <li><a href="https://coding.infoconex.com/post/2026/10/21/managing-dotnet-sdks-installation-was-just-the-beginning">Managing .NET SDKs: Installation Was Just the Beginning</a></li>
+  <li>Shared MSBuild configuration with <code class="language-plaintext highlighter-rouge">Directory.Build.props</code> and <code class="language-plaintext highlighter-rouge">Directory.Build.targets</code>. <em>Planned</em></li>
+  <li>Evaluating SDK-style project conversion. <em>Planned</em></li>
+</ul>
+
+<h3 id="phase-4-evolve-runtime-and-architecture">Phase 4: Evolve Runtime and Architecture</h3>
+
+<p><strong>Evaluate new capabilities while protecting existing contracts.</strong></p>
+
+<p>This phase examines runtime migration options, framework and dependency compatibility, architectural boundaries, and platform support.</p>
+
+<p>Because RecordSift is a reusable library, the investigation must consider both internal behavior and compatibility with consuming applications.</p>
+
+<p><strong>Expected outcome:</strong> Supported migration decisions, explicit tradeoffs, and regression evidence for adopted changes.</p>
+
+<p><strong>Articles and Walkthroughs</strong></p>
+
+<ul>
+  <li>RecordSift runtime and dependency compatibility evaluation. <em>Planned</em></li>
+</ul>
+
+<h3 id="phase-5-sustain-continuous-modernization">Phase 5: Sustain Continuous Modernization</h3>
+
+<p><strong>Make modernization part of normal development.</strong></p>
+
+<p>This phase considers dependency maintenance, support lifecycle monitoring, build verification, automated testing, documentation upkeep, and release validation.</p>
+
+<p><strong>Expected outcome:</strong> Repeatable practices that reduce the effort and uncertainty of future changes.</p>
+
+<p><strong>Articles and Walkthroughs</strong></p>
+
+<ul>
+  <li>Continuous modernization, automated verification, and release maintenance. <em>Planned</em></li>
+</ul>
+
+<h2 id="which-modernization-practices-work-with-traditional-net-projects">Which Modernization Practices Work with Traditional .NET Projects?</h2>
+
+<p>Many useful engineering improvements do not require an immediate conversion to SDK-style projects.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Capability</th>
+      <th>Traditional .NET Framework projects</th>
+      <th>SDK-style projects</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">.editorconfig</code></td>
+      <td>Yes, with compatible tooling</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Automated testing and CI</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NuGet.Config</code></td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Directory.Build.props</code></td>
+      <td>Yes, when supported by MSBuild imports</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Directory.Build.targets</code></td>
+      <td>Yes, when supported by MSBuild imports</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PackageReference</code></td>
+      <td>Supported for compatible project types</td>
+      <td>Commonly used</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Directory.Packages.props</code></td>
+      <td>Supported with compatible <code class="language-plaintext highlighter-rouge">PackageReference</code> projects</td>
+      <td>Supported with <code class="language-plaintext highlighter-rouge">PackageReference</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">global.json</code></td>
+      <td>Controls SDK selection for applicable CLI operations</td>
+      <td>Controls SDK selection for applicable CLI operations</td>
+    </tr>
+    <tr>
+      <td>Modern .NET runtime targeting</td>
+      <td>Generally requires migration to a compatible project structure, plus code and dependency compatibility evaluation</td>
+      <td>Supported for compatible frameworks, SDKs, and dependencies</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Several distinctions are important.</p>
+
+<p><strong>EditorConfig:</strong> An editor recognizing a rule does not guarantee build enforcement. Compiler, analyzer, and configuration support determine which rules are checked.</p>
+
+<p><strong>Central Package Management:</strong> <code class="language-plaintext highlighter-rouge">Directory.Packages.props</code> works with compatible <code class="language-plaintext highlighter-rouge">PackageReference</code> projects. Traditional projects using <code class="language-plaintext highlighter-rouge">packages.config</code> generally need to evaluate migration to <code class="language-plaintext highlighter-rouge">PackageReference</code> first. That does not necessarily require conversion to SDK-style projects.</p>
+
+<p><strong>SDK selection:</strong> <code class="language-plaintext highlighter-rouge">global.json</code> selects the .NET SDK for relevant CLI operations. It does not change the application’s target framework or independently pin a Visual Studio installation or standalone MSBuild toolchain.</p>
+
+<p><strong>MSBuild imports:</strong> Shared configuration depends on import order and property precedence. Those details should be verified rather than assumed.</p>
+
+<p>Microsoft provides additional technical documentation:</p>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory">Customize the build by folder</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files">PackageReference in project files</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management">Central Package Management</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/dotnet/core/tools/global-json">global.json overview</a></li>
+</ul>
+
+<p>These capabilities will be explored in greater detail when they become relevant to RecordSift.</p>
+
+<h2 id="following-the-recordsift-modernization-journey">Following the RecordSift Modernization Journey</h2>
+
+<p>The investigation connects three resources.</p>
+
+<h3 id="recordsift-application-source-and-implementation">RecordSift: Application Source and Implementation</h3>
+
+<p><a href="https://github.com/infoconex/RecordSift">RecordSift on GitHub</a></p>
+
+<p>The application repository contains source code, automated tests, documentation, build automation, and implemented changes.</p>
+
+<p>It establishes what has actually been incorporated into the application.</p>
+
+<h3 id="net-modernization-research-and-evidence">.NET Modernization: Research and Evidence</h3>
+
+<p><a href="https://github.com/infoconex/dotnet-modernization">dotnet-modernization on GitHub</a></p>
+
+<p>The research repository documents investigations, experiments, findings, risks, and decisions.</p>
+
+<p>It provides supporting evidence without confusing experimental findings with changes already implemented or released.</p>
+
+<h3 id="coding-blog-articles-and-walkthroughs">Coding Blog: Articles and Walkthroughs</h3>
+
+<p><a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/series.html">Staying Current with .NET</a></p>
+
+<p>The blog connects the research and implementation through articles that explain the engineering questions, evaluation methods, findings, and practical implications.</p>
+
+<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+
+<h3 id="can-you-modernize-a-net-framework-application-without-upgrading-its-target-framework">Can you modernize a .NET Framework application without upgrading its target framework?</h3>
+
+<p>Yes. Testing, coding standards, documentation, build automation, dependency management, and security practices can often be improved while continuing to target .NET Framework.</p>
+
+<p>The available options depend on project compatibility and tooling support.</p>
+
+<h3 id="does-an-application-already-using-modern-net-still-need-modernization">Does an application already using modern .NET still need modernization?</h3>
+
+<p>Potentially. A recent runtime and SDK-style projects do not guarantee reliable tests, maintainable architecture, consistent dependencies, or repeatable builds.</p>
+
+<p>Those engineering concerns remain relevant regardless of framework version.</p>
+
+<h3 id="should-traditional-net-projects-be-converted-to-sdk-style-first">Should traditional .NET projects be converted to SDK-style first?</h3>
+
+<p>Not necessarily.</p>
+
+<p>Some improvements work with traditional projects, while others benefit from or require SDK-style conversion.</p>
+
+<p>The decision should be based on a specific engineering need, the existing project structure, and the compatibility risks involved.</p>
+
+<h3 id="how-do-you-measure-modernization-success">How Do You Measure Modernization Success?</h3>
+
+<p>Define the expected result before making a change, then compare the outcome with the documented baseline.</p>
+
+<p>Evidence may include build and test results, public API comparisons, dependency analysis, packaging checks, or verified reductions in configuration complexity.</p>
+
+<p>For a reusable library such as RecordSift, downstream consumer compatibility may also be part of the acceptance criteria.</p>
+
+<h2 id="whats-next-establishing-the-technical-baseline">What’s Next: Establishing the Technical Baseline</h2>
+
+<p>The next article, <a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/technical-baseline.html">How to Establish a Technical Baseline for a .NET Application</a>, explains what to collect and how to record reliable technical evidence without evaluating improvements.</p>
+
+<p>A separate RecordSift walkthrough will then follow the methodology with actual commands, captured results, and a source-pinned baseline. The modernization assessment will use those facts to evaluate potential changes.</p>
+
+<p>Whether an application targets .NET Framework 4.8, a modern .NET version, or another supported environment, the starting point is the same:</p>
+
+<p><strong>Understand what exists. Document what matters. Establish what can be verified. Then decide what to change.</strong></p>
+
+  </div>
+
+  
+    <aside class="series-panel series-panel--footer" aria-labelledby="series-footer-heading">
+      <div class="series-panel__head">
+        <div>
+          <div class="eyebrow">Continue the series</div>
+          <h2 id="series-footer-heading"><a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/series.html">Staying Current with .NET</a></h2>
+        </div>
+        <div class="series-panel__position"><span>Part 9 of 10</span></div>
+      </div>
+      <nav class="series-panel__nav series-panel__nav--footer" aria-label="Series navigation after article">
+        
+          <a href="https://coding.infoconex.com/post/2026/11/10/net-11-released-net-8-9-end-of-support"><span>← Previous part</span><strong>.NET 11 Is Here. .NET 8 and .NET 9 Are Out of Support.</strong></a>
+        
+        
+          <a class="series-panel__overview" href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/series.html"><span>Series overview</span><strong>View complete series</strong></a>
+        
+        
+          <a href="https://raw.githack.com/infoconex/coding-blog/draft/dotnet-modernization-introduction/_preview/pr-42/technical-baseline.html"><span>Next part →</span><strong>How to Establish a Technical Baseline for a .NET Application</strong></a>
+        
+      </nav>
+    </aside>
+  
+
+  
+    <section class="related-reading" aria-labelledby="related-heading">
+      <div class="related-reading__head">
+        <h2 id="related-heading">Related reading</h2>
+        <span class="related-reading__rule"></span>
+      </div>
+      <div class="related-reading__grid">
+        
+        
+          
+            
+            
+            
+          
+        
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+                <a class="related-card" href="https://coding.infoconex.com/post/2026/10/24/my-github-projects-needed-a-home-so-i-built-one">
+                  <div class="related-card__meta">Software Engineering · 2026</div>
+                  <strong>My GitHub Projects Needed a Home. So I Built One.</strong>
+                  <p>Why I created a home for my public GitHub projects, and how GitHub Pages, a project catalog, and autom...</p>
+                </a>
+                
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+                <a class="related-card" href="https://coding.infoconex.com/post/2026/10/22/too-hot-to-handle-testing-nugets-new-package-cooldown">
+                  <div class="related-card__meta">.NET · 2026</div>
+                  <strong>Too Hot to Handle? Testing NuGet's New Package Cooldown</strong>
+                  <p>I tested NuGet publication cooldowns in .NET 11 RC2 to see when they delay package updates, when resto...</p>
+                </a>
+                
+              
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+                <a class="related-card" href="https://coding.infoconex.com/post/2026/09/07/labor-day-software-development-and-the-work-we-should-be-automating">
+                  <div class="related-card__meta">Software Engineering · 2026</div>
+                  <strong>Labor Day, Software Development, and the Work We Should Be Automating</strong>
+                  <p>A Labor Day reflection on automation, AI, software engineering, and why progress should remove unneces...</p>
+                </a>
+                
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+                  
+                  
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+          
+            
+            
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+              
+            
+          
+        
+      </div>
+    </section>
+  
+
+  
+
+  
+
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="shell site-footer__inner">
+    <span>© 2026 Jim Scott</span>
+    <a href="https://coding.infoconex.com/about/">Engineering notes since 2008 · About</a>
+  </div>
+</footer>
+
+  <div class="search-overlay" data-search-overlay hidden>
+  <section class="search-dialog" role="dialog" aria-modal="true" aria-labelledby="search-title">
+    <div class="search-dialog__head">
+      <div>
+        <div class="eyebrow">Search archive</div>
+        <h2 id="search-title">Find an article.</h2>
+      </div>
+      <button type="button" class="search-close" data-search-close aria-label="Close search">×</button>
+    </div>
+    <label class="search-input-wrap">
+      <span class="sr-only">Search articles</span>
+      <input type="search" data-search-input placeholder="Search titles, tags, descriptions, code…" autocomplete="off" spellcheck="false">
+      <kbd>Esc</kbd>
+    </label>
+    <div class="search-status" data-search-status aria-live="polite">Type to search the full archive.</div>
+    <div class="search-results" data-search-results role="listbox" aria-label="Search results"></div>
+    <div class="search-dialog__foot">
+      <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span>Cmd/Ctrl + K search</span>
+    </div>
+  </section>
+</div>
+
+  
+  
+<div role="note" style="position:fixed;z-index:99999;bottom:12px;right:12px;padding:8px 12px;border-radius:6px;color:white;background:#3730a3;font:600 12px sans-serif;box-shadow:0 2px 12px #0005">DRAFT PREVIEW - NOT PUBLISHED</div>
+</body>
+</html>
