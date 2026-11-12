@@ -1,0 +1,108 @@
+name: Temporary browser preview for PR 42 (no Pages deploy)
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+    paths:
+      - '.github/workflows/temporary-pr-42-browser-preview.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.number == 42
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout PR branch (never main)
+        uses: actions/checkout@v4
+        with:
+          ref: draft/dotnet-modernization-introduction
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure Jekyll build
+        uses: actions/configure-pages@v5
+
+      - name: Enable both articles only in CI workspace
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          paths = [
+              Path("post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/index.md"),
+              Path("post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/index.md"),
+          ]
+          for path in paths:
+              original = path.read_text(encoding="utf-8")
+              assert original.count("published: false") == 1, str(path)
+              path.write_text(original.replace("published: false", "published: true", 1), encoding="utf-8")
+          PY
+
+      - name: Build Jekyll (no Pages publication)
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Prepare three noindex HTML preview files
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          dest = Path("_preview/pr-42")
+          dest.mkdir(parents=True, exist_ok=True)
+          blog = "https://coding.infoconex.com"
+          branch = "draft/dotnet-modernization-introduction"
+          preview = "https://raw.githack.com/infoconex/coding-blog/" + branch + "/_preview/pr-42"
+          intro = "post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift"
+          baseline = "post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application"
+          links = {
+              blog + "/" + intro: preview + "/introduction.html",
+              blog + "/" + baseline: preview + "/technical-baseline.html",
+              blog + "/series/staying-current-with-dotnet/": preview + "/series.html",
+          }
+          pages = [
+              ("_site/" + intro + ".html", "introduction.html", intro),
+              ("_site/" + baseline + ".html", "technical-baseline.html", baseline),
+              ("_site/series/staying-current-with-dotnet/index.html", "series.html", None),
+          ]
+          for source, name, article_path in pages:
+              html = Path(source).read_text(encoding="utf-8")
+              # GitHub's temporary preview host must not inherit the production site's
+              # self-only CSP, analytics, search scripts, or production canonical URL.
+              html = re.sub(r'<meta\s+http-equiv="Content-Security-Policy"[^>]*>', "", html, flags=re.I)
+              html = re.sub(r'<script\b[^>]*>[\s\S]*?</script\s*>', "", html, flags=re.I)
+              html = re.sub(r'<link\s+rel="canonical"[^>]*>', "", html, flags=re.I)
+              html = html.replace('<head>', '<head>\n<meta name="robots" content="noindex,nofollow">\n')
+              # Reuse the live site's CSS and static resources, which are already public.
+              html = html.replace('href="/', 'href="' + blog + '/')
+              html = html.replace('src="/', 'src="' + blog + '/')
+              # Render the newly uploaded article banners from this unmerged branch.
+              if article_path:
+                  for match in re.findall(r'src="images/([^"]+)"', html):
+                      raw = "https://raw.githubusercontent.com/infoconex/coding-blog/" + branch + "/" + article_path + "/images/" + match
+                      html = html.replace('src="images/' + match + '"', 'src="' + raw + '"')
+              # Navigate to sibling draft pages, not dead production URLs.
+              for original, link in links.items():
+                  html = html.replace('href="' + original + '"', 'href="' + link + '"')
+              banner = '<div role="note" style="position:fixed;z-index:99999;bottom:12px;right:12px;padding:8px 12px;border-radius:6px;color:white;background:#3730a3;font:600 12px sans-serif;box-shadow:0 2px 12px #0005">DRAFT PREVIEW - NOT PUBLISHED</div>'
+              html = html.replace('</body>', banner + '\n</body>')
+              assert 'rel="stylesheet"' in html and 'noindex,nofollow' in html
+              if article_path:
+                  assert "raw.githubusercontent.com/infoconex/coding-blog/" in html
+              (dest / name).write_text(html, encoding="utf-8")
+              print("Prepared:", name, len(html), "bytes")
+          PY
+
+      - name: Commit only preview HTML to the draft branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git restore -- post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift/index.md
+          git restore -- post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/index.md
+          git add _preview/pr-42/*.html
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "chore(preview): render temporary browser-only article previews [skip ci]"
+          git push origin HEAD:draft/dotnet-modernization-introduction
