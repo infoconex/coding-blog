@@ -17,7 +17,10 @@ tags:
   - Technical Discovery
 series: "Staying Current with .NET"
 seriesOrder: 10
+image: /post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application/images/how-to-establish-a-technical-baseline-for-a-dotnet-application-banner.png
 ---
+
+![Illustration of .NET project structure, MSBuild configuration, dependencies, test results, and a technical evidence checklist](images/how-to-establish-a-technical-baseline-for-a-dotnet-application-banner.png)
 
 Before modernizing a .NET application, we need to understand its existing technical foundation.
 
