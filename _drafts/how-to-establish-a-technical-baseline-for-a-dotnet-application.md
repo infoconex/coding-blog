@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to Establish a Technical Baseline for a .NET Application"
-description: "How to document a .NET application’s projects, build configuration, dependencies, tooling, tests, and evidence without confusing declarations with verified results."
+description: "How to document .NET projects, builds, dependencies, tooling, and tests while separating declared settings from verified results."
 date: 2026-11-12
 published: false
 ---
@@ -18,7 +18,7 @@ Even when an application builds successfully, those details may not be fully doc
 
 This article explains what to collect, how to organize it, and how to distinguish source declarations, tool-evaluated configuration, and executed verification. The method applies to applications already using current .NET tooling as well as older project systems.
 
-In a companion article, we'll apply this methodology to [RecordSift](https://github.com/infoconex/RecordSift), our .NET Framework 4.8 case-study application, with actual discovery commands, outputs, and findings.
+In a companion article, we'll apply the methodology to [RecordSift](https://github.com/infoconex/RecordSift), our .NET Framework 4.8 case study, using actual commands and output tied to identifiable source revisions.
 
 For now, our objective is discovery—not improvement.
 
@@ -56,8 +56,10 @@ A baseline is most useful when it identifies **how** each important observation 
 | Evidence method | What it establishes |
 |---|---|
 | **Source-inspected** | A file, declaration, reference, or documented instruction exists at a specified revision |
-| **Tool-evaluated** | A tool resolved particular properties, items, or dependencies under recorded inputs; evaluation need not execute build targets |
-| **Executed** | A command, build, test, or verification operation ran and produced a recorded result |
+| **Tool-evaluated** | A tool resolved properties, items, or dependency information under recorded inputs, without necessarily establishing a successful build or test |
+| **Executed** | A restore, build, test, packaging, deployment, or other verification operation ran and produced a recorded outcome |
+
+**Classify a finding by what the evidence establishes, not just whether a command was invoked.** Querying an MSBuild property establishes evaluated configuration, not a successful build. A NuGet restore provides an executed restore outcome and may also produce tool-resolved dependency evidence. Its generated `project.assets.json` represents the resolved graph from that restore; a committed `packages.lock.json` can be inspected as a source artifact, but its presence alone does not verify a current restore or locked-mode enforcement.
 
 **Provenance is separate from evidence method.** Evidence may be collected during this discovery or carried forward from an earlier investigation. A previous test run remains executed evidence, but only for the source revision, environment, and scope it actually covered. It does not automatically verify the current baseline.
 
@@ -94,7 +96,7 @@ If uncommitted or untracked files affect the investigation, preserve the relevan
 
 A .NET application's solution and project files provide the starting point for understanding how it is assembled.
 
-Begin by identifying every relevant solution and project, including projects that aren't referenced by the primary solution.
+Begin by identifying every relevant solution (`.sln` or `.slnx`), solution filter (`.slnf`), and project, including projects that aren't referenced by the primary solution. A solution filter describes a selected subset of a solution; it is not a separate project graph.
 
 For each project, document:
 
@@ -151,7 +153,7 @@ An important distinction is the difference between a setting declared in source 
 
 A project may declare one value while imported files, conditions, environment variables, command-line properties, or SDK selection produce another.
 
-**Source inspection identifies declarations. MSBuild evaluation resolves properties and items under specified inputs. Target execution can subsequently modify properties, items, and build outputs.** An evaluated value is therefore not always the value observed after execution. [Microsoft's MSBuild evaluation reference](https://learn.microsoft.com/en-us/visualstudio/msbuild/evaluate-items-and-properties) documents this distinction.
+**Source inspection identifies declarations. MSBuild evaluation resolves properties and items under specified inputs. Target execution can subsequently modify properties, items, and build outputs.** An evaluated value is therefore not always the value observed after execution. Microsoft documents the distinction in [how MSBuild builds projects](https://learn.microsoft.com/en-us/visualstudio/msbuild/build-process-overview) and [how to inspect evaluated properties and items](https://learn.microsoft.com/en-us/visualstudio/msbuild/evaluate-items-and-properties).
 
 Record the entry point (Visual Studio, `MSBuild.exe`, or the `dotnet` CLI), MSBuild/SDK versions, project and target framework, configuration, platform, relevant command-line arguments, working directory, and environment when they affect the result.
 
@@ -165,7 +167,7 @@ Examples include:
 
 | Configuration | Purpose |
 |---|---|
-| `global.json` | Influences SDK selection and roll-forward rules where .NET SDK resolution applies; can also specify versions for MSBuild project SDKs |
+| `global.json` | Controls applicable .NET SDK selection, roll-forward, and MSBuild project SDK versions; .NET 10 also supports SDK search paths and test-runner selection |
 | `Directory.Build.props` | Defines shared MSBuild properties |
 | `Directory.Build.targets` | Defines shared MSBuild targets |
 | `Directory.Packages.props` | Provides central package versions for applicable `PackageReference` projects |
@@ -173,7 +175,7 @@ Examples include:
 | `.editorconfig` | Defines code-style and formatting settings |
 | `Directory.Build.rsp` or other response files | Supplies default command-line MSBuild options; not applied to builds inside the Visual Studio IDE |
 
-These mechanisms have different search, import, and precedence rules. For example, [MSBuild directory imports](https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory) depend on project location and import context, while `global.json` resolution depends on the tool invoking the SDK. [MSBuild response files](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-response-files) affect command-line invocations, not IDE builds.
+These mechanisms have different search, import, and precedence rules. For example, [MSBuild directory imports](https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory) depend on project location and import context, while [`global.json` resolution](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json) depends on the tool invoking the SDK. [MSBuild response files](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-response-files) affect command-line invocations, not IDE builds.
 
 Where applicable, also inventory `.globalconfig`, analyzer rulesets, `.config/dotnet-tools.json` local tool manifests, and solution-level build configuration. Capture locations, relevant settings, and applicability without assuming every repository has them.
 
@@ -192,11 +194,11 @@ Inventory how packages are declared, restored, and resolved: direct references, 
 Two common management formats represent dependencies differently:
 
 - **`packages.config`** records a flat list of installed packages, including dependencies installed on behalf of other packages.
-- **`PackageReference`** normally declares top-level dependencies; restore resolves the transitive graph. Central Package Management, when enabled, manages versions for `PackageReference` through `Directory.Packages.props`. It is not a third parallel dependency format.
+- **`PackageReference`** normally declares top-level dependencies; restore resolves the transitive graph. [Central Package Management](https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management), when enabled, manages versions for `PackageReference` through `Directory.Packages.props`. It is not a third parallel dependency format.
 
-A manifest describes declared dependencies. A successful restore is **executed evidence that restore completed**; it does not by itself document the complete resolved graph. For `PackageReference`, generated artifacts such as `obj/project.assets.json` record the resolved graph, while an applicable `packages.lock.json` records locked package versions and relationships. For `packages.config`, record the manifest's package versions and corresponding restore behavior and outputs.
+A manifest describes declared dependencies. A successful restore is **executed evidence that restore completed**; it does not by itself document the complete resolved graph. For `PackageReference`, generated artifacts such as `obj/project.assets.json` record the resolved graph. An applicable `packages.lock.json` records resolved versions and relationships; record separately whether restore was run in **locked mode**, which enforces the lock file rather than permitting dependency changes. For `packages.config`, the manifest already lists a flat set of installed packages; record it alongside the actual restore command, tool, relevant configuration, and outcome.
 
-NuGet configuration can also come from directory, user, or machine scope, so a repository's `nuget.config` is not necessarily the complete effective source configuration. Record the applicable configuration and command-line overrides.
+[NuGet configuration](https://learn.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior) can come from directory, user, or machine scope, so a repository's `nuget.config` is not necessarily the complete effective source configuration. Record the applicable configuration and any explicit configuration file or command-line overrides.
 
 See [NuGet dependency resolution](https://learn.microsoft.com/en-us/nuget/concepts/dependency-resolution) and [PackageReference and lock files](https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files).
 
@@ -264,11 +266,11 @@ A count of 500 passing tests doesn't tell us whether all relevant test assemblie
 
 The baseline should distinguish configured test infrastructure from observed test execution.
 
-## 9. Examine CI/CD and Delivery
+## 9. Examine CI/CD, Packaging, and Runtime Requirements
 
 Continuous integration workflow **definitions** document the intended automation for restoring dependencies, selecting toolchains, building, testing, validating artifacts, and preparing releases. Completed workflow runs and retained logs are separate evidence of the steps actually executed and their outcomes.
 
-For each relevant workflow, collect its source file, triggers, runners, tool versions, principal commands, validation steps, artifacts, and available execution results.
+For each relevant workflow, identify its source-controlled definition or externally managed configuration, including its location and revision when available. Record triggers, runners, tool versions, principal commands, validation steps, artifacts, and available execution results.
 
 Pay attention to differences between local development and CI.
 
@@ -306,7 +308,7 @@ This isn't an assessment of whether the existing verification is sufficient. It 
 
 Before finalizing the inventory, compare current declarations, evaluated values, and execution records for the same technical areas. Do not silently combine observations from different source revisions, toolchains, configurations, or test scopes.
 
-Record conflicting information, missing source inputs, failed commands, incomplete test coverage, and unexecuted verification as explicit findings. A baseline does not have to claim every check passed; it must report what is known, which evidence applies, and where verification remains outstanding.
+Record conflicting information, missing source inputs, failed commands, incomplete test execution, and unexecuted verification as explicit findings. A baseline does not have to claim every check passed; it must report what is known, which evidence applies, and where verification remains outstanding.
 
 Use the evidence record introduced earlier rather than duplicating test matrices, requirements, or workflow logs inside the baseline.
 
@@ -320,7 +322,7 @@ The overview establishes the application identity, source revision, discovery sc
 
 The baseline contains the actual inventory, grouped into consistent technical categories.
 
-For a substantial application, it should be possible to navigate directly to project configuration, dependencies, build tooling, testing, CI/CD, packaging, and compatibility evidence without searching through unrelated documentation.
+For a substantial application, it should be possible to navigate directly to project configuration, dependencies, build tooling, testing, CI/CD, packaging, runtime requirements, and compatibility evidence without searching through unrelated documentation.
 
 The record should avoid duplicating material already maintained elsewhere.
 
@@ -351,10 +353,6 @@ Discovery establishes the facts on which those decisions can be based.
 Separating the activities prevents a technical inventory from becoming a collection of recommendations before the application's current state has been adequately established.
 
 It also makes the baseline useful for applications that are already using modern .NET versions, SDK-style projects, and contemporary build tooling.
-
-## Applying the Methodology to RecordSift
-
-The companion [RecordSift](https://github.com/infoconex/RecordSift) walkthrough will apply these discovery categories to a .NET Framework 4.8 repository, using captured commands, outputs, identified source revisions, and the resulting technical baseline. It will distinguish current execution from historical evidence and checks not performed.
 
 ## Conclusion
 
