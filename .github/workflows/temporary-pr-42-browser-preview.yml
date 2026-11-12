@@ -82,9 +82,19 @@ jobs:
               html = html.replace('src="/', 'src="' + blog + '/')
               # Render the newly uploaded article banners from this unmerged branch.
               if article_path:
-                  for match in re.findall(r'src="images/([^"]+)"', html):
-                      raw = "https://raw.githubusercontent.com/infoconex/coding-blog/" + branch + "/" + article_path + "/images/" + match
-                      html = html.replace('src="images/' + match + '"', 'src="' + raw + '"')
+                  # Kramdown can emit relative or URL-normalized image references.
+                  # Match the actual img tag and rewrite the full src URL.
+                  img_tags = re.findall(r'<img\b[^>]*>', html, flags=re.I)
+                  print(name, "rendered img tags:", img_tags[:3], flush=True)
+                  banner_tags = [tag for tag in img_tags if "-banner.png" in tag]
+                  assert banner_tags, "article banner image not present in rendered HTML: " + name
+                  for tag in banner_tags:
+                      match = re.search(r'src="([^"]+)"', tag)
+                      assert match, "banner img tag missing src"
+                      src = match.group(1)
+                      filename = src.rsplit("/", 1)[-1]
+                      raw = "https://raw.githubusercontent.com/infoconex/coding-blog/" + branch + "/" + article_path + "/images/" + filename
+                      html = html.replace('src="' + src + '"', 'src="' + raw + '"', 1)
               # Navigate to sibling draft pages, not dead production URLs.
               for original, link in links.items():
                   html = html.replace('href="' + original + '"', 'href="' + link + '"')
