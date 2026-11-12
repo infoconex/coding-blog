@@ -1,7 +1,7 @@
 - title: "Staying Current with .NET"
   slug: "staying-current-with-dotnet"
   status: "Active"
-  introduction: "A practical series about making .NET upgrades routine by first understanding, controlling, and reproducing the build environment, then continuously evaluating new releases before they become urgent."
+  introduction: "A practical series on understanding and modernizing .NET applications: documenting technical baselines, strengthening engineering practices, verifying builds, and evaluating upgrades when justified."
 
 - title: "CopyGitHubRepo"
   slug: "copygithubrepo"
