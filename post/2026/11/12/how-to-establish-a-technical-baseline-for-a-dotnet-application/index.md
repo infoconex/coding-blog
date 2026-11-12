@@ -21,17 +21,13 @@ image: /post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-appli
 ---
 ![Illustration of .NET project structure, MSBuild configuration, dependencies, test results, and a technical evidence checklist](images/how-to-establish-a-technical-baseline-for-a-dotnet-application-banner.png)
 
-Before deciding how to modernize a .NET application, we need to understand what actually exists.
+Before modernizing a .NET application, establish **what exists and what has actually been verified**.
 
-That can be harder than it sounds. A project's target framework may be obvious, but its effective build settings can depend on imported MSBuild files, installed tools, environment variables, package configuration, and continuous integration workflows. A successful build tells us something useful; it doesn't necessarily explain all the conditions that made the build possible.
+A technical baseline records the projects, configuration, dependencies, build and test evidence, and unanswered questions at a specific source revision.
 
-**A technical baseline is an evidence-backed snapshot of an application's technical state at a known source revision.** It documents what the repository declares, what tools resolve, what has actually been executed, and what remains unverified.
+This article explains the methodology. The companion [RecordSift walkthrough](https://github.com/infoconex/RecordSift) will demonstrate the investigation using actual commands, evidence, and documentation. The method applies to both traditional and modern .NET projects.
 
-This approach is useful whether the application targets .NET Framework 4.8 or a current .NET release, and whether its projects use traditional or SDK-style formats.
-
-This article establishes the methodology. The companion [RecordSift](https://github.com/infoconex/RecordSift) walkthrough will apply it to a real application, showing the commands, outputs, and resulting documentation rather than repeating the checklist in the abstract.
-
-This is part of the [Staying Current with .NET](/series/staying-current-with-dotnet/) series and follows the [introduction to our evidence-driven modernization journey](/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift).
+This article follows our [introduction to evidence-driven modernization](/post/2026/11/11/modernizing-dotnet-evidence-driven-journey-with-recordsift) in the [Staying Current with .NET](/series/staying-current-with-dotnet/) series.
 
 ## What Is a Technical Baseline?
 
