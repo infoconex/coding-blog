@@ -65,12 +65,12 @@ jobs:
           baseline = "post/2026/11/12/how-to-establish-a-technical-baseline-for-a-dotnet-application"
           pages = (
               ("site-build/" + intro + ".html", "introduction.html", intro),
-              ("site-build/" + baseline + ".html", "technical-baseline.html", baseline),
+              ("site-build/" + baseline + ".html", "technical-baseline-mobile.html", baseline),
               ("site-build/series/staying-current-with-dotnet/index.html", "series.html", None),
           )
           sibling_links = {
               blog + "/" + intro: preview + "/introduction.html",
-              blog + "/" + baseline: preview + "/technical-baseline.html",
+              blog + "/" + baseline: preview + "/technical-baseline-mobile.html",
               blog + "/series/staying-current-with-dotnet/": preview + "/series.html",
           }
           output = Path("_preview/pr-42")
@@ -85,6 +85,11 @@ jobs:
               # Use the already-published shared styling and assets.
               html = html.replace('href="/', 'href="' + blog + '/')
               html = html.replace('src="/', 'src="' + blog + '/')
+              # Preview the proposed CSS without altering the published site's styles.
+              html = html.replace(
+                  'href="' + blog + '/assets/css/site.css',
+                  'href="https://raw.githack.com/infoconex/coding-blog/preview-pr42/assets/css/site.css'
+              )
               if article_path:
                   banners = [tag for tag in re.findall(r'<img\b[^>]*>', html, flags=re.I) if "-banner.png" in tag]
                   assert banners, "Article banner not rendered in " + name
@@ -112,4 +117,4 @@ jobs:
             git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "docs(preview): refresh Jekyll article previews [skip ci]"
             git push origin HEAD:preview-pr42
           fi
-# Latest draft source revision: 6aa8ff427681af44c09c92fa80389379cef889e9
+# Latest draft source revision: f9209488f8c5667db273cc1e15be772e6379bd80
