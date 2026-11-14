@@ -24,7 +24,7 @@ image: /post/2026/11/13/learning-from-outages-protecting-services-and-customers/
 
 A service outage creates two questions for every engineering organization: **What happens to our customers when a service we depend on becomes unavailable? And what happens to our customers when our own service fails or recovers badly?**
 
-The November 2026 Microsoft 365 outage is a useful prompt for asking those questions. Public updates described unavailable servers shifting demand onto remaining infrastructure and additional internal load during recovery. They do not establish that client retries caused the incident, nor do they provide enough detail to reconstruct Microsoft's architecture. We do not need to know every internal cause to learn from the failure patterns and examine our own systems.
+The November 12–13, 2026 Microsoft 365 outage is a useful prompt for asking those questions. [Archived Microsoft service-health notices](https://mailservices.isc.upenn.edu/computing/email/penno365/alerts/ms-incidents.html?q=EX1550543) described unavailable servers shifting demand onto remaining infrastructure and additional internal load during recovery. They do not establish that client retries caused the incident, nor do they provide enough detail to reconstruct Microsoft's architecture. We do not need to know every internal cause to learn from the failure patterns and examine our own systems.
 
 This article focuses on that exercise: map critical customer journeys, identify the effects of dependency failure, and test whether your service can degrade and recover without creating further harm.
 
@@ -88,6 +88,10 @@ For a notification dependency, useful design questions include:
 - How will the backlog drain after service returns without overwhelming the provider or your own systems?
 
 Document the business functions that must continue, tolerable delays, queue limits, customer messaging, and operator actions. Then rehearse the decisions and test the behavior. A dependency inventory is useful only when it leads to clear ownership and evidence that the failure path works.
+
+## Put the lessons into practice
+
+Choose one customer journey that matters to your business, identify the dependency most likely to disrupt it, and document what customers would experience if that dependency slowed down, failed, and recovered. Use the findings to design a controlled test with measurable acceptance criteria. The goal is not to predict the next provider outage; it is to demonstrate that your service can protect customers when one occurs.
 
 ## Frequently asked questions
 
