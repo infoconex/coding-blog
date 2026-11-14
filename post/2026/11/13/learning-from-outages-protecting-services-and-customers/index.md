@@ -1,12 +1,24 @@
 ---
+layout: post
 title: "Learning from Outages: Protecting Services and Customers"
-description: "Use a major service outage to examine dependency risks, customer impact, failure modes, and safe recovery through FMEA and controlled testing."
+seoTitle: "Service Outage Lessons: Resilience, FMEA, and Recovery Testing"
+date: "2026-11-13"
+updated: "2026-11-13"
+slug: "learning-from-outages-protecting-services-and-customers"
+author: "Jim Scott"
 published: false
-date: 2026-11-13
-updated: 2026-11-13
+featured: false
+permalink: "/post/2026/11/13/learning-from-outages-protecting-services-and-customers"
+description: "Learn how to protect customers from service outages using FMEA, dependency analysis, failure testing, and controlled recovery."
+tags:
+  - Software Engineering
+  - Reliability
+  - Resilience
+  - Incident Management
+image: /post/2026/11/13/learning-from-outages-protecting-services-and-customers/images/microsoft-outage-article-banner-1080x432.png
 ---
 
-# Learning from Outages: Protecting Services and Customers
+![Illustration introducing lessons from the Microsoft 365 outage about service resilience, customer protection, and recovery](images/microsoft-outage-article-banner-1080x432.png)
 
 *A practical way to examine your dependencies, customer commitments, and recovery behavior after a major outage.*
 
