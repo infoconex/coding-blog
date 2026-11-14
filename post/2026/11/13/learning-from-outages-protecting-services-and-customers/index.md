@@ -8,7 +8,7 @@ slug: "learning-from-outages-protecting-services-and-customers"
 author: "Jim Scott"
 published: true
 featured: false
-permalink: "/post/2026/11/13/learning-from-outages-protecting-services-and-customers/"
+permalink: "/post/2026/11/13/learning-from-outages-protecting-services-and-customers"
 description: "Learn how to protect customers from service outages using FMEA, dependency analysis, failure testing, and controlled recovery."
 tags:
   - Software Engineering
