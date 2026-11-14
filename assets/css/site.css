@@ -101,7 +101,7 @@ a { color: inherit; }
 .post-content h2, .post-content h3, .post-content h4 { position: relative; scroll-margin-top: 110px; margin-top: 2em; line-height: 1.18; letter-spacing: -.025em; }
 .post-content h2 { font-size: 1.75em; }
 .post-content h3 { font-size: 1.35em; }
-.post-content p, .post-content ul, .post-content ol, .post-content blockquote { max-width: 820px; }
+.post-content h2, .post-content h3, .post-content h4, .post-content p, .post-content ul, .post-content ol, .post-content blockquote { max-width: 820px; }
 .post-content p:has(> img:only-child) { max-width: 1080px; }
 .post-content p:has(> img:only-child) img { width: auto; }
 .post-content li + li { margin-top: .35em; }
@@ -111,7 +111,7 @@ a { color: inherit; }
 .post-content code { font-family: var(--font-mono); }
 .post-content :not(pre) > code { padding: .14em .38em; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); font-size: .88em; }
 .post-content blockquote { margin-left: 0; padding: 4px 0 4px 22px; border-left: 3px solid var(--accent); color: var(--muted); }
-.post-content table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
+.post-content table { display: block; width: 100%; max-width: 1080px; overflow-x: auto; border-collapse: collapse; }
 .post-content th, .post-content td { padding: 10px 14px; border: 1px solid var(--line); text-align: left; }
 
 /* Shared code panel; all colors and corners inherit the active site theme. */
