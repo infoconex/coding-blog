@@ -6,7 +6,7 @@ date: "2026-11-13"
 updated: "2026-11-13"
 slug: "learning-from-outages-protecting-services-and-customers"
 author: "Jim Scott"
-published: false
+published: true
 featured: false
 permalink: "/post/2026/11/13/learning-from-outages-protecting-services-and-customers"
 description: "Learn how to protect customers from service outages using FMEA, dependency analysis, failure testing, and controlled recovery."
