@@ -89,10 +89,6 @@ For a notification dependency, useful design questions include:
 
 Document the business functions that must continue, tolerable delays, queue limits, customer messaging, and operator actions. Then rehearse the decisions and test the behavior. A dependency inventory is useful only when it leads to clear ownership and evidence that the failure path works.
 
-## Put the lessons into practice
-
-Choose one customer journey that matters to your business, identify the dependency most likely to disrupt it, and document what customers would experience if that dependency slowed down, failed, and recovered. Use the findings to design a controlled test with measurable acceptance criteria. The goal is not to predict the next provider outage; it is to demonstrate that your service can protect customers when one occurs.
-
 ## Frequently asked questions
 
 ### What can we learn from an outage when the provider has not published a full root-cause report?
