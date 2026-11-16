@@ -207,7 +207,7 @@ The Microsoft Graph [`sendMail` API](https://learn.microsoft.com/en-us/graph/api
 
 If a response is lost after Graph accepts the request, the caller may not know whether the email was submitted. Blind resubmission may create duplicates. An outbox prevents loss of the *intent* to notify but does not establish exactly-once delivery by the provider.
 
-For stronger traceability, applications can alternatively create a draft message, store its identifier, and send that draft in a separate operation. Microsoft's [immutable ID guidance](https://learn.microsoft.com/en-us/graph/outlook-immutable-id) describes how identifiers can support later lookup in Sent Items. A missing draft alone is not proof of successful submission; and a sent copy is not proof the recipient received it. The draft workflow introduces additional API calls and mailbox read/write permissions.
+For stronger traceability, applications can alternatively create a draft message, store its identifier, and send that draft in a separate operation. Microsoft's [immutable ID guidance](https://learn.microsoft.com/en-us/graph/outlook-immutable-id) describes how identifiers can support later lookup in Sent Items. A missing draft alone is not proof of successful submission, and a sent copy is not proof the recipient received it. The draft workflow introduces additional API calls and mailbox read/write permissions.
 
 ### Recover without creating another overload
 
