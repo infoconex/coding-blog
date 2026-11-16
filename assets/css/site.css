@@ -111,8 +111,12 @@ a { color: inherit; }
 .post-content code { font-family: var(--font-mono); }
 .post-content :not(pre) > code { padding: .14em .38em; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); font-size: .88em; }
 .post-content blockquote { margin-left: 0; padding: 4px 0 4px 22px; border-left: 3px solid var(--accent); color: var(--muted); }
-.post-content table { display: block; width: 100%; max-width: 1080px; overflow-x: auto; border-collapse: collapse; }
-.post-content th, .post-content td { padding: 10px 14px; border: 1px solid var(--line); text-align: left; }
+/* Keep wide tables within the article and let narrow screens scroll columns instead of splitting words. */
+.post-content table { display: block; width: 100%; max-width: 1080px; overflow-x: auto; border-collapse: collapse; -webkit-overflow-scrolling: touch; }
+.post-content th, .post-content td { padding: 10px 14px; border: 1px solid var(--line); text-align: left; overflow-wrap: normal; word-break: normal; }
+@media (max-width: 760px) {
+  .post-content table th, .post-content table td { min-width: 11rem; }
+}
 
 /* Shared code panel; all colors and corners inherit the active site theme. */
 .code-block, .post-content div.highlight, .post-content figure.highlight {
