@@ -259,7 +259,7 @@ The same risks exist when moving from .NET Framework to modern .NET, adopting SD
 
 Dependency inventories, automated tests, observability, durable processing, and recovery procedures can be established *before* changing frameworks or hosting environments. They provide a technical baseline for determining whether modernization actually improves reliability.
 
-For a complementary approach to customer impact and failure prioritization, see [Learning from Outages: Protecting Services and Customers](https://coding.infoconex.com/post/2026/11/13/learning-from-outages-protecting-services-and-customers), covering dependency analysis, [FMEA](https://asq.org/quality-resources/fmea), and [controlled recovery testing](https://learn.microsoft.com/en-us/azure/well-architected/reliability/reliability-test).
+For a complementary approach to customer impact and failure prioritization, see [Learning from Outages: Protecting Services and Customers](/post/2026/11/13/learning-from-outages-protecting-services-and-customers), covering dependency analysis, [FMEA](https://asq.org/quality-resources/fmea), and [controlled recovery testing](https://learn.microsoft.com/en-us/azure/well-architected/reliability/reliability-test).
 
 ## Modernization Should Reduce Risk, Not Simply Replace Technology
 
