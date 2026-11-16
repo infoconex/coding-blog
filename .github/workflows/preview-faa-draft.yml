@@ -27,6 +27,10 @@ jobs:
           assert content.count("published: false") == 1, "Draft must be unpublished in repository"
           path.write_text(content.replace("published: false", "published: true", 1), encoding="utf-8")
           PY
+      - name: Install social-card dependencies
+        run: python3 -m pip install --user -r scripts/requirements.txt
+      - name: Generate social cards like production
+        run: python3 scripts/generate_og.py
       - name: Configure Pages build without deploying
         uses: actions/configure-pages@v6
       - name: Build temporary Jekyll preview
