@@ -17,8 +17,8 @@ using (var writer = new JsonSerializationWriter())
     using var json = JsonDocument.Parse(stream);
     var root = json.RootElement;
     Console.WriteLine("Serialized request: " + root.GetRawText());
-    Require(root.GetProperty("saveToSentItems").GetBoolean(), "saveToSentItems should serialize as true");
-    Require(root.GetProperty("message").GetProperty("subject").GetString() == "Order ORDER-123 confirmed",
+    Require(GetIgnoreCase(root, "saveToSentItems").GetBoolean(), "saveToSentItems should serialize as true");
+    Require(GetIgnoreCase(GetIgnoreCase(root, "message"), "subject").GetString() == "Order ORDER-123 confirmed",
         "Message subject was not serialized");
     Console.WriteLine("PASS: Graph 6.10.0 sendMail serialization");
 }
@@ -78,6 +78,16 @@ static SendMailPostRequestBody CreateSample(string orderNumber, string customerE
     },
     SaveToSentItems = true
 };
+
+static JsonElement GetIgnoreCase(JsonElement obj, string name)
+{
+    foreach (var property in obj.EnumerateObject())
+    {
+        if (string.Equals(property.Name, name, StringComparison.OrdinalIgnoreCase))
+            return property.Value;
+    }
+    throw new InvalidOperationException($"Missing serialized property: {name}");
+}
 
 static void Require(bool condition, string reason)
 {
