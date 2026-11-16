@@ -1,0 +1,28 @@
+name: Verify Microsoft Graph article example
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/verify-graph-example.yml"
+      - "scripts/experiments/graph-sendmail-verification/**"
+      - "post/2026/11/16/when-a-network-problem-becomes-a-nationwide-ground-stop/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-graph-example:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore pinned Microsoft.Graph package
+        run: dotnet restore scripts/experiments/graph-sendmail-verification/GraphExample.csproj
+      - name: Compile and exercise isolated Graph example
+        run: dotnet run --project scripts/experiments/graph-sendmail-verification/GraphExample.csproj --no-restore --configuration Release
