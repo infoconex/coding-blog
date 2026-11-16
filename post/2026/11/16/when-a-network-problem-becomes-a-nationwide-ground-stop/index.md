@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "When a Network Problem Becomes a Nationwide Ground Stop: Lessons for Software Engineers"
-seoTitle: "FAA and Microsoft Outages: Reliability Lessons for Software Engineers"
+seoTitle: "FAA Ground Stop and Microsoft 365: Reliability Lessons"
 date: "2026-11-16"
 updated: "2026-11-16"
 slug: "when-a-network-problem-becomes-a-nationwide-ground-stop"
