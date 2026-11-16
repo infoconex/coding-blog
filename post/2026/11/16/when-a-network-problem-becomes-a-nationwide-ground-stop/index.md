@@ -6,7 +6,7 @@ date: "2026-11-16"
 updated: "2026-11-16"
 slug: "when-a-network-problem-becomes-a-nationwide-ground-stop"
 author: "Jim Scott"
-published: false
+published: true
 featured: false
 permalink: "/post/2026/11/16/when-a-network-problem-becomes-a-nationwide-ground-stop"
 description: "Learn how the FAA and Microsoft 365 outages illuminate cascading failures, .NET transactional outbox design, controlled retries, and business recovery."
