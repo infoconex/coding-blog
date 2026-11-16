@@ -26,7 +26,7 @@ Some communications and radar capabilities remained operational. The FAA issued 
 
 Beginning the previous day, a separate Microsoft 365 outage affected Exchange Online connectivity and dependent services. Microsoft's preliminary findings described a connection-processing defect that allowed requests to accumulate until affected servers exhausted their capacity.
 
-The incidents had different reported mechanisms and were not connected. But they illustrate a shared engineering problem: **a system's response to abnormal behavior can determine whether a fault stays contained or becomes a wider disruption.**
+The incidents had different reported mechanisms, and there is no indication they were related. Both illustrate a shared engineering problem: **a system's response to abnormal behavior can determine whether a fault stays contained or becomes a wider disruption.**
 
 Modernization should reduce operational risk, not simply replace technology. For software engineers upgrading frameworks, changing infrastructure, or migrating to the cloud, that means verifying what happens not only when a new component works, but when it fails and when it recovers.
 
@@ -109,7 +109,7 @@ Consider an ASP.NET Core order-processing API that writes orders to a relational
 
 If an API saves an order and then sends an email synchronously, a slow or unavailable notification service may delay the API response. A customer could receive an error after the order was committed and submit it again.
 
-A more resilient design makes order acceptance independent of confirmation email delivery by using a [transactional outbox](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/transactional-out-box-cosmos). The order and an intent-to-send record are saved within the same database transaction. A separate worker processes the notification.
+A more resilient design makes order acceptance independent of confirmation email delivery by using a [transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html). The order and an intent-to-send record are saved within the same database transaction. A separate worker processes the notification.
 
 A simplified Entity Framework Core example is:
 
@@ -251,7 +251,7 @@ For the order-processing application, business recovery includes draining eligib
 
 The [GAO reported in September 2024](https://www.gao.gov/products/gao-24-107001) that 51 of 138 assessed FAA air traffic control systems were unsustainable, with another 54 potentially unsustainable. Those earlier findings do not establish the cause of the November 2026 disruption.
 
-At a [November 14 DOT briefing](https://www.transportation.gov/briefing-room/icymi-us-transportation-secretary-sean-p-duffy-provides-update-restoration-airspace), Secretary Sean Duffy described work to replace aging copper telecommunications connections with fiber and move from time-division multiplexing (TDM) toward IP communications. The FAA [stated in its November 15 update](https://www.faa.gov/newsroom/nationwide-ground-stop-questions-and-answers) that routine equipment upgrades should be distinguished from its separate, broader modernization initiative. The precise root cause remained under investigation in that update.
+At a [November 14 DOT briefing](https://www.transportation.gov/briefing-room/icymi-us-transportation-secretary-sean-p-duffy-provides-update-restoration-airspace), Secretary Sean Duffy described work to replace aging copper telecommunications connections with fiber and transition from time-division multiplexing (TDM) to IP communications. At the same briefing, FAA Administrator Bryan Bedford stated that the equipment replacement was routine maintenance of the existing network, distinct from the separately funded $12.5 billion modernization program. The FAA [reiterated that distinction on November 15](https://www.faa.gov/newsroom/nationwide-ground-stop-questions-and-answers); the precise root cause remained under investigation in that update.
 
 Both kinds of work involve introducing change into interconnected systems with long-standing operational assumptions.
 
