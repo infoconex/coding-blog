@@ -199,7 +199,7 @@ Microsoft's [Graph throttling guidance](https://learn.microsoft.com/en-us/graph/
 
 Applications must understand both SDK-level and worker-level retries. For operations whose outcome is uncertain, the worker may need to stop automatic resubmission and record an `Unknown outcome` state.
 
-The underlying Kiota retry middleware has a `MaxRetry` setting. Disabling middleware retries transfers responsibility for `Retry-After`, backoff scheduling, and aggregate request limits to the application. Any per-request configuration should be verified against the pinned SDK version rather than assumed to work from older examples.
+The Microsoft Graph .NET SDK includes a built-in HTTP retry handler with a configurable `MaxRetry` setting. Setting `MaxRetry = 0` disables automatic retries performed by that handler. The application must then handle `Retry-After` responses, backoff scheduling, and aggregate request limits itself. Verify the retry configuration against the SDK version used by the application.
 
 ### Acceptance is not delivery
 
