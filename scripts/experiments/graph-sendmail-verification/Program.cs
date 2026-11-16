@@ -16,6 +16,7 @@ using (var writer = new JsonSerializationWriter())
     using var stream = writer.GetSerializedContent();
     using var json = JsonDocument.Parse(stream);
     var root = json.RootElement;
+    Console.WriteLine("Serialized request: " + root.GetRawText());
     Require(root.GetProperty("saveToSentItems").GetBoolean(), "saveToSentItems should serialize as true");
     Require(root.GetProperty("message").GetProperty("subject").GetString() == "Order ORDER-123 confirmed",
         "Message subject was not serialized");
