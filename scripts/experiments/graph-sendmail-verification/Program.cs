@@ -2,6 +2,8 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Graph;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.Models;
 using Microsoft.Graph.Users.Item.SendMail;
 using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
@@ -43,7 +45,54 @@ foreach (var status in new[] { HttpStatusCode.TooManyRequests, HttpStatusCode.Se
     Console.WriteLine($"PASS: MaxRetry=0 on {(int)status} => one outbound attempt");
 }
 
-// The snippet is compiled against the pinned package; it deliberately is not invoked.
+// Exercise the article's EF Core snippet with a real SQLite transaction, not mocks.
+using (var connection = new SqliteConnection("Data Source=:memory:"))
+{
+    await connection.OpenAsync();
+    var options = new DbContextOptionsBuilder<ArticleDb>().UseSqlite(connection).Options;
+    await using var db = new ArticleDb(options);
+    await db.Database.EnsureCreatedAsync();
+
+    var order = new OrderRecord();
+    db.Orders.Add(order);
+    db.NotificationOutbox.Add(new NotificationOutboxMessage
+    {
+        Order = order,
+        Status = "Pending"
+    });
+    await db.SaveChangesAsync(CancellationToken.None);
+
+    Require(order.Id > 0, "Database-generated order ID was not assigned");
+    Require(await db.Orders.CountAsync() == 1 && await db.NotificationOutbox.CountAsync() == 1,
+        "Order and outbox were not committed together");
+    Console.WriteLine("PASS: EF Core order + outbox inserted in one SaveChangesAsync");
+
+    // A failed dependent insert must roll back the parent insert.
+    var rejectedOrder = new OrderRecord();
+    db.Orders.Add(rejectedOrder);
+    db.NotificationOutbox.Add(new NotificationOutboxMessage
+    {
+        Order = rejectedOrder,
+        Status = null! // Violates the non-null SQLite column constraint.
+    });
+
+    try
+    {
+        await db.SaveChangesAsync(CancellationToken.None);
+        throw new InvalidOperationException("Expected SQLite to reject a null outbox status");
+    }
+    catch (DbUpdateException)
+    {
+        db.ChangeTracker.Clear();
+    }
+
+    Require(await db.Orders.CountAsync() == 1 && await db.NotificationOutbox.CountAsync() == 1,
+        "Failed SaveChangesAsync must not commit an orphaned order");
+    Console.WriteLine("PASS: EF Core transaction rolled back after failed outbox insert");
+}
+
+// Verify compilation of the SDK request-builder call without sending live email.
+_ = (Func<GraphServiceClient, string, string, string, CancellationToken, Task>)SdkSendMailExample;
 static async Task SdkSendMailExample(
     GraphServiceClient graphClient, string senderUserId,
     string orderNumber, string customerEmail,
@@ -103,4 +152,22 @@ sealed class CountingHandler(HttpStatusCode status) : HttpMessageHandler
         Count++;
         return Task.FromResult(new HttpResponseMessage(status) { RequestMessage = request });
     }
+}
+
+sealed class ArticleDb(DbContextOptions<ArticleDb> options) : DbContext(options)
+{
+    public DbSet<OrderRecord> Orders => Set<OrderRecord>();
+    public DbSet<NotificationOutboxMessage> NotificationOutbox => Set<NotificationOutboxMessage>();
+}
+
+sealed class OrderRecord
+{
+    public int Id { get; set; }
+}
+
+sealed class NotificationOutboxMessage
+{
+    public int Id { get; set; }
+    public OrderRecord Order { get; set; } = null!;
+    public string Status { get; set; } = "";
 }
