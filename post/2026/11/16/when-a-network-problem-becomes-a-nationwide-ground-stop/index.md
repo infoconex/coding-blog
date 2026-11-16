@@ -16,7 +16,10 @@ tags:
   - Resilience
   - .NET
   - Modernization
+image: /post/2026/11/16/when-a-network-problem-becomes-a-nationwide-ground-stop/images/when-a-network-problem-becomes-a-nationwide-ground-stop-banner.png
 ---
+
+![Illustration of an air traffic control tower, a U.S. network map with cascading failures, and interconnected cloud services](images/when-a-network-problem-becomes-a-nationwide-ground-stop-banner.png)
 
 *The November 2026 FAA and Microsoft 365 outages show why dependency mapping, failure isolation, and controlled recovery are essential to reliable system modernization.*
 
