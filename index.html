@@ -30,7 +30,13 @@ stylesheet: /assets/css/home.css
       <h1>Software engineering, architecture &amp; lessons learned <em>the hard way.</em></h1>
       <p>A long-running record of code, systems, architecture, operational scars, and the ideas that survived contact with production.</p>
     </div>
-    <aside class="home-editorial-side" aria-label="Archive summary">
+    <aside class="home-editorial-side" aria-label="Author and archive summary">
+      {% assign portrait_asset = site.static_files | where: "path", "/assets/images/about/jim-scott.webp" | first %}
+      {% if portrait_asset %}
+      <a class="home-editorial-side__portrait" href="{{ '/about/' | relative_url }}">
+        <img src="{{ '/assets/images/about/jim-scott.webp' | relative_url }}" alt="Portrait of Jim Scott" width="480" height="480" loading="eager" decoding="async">
+      </a>
+      {% endif %}
       <strong>{{ archive_years }} years</strong>
       of articles, experiments and engineering history.
       <span class="home-editorial-side__topics">C# · SQL Server · Linux · Architecture</span>
