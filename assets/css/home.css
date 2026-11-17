@@ -5,6 +5,10 @@
 .home-editorial-hero__copy h1 em { color:var(--accent); font-weight:inherit; }
 .home-editorial-hero__copy p { max-width:670px; margin:0; color:var(--muted); font-size:19px; line-height:1.7; }
 .home-editorial-side { align-self:end; padding:4px 0 6px 30px; border-left:1px solid var(--line); color:var(--muted); font-size:16px; line-height:1.55; }
+.home-editorial-side__portrait { display:block; width:clamp(152px,15vw,200px); max-width:100%; aspect-ratio:1; margin:0 0 36px; overflow:hidden; border:1px solid var(--line); border-radius:50%; }
+.home-editorial-side__portrait img { display:block; width:100%; height:100%; object-fit:contain; }
+.home-editorial-side__portrait:hover { border-color:var(--accent); }
+.home-editorial-side__portrait:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
 .home-editorial-side strong { display:block; margin-bottom:10px; color:var(--text); font-family:var(--font-heading,var(--font-sans)); font-size:38px; font-weight:var(--heading-weight,800); line-height:.95; letter-spacing:-.035em; }
 .home-editorial-side__topics { display:block; margin-top:28px; color:var(--accent); font:700 10px/1.65 var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
 
@@ -78,6 +82,7 @@ html[data-theme="technical-brutalism"] .home-history-graph__bar,html[data-theme=
   .home-editorial-hero,.home-prototype-featured { grid-template-columns:1fr; }
   .home-editorial-hero { min-height:auto; padding-top:86px; }
   .home-editorial-side { border-left:0; border-top:1px solid var(--line); padding:26px 0 0; }
+  .home-editorial-side__portrait { width:144px; margin-bottom:24px; }
   .home-prototype-featured__copy { min-height:auto; }
   .home-bento { grid-template-columns:1fr 1fr; }
   .home-bento-card:first-child { grid-row:auto; grid-column:1 / -1; min-height:380px; }
